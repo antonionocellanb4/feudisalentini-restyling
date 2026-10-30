@@ -384,9 +384,9 @@
     if (moving) sheet.kick(120);
     // testi e bottiglie seguono il mondo
     track.style.transform = `translate3d(${-cam}px,${-camY}px,0)`;
-    const testo = !mob ? -1 : prog > 0.97 ? testi.length - 1 : testi.reduce((c, h, i) => (k * h.x - cam < vw * 0.55 ? i : c), 0); // in fondo: il saluto con le CTA
+    const testo = !mob ? -1 : prog > 0.97 ? testi.length - 1 : testi.reduce((c, h, i) => (k * h.x - cam < vw * (h.carta ? 1 : 0.55) ? i : c), 0); // in fondo: il saluto con le CTA
     for (const h of htmlEls) {
-      if (mob && h.testo) { // telefono: i testi non scorrono, stanno fermi in alto e si danno il cambio
+      if (mob && h.testo && !h.carta) { // telefono: i testi non scorrono, stanno fermi in alto e si danno il cambio (il biglietto invece segue il disegno)
         const o = testi[testo] === h ? M.clamp(S.intro * 2) : 0, left = `${cam + 16}px`;
         if (o !== h.o || h.el.style.left !== left) { h.o = o; h.el.style.left = left; h.el.style.opacity = o; h.el.style.translate = ''; h.el.style.visibility = o > 0 ? '' : 'hidden'; }
         continue;
@@ -467,9 +467,10 @@
   /* ---- prove "info" (?info=a|b|c, 30 ott). a: titolo fisso in alto come klimtwine · b: annotazioni a matita accanto alle bottiglie ·
      c: biglietto di carta con l'elenco dei vini. Le posizioni solo su schermi larghi: sul telefono il biglietto sta fermo in alto ---- */
   const caps = [...track.querySelectorAll('.fb-cap')];
-  if ((INFO === 'b' || INFO === 'c') && !narrow()) caps.forEach((el, i) => { // accanto al gruppo di bottiglie, in alto quanto le bottiglie
-    const [g, ys, h] = GRUPPI[i], xl = g[g.length - 1][1];
-    el.style.setProperty('--x', xl + 115); el.style.setProperty('--y', INFO === 'c' ? ys - 6 : ys - h * 0.9); // c: il biglietto poggia sulla base delle bottiglie e cresce in su (css)
+  if (INFO === 'c' || (INFO === 'b' && !narrow())) caps.forEach((el, i) => { // accanto al gruppo di bottiglie, in alto quanto le bottiglie
+    const [g, ys, h] = GRUPPI[i], xl = g[g.length - 1][1], sx = narrow() && i === caps.length - 1; // telefono: la camera si ferma sulla tavola, l'ultimo biglietto va prima delle bottiglie
+    el.classList.toggle('is-sx', sx);
+    el.style.setProperty('--x', sx ? g[0][1] - 115 : xl + 115); el.style.setProperty('--y', INFO === 'c' ? ys - 6 : ys - h * 0.9); // c: il biglietto poggia sulla base delle bottiglie e cresce in su (css)
     if (INFO === 'b') add({ s: [ // freccia dall'appunto alla spalla dell'ultima bottiglia e un trattino da ogni nome al suo tappo
       M.stroke(M.smooth([[xl + 108, ys - h * 0.55], [xl + 80, ys - h * 0.47], [xl + 40, ys - h * 0.52]]), { w: 1.5, amp: 0.8 }),
       M.stroke([[xl + 50, ys - h * 0.58], [xl + 40, ys - h * 0.52], [xl + 51, ys - h * 0.47]], { w: 1.5, amp: 0.6 }),
@@ -498,8 +499,9 @@
   };
   fisso?.querySelector('.fb-fisso__go').addEventListener('click', (e) => document.dispatchEvent(new CustomEvent('fs:open-cantina', { detail: { col: e.currentTarget.dataset.col } })));
 
-  const htmlEls = [...track.querySelectorAll('.fb-testo, .fb-bt')].map((el) => ({ el, testo: el.classList.contains('fb-testo'), x: parseFloat(el.style.getPropertyValue('--x')) + (el.classList.contains('fb-bt') ? 0 : 40), rev: 0, o: -1 }));
+  const htmlEls = [...track.querySelectorAll('.fb-testo, .fb-bt')].map((el) => ({ el, testo: el.classList.contains('fb-testo'), x: parseFloat(el.style.getPropertyValue('--x')) + (el.classList.contains('fb-bt') ? 0 : el.classList.contains('is-sx') ? -370 : 40), rev: 0, o: -1 })); // is-sx: --x è il bordo destro, il biglietto (~410 unità) entra prima
   const testi = htmlEls.filter((h) => h.testo);
+  if (INFO === 'c') testi.forEach((h) => (h.carta = h.el.classList.contains('fb-cap'))); // il biglietto: anche sul telefono resta nel disegno
 
   /* ---- pillola delle tappe (come la "Our Wines" di klimtwine, scelta il 30 ott): la tappa corrente con le sue bottiglie e 01/05;
      la freccia apre l'elenco delle cinque tappe ---- */

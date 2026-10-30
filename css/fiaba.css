@@ -65,18 +65,19 @@
   [data-info="b"] .fb-cap__go { height: auto; padding: 0; border: 0; background: none; text-decoration: underline; text-underline-offset: 4px; }
   [data-info="b"] .fb-cap__go::after { content: ' →'; }
   [data-info="b"] .fb-cap__go:hover { color: var(--gold-ink); background: none; }
-  /* c: il biglietto accanto alle bottiglie; i nomi dei vini dentro, non sotto le bottiglie */
-  [data-info="c"] .fb-cap { width: min(21rem, 84vw); padding: 22px 24px 24px;
-    transform: translateY(-100%); /* ancorato in basso: non esce mai dal fondo, qualunque sia la lunghezza del testo */ }
-  [data-info="c"] .fb-cap__t { font-size: clamp(2rem, 3vw, 3rem); }
-  [data-info="c"] .fb-cap__vini { display: grid; gap: 6px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
-  [data-info="c"] .fb-cap__vini li { display: flex; align-items: center; gap: 10px; font-size: 1rem; }
-  [data-info="c"] .fb-bt span { display: none; }
 }
-/* c su ogni schermo: biglietto di carta pieno con un pezzo di nastro (telefono: fermo in alto, i nomi restano sotto le bottiglie) */
-[data-info="c"] .fb-cap { background: var(--paper); border-radius: 4px; rotate: -1.2deg; box-shadow: 0 1px 2px rgb(21 16 13 / .08), 0 14px 34px rgb(21 16 13 / .1); }
+/* c, su ogni schermo: biglietto di carta pieno con un pezzo di nastro, appoggiato accanto alle bottiglie (posizione da js/fiaba.js);
+   i nomi dei vini dentro, non sotto le bottiglie */
+[data-info="c"] .fb-cap { width: min(21rem, 84vw); padding: 22px 24px 24px; background: var(--paper); border-radius: 4px; rotate: -1.2deg;
+  transform: translateY(-100%); /* ancorato in basso: non esce mai dal fondo, qualunque sia la lunghezza del testo */
+  box-shadow: 0 1px 2px rgb(21 16 13 / .08), 0 14px 34px rgb(21 16 13 / .1); }
+[data-info="c"] .fb-cap.is-sx { transform: translate(-100%, -100%); } /* telefono, ultima tappa: prima delle bottiglie (dopo, la camera non ci arriva) */
 [data-info="c"] .fb-cap::before { content: ''; position: absolute; left: 50%; top: -13px; width: 96px; height: 26px; translate: -50% 0; rotate: 3deg; background: #e4d6ae; }
 [data-info="c"] .fb-cap :is(h2, p) { text-shadow: none; }
+[data-info="c"] .fb-cap__t { font-size: clamp(2rem, 3vw, 3rem); }
+[data-info="c"] .fb-cap__vini { display: grid; gap: 6px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+[data-info="c"] .fb-cap__vini li { display: flex; align-items: center; gap: 10px; font-size: 1rem; }
+[data-info="c"] .fb-bt span { display: none; }
 
 /* tappe: pillola fissa in basso come la "Our Wines" di klimtwine (scelta il 30 ott): tappa corrente con le sue bottiglie, 01/05 e la
    freccia che apre l'elenco (js/fiaba.js). Bianco pieno, si stacca dal disegno senza bordo */
@@ -131,8 +132,11 @@
   .fb-lead { font-size: 1.0625rem; }
   .fb-cap__t { font-size: clamp(2.2rem, 9vw, 2.8rem); }
   .fb-cap__d { font-size: 1rem; }
-  [data-info="c"] .fb-track > .fb-cap { top: calc(var(--header-h) + 26px); width: calc(100vw - 40px); padding: 16px 18px 18px; }
-  [data-info="c"] .fb-cap__go { margin-top: 14px; }
+  /* c: il biglietto segue il disegno come su desktop (non sta fermo in alto con gli altri testi) */
+  [data-info="c"] .fb-track > .fb-cap { top: calc(var(--oy) * 1px + var(--y) * var(--k) * 1px); width: min(20rem, 82vw); padding: 16px 18px 18px; }
+  [data-info="c"] .fb-cap__d { margin-top: 8px; }
+  [data-info="c"] .fb-cap__vini { gap: 4px; margin-top: 10px; padding-top: 10px; }
+  [data-info="c"] .fb-cap__go { margin-top: 12px; height: 40px; } /* più basso: sui telefoni bassi il nastro toccava l'header */
   .fb-pill { gap: 10px; height: 52px; }
   .fb-zoom__info { top: auto; bottom: 0; left: 0; right: 0; width: auto; max-height: 50vh; overflow: auto; transform: none; padding: 16px 16px 0; background: var(--cream); }
   .fb-zoom__cta { position: sticky; bottom: 0; margin-top: 16px; padding: 12px 0 max(16px, env(safe-area-inset-bottom)); background: var(--cream); }
@@ -142,3 +146,4 @@
   .fb-zoom__x { top: calc(var(--header-h) + 8px); right: 16px; }
   .fb-pill__t { width: auto; min-width: 8.5em; font-size: .9375rem; }
 }
+.fb-track > .fb-testo { z-index: 1; } /* i testi sopra le bottiglie (telefono basso: le bottiglie coprivano i bottoni del saluto finale) */
