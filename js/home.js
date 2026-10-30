@@ -91,7 +91,7 @@
   const misura = () => {
     const W = palco.clientWidth, H = palco.clientHeight, mob = W < 768, pr = palco.getBoundingClientRect(), sr = slot.getBoundingClientRect();
     const bw = mob ? W * 0.84 : Math.min(W * 0.46, H * 0.58 * 1.5);
-    L = { W, H, bw, bh: bw / 1.5, cx: W / 2, cy: H / 2 + (mob ? 0 : 16), dx: mob ? W * 0.52 : W * 0.4, dy: mob ? H * 0.34 : H * 0.42,
+    L = { W, H, bw, bh: bw / 1.5, cx: W / 2, cy: H / 2 + (mob ? 0 : 16), dx: mob ? W * 0.52 : W * 0.4, dy: mob ? H * 0.34 : H * 0.42, sosta: mob ? 0.3 : 0,
       slot: { x: sr.left - pr.left, y: sr.top - pr.top, w: sr.width, h: sr.height } };
   };
   const posto = (s) => { // s = distanza dal centro in foto: 0 al centro e grande, ±1 piccola nell'angolo
@@ -102,7 +102,9 @@
     if (!L) return;
     const A = 0.14, B = 0.72, C = 0.86; // titolo fermo un attimo, poi la sua foto cresce · galleria · ultima foto a tutto schermo · testo
     const a = ease(M.clamp((p - 0.025) / (A - 0.025))), e = ease(M.clamp((p - B) / (C - B))), d = M.clamp((p - C) / (1 - C));
-    const g = p < A ? a - 1 : p < B ? ((N - 1) * (p - A)) / (B - A) : N - 1 + e * 0.7;
+    // telefono: ogni foto si ferma al centro per il 60% del suo tratto, con la nota e la freccia (prima passava in un attimo e la nota con lei)
+    const u = ((N - 1) * (p - A)) / (B - A), j = Math.floor(u), h = L.sosta;
+    const g = p < A ? a - 1 : p < B ? (h ? j + ease(M.clamp((u - j - h) / (1 - 2 * h))) : u) : N - 1 + e * 0.7;
     apre.style.opacity = p < A ? Math.max(0.15, 1 - 1.7 * a) : Math.max(0, 0.15 - (p - A) * 4); // il titolo sbiadisce mentre la foto cresce
     figs.forEach((fig, i) => {
       let s = i - g, r = null, rad = 8;

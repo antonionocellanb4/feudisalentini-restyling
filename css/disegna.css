@@ -50,13 +50,18 @@
 
 /* telefono e tablet stretto: una colonna, il foglio sotto al testo */
 @media (max-width: 860px) {
-  .dv { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; padding-top: calc(var(--header-h) + 20px); }
+  /* alta quanto lo schermo, il foglio prende quello che resta: quando la cantina le sale sopra si vede tutta (prima era più alta, si fermava
+     col titolo già sotto l'header). Col risultato cresce (js/disegna.js tiene il foglio della stessa altezza) */
+  .dv { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(200px, 1fr) auto; height: 100svh; min-height: 0;
+    padding-top: calc(var(--header-h) + 12px); padding-bottom: 16px; }
+  .dv.is-res { height: auto; grid-template-rows: none; }
   .dv-intro { grid-row: 1; }
   .dv-title { font-size: clamp(2.6rem, 11vw, 3.6rem); }
   .dv-lead { margin-top: 14px; font-size: 1.125rem; }
-  .dv-pad { grid-column: 1; grid-row: 2; height: 60svh; min-height: 380px; margin-top: 12px; }
+  .dv-pad { grid-column: 1; grid-row: 2; min-height: 0; margin-top: 12px; }
   .dv-scelte { grid-row: 3; margin-top: 8px; }
-  .dv-scelte__row { display: grid; grid-template-columns: 1fr 1fr; }
+  .dv-scelte__row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .dv-scelte .btn { padding: 0; font-size: .9375rem; }
   .dv-res { grid-row: 3; margin-top: 8px; }
   .dv.is-res .dv-intro { opacity: 1; visibility: visible; }
   .dv.is-res .dv-scelte { display: none; }
@@ -65,3 +70,4 @@
   .dv-res__cta .btn { flex: 1 1 auto; }
   .dv-aromi li { width: 6.5rem; margin-left: -3.25rem; }
 }
+@media (max-width: 860px) and (max-height: 600px) { .dv { height: auto; } .dv-pad { height: 260px; } } /* telefoni bassi: il foglio non scende sotto i 260px */

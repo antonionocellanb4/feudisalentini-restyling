@@ -465,7 +465,7 @@
     add(ombra(x, y + 3, h));
   }));
   /* ---- prove "info" (?info=a|b|c, 30 ott). a: titolo fisso in alto come klimtwine · b: annotazioni a matita accanto alle bottiglie ·
-     c: biglietto di carta con l'elenco dei vini. Solo su schermi larghi: sul telefono i testi stanno già fermi in alto ---- */
+     c: biglietto di carta con l'elenco dei vini. Le posizioni solo su schermi larghi: sul telefono il biglietto sta fermo in alto ---- */
   const caps = [...track.querySelectorAll('.fb-cap')];
   if ((INFO === 'b' || INFO === 'c') && !narrow()) caps.forEach((el, i) => { // accanto al gruppo di bottiglie, in alto quanto le bottiglie
     const [g, ys, h] = GRUPPI[i], xl = g[g.length - 1][1];

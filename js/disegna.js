@@ -282,12 +282,17 @@
     const go = $('.dv-res__go'); go.href = FS.wineUrl(w.id); go.dataset.wine = w.id;
   };
 
+  // telefono: col risultato la sezione cresce e il pin di home.js (che la tiene ferma mentre sale la cantina) va rimisurato, senza spostare quello che si vede
+  const cima = () => (sec.parentNode.classList.contains('pin-spacer') ? sec.parentNode : sec).getBoundingClientRect().top + scrollY; // lo spacer del pin resta al posto della sezione
+  const rimisura = () => { const y = sec.getBoundingClientRect().top; ScrollTrigger.refresh(); const t = cima() - y; FS.lenis ? FS.lenis.scrollTo(t, { immediate: true }) : scrollTo(0, t); };
+
   const play = async (pts) => {
     raw = pts;
     const f = analyze(pts), x = match(f), cont = await contourOf(x.w.bottle);
     live = null; Object.assign(st, ZERO);
     scene = build(pts, x, cont);
     fill(x.w, f);
+    if (narrow()) pad.style.height = pad.offsetHeight + 'px'; // telefono: la sezione cresce col risultato, il foglio resta com'era
     res.hidden = false; sec.classList.add('is-res'); sec.classList.remove('is-drawing');
     const ni = scene.icons.length * 0.55 + 0.5;
     tl = gsap.timeline({ onUpdate: paint })
@@ -300,18 +305,18 @@
       .to(st, { icons: ni, duration: ni * 0.9, ease: 'none' }, 1.9)
       .fromTo(res.children, { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, stagger: 0.06, ease: 'power3.out' }, 0.4); // fromTo: se si ridisegna a metà non restano trasparenti
     sheet.kick(tl.duration() * 1000 + 300);
-    if (narrow()) { const off = -(parseFloat(getComputedStyle(html).getPropertyValue('--header-h')) || 76) - 8; gsap.delayedCall(1.6, () => (FS.lenis ? FS.lenis.scrollTo(pad, { offset: off }) : scrollTo({ top: pad.getBoundingClientRect().top + scrollY + off, behavior: 'smooth' }))); } // area di disegno sotto l'header, il nome del vino subito sotto
+    if (narrow()) { rimisura(); const off = -(parseFloat(getComputedStyle(html).getPropertyValue('--header-h')) || 76) - 8; gsap.delayedCall(1.6, () => (FS.lenis ? FS.lenis.scrollTo(pad, { offset: off }) : scrollTo({ top: pad.getBoundingClientRect().top + scrollY + off, behavior: 'smooth' }))); } // area di disegno sotto l'header, il nome del vino subito sotto
   };
 
   const clear = () => {
     tl?.kill(); scene = null; Object.assign(st, ZERO);
-    sec.classList.remove('is-res'); res.hidden = true; img.style.opacity = 0; ul.innerHTML = '';
+    sec.classList.remove('is-res'); res.hidden = true; img.style.opacity = 0; ul.innerHTML = ''; pad.style.height = '';
   };
   const again = () => {
     if (!scene) return;
     tl?.kill();
-    gsap.to(st, { fade: 0, duration: 0.35, onUpdate: paint, onComplete: () => { clear(); gsap.delayedCall(0.4, ghostStart); } });
-    sheet.kick(500);
+    const via = () => { gsap.to(st, { fade: 0, duration: 0.35, onUpdate: paint, onComplete: () => { clear(); if (narrow()) rimisura(); gsap.delayedCall(0.4, ghostStart); } }); sheet.kick(500); };
+    if (narrow() && FS.lenis) FS.lenis.scrollTo(cima(), { duration: 0.7, onComplete: via }); else via(); // telefono: prima in cima al foglio, così quando la sezione torna bassa non salta
   };
 
   /* ---- disegno col puntatore ---- */
