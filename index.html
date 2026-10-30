@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#15100d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script>/* prova font: ?font=bricolage|funnel|archivo|newsreader, resta per la sessione */(function(){var F={klimt:"Fraunces:opsz,wght,SOFT,WONK@9..144,100..400,0..100,0..1&family=Instrument+Sans:wdth,wght@75..100,400..600",bricolage:"Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800",funnel:"Funnel+Display:wght@300..800&family=Funnel+Sans:wght@300..800",archivo:"Archivo:wdth,wght@62..125,100..900",newsreader:"Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800"};var f;try{f=new URLSearchParams(location.search).get("font")||sessionStorage.getItem("fs-font")}catch(e){}if(!F[f])f="klimt";try{sessionStorage.setItem("fs-font",f)}catch(e){}document.documentElement.dataset.font=f;document.write('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family='+F[f]+'&display=swap">')})()</script>
+<link rel="stylesheet" href="css/base.css?v=3c076e8f">
+<link rel="stylesheet" href="css/nav.css?v=62a2bb3a">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<title>Feudi Salentini · Vini del Salento</title>
+<meta name="description" content="Feudi Salentini: Primitivo di Manduria, Negroamaro e i vini del Salento della famiglia Varvaglione, a Leporano (TA).">
+<link rel="stylesheet" href="css/ingresso.css?v=b4d6026a">
+<link rel="stylesheet" href="css/fiaba.css?v=8f0057bd">
+<link rel="stylesheet" href="css/disegna.css?v=9ae12881">
+<link rel="stylesheet" href="css/home.css?v=e0a811cb">
+<script>/* ingresso: deciso prima del primo disegno, così niente lampo */try{var q=new URLSearchParams(location.search).get("ingresso");if(q!=="0"&&(q||!sessionStorage.getItem("fs-ingresso"))&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("ingresso-attivo")}catch(e){}</script>
+</head>
+<body class="page-home">
+<!-- INGRESSO dal portone, a matita (30 ott 2026): preloader della prima visita della home, automatico (js/ingresso.js, css/ingresso.css).
+     Esiste solo con html.ingresso-attivo (deciso nel <head>). Il marchio vero ridisegnato a mano, già completo; i battenti si aprono,
+     si entra nel portone e dal vano si vede la pagina vera. Versione three.js precedente: tools/ingresso-3d.backup.* -->
+<div class="ingresso" data-ingresso role="dialog" aria-modal="true" aria-label="Caricamento del sito">
+  <canvas class="ingresso-3d" aria-hidden="true"></canvas>
+  <div class="ingresso-ui" aria-hidden="true">
+    <span class="ingresso-scritta logo"></span>
+  </div>
+  <button class="btn ingresso-salta" type="button" aria-label="Salta l'ingresso">Salta</button>
+</div>
+<!-- NAVIGAZIONE: header fisso, menu telefono, cantina (mega menu dei vini), copertura della transizione versata.
+     Script: js/nav.js · Stile: css/nav.css · Altri agenti aprono la cantina con
+     document.dispatchEvent(new CustomEvent('fs:open-cantina', {detail:{tipo:'rosso'}})) -->
+<script>
+/* transizione versata: arrivando da un vino, la pagina parte coperta del suo colore già al primo disegno (poi nav.js la scopre) */
+try { var fsPour = JSON.parse(sessionStorage.getItem('fs-pour') || 'null'); sessionStorage.removeItem('fs-pour');
+  if (fsPour && Date.now() - fsPour.t < 10000 && new URLSearchParams(location.search).get('id') === fsPour.id && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('fs-poured'); document.documentElement.style.setProperty('--pour', fsPour.color); }
+} catch (e) {}
+</script>
+<a class="nav-skip" href="#main">Vai al contenuto</a>
+
+<header class="nav" data-nav data-tone="light">
+  <div class="nav__bar">
+    <nav class="nav__links" aria-label="Principale">
+      <button class="nav__link" type="button" data-cantina-toggle aria-expanded="false" aria-controls="cantina" data-nav-for="p-vini collezioni tavola vino">Vini</button>
+      <a class="nav__link" href="come-nasce.html" data-nav-for="p-nasce nasce">Come nasce</a>
+      <a class="nav__link" href="index.html#esperienze" data-nav-for="p-esperienze esperienze">Esperienze</a>
+      <a class="nav__link" href="index.html#azienda" data-nav-for="p-azienda azienda">Azienda</a>
+      <a class="nav__link" href="index.html#premi" data-nav-for="p-premi premi">Premi</a>
+    </nav>
+    <a class="nav__logo" href="index.html" aria-label="Feudi Salentini, torna alla home"><span class="logo"></span></a>
+    <div class="nav__end">
+      <a class="nav__link nav__link--end" href="index.html#contatti" data-nav-for="contatti">Contatti</a>
+      <p class="nav__lang"><span class="sr-only">Lingua: </span><span class="nav__lang-on" aria-current="true">IT</span><span class="nav__lang-off" aria-disabled="true" title="In preparazione">EN<span class="sr-only"> (in preparazione)</span></span></p>
+      <a class="btn btn--gold nav__cta" href="index.html#esperienze" aria-label="Prenota una degustazione"><span class="nav__cta-long">Prenota una degustazione</span><span class="nav__cta-short">Prenota</span></a>
+      <button class="nav__burger" type="button" aria-expanded="false" aria-controls="nav-menu">Menu</button>
+    </div>
+  </div>
+</header>
+
+<div class="nav-menu" id="nav-menu" data-lenis-prevent>
+  <div class="nav-menu__in">
+    <nav aria-label="Menu">
+      <ul class="nav-menu__list">
+        <li><button class="nav-menu__item" type="button" data-cantina-toggle aria-expanded="false" aria-controls="cantina">Vini <span class="nav-menu__count" data-cantina-total>28</span><svg class="nav-menu__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button></li>
+        <li><a class="nav-menu__item" href="come-nasce.html">Come nasce il vino</a></li>
+        <li><a class="nav-menu__item" href="index.html#esperienze">Esperienze</a></li>
+        <li><a class="nav-menu__item" href="index.html#azienda">Azienda</a></li>
+        <li><a class="nav-menu__item" href="index.html#premi">Premi</a></li>
+        <li><a class="nav-menu__item" href="index.html#contatti">Contatti</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn--gold nav-menu__cta" href="index.html#esperienze">Prenota una degustazione</a>
+    <div class="nav-menu__foot">
+      <p class="nav__lang"><span class="sr-only">Lingua: </span><span class="nav__lang-on" aria-current="true">IT</span><span class="nav__lang-off" aria-disabled="true" title="In preparazione">EN <small>in preparazione</small></span></p>
+      <a href="tel:+390995315370">+39 099 5315370</a>
+    </div>
+  </div>
+</div>
+
+<div class="cantina" id="cantina" role="dialog" aria-modal="true" aria-labelledby="cantina-title" data-lenis-prevent>
+  <div class="cantina__in">
+    <div class="cantina__top">
+      <button class="cantina__back" type="button" data-cantina-back><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Menu</button>
+      <h2 class="cantina__title" id="cantina-title">I vini</h2>
+      <div class="cantina__filters" role="group" aria-label="Filtra per tipo">
+        <button class="cantina__filter" type="button" data-tipo="tutti" aria-pressed="true">Tutti <span></span></button>
+        <button class="cantina__filter" type="button" data-tipo="rosso" aria-pressed="false">Rossi <span></span></button>
+        <button class="cantina__filter" type="button" data-tipo="rosato" aria-pressed="false">Rosati <span></span></button>
+        <button class="cantina__filter" type="button" data-tipo="bianco" aria-pressed="false">Bianchi <span></span></button>
+        <button class="cantina__filter" type="button" data-tipo="dolce" aria-pressed="false">Dolce <span></span></button>
+      </div>
+      <p class="cantina__vista"></p>
+      <button class="cantina__close" type="button" data-cantina-close>Chiudi</button>
+    </div>
+    <div class="cantina__shelves" data-cantina-shelves></div>
+  </div>
+</div>
+
+<div class="pour" aria-hidden="true"><canvas></canvas></div>
+<main id="main">
+<!-- PROVA B, "La fiaba del feudo" (giro 3). Una giornata al feudo disegnata a matita e acquerello: scorrendo si cammina in orizzontale
+     dall'alba al tramonto, e ogni tappa è una collezione con le sue bottiglie vere dentro il disegno. Il paesaggio si disegna mentre entra,
+     il cursore (o il dito) fa vento su viti, ulivo e papaveri, il portone della torre si apre.
+     Disegni, bottiglie e posizioni: js/fiaba.js (unità del mondo: altezza 900) · Stile: css/fiaba.css · Piano: tools/PIANO-giro3.md -->
+<section class="fb carta" id="hero" aria-labelledby="fb-title" data-nav-trasparente>
+  <div class="fb-pin">
+    <canvas class="fb-canvas" aria-hidden="true"></canvas>
+    <div class="fb-track">
+      <div class="fb-intro fb-testo" style="--x:70;--y:150">
+        <h1 class="fb-title" id="fb-title" data-righe>Una giornata al&nbsp;feudo.</h1>
+        <p class="t-lead fb-lead">Leporano, sul mar Ionio, a sud di Taranto. Scorri e attraversa le terre dei Feudi Salentini: ogni tappa è una delle nostre collezioni.</p>
+        <p class="fb-scorri"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Scorri</p>
+      </div>
+
+      <article class="fb-cap fb-testo" data-tappa="0" style="--x:1620;--y:150">
+        <p class="fb-cap__n">01 · La torre</p>
+        <h2 class="fb-cap__t">Collezione 53</h2>
+        <p class="fb-cap__d">La linea Luxury: Primitivo di Manduria da vecchie vigne e Negroamaro, da uve selezionate a mano.</p>
+        <button class="btn btn--line fb-cap__go" type="button" data-col="luxury">Vedi i 3 vini</button>
+      </article>
+      <article class="fb-cap fb-testo" data-tappa="1" style="--x:2460;--y:150">
+        <p class="fb-cap__n">02 · La terra rossa</p>
+        <h2 class="fb-cap__t">Terra</h2>
+        <p class="fb-cap__d">Sette vini dalle uve del Salento: Primitivo di Manduria, Negroamaro, Malvasia bianca e nera, un rosato.</p>
+        <button class="btn btn--line fb-cap__go" type="button" data-col="terra">Vedi i 7 vini</button>
+      </article>
+      <article class="fb-cap fb-testo" data-tappa="2" style="--x:4460;--y:150">
+        <p class="fb-cap__n">03 · Il campo</p>
+        <h2 class="fb-cap__t">125 Organic</h2>
+        <p class="fb-cap__d">Un bianco e un Primitivo da agricoltura biologica, Puglia IGP.</p>
+        <button class="btn btn--line fb-cap__go" type="button" data-col="organic">Vedi i 2 vini</button>
+      </article>
+      <article class="fb-cap fb-testo" data-tappa="3" style="--x:6360;--y:150">
+        <p class="fb-cap__n">04 · Il mare</p>
+        <h2 class="fb-cap__t">Classica</h2>
+        <p class="fb-cap__d">La linea più ampia, dodici vini: dal Sassirossi delle vigne ad alberello al Susumaniello, dal bianco Cala al rosato Tre Cuori.</p>
+        <button class="btn btn--line fb-cap__go" type="button" data-col="classica">Vedi i 12 vini</button>
+      </article>
+      <article class="fb-cap fb-testo" data-tappa="4" style="--x:8360;--y:150">
+        <p class="fb-cap__n">05 · Il tramonto</p>
+        <h2 class="fb-cap__t">125 Uno Due Cinque</h2>
+        <p class="fb-cap__d">La linea Lounge Bar per l'aperitivo e i primi piatti: un rosato leggermente mosso, Primitivo, Negroamaro e Malvasia Nera.</p>
+        <button class="btn btn--line fb-cap__go" type="button" data-col="lounge">Vedi i 4 vini</button>
+      </article>
+
+      <div class="fb-fine fb-testo" style="--x:9850;--y:230">
+        <h2 class="fb-fine__t">Fine della giornata.</h2>
+        <p class="t-lead">Il resto si assaggia in cantina, a Leporano.</p>
+        <div class="fb-fine__cta">
+          <a class="btn btn--gold" href="#esperienze">Prenota una degustazione</a>
+          <button class="btn btn--line" type="button" data-col="">Tutti i 28 vini</button>
+        </div>
+      </div>
+      <!-- bottiglie: generate da js/fiaba.js -->
+    </div>
+    <!-- prova a (?info=a): la didascalia della tappa ferma in alto, come i capitoli di klimtwine (js/fiaba.js) -->
+    <div class="fb-fisso" aria-live="polite"><h2 class="fb-fisso__t"></h2><div class="fb-fisso__dx"><p class="fb-fisso__d"></p><button class="fb-fisso__go" type="button"></button></div></div>
+    <nav class="fb-tappe" aria-label="Tappe della giornata"></nav>
+    <!-- bottiglia al centro: si apre col clic su una bottiglia (js/fiaba.js) -->
+    <div class="fb-zoom" role="dialog" aria-modal="true" aria-labelledby="fb-zoom-t" hidden>
+      <canvas class="fb-zoom__cv" aria-hidden="true"></canvas>
+      <img class="fb-zoom__bt" alt="" decoding="async">
+      <div class="fb-zoom__info">
+        <p class="fb-zoom__col"></p>
+        <h2 class="fb-zoom__t" id="fb-zoom-t"></h2>
+        <p class="fb-zoom__meta"></p>
+        <p class="fb-zoom__desc"></p>
+        <dl class="fb-zoom__dati"></dl>
+        <div class="fb-zoom__cta"><a class="btn btn--gold fb-zoom__go" target="_blank" rel="noopener">Scheda del vino</a><button class="btn btn--line fb-zoom__col-go" type="button">Vini della collezione</button></div>
+      </div>
+      <button class="btn btn--line fb-zoom__x" type="button">Chiudi</button>
+    </div>
+  </div>
+</section>
+<!-- PROVA A, "Disegna il tuo vino" (giro 3). Chi visita disegna la forma del vino che gli piace (rotondo, teso, ampio, lungo):
+     la matita la ripassa e la trasforma nella forma del vino più vicino tra i 28, la bottiglia vera entra nel suo contorno a matita
+     e attorno si disegnano i suoi aromi. Script: js/matita.js + js/disegna.js · Stile: css/disegna.css · Piano: tools/PIANO-giro3.md -->
+<section class="dv carta" id="disegna" aria-labelledby="dv-title">
+  <canvas class="dv-canvas" aria-hidden="true"></canvas>
+
+  <div class="dv-intro">
+    <h2 class="dv-title" id="dv-title" data-righe>Ogni vino ha una&nbsp;forma.</h2>
+    <p class="t-lead dv-lead">Rotondo, teso, ampio, lungo: così si descrive un vino in bocca. Disegna quello che ti piace e ti diciamo quale dei nostri vini gli somiglia.</p>
+  </div>
+
+  <div class="dv-pad" aria-label="Area di disegno: trascina per disegnare">
+    <p class="dv-hint"><span class="dv-hint__mouse">Disegna qui con il mouse</span><span class="dv-hint__dito">Disegna qui con il dito</span></p>
+  </div>
+
+  <div class="dv-scelte" role="group" aria-labelledby="dv-scelte-t">
+    <p class="dv-scelte__t" id="dv-scelte-t">Oppure scegli una forma</p>
+    <div class="dv-scelte__row">
+      <button class="btn btn--line" type="button" data-forma="rotondo">Rotondo</button>
+      <button class="btn btn--line" type="button" data-forma="teso">Teso</button>
+      <button class="btn btn--line" type="button" data-forma="ampio">Ampio</button>
+      <button class="btn btn--line" type="button" data-forma="leggero">Leggero</button>
+    </div>
+  </div>
+
+  <div class="dv-res" aria-live="polite" hidden>
+    <p class="dv-res__k">Il tuo disegno somiglia a</p>
+    <p class="dv-res__col"></p>
+    <h2 class="dv-res__name"></h2>
+    <p class="dv-res__denom"></p>
+    <ul class="dv-res__forma" aria-label="La forma che hai disegnato"></ul>
+    <dl class="dv-res__dati">
+      <div><dt>Aromi</dt><dd class="dv-res__aromi"></dd></div>
+      <div><dt>A tavola</dt><dd class="dv-res__abb"></dd></div>
+    </dl>
+    <div class="dv-res__cta">
+      <a class="btn btn--gold dv-res__go" href="#">Apri la scheda</a>
+      <button class="btn btn--line dv-res__again" type="button">Disegna di nuovo</button>
+    </div>
+  </div>
+
+  <img class="dv-bottle" alt="" decoding="async">
+  <ul class="dv-aromi" aria-hidden="true"></ul>
+</section>
+<!-- HOME, sotto la fiaba e "Disegna il tuo vino" (giro 3): cantina, premi, news e in fondo le esperienze da prenotare (30 ott: "dopo la storia aziendale"). Stesso linguaggio a matita: i calici delle
+     esperienze si disegnano sul tavolo a ogni persona in più, le foto della cantina passano con una nota a matita, i loghi dei premi
+     vengono cerchiati. Tra una sezione e l'altra la nuova sale sopra la precedente (come klimtwine). Schede generate da js/home.js con i dati veri di js/data.js · Stile: css/home.css -->
+<section class="ca carta" id="azienda" aria-labelledby="ca-t">
+  <!-- come la parte fotografica di klimtwine: la foto dentro il titolo si ingrandisce, le foto passano in diagonale (ognuna con la sua
+       nota a matita), l'ultima si allarga a tutto schermo e porta il testo. Sezione alta, palco fermo (sticky); movimenti in js/home.js -->
+  <div class="ca-stage">
+    <div class="ca-apre">
+      <h2 class="ca-t" id="ca-t"><span class="ca-r"><span data-righe>La cantina</span></span> <span class="ca-r ca-r2"><span class="ca-slot" aria-hidden="true"></span><span data-righe>della famiglia Varvaglione.</span></span></h2>
+      <p class="t-lead ca-lead">Feudi Salentini è a Leporano, in provincia di Taranto, sul mar Ionio. Dalle uve del Salento, Primitivo, Negroamaro, Malvasia e Susumaniello, nascono i nostri vini.</p>
+    </div>
+    <figure class="ca-f"><img src="assets/photo/masseria-cortile.webp" alt="Il cortile della masseria di famiglia" decoding="async"><canvas aria-hidden="true"></canvas><figcaption>la masseria di famiglia</figcaption></figure>
+    <figure class="ca-f"><img src="assets/photo/alberello.webp" alt="Una vite di Primitivo ad alberello" decoding="async"><canvas aria-hidden="true"></canvas><figcaption>Primitivo ad alberello</figcaption></figure>
+    <figure class="ca-f"><img src="assets/photo/barriques.webp" alt="Le barrique in cantina" decoding="async"><canvas aria-hidden="true"></canvas><figcaption>le barrique in cantina</figcaption></figure>
+    <figure class="ca-f"><img src="assets/photo/mare-salento.webp" alt="Il mare del Salento" decoding="async"><canvas aria-hidden="true"></canvas><figcaption>il mar Ionio, a due passi</figcaption></figure>
+    <figure class="ca-f ca-f--fine"><img src="assets/photo/vigna-tramonto.webp" alt="Le vigne al tramonto" decoding="async"></figure>
+    <div class="ca-fine">
+      <p class="ca-fine__t">Leporano, sul mar&nbsp;Ionio.</p>
+      <dl class="ca-num">
+        <div><dt>vini</dt><dd>28</dd></div>
+        <div><dt>collezioni</dt><dd>5</dd></div>
+        <div><dt>esperienze in cantina</dt><dd>3</dd></div>
+      </dl>
+      <p class="ca-sost">Il bilancio di sostenibilità 2025 è online: <a href="https://feudisalentini.com/wp-content/uploads/2026/08/Feudi_bilancio-di-sostenibilita_2025.pdf" target="_blank" rel="noopener">leggilo in PDF</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pr sec carta carta--pietra" id="premi" aria-labelledby="pr-t">
+  <div class="hs-head">
+    <h2 class="t-h2" id="pr-t" data-righe>Premiati nei concorsi internazionali.</h2>
+  </div>
+  <div class="pr-wrap">
+    <canvas class="pr-canvas" aria-hidden="true"></canvas>
+    <ul class="pr-list"></ul>
+  </div>
+</section>
+
+<section class="nw sec carta" id="news" aria-labelledby="nw-t">
+  <div class="hs-head">
+    <h2 class="t-h2" id="nw-t" data-righe>Dalla cantina.</h2>
+  </div>
+  <div class="nw-grid"></div>
+</section>
+
+<section class="es sec carta" id="esperienze" aria-labelledby="es-t">
+  <div class="hs-head">
+    <h2 class="t-h2" id="es-t" data-righe>Prenota una visita in&nbsp;cantina.</h2>
+    <p class="t-lead">Vigne, masseria di famiglia e degustazione. Scegli l'esperienza e quante persone siete: a ogni persona in più si apparecchia un calice.</p>
+  </div>
+  <div class="es-grid"></div>
+</section>
+</main>
+<!-- NAVIGAZIONE: footer (30 ott, come il footer di klimtwine): chiaro, alto uno schermo; logo e newsletter in alto, collezioni / cantina /
+     contatti al centro, note legali in fondo. Il blocco scuro "Vieni a trovarci" è stato tolto: la prenotazione è nella sezione appena sopra.
+     Stile: css/nav.css · Script: js/nav.js (newsletter, collezioni che aprono il menu dei vini) -->
+<footer id="contatti" class="foot sec">
+  <div class="foot__in">
+    <div class="foot__top">
+      <a class="foot__logo" href="#hero" aria-label="Feudi Salentini, torna all'inizio"><span class="logo"></span></a>
+      <div class="foot__news">
+        <h2 class="foot__h" id="foot-news">Newsletter</h2>
+        <form class="foot__form" aria-labelledby="foot-news" novalidate>
+          <label class="sr-only" for="foot-email">Email</label>
+          <input id="foot-email" type="email" name="email" placeholder="La tua email" autocomplete="email" required>
+          <button class="btn btn--gold" type="submit">Iscriviti</button>
+        </form>
+        <p class="foot__note" role="status">Prototipo: il modulo non invia ancora dati.</p>
+      </div>
+    </div>
+
+    <div class="foot__mid">
+      <nav class="foot__col" aria-labelledby="foot-vini">
+        <h2 class="foot__h" id="foot-vini">I vini</h2>
+        <ul>
+          <li><button type="button" data-col="luxury">Collezione 53</button></li>
+          <li><button type="button" data-col="terra">Terra</button></li>
+          <li><button type="button" data-col="organic">125 Organic</button></li>
+          <li><button type="button" data-col="classica">Classica</button></li>
+          <li><button type="button" data-col="lounge">125 Uno Due Cinque</button></li>
+        </ul>
+      </nav>
+      <nav class="foot__col" aria-labelledby="foot-cantina">
+        <h2 class="foot__h" id="foot-cantina">La cantina</h2>
+        <ul>
+          <li><a href="#azienda">La famiglia Varvaglione</a></li>
+          <li><a href="#premi">Premi</a></li>
+          <li><a href="#news">News</a></li>
+          <li><a href="#esperienze">Visite e degustazioni</a></li>
+          <li><a href="https://feudisalentini.com/wp-content/uploads/2026/08/Feudi_bilancio-di-sostenibilita_2025.pdf" target="_blank" rel="noopener">Bilancio di sostenibilità 2025 (PDF)</a></li>
+        </ul>
+      </nav>
+      <div class="foot__col foot__contatti">
+        <h2 class="foot__h">Contatti</h2>
+        <a class="foot__tel" href="tel:+390995315370">+39 099 5315370</a>
+        <p>Fax +39 099 5315739</p>
+        <address>Feudi Salentini srl<br><a href="https://www.google.com/maps/search/?api=1&amp;query=Feudi+Salentini+Via+Esterna+Talsano+36+Leporano" target="_blank" rel="noopener">Via Esterna Talsano, 36, 74020 Leporano (TA)</a></address>
+        <p class="foot__tbd"><span class="tbd">Indirizzo da confermare: il sito attuale riporta anche Via Amendola 36</span></p>
+      </div>
+    </div>
+
+    <div class="foot__legal">
+      <span>© 2026 Feudi Salentini srl</span>
+      <span>P.IVA 02592180737</span>
+      <a href="https://feudisalentini.com/privacy-policy/" target="_blank" rel="noopener">Privacy policy</a>
+    </div>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="js/data.js?v=6d8ec02e"></script>
+<script src="js/main.js?v=1f977632"></script>
+<script defer src="js/nav.js?v=d44c5373"></script>
+<script src="js/matita.js?v=409b646f"></script>
+<script src="js/fiaba.js?v=7bc4a741"></script>
+<script src="js/disegna.js?v=a229b4a2"></script>
+<script src="js/home.js?v=ee51d8fb"></script>
+<script src="js/ingresso.js?v=6c5c2c0a"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<!-- INGRESSO dal portone, a matita (30 ott 2026): preloader della prima visita della home, automatico (js/ingresso.js, css/ingresso.css).
+     Esiste solo con html.ingresso-attivo (deciso nel <head>). Il marchio vero ridisegnato a mano, già completo; i battenti si aprono,
+     si entra nel portone e dal vano si vede la pagina vera. Versione three.js precedente: tools/ingresso-3d.backup.* -->
+<div class="ingresso" data-ingresso role="dialog" aria-modal="true" aria-label="Caricamento del sito">
+  <canvas class="ingresso-3d" aria-hidden="true"></canvas>
+  <div class="ingresso-ui" aria-hidden="true">
+    <span class="ingresso-scritta logo"></span>
+  </div>
+  <button class="btn ingresso-salta" type="button" aria-label="Salta l'ingresso">Salta</button>
+</div>

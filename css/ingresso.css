@@ -1,0 +1,20 @@
+/* ingresso dal portone, a matita (js/ingresso.js): overlay della prima visita. Senza html.ingresso-attivo (niente JS, reduced motion,
+   già visto) non esiste. Il foglio crema lo dipinge il canvas: dal vano del portone, alla fine, si vede la pagina vera.
+   Versione three.js precedente: tools/ingresso-3d.backup.* */
+.ingresso { display: none; }
+.ingresso-attivo .ingresso, .ingresso.ingresso--via { display: block; position: fixed; inset: 0; z-index: 300; overflow: hidden; }
+/* prima che parta il disegno lo schermo è crema pieno; rete di sicurezza: se lo script non arriva l'overlay si toglie da solo */
+.ingresso-attivo .ingresso { background: var(--cream); animation: ingresso-sicurezza .3s linear 6s forwards; }
+.ingresso.is-disegno { background: transparent; }
+@keyframes ingresso-sicurezza { to { opacity: 0; visibility: hidden; } }
+.ingresso.ingresso--via { opacity: 0; pointer-events: none; transition: opacity .35s var(--ease); }
+
+.ingresso-3d { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* il nome del marchio (il PNG originale, solo la riga del nome) sotto la torre */
+.ingresso-ui { position: absolute; left: 0; right: 0; top: 67%; display: flex; justify-content: center; color: var(--ink); opacity: 0; pointer-events: none; }
+.ingresso-scritta { width: clamp(150px, 16vw, 210px); aspect-ratio: 396 / 32; -webkit-mask-position: bottom; mask-position: bottom; -webkit-mask-size: 100% auto; mask-size: 100% auto; }
+
+.ingresso-salta { position: absolute; right: var(--pad-x); bottom: max(24px, env(safe-area-inset-bottom));
+  height: 40px; padding: 0 1.1rem; font-size: 1rem; background: transparent; color: var(--ink-2); border: 1px solid var(--line); }
+.ingresso-salta:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }

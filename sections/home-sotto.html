@@ -1,0 +1,52 @@
+<!-- HOME, sotto la fiaba e "Disegna il tuo vino" (giro 3): cantina, premi, news e in fondo le esperienze da prenotare (30 ott: "dopo la storia aziendale"). Stesso linguaggio a matita: i calici delle
+     esperienze si disegnano sul tavolo a ogni persona in più, le foto della cantina passano con una nota a matita, i loghi dei premi
+     vengono cerchiati. Tra una sezione e l'altra la nuova sale sopra la precedente (come klimtwine). Schede generate da js/home.js con i dati veri di js/data.js · Stile: css/home.css -->
+<section class="ca carta" id="azienda" aria-labelledby="ca-t">
+  <!-- come la parte fotografica di klimtwine: la foto dentro il titolo si ingrandisce, le foto passano in diagonale (ognuna con la sua
+       nota a matita), l'ultima si allarga a tutto schermo e porta il testo. Sezione alta, palco fermo (sticky); movimenti in js/home.js -->
+  <div class="ca-stage">
+    <div class="ca-apre">
+      <h2 class="ca-t" id="ca-t"><span class="ca-r"><span data-righe>La cantina</span></span> <span class="ca-r ca-r2"><span class="ca-slot" aria-hidden="true"></span><span data-righe>della famiglia Varvaglione.</span></span></h2>
+      <p class="t-lead ca-lead">Feudi Salentini è a Leporano, in provincia di Taranto, sul mar Ionio. Dalle uve del Salento, Primitivo, Negroamaro, Malvasia e Susumaniello, nascono i nostri vini.</p>
+    </div>
+    <figure class="ca-f"><img src="assets/photo/masseria-cortile.webp" alt="Il cortile della masseria di famiglia" decoding="async"><canvas aria-hidden="true"></canvas><figcaption>la masseria di famiglia</figcaption></figure>
+    <figure class="ca-f"><img src="assets/photo/alberello.webp" alt="Una vite di Primitivo ad alberello" decoding="async"><canvas aria-hidden="true"></canvas><figcaption>Primitivo ad alberello</figcaption></figure>
+    <figure class="ca-f"><img src="assets/photo/barriques.webp" alt="Le barrique in cantina" decoding="async"><canvas aria-hidden="true"></canvas><figcaption>le barrique in cantina</figcaption></figure>
+    <figure class="ca-f"><img src="assets/photo/mare-salento.webp" alt="Il mare del Salento" decoding="async"><canvas aria-hidden="true"></canvas><figcaption>il mar Ionio, a due passi</figcaption></figure>
+    <figure class="ca-f ca-f--fine"><img src="assets/photo/vigna-tramonto.webp" alt="Le vigne al tramonto" decoding="async"></figure>
+    <div class="ca-fine">
+      <p class="ca-fine__t">Leporano, sul mar&nbsp;Ionio.</p>
+      <dl class="ca-num">
+        <div><dt>vini</dt><dd>28</dd></div>
+        <div><dt>collezioni</dt><dd>5</dd></div>
+        <div><dt>esperienze in cantina</dt><dd>3</dd></div>
+      </dl>
+      <p class="ca-sost">Il bilancio di sostenibilità 2025 è online: <a href="https://feudisalentini.com/wp-content/uploads/2026/08/Feudi_bilancio-di-sostenibilita_2025.pdf" target="_blank" rel="noopener">leggilo in PDF</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pr sec carta carta--pietra" id="premi" aria-labelledby="pr-t">
+  <div class="hs-head">
+    <h2 class="t-h2" id="pr-t" data-righe>Premiati nei concorsi internazionali.</h2>
+  </div>
+  <div class="pr-wrap">
+    <canvas class="pr-canvas" aria-hidden="true"></canvas>
+    <ul class="pr-list"></ul>
+  </div>
+</section>
+
+<section class="nw sec carta" id="news" aria-labelledby="nw-t">
+  <div class="hs-head">
+    <h2 class="t-h2" id="nw-t" data-righe>Dalla cantina.</h2>
+  </div>
+  <div class="nw-grid"></div>
+</section>
+
+<section class="es sec carta" id="esperienze" aria-labelledby="es-t">
+  <div class="hs-head">
+    <h2 class="t-h2" id="es-t" data-righe>Prenota una visita in&nbsp;cantina.</h2>
+    <p class="t-lead">Vigne, masseria di famiglia e degustazione. Scegli l'esperienza e quante persone siete: a ogni persona in più si apparecchia un calice.</p>
+  </div>
+  <div class="es-grid"></div>
+</section>

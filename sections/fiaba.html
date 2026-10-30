@@ -1,0 +1,74 @@
+<!-- PROVA B, "La fiaba del feudo" (giro 3). Una giornata al feudo disegnata a matita e acquerello: scorrendo si cammina in orizzontale
+     dall'alba al tramonto, e ogni tappa è una collezione con le sue bottiglie vere dentro il disegno. Il paesaggio si disegna mentre entra,
+     il cursore (o il dito) fa vento su viti, ulivo e papaveri, il portone della torre si apre.
+     Disegni, bottiglie e posizioni: js/fiaba.js (unità del mondo: altezza 900) · Stile: css/fiaba.css · Piano: tools/PIANO-giro3.md -->
+<section class="fb carta" id="hero" aria-labelledby="fb-title" data-nav-trasparente>
+  <div class="fb-pin">
+    <canvas class="fb-canvas" aria-hidden="true"></canvas>
+    <div class="fb-track">
+      <div class="fb-intro fb-testo" style="--x:70;--y:150">
+        <h1 class="fb-title" id="fb-title" data-righe>Una giornata al&nbsp;feudo.</h1>
+        <p class="t-lead fb-lead">Leporano, sul mar Ionio, a sud di Taranto. Scorri e attraversa le terre dei Feudi Salentini: ogni tappa è una delle nostre collezioni.</p>
+        <p class="fb-scorri"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Scorri</p>
+      </div>
+
+      <article class="fb-cap fb-testo" data-tappa="0" style="--x:1620;--y:150">
+        <p class="fb-cap__n">01 · La torre</p>
+        <h2 class="fb-cap__t">Collezione 53</h2>
+        <p class="fb-cap__d">La linea Luxury: Primitivo di Manduria da vecchie vigne e Negroamaro, da uve selezionate a mano.</p>
+        <button class="btn btn--line fb-cap__go" type="button" data-col="luxury">Vedi i 3 vini</button>
+      </article>
+      <article class="fb-cap fb-testo" data-tappa="1" style="--x:2460;--y:150">
+        <p class="fb-cap__n">02 · La terra rossa</p>
+        <h2 class="fb-cap__t">Terra</h2>
+        <p class="fb-cap__d">Sette vini dalle uve del Salento: Primitivo di Manduria, Negroamaro, Malvasia bianca e nera, un rosato.</p>
+        <button class="btn btn--line fb-cap__go" type="button" data-col="terra">Vedi i 7 vini</button>
+      </article>
+      <article class="fb-cap fb-testo" data-tappa="2" style="--x:4460;--y:150">
+        <p class="fb-cap__n">03 · Il campo</p>
+        <h2 class="fb-cap__t">125 Organic</h2>
+        <p class="fb-cap__d">Un bianco e un Primitivo da agricoltura biologica, Puglia IGP.</p>
+        <button class="btn btn--line fb-cap__go" type="button" data-col="organic">Vedi i 2 vini</button>
+      </article>
+      <article class="fb-cap fb-testo" data-tappa="3" style="--x:6360;--y:150">
+        <p class="fb-cap__n">04 · Il mare</p>
+        <h2 class="fb-cap__t">Classica</h2>
+        <p class="fb-cap__d">La linea più ampia, dodici vini: dal Sassirossi delle vigne ad alberello al Susumaniello, dal bianco Cala al rosato Tre Cuori.</p>
+        <button class="btn btn--line fb-cap__go" type="button" data-col="classica">Vedi i 12 vini</button>
+      </article>
+      <article class="fb-cap fb-testo" data-tappa="4" style="--x:8360;--y:150">
+        <p class="fb-cap__n">05 · Il tramonto</p>
+        <h2 class="fb-cap__t">125 Uno Due Cinque</h2>
+        <p class="fb-cap__d">La linea Lounge Bar per l'aperitivo e i primi piatti: un rosato leggermente mosso, Primitivo, Negroamaro e Malvasia Nera.</p>
+        <button class="btn btn--line fb-cap__go" type="button" data-col="lounge">Vedi i 4 vini</button>
+      </article>
+
+      <div class="fb-fine fb-testo" style="--x:9850;--y:230">
+        <h2 class="fb-fine__t">Fine della giornata.</h2>
+        <p class="t-lead">Il resto si assaggia in cantina, a Leporano.</p>
+        <div class="fb-fine__cta">
+          <a class="btn btn--gold" href="#esperienze">Prenota una degustazione</a>
+          <button class="btn btn--line" type="button" data-col="">Tutti i 28 vini</button>
+        </div>
+      </div>
+      <!-- bottiglie: generate da js/fiaba.js -->
+    </div>
+    <!-- prova a (?info=a): la didascalia della tappa ferma in alto, come i capitoli di klimtwine (js/fiaba.js) -->
+    <div class="fb-fisso" aria-live="polite"><h2 class="fb-fisso__t"></h2><div class="fb-fisso__dx"><p class="fb-fisso__d"></p><button class="fb-fisso__go" type="button"></button></div></div>
+    <nav class="fb-tappe" aria-label="Tappe della giornata"></nav>
+    <!-- bottiglia al centro: si apre col clic su una bottiglia (js/fiaba.js) -->
+    <div class="fb-zoom" role="dialog" aria-modal="true" aria-labelledby="fb-zoom-t" hidden>
+      <canvas class="fb-zoom__cv" aria-hidden="true"></canvas>
+      <img class="fb-zoom__bt" alt="" decoding="async">
+      <div class="fb-zoom__info">
+        <p class="fb-zoom__col"></p>
+        <h2 class="fb-zoom__t" id="fb-zoom-t"></h2>
+        <p class="fb-zoom__meta"></p>
+        <p class="fb-zoom__desc"></p>
+        <dl class="fb-zoom__dati"></dl>
+        <div class="fb-zoom__cta"><a class="btn btn--gold fb-zoom__go" target="_blank" rel="noopener">Scheda del vino</a><button class="btn btn--line fb-zoom__col-go" type="button">Vini della collezione</button></div>
+      </div>
+      <button class="btn btn--line fb-zoom__x" type="button">Chiudi</button>
+    </div>
+  </div>
+</section>

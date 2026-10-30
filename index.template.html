@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="it">
+<head>
+<!-- @include sections/_head.html -->
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<title>Feudi Salentini · Vini del Salento</title>
+<meta name="description" content="Feudi Salentini: Primitivo di Manduria, Negroamaro e i vini del Salento della famiglia Varvaglione, a Leporano (TA).">
+<link rel="stylesheet" href="css/ingresso.css">
+<link rel="stylesheet" href="css/fiaba.css">
+<link rel="stylesheet" href="css/disegna.css">
+<link rel="stylesheet" href="css/home.css">
+<script>/* ingresso: deciso prima del primo disegno, così niente lampo */try{var q=new URLSearchParams(location.search).get("ingresso");if(q!=="0"&&(q||!sessionStorage.getItem("fs-ingresso"))&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("ingresso-attivo")}catch(e){}</script>
+</head>
+<body class="page-home">
+<!-- @include sections/ingresso.html -->
+<!-- @include sections/header.html -->
+<main id="main">
+<!-- @include sections/fiaba.html -->
+<!-- @include sections/disegna.html -->
+<!-- @include sections/home-sotto.html -->
+</main>
+<!-- @include sections/footer.html -->
+<!-- @include sections/_scripts.html -->
+<script src="js/matita.js"></script>
+<script src="js/fiaba.js"></script>
+<script src="js/disegna.js"></script>
+<script src="js/home.js"></script>
+<script src="js/ingresso.js"></script>
+</body>
+</html>

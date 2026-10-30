@@ -1,0 +1,67 @@
+/* PROVA A "Disegna il tuo vino" (giro 3). Il foglio è la hero: a sinistra testo e risultato, a destra l'area dove si disegna.
+   Il canvas copre tutta la sezione (tratti, acquerelli, aromi); bottiglia ed etichette degli aromi sono HTML sopra. */
+.dv {
+  position: relative; min-height: 100svh; overflow: hidden;
+  display: grid; grid-template-columns: minmax(0, 33rem) minmax(0, 1fr); grid-template-rows: auto auto 1fr;
+  column-gap: clamp(24px, 3vw, 56px);
+  padding: calc(var(--header-h) + clamp(24px, 6vh, 72px)) var(--pad-x) clamp(24px, 5vh, 48px);
+}
+.dv-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+.dv-intro, .dv-scelte, .dv-res, .dv-pad { position: relative; z-index: 3; }
+
+.dv-intro { grid-column: 1; grid-row: 1; }
+.dv-title { font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); line-height: .96;
+  font-size: clamp(3rem, 6vw, 6.4rem); text-wrap: balance; }
+.dv-lead { margin-top: clamp(20px, 3vh, 32px); max-width: 30rem; }
+
+.dv-scelte { grid-column: 1; grid-row: 2; margin-top: clamp(28px, 5vh, 56px); }
+.dv-scelte__t { font-size: var(--fs-small); color: var(--mute); margin-bottom: 12px; }
+.dv-scelte__row { display: flex; flex-wrap: wrap; gap: 8px; }
+.dv-scelte .btn { height: 44px; padding: 0 1.1rem; font-size: 1rem; }
+
+/* area di disegno: tutta la colonna destra */
+.dv-pad { grid-column: 2; grid-row: 1 / 4; min-height: 62vh; touch-action: none; cursor: crosshair; }
+.dv-hint { position: absolute; left: 50%; bottom: 6%; transform: translateX(-50%); white-space: nowrap;
+  font-size: var(--fs-small); color: var(--mute); transition: opacity .4s var(--ease); pointer-events: none; }
+.dv-hint__dito { display: none; }
+@media (hover: none) { .dv-hint__mouse { display: none; } .dv-hint__dito { display: inline; } }
+.dv.is-drawing .dv-hint, .dv.is-res .dv-hint { opacity: 0; }
+
+/* risultato: prende il posto di testo e scelte nella colonna sinistra */
+.dv-res { grid-column: 1; grid-row: 1 / 4; align-self: start; }
+.dv-intro, .dv-scelte { transition: opacity .35s var(--ease); }
+.dv.is-res .dv-intro, .dv.is-res .dv-scelte { opacity: 0; visibility: hidden; transition: opacity .35s var(--ease), visibility 0s .35s; }
+.dv-res__k { font-size: var(--fs-small); color: var(--mute); }
+.dv-res__col { margin-top: clamp(16px, 3vh, 28px); font-size: var(--fs-small); color: var(--gold-ink); }
+.dv-res__name { font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); line-height: .96;
+  font-size: clamp(2.8rem, 5vw, 5.2rem); text-wrap: balance; margin-top: 4px; }
+.dv-res__denom { margin-top: 10px; color: var(--ink-2); }
+.dv-res__forma { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.dv-res__forma li { height: 34px; display: inline-flex; align-items: center; padding: 0 .85rem; border-radius: var(--r); background: var(--stone); font-size: var(--fs-small); color: var(--ink); }
+.dv-res__dati { margin: clamp(20px, 4vh, 36px) 0 0; display: grid; gap: 14px; max-width: 30rem; }
+.dv-res__dati dt { font-size: var(--fs-small); color: var(--mute); }
+.dv-res__dati dd { margin: 2px 0 0; color: var(--ink-2); }
+.dv-res__cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: clamp(24px, 4vh, 40px); }
+
+/* bottiglia vera ed etichette degli aromi: posizionate da js sopra il disegno */
+.dv-bottle { position: absolute; z-index: 2; left: 0; top: 0; width: auto; max-width: none; pointer-events: none; opacity: 0; }
+.dv-aromi li { position: absolute; z-index: 2; width: 9.5rem; margin-left: -4.75rem; text-align: center;
+  font-size: .9375rem; line-height: 1.3; color: var(--ink-2); opacity: 0; pointer-events: none; }
+
+/* telefono e tablet stretto: una colonna, il foglio sotto al testo */
+@media (max-width: 860px) {
+  .dv { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; padding-top: calc(var(--header-h) + 20px); }
+  .dv-intro { grid-row: 1; }
+  .dv-title { font-size: clamp(2.6rem, 11vw, 3.6rem); }
+  .dv-lead { margin-top: 14px; font-size: 1.125rem; }
+  .dv-pad { grid-column: 1; grid-row: 2; height: 60svh; min-height: 380px; margin-top: 12px; }
+  .dv-scelte { grid-row: 3; margin-top: 8px; }
+  .dv-scelte__row { display: grid; grid-template-columns: 1fr 1fr; }
+  .dv-res { grid-row: 3; margin-top: 8px; }
+  .dv.is-res .dv-intro { opacity: 1; visibility: visible; }
+  .dv.is-res .dv-scelte { display: none; }
+  .dv-res__col { margin-top: 6px; }
+  .dv-res__name { font-size: clamp(2.4rem, 10vw, 3.2rem); }
+  .dv-res__cta .btn { flex: 1 1 auto; }
+  .dv-aromi li { width: 6.5rem; margin-left: -3.25rem; }
+}

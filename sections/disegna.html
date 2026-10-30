@@ -1,0 +1,44 @@
+<!-- PROVA A, "Disegna il tuo vino" (giro 3). Chi visita disegna la forma del vino che gli piace (rotondo, teso, ampio, lungo):
+     la matita la ripassa e la trasforma nella forma del vino più vicino tra i 28, la bottiglia vera entra nel suo contorno a matita
+     e attorno si disegnano i suoi aromi. Script: js/matita.js + js/disegna.js · Stile: css/disegna.css · Piano: tools/PIANO-giro3.md -->
+<section class="dv carta" id="disegna" aria-labelledby="dv-title">
+  <canvas class="dv-canvas" aria-hidden="true"></canvas>
+
+  <div class="dv-intro">
+    <h2 class="dv-title" id="dv-title" data-righe>Ogni vino ha una&nbsp;forma.</h2>
+    <p class="t-lead dv-lead">Rotondo, teso, ampio, lungo: così si descrive un vino in bocca. Disegna quello che ti piace e ti diciamo quale dei nostri vini gli somiglia.</p>
+  </div>
+
+  <div class="dv-pad" aria-label="Area di disegno: trascina per disegnare">
+    <p class="dv-hint"><span class="dv-hint__mouse">Disegna qui con il mouse</span><span class="dv-hint__dito">Disegna qui con il dito</span></p>
+  </div>
+
+  <div class="dv-scelte" role="group" aria-labelledby="dv-scelte-t">
+    <p class="dv-scelte__t" id="dv-scelte-t">Oppure scegli una forma</p>
+    <div class="dv-scelte__row">
+      <button class="btn btn--line" type="button" data-forma="rotondo">Rotondo</button>
+      <button class="btn btn--line" type="button" data-forma="teso">Teso</button>
+      <button class="btn btn--line" type="button" data-forma="ampio">Ampio</button>
+      <button class="btn btn--line" type="button" data-forma="leggero">Leggero</button>
+    </div>
+  </div>
+
+  <div class="dv-res" aria-live="polite" hidden>
+    <p class="dv-res__k">Il tuo disegno somiglia a</p>
+    <p class="dv-res__col"></p>
+    <h2 class="dv-res__name"></h2>
+    <p class="dv-res__denom"></p>
+    <ul class="dv-res__forma" aria-label="La forma che hai disegnato"></ul>
+    <dl class="dv-res__dati">
+      <div><dt>Aromi</dt><dd class="dv-res__aromi"></dd></div>
+      <div><dt>A tavola</dt><dd class="dv-res__abb"></dd></div>
+    </dl>
+    <div class="dv-res__cta">
+      <a class="btn btn--gold dv-res__go" href="#">Apri la scheda</a>
+      <button class="btn btn--line dv-res__again" type="button">Disegna di nuovo</button>
+    </div>
+  </div>
+
+  <img class="dv-bottle" alt="" decoding="async">
+  <ul class="dv-aromi" aria-hidden="true"></ul>
+</section>

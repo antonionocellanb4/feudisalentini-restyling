@@ -1,0 +1,250 @@
+/* NAVIGAZIONE: header, menu telefono, cantina (mega menu dei vini), transizione versata, footer.
+   z-index: header 100, menu e cantina 120, copertura della transizione 200.
+   Header: trasparente in cima alla pagina, appena si scorre fondo PIENO (--cream o --night secondo la sezione sotto la barra). */
+
+.nav-skip { position: fixed; left: 16px; top: 12px; z-index: 210; padding: .7rem 1rem; border-radius: var(--r);
+  background: var(--gold); color: var(--ink); transform: translateY(-200%); }
+.nav-skip:focus { transform: none; }
+
+/* ---------- header ---------- */
+.nav {
+  --nav-fg: var(--ink); --nav-mute: var(--mute); --nav-bg: var(--cream); --nav-logo: var(--ink);
+  position: fixed; inset: 0 0 auto; z-index: 100; height: var(--header-h);
+  color: var(--nav-fg); background-color: transparent;
+  transition: background-color .45s var(--ease), color .45s var(--ease), opacity .7s var(--ease), translate .7s var(--ease);
+}
+/* durante l'ingresso animato della home l'header è nascosto; entra all'evento fs:ingresso-fine (nav.js aggiunge .is-in) */
+html.ingresso-attivo .nav:not(.is-in) { opacity: 0; translate: 0 -16px; visibility: hidden; }
+.nav[data-tone="dark"] { --nav-fg: var(--paper); --nav-mute: var(--paper-2); --nav-bg: var(--night); --nav-logo: var(--gold); }
+.nav.is-solid { background-color: var(--nav-bg); }
+/* header moderno: voci a sinistra, marchio al centro, contatti/lingua/prenota a destra */
+.nav__bar { height: 100%; padding-inline: var(--pad-x); /* a tutta larghezza, allineata ai bordi delle pagine */
+  display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 24px; }
+.nav__logo { justify-self: center; width: 124px; color: var(--nav-logo); transition: color .45s var(--ease), width .45s var(--ease); }
+.nav.is-solid .nav__logo { width: 104px; }
+.nav__logo .logo { width: 100%; }
+.nav__links { display: flex; align-items: center; gap: clamp(16px, 1.8vw, 30px); justify-self: start; }
+.nav__end { justify-self: end; }
+.nav__link { position: relative; padding: .55rem 0; font-size: 1rem; font-weight: 500; letter-spacing: -.01em; line-height: 1.2; white-space: nowrap; }
+.nav__link::after { content: ''; position: absolute; left: 0; right: 0; bottom: .25rem; height: 1px; background: currentColor;
+  transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease); }
+.nav__link:hover::after, .nav__link[aria-current]::after, .nav__link[aria-expanded="true"]::after { transform: none; }
+.nav__end { display: flex; align-items: center; gap: 18px; }
+.nav__lang { display: flex; gap: .6rem; font-size: 1rem; line-height: 1; }
+.nav__lang-on { text-decoration: underline; text-underline-offset: 4px; }
+.nav__lang-off { color: var(--nav-mute, var(--mute)); cursor: not-allowed; }
+.nav__cta { height: 44px; padding: 0 1.15rem; }
+.nav[data-tone="light"] .nav__cta:hover { background: var(--ink); color: var(--paper); }
+.nav__cta-short { display: none; }
+.nav__burger { display: none; height: 44px; padding: 0 1rem; border: 1px solid currentColor; border-radius: 999px;
+  font-size: 1.0625rem; transition: background-color .25s var(--ease), color .25s var(--ease); }
+.nav__burger:hover { background: var(--nav-fg); color: var(--nav-bg); }
+
+/* ---------- pannelli sotto la barra (menu telefono e cantina) ---------- */
+.nav-menu, .cantina {
+  position: fixed; left: 0; right: 0; top: var(--header-h); bottom: 0; z-index: 120;
+  background: var(--cream); color: var(--ink); overflow-x: clip; overflow-y: auto; overscroll-behavior: contain; visibility: hidden;
+}
+html.nav-lock { overflow: hidden; }
+
+/* menu telefono, primo livello */
+.nav-menu { display: none; clip-path: inset(0 0 100% 0); transition: clip-path .5s var(--ease), visibility 0s .5s; }
+.nav-menu.is-open { visibility: visible; clip-path: inset(0); transition: clip-path .5s var(--ease); }
+.nav-menu__in { min-height: 100%; display: flex; flex-direction: column; padding: 8px var(--pad-x) calc(24px + env(safe-area-inset-bottom)); }
+.nav-menu__item { width: 100%; display: flex; align-items: center; gap: .5rem; padding: 14px 0; border-bottom: 1px solid var(--line);
+  font-size: clamp(1.75rem, 7vw, 2.4rem); font-weight: var(--title-weight); letter-spacing: var(--title-track); line-height: 1.1; text-align: left; }
+.nav-menu__count { font-size: 1rem; letter-spacing: 0; color: var(--mute); align-self: flex-start; margin-top: .35em; }
+.nav-menu__chev { width: 28px; height: 28px; margin-left: auto; }
+.nav-menu__cta { margin-top: 28px; width: 100%; }
+.nav-menu__foot { margin-top: auto; padding-top: 28px; display: flex; justify-content: space-between; align-items: center; gap: 16px; font-size: 1rem; }
+.nav-menu__foot small { font-size: 1rem; }
+.nav-menu__foot a { text-decoration: underline; text-underline-offset: 4px; }
+
+/* ---------- cantina: tutti i vini su scaffali per collezione ---------- */
+.cantina { clip-path: inset(0 0 100% 0); transition: clip-path .55s var(--ease), visibility 0s .55s; }
+.cantina.is-open { visibility: visible; clip-path: inset(0); transition: clip-path .6s var(--ease); }
+.cantina__in { padding: 0 var(--pad-x) 24px; }
+.cantina__top { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 20px; padding: 10px 0 16px; background: var(--cream); }
+.cantina__title { flex: none; font-size: var(--fs-h3); font-weight: var(--title-weight); letter-spacing: var(--title-track); line-height: 1; }
+.cantina__filters { display: flex; gap: 8px; flex: none; }
+.cantina__filter, .cantina__close, .cantina__back {
+  display: inline-flex; align-items: center; gap: .45em; height: 44px; padding: 0 14px; border: 1px solid var(--line);
+  border-radius: 999px; font-size: 1rem; white-space: nowrap;
+  transition: background-color .25s var(--ease), border-color .25s var(--ease), color .25s var(--ease);
+}
+.cantina__filter span { color: var(--mute); font-variant-numeric: tabular-nums; }
+.cantina__filter:hover, .cantina__close:hover, .cantina__back:hover { border-color: var(--ink); }
+.cantina__filter[aria-pressed="true"] { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+.cantina__filter[aria-pressed="true"] span { color: var(--ink); }
+.cantina__back { display: none; padding-left: 8px; }
+.cantina__back svg { width: 22px; height: 22px; }
+.cantina__close { flex: none; }
+/* la riga della vista: il vino guardato in controluce */
+.cantina__vista { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: flex-end; gap: 10px;
+  font-size: 1rem; color: var(--ink-2); white-space: nowrap; }
+.cantina__vista > span:last-child { overflow: hidden; text-overflow: ellipsis; }
+.cantina__vista strong { font-weight: 500; color: var(--ink); }
+.cantina__swatch { flex: none; width: 30px; aspect-ratio: 1; background: var(--wine);
+  -webkit-mask: var(--stain) center / contain no-repeat; mask: var(--stain) center / contain no-repeat; }
+
+.cantina__shelves { --cantina-bottle: 106px; --cantina-stain: 150px; display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); row-gap: 16px; }
+.cantina__wine, .cantina__shelf { display: flex; flex-direction: column; min-width: 0; }
+.cantina__glass, .cantina__shelf-top { position: relative; height: var(--cantina-bottle); border-bottom: 1px solid var(--line); }
+.cantina__glass { display: flex; justify-content: center; }
+.cantina__glass img { position: relative; z-index: 1; height: 100%; width: auto; max-width: none; }
+/* controluce: dietro la bottiglia si allarga la macchia del vino (maschera di pigmento generata in nav.js) */
+.cantina__stain { position: absolute; left: 50%; top: 60%; width: var(--cantina-stain); aspect-ratio: 1; translate: -50% -50%;
+  background: var(--wine); -webkit-mask: var(--stain) center / contain no-repeat; mask: var(--stain) center / contain no-repeat;
+  opacity: 0; scale: .45; rotate: -30deg;
+  transition: opacity .3s var(--ease), scale .8s var(--ease), rotate 1.1s var(--ease); }
+.cantina__wine:hover .cantina__stain, .cantina__wine:focus-visible .cantina__stain { opacity: 1; scale: 1; rotate: 0deg; }
+.cantina__wine:focus-visible { outline-offset: -2px; }
+.cantina__name { margin-top: 10px; padding-inline: 5px; font-size: 1rem; line-height: 1.18; text-align: center; color: var(--ink); }
+.cantina__denom { margin-top: 3px; padding-inline: 5px; font-size: 1rem; line-height: 1.18; text-align: center; color: var(--mute); }
+.cantina__wine .tbd { align-self: center; margin-top: 6px; }
+.cantina__vista-row { display: none; }
+.cantina__shelf-top { display: flex; align-items: flex-end; padding: 0 10px 10px 0; }
+.cantina__shelf-name { font-size: 1.375rem; font-weight: var(--title-weight); letter-spacing: var(--title-track); line-height: 1.05; }
+.cantina__shelf-meta { margin-top: 10px; display: flex; flex-direction: column; gap: 3px; font-size: 1rem; line-height: 1.18; color: var(--mute); }
+.cantina [hidden] { display: none; }
+/* con pochi vini (filtro) gli scaffali cambiano scala invece di lasciare il pannello vuoto */
+@media (min-width: 1080px) {
+  .cantina__shelves.is-few { --cantina-bottle: 230px; --cantina-stain: 260px; grid-template-columns: repeat(var(--cantina-cols), minmax(0, 1fr)); row-gap: 28px; }
+  .cantina__shelves.is-few .cantina__shelf-name { font-size: var(--fs-h3); }
+}
+
+/* ---------- palcoscenico dei vini (desktop): collezioni a sinistra, bottiglie in piedi, nome gigante sul fondo ---------- */
+.cstage { display: none; }
+@media (min-width: 1080px) {
+  .cantina__top, .cantina__shelves { display: none; }
+  .cantina__in { height: 100%; padding-bottom: 0; }
+  .cstage { position: relative; display: grid; grid-template-columns: minmax(260px, 22%) minmax(0, 1fr); gap: clamp(32px, 4vw, 64px); height: 100%; padding: 20px 0 28px; }
+  /* la colonna scorre solo in verticale; 20px a sinistra per il pallino della voce attiva (prima tagliato a metà) */
+  .cstage__nav { display: flex; flex-direction: column; min-height: 0; overflow: hidden auto; margin-left: -20px; padding-left: 20px; }
+  .cstage__nav ul { display: grid; gap: 2px; }
+  .cstage__h { margin: 22px 0 8px; font-size: 1rem; color: var(--mute); }
+  .cstage__h:first-child { margin-top: 4px; }
+  .cstage__set { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 .55em; width: calc(100% - 14px); padding: 3px 0; text-align: left;
+    font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track);
+    font-size: clamp(1.5rem, 2vw, 2.3rem); line-height: 1.08; color: var(--mute); transition: color .3s var(--ease), translate .4s var(--ease); }
+  .cstage__tipi .cstage__set { font-size: clamp(1.3rem, 1.6vw, 1.7rem); }
+  .cstage__set-n { font-family: var(--font); font-size: 1rem; letter-spacing: 0; font-variant-numeric: tabular-nums; }
+  .cstage__set:hover, .cstage__set[aria-pressed="true"] { color: var(--ink); }
+  .cstage__set[aria-pressed="true"] { translate: 14px 0; }
+  .cstage__set[aria-pressed="true"]::before { content: ''; position: absolute; width: 8px; height: 8px; margin-left: -18px; align-self: center; border-radius: 50%; background: var(--gold-ink); }
+  .cstage__all { margin-top: auto; padding-top: 20px; font-size: 1rem; text-decoration: underline; text-underline-offset: 4px; }
+
+  .cstage__main { position: relative; display: grid; grid-template-rows: minmax(0, 1fr) auto; min-height: 0; }
+  .cstage__bg { position: absolute; inset: 0 0 auto; z-index: 0; margin: 0; overflow: hidden; white-space: nowrap; text-align: center; pointer-events: none;
+    font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: -.05em; line-height: .95;
+    font-size: clamp(5rem, 12vw, 14rem); color: #ddd2c4; }
+  .cstage__bg span { display: inline-block; }
+  .cstage__row { --bh: 44vh; position: relative; z-index: 1; align-self: end; display: grid; justify-content: center; align-items: end;
+    grid-template-columns: repeat(var(--n), minmax(0, 200px)); }
+  .cstage__row[data-size="xl"] { --bh: 50vh; }
+  .cstage__row[data-size="m"] { --bh: 36vh; }
+  .cstage__row[data-size="s"] { --bh: 21vh; grid-template-columns: repeat(14, minmax(0, 1fr)); row-gap: 14px; }
+  .cstage__wine { display: flex; flex-direction: column; align-items: center; min-width: 0; }
+  .cstage__glass { position: relative; display: flex; justify-content: center; width: 100%; height: var(--bh); }
+  .cstage__glass img { position: relative; z-index: 1; height: 100%; width: auto; max-width: none; pointer-events: none; transition: translate .6s var(--ease); }
+  .cstage__wine.is-on .cstage__glass img { translate: 0 -5%; }
+  .cstage__stain { position: absolute; left: 50%; top: 52%; width: calc(var(--bh) * .8); aspect-ratio: 1; translate: -50% -50%;
+    background: var(--wine); -webkit-mask: var(--stain) center / contain no-repeat; mask: var(--stain) center / contain no-repeat;
+    opacity: 0; scale: .35; rotate: -40deg; transition: opacity .35s var(--ease), scale .9s var(--ease), rotate 1.2s var(--ease); }
+  .cstage__wine.is-on .cstage__stain { opacity: 1; scale: 1; rotate: 0deg; }
+  .cstage__label { width: 100%; padding: 10px 4px 0; border-top: 1px solid var(--line); font-size: 1rem; line-height: 1.2; text-align: center; color: var(--ink-2); transition: color .3s var(--ease); }
+  .cstage__wine.is-on .cstage__label { color: var(--ink); }
+  .cstage__row[data-size="m"] .cstage__label { font-size: .9375rem; hyphens: auto; overflow-wrap: break-word; }
+  /* con tutti i 28 vini le etichette non ci stanno: il nome del vino sotto il mouse è sul fondo e nei dati */
+  .cstage__row[data-size="s"] .cstage__label { font-size: 0; padding-top: 0; height: 1px; }
+  .cstage__wine:focus-visible { outline-offset: -2px; }
+
+  .cstage__info { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) auto; gap: 32px; align-items: end; margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--line); }
+  .cstage__name { font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(1.8rem, 2.5vw, 2.6rem); line-height: 1; }
+  .cstage__denom { margin-top: 8px; font-size: 1rem; color: var(--mute); }
+  .cstage__facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin: 0; }
+  .cstage__facts dt { font-size: 1rem; color: var(--mute); }
+  .cstage__facts dd { margin: 4px 0 0; font-size: 1rem; line-height: 1.35; color: var(--ink); }
+  .cstage__close { position: absolute; top: 20px; right: 0; z-index: 2; display: inline-flex; align-items: center; height: 44px; padding: 0 14px;
+    border: 1px solid var(--line); border-radius: 999px; background: var(--cream); font-size: 1rem; transition: border-color .25s var(--ease); }
+  .cstage__close:hover { border-color: var(--ink); }
+}
+
+/* ---------- telefono e tablet: barra compatta, menu a livelli, cantina a lista ---------- */
+@media (max-width: 1079px) {
+  .nav__links, .nav__bar > .nav__end > .nav__lang, .nav__link--end { display: none; }
+  .nav__bar { grid-template-columns: auto minmax(0, 1fr); }
+  .nav__logo { justify-self: start; }
+  .nav__end { gap: 10px; }
+  .nav__burger { display: inline-flex; align-items: center; }
+  .nav-menu { display: block; }
+
+  /* secondo livello: entra da destra con un clip (nessuno spostamento: chiusa non sporge dalla pagina) */
+  .cantina { clip-path: inset(0 0 0 100%); transition: clip-path .5s var(--ease), visibility 0s .5s; }
+  .cantina.is-open { clip-path: inset(0); transition: clip-path .5s var(--ease); }
+  .cantina__top { position: static; flex-wrap: wrap; gap: 12px; padding: 8px 0 8px; }
+  .cantina__back { display: inline-flex; }
+  .cantina__close, .cantina__vista { display: none; }
+  .cantina__title { width: 100%; margin-top: 8px; }
+  .cantina__filters { flex: 1 1 100%; flex-wrap: wrap; }
+  .cantina__shelves { grid-template-columns: 1fr; row-gap: 0; }
+  .cantina__shelf { padding: 28px 0 6px; }
+  .cantina__shelf-top { height: auto; border: 0; padding: 0; }
+  .cantina__shelf-meta { margin-top: 4px; flex-direction: row; flex-wrap: wrap; gap: 0 .35em; }
+  .cantina__shelf-meta > span + span::before { content: '· '; }
+  .cantina__wine { display: grid; grid-template-columns: 64px 1fr; column-gap: 16px; align-content: center;
+    padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .cantina__glass { grid-row: 1 / span 4; height: 92px; border: 0; align-self: center; }
+  .cantina__stain { width: 64px; opacity: 1; scale: 1; rotate: 0deg; transition: none; }
+  .cantina__name, .cantina__denom, .cantina__vista-row { margin: 0; padding: 0; text-align: left; }
+  .cantina__name { font-size: 1.125rem; align-self: end; }
+  .cantina__vista-row { display: block; font-size: 1rem; line-height: 1.25; color: var(--ink-2); margin-top: 2px; }
+  .cantina__wine .tbd { align-self: start; justify-self: start; margin-top: 4px; }
+}
+@media (max-width: 560px) {
+  .nav__logo { width: 96px; }
+  .nav__cta { padding: 0 1rem; }
+  .nav__cta-long { display: none; }
+  .nav__cta-short { display: inline; }
+}
+
+/* ---------- transizione versata ---------- */
+.pour { position: fixed; inset: 0; z-index: 200; display: none; }
+.pour.is-on { display: block; }
+html.fs-poured .pour { display: block; background: var(--pour); }
+.pour canvas { width: 100%; height: 100%; }
+
+/* ---------- footer (30 ott, come il footer di klimtwine): chiaro, alto uno schermo; logo e newsletter in alto, collezioni / cantina /
+   contatti al centro, note legali in fondo ---------- */
+.foot { display: flex; flex-direction: column; padding-bottom: 24px; background: var(--stone); }
+.foot__in { flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 56px; }
+.foot__top { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px clamp(24px, 4vw, 64px); align-items: end; } /* stesse colonne di .foot__mid */
+.foot__logo { display: block; width: clamp(150px, 14vw, 220px); color: var(--ink); }
+.foot__news { grid-column: 3; } /* newsletter sopra la colonna Contatti */
+.foot__h { margin-bottom: 16px; font-size: 1rem; font-weight: 400; color: var(--mute); }
+.foot__mid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px clamp(24px, 4vw, 64px); }
+.foot__col li + li { margin-top: 6px; }
+.foot__col li a, .foot__col li button { font-size: clamp(1.125rem, 1.4vw, 1.375rem); line-height: 1.35; text-align: left; transition: color .25s var(--ease); }
+.foot__col li a:hover, .foot__col li button:hover { color: var(--gold-ink); }
+.foot__tel { display: inline-block; font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track);
+  font-size: clamp(2rem, 3.2vw, 3.2rem); line-height: 1; transition: color .25s var(--ease); }
+.foot__tel:hover { color: var(--gold-ink); }
+.foot__contatti p, .foot__contatti address { margin-top: 12px; font-style: normal; font-size: 1.0625rem; line-height: 1.5; color: var(--ink-2); }
+.foot__contatti address a { text-decoration: underline; text-decoration-color: var(--mute); text-underline-offset: 4px; }
+.foot__contatti address a:hover { color: var(--gold-ink); }
+.foot .tbd { background: var(--cream); }
+.foot__form { display: flex; gap: 8px; }
+.foot__form input { flex: 1; min-width: 0; height: 52px; padding: 0 20px; border: 1px solid var(--line); border-radius: 999px;
+  background: var(--cream); color: var(--ink); font: inherit; font-size: 1.0625rem; }
+.foot__form input::placeholder { color: var(--mute); opacity: 1; }
+.foot__form input:focus-visible { outline: 2px solid var(--gold-ink); outline-offset: 2px; }
+.foot__form input[aria-invalid="true"] { border-color: var(--ink); }
+.foot__note { margin-top: 10px; font-size: .9375rem; color: var(--mute); }
+.foot__legal { display: flex; flex-wrap: wrap; gap: 8px 28px; padding-top: 20px; border-top: 1px solid var(--line); font-size: .9375rem; color: var(--ink-2); }
+.foot__legal a { text-decoration: underline; text-underline-offset: 4px; }
+.foot__legal a:hover { color: var(--gold-ink); }
+@media (max-width: 860px) {
+  .foot__mid { grid-template-columns: 1fr; }
+  .foot__top { grid-template-columns: 1fr; align-items: start; }
+  .foot__news { grid-column: auto; }
+}
