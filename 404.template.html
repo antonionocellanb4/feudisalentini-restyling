@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="it">
+<head>
+<!-- @include sections/_head.html -->
+<!-- PAGINA 404 (6 nov 2026, "stile sempre dipinto, con uva rotta sul monitor"): un acino vero (assets/photo/uva.webp, dipinto) vola contro lo schermo e scoppia sul vetro;
+     il succo cola giù, colata per colata. Dipinti da tools/dipingi_404.py (le colate in sections/404-colate.html sono generate da lì). Stile: css/pagine.css .e4
+     shortcut: percorsi relativi come le altre pagine; servita da un indirizzo a più livelli (/a/b) perde stili e immagini: quando si pubblica, percorsi assoluti o <base>. -->
+<title>Pagina non trovata · Feudi Salentini</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="css/moderna-kit.css">
+<link rel="stylesheet" href="css/pagine.css">
+</head>
+<body class="page-moderna page-pg page-mh page-404">
+<!-- @include sections/header.html -->
+<main id="main">
+  <section class="e4 pg-crema" aria-labelledby="e4-t">
+    <div class="e4__vetro" aria-hidden="true">
+      <div class="e4__macchia">
+        <img class="e4__schizzo" src="assets/quadri/404/schizzo.webp" alt="" width="1200" height="1700" decoding="async">
+<!-- @include sections/404-colate.html -->
+        <img class="e4__acino" src="assets/quadri/404/acino.webp" alt="" width="307" height="307" decoding="async">
+      </div>
+    </div>
+    <div class="e4__testo">
+      <p class="e4__num" aria-hidden="true"><span>4</span><span>0</span><span>4</span></p>
+      <h1 class="pg-h2" id="e4-t">Questa pagina non c'è.</h1>
+      <p class="pg-lead">Il link è sbagliato oppure la pagina è stata spostata. Riparti dalla home o dai nostri vini.</p>
+      <div class="e4__cta">
+        <a class="btn btn--gold" href="index.html">Torna alla home</a>
+        <button class="btn btn--line" type="button" data-cantina-toggle aria-expanded="false" aria-controls="cantina">Scopri i vini</button>
+      </div>
+    </div>
+  </section>
+</main>
+<!-- @include sections/footer.html -->
+<!-- @include sections/_scripts.html -->
+<script src="js/moderna-kit.js"></script>
+</body>
+</html>

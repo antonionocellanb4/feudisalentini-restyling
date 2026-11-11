@@ -1,0 +1,71 @@
+/* HOME MODERNA C "archi" (30 ott 2026): chiara, color tufo, Newsreader sottile nei titoli + Instrument Sans; l'arco della masseria è la forma
+   ricorrente (foto, nicchie, immagini). L'arco è un mezzo cerchio in alto: border-radius di metà larghezza sugli angoli superiori. */
+.page-mc { --font: 'Instrument Sans', system-ui, sans-serif; --font-display: 'Newsreader', Georgia, serif; --tufo: #e6d8bf; --tufo-2: #d9c6a5;
+  font-family: var(--font); background: var(--cream); color: var(--ink); }
+.c-h2 { font-family: var(--font-display); font-weight: 300; letter-spacing: -0.035em; font-size: clamp(2.8rem, 6.6vw, 7rem); line-height: .98; margin-bottom: clamp(36px, 5vw, 72px); text-wrap: balance; }
+.c-arco { border-radius: 999px 999px var(--r) var(--r); overflow: hidden; }
+
+/* ---- hero: palco fermo; la foto è a tutto schermo ma ritagliata ad arco (clip-path calcolato in js/moderna-c.js) ---- */
+.c-hero { height: 220vh; }
+.c-hero__stage { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+.c-hero__foto { position: absolute; inset: 0; }
+.c-hero__foto img { width: 100%; height: 100%; object-fit: cover; }
+.c-hero__bt { position: absolute; left: 50%; z-index: 2; width: auto; max-width: none; pointer-events: none; } /* centrata da js (xPercent): gsap riscrive il transform */
+.c-hero__t { position: absolute; inset: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--pad-x); pointer-events: none;
+  font-family: var(--font-display); font-weight: 300; letter-spacing: -0.04em; font-size: clamp(3.4rem, 9vw, 10rem); line-height: 1; }
+.c-hero__t > span { display: block; }
+.c-hero__lead { position: absolute; left: var(--pad-x); bottom: 104px; max-width: 20rem; font-size: 1.125rem; line-height: 1.45; color: var(--ink-2); }
+
+/* ---- la cantina: paragrafo a sinistra, tre foto ad arco a destra che salgono a velocità diverse ---- */
+.c-cantina { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-items: center; gap: clamp(32px, 5vw, 96px); padding: var(--sec-y) var(--pad-x); }
+.c-cantina__t { font-family: var(--font-display); font-weight: 300; letter-spacing: -0.025em; font-size: clamp(1.9rem, 3.4vw, 3.6rem); line-height: 1.12; }
+.c-cantina__archi { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(10px, 1.4vw, 20px); align-items: start; }
+.c-ad { aspect-ratio: 2 / 3.4; border-radius: 999px 999px var(--r) var(--r); overflow: hidden; }
+.c-ad:nth-child(2) { margin-top: 18%; }
+.c-ad img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---- collezioni: cinque nicchie color tufo, la bottiglia dentro; nome e vini sotto ---- */
+.c-vini { padding: var(--sec-y) var(--pad-x); background: var(--tufo); }
+.c-vini__nicchie { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: clamp(12px, 1.6vw, 24px); }
+.c-nicchia { display: flex; flex-direction: column; width: 100%; height: 100%; text-align: left; color: inherit; }
+.c-nicchia__vano { position: relative; display: flex; justify-content: center; align-items: flex-end; aspect-ratio: 3 / 5; border-radius: 999px 999px var(--r) var(--r); background: var(--tufo-2); overflow: hidden; }
+.c-nicchia__vano img { height: 84%; width: auto; max-width: none; translate: 0 calc((.91 - var(--b, .91)) * 100%); transition: translate .8s var(--ease); } /* i fondi del vetro alla stessa altezza */
+.c-nicchia__nome { margin-top: 16px; font-family: var(--font-display); font-weight: 400; font-size: clamp(1.4rem, 1.9vw, 1.9rem); line-height: 1.1; letter-spacing: -0.02em; transition: color .3s var(--ease); }
+.c-nicchia__info { margin-top: 4px; color: var(--ink-2); }
+.c-nicchia__vai { margin-top: auto; padding-top: 10px; /* in fondo alla scheda: allineati anche se un nome va a capo */ text-decoration: underline; text-underline-offset: 4px; text-decoration-color: rgb(21 16 13 / .35); }
+.c-nicchia:hover .c-nicchia__vano img { translate: 0 calc((.91 - var(--b, .91)) * 100% - 8px); }
+.c-nicchia:hover .c-nicchia__nome { color: var(--gold-ink); }
+
+/* ---- premi: due colonne, logo e testo ---- */
+.c-pr { padding: var(--sec-y) var(--pad-x); background: var(--stone); }
+.c-pr .c-h2 { max-width: 14ch; }
+.c-pr__lista { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(24px, 4vw, 72px); border-top: 1px solid rgb(21 16 13 / .14); }
+.c-pr__lista a { display: grid; grid-template-columns: 72px minmax(0, 1fr); align-items: center; gap: 4px 20px; padding: 22px 0; border-bottom: 1px solid rgb(21 16 13 / .14); }
+.c-pr__logo { grid-row: span 2; width: 72px; aspect-ratio: 1; border-radius: 50%; overflow: hidden; background: #fff; }
+.c-pr__logo img { width: 100%; height: 100%; object-fit: cover; }
+.c-pr__nome { font-family: var(--font-display); font-weight: 400; font-size: 1.625rem; line-height: 1.1; transition: color .3s var(--ease); }
+.c-pr__txt { color: var(--ink-2); text-wrap: pretty; }
+.c-pr__lista a:hover .c-pr__nome { color: var(--gold-ink); }
+
+/* ---- news: una grande ad arco, due in elenco ---- */
+.c-nw { padding: var(--sec-y) var(--pad-x) calc(var(--sec-y) + 40px); }
+.c-nw__grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 72px); align-items: end; }
+.c-nw__item:first-child { grid-row: span 2; }
+.c-nw__item:first-child .c-nw__fig { aspect-ratio: 16 / 10; } /* niente arco: le immagini delle news hanno spesso del testo (locandine) */
+.c-nw__fig { aspect-ratio: 16 / 9; border-radius: var(--r); overflow: hidden; background: #fff; }
+.c-nw__fig img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+.c-nw__item:hover .c-nw__fig img { transform: scale(1.04); }
+.c-nw__date { margin-top: 14px; color: var(--ink-2); }
+.c-nw__title { margin-top: 6px; font-family: var(--font-display); font-weight: 400; font-size: 1.625rem; line-height: 1.15; letter-spacing: -0.015em; text-wrap: balance; transition: color .3s var(--ease); }
+.c-nw__item:hover .c-nw__title { color: var(--gold-ink); }
+
+@media (prefers-reduced-motion: reduce) { .c-hero { height: auto; } .c-hero__stage { position: relative; } }
+@media (max-width: 860px) {
+  .c-hero__t { inset: calc(var(--header-h) + 4px) var(--pad-x) auto; padding: 0; flex-wrap: wrap; justify-content: flex-start; gap: 0 .25em; font-size: clamp(2.8rem, 13vw, 4rem); }
+  .c-hero__lead { display: none; }
+  .c-cantina { grid-template-columns: minmax(0, 1fr); }
+  .c-vini__nicchie { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 calc(var(--pad-x) * -1); padding: 0 var(--pad-x); scrollbar-width: none; }
+  .c-vini__nicchie > li { flex: 0 0 62%; min-width: 0; scroll-snap-align: center; }
+  .c-pr__lista, .c-nw__grid { grid-template-columns: minmax(0, 1fr); }
+  .c-nw__item:first-child { grid-row: auto; }
+}

@@ -57,7 +57,7 @@
     g.putImageData(img, 0, 0);
     return `url(${c.toDataURL()})`;
   };
-  [11, 29, 47].forEach((s, i) => root.style.setProperty(`--nav-stain-${i}`, stainMask(s)));
+  [11, 29, 47].forEach((s, i) => root.style.setProperty(`--nav-stain-${i}`, document.body.classList.contains('page-mh') ? `url(${new URL(`assets/quadri/macchie/${i}.webp`, location.href)})` : stainMask(s))); // moderna-h: macchie dipinte a pennello (tools/dipingi_soggetto.py --notte)
 
   /* ---------- cantina: scaffali per collezione ---------- */
   const stainOf = (w) => `var(--nav-stain-${data.wines.indexOf(w) % 3})`;
@@ -66,7 +66,7 @@
     return `<div class="cantina__shelf" data-cantina-col="${c.id}">
         <span class="cantina__shelf-top"><span class="cantina__shelf-name">${c.name}</span></span>
         <span class="cantina__shelf-meta">${c.line !== c.name ? `<span>${c.line}</span>` : ''}<span data-n>${plural(ws.length, 'vino', 'vini')}</span></span>
-      </div>` + ws.map((w) => `<a class="cantina__wine" href="${FS.wineUrl(w.id)}" data-wine="${w.id}" data-tipo="${w.tipo}" data-cantina-col="${c.id}" style="--wine:${w.color};--stain:${stainOf(w)}">
+      </div>` + ws.map((w) => `<a class="cantina__wine" href="${FS.wineUrl(w.id)}" data-wine="${w.id}" data-tipo="${w.tipo}" data-cantina-col="${c.id}" style="--wine:${w.color};--stain:${stainOf(w)};--b:${w.fondo}">
         <span class="cantina__glass"><i class="cantina__stain"></i><img src="${w.bottle}" alt="" width="653" height="1024" loading="lazy" decoding="async"></span>
         <span class="cantina__name">${w.name}</span>
         <span class="cantina__denom">${w.denom}</span>
@@ -149,7 +149,7 @@
     sInfo.innerHTML = `<div class="cstage__id"><p class="cstage__name">${w.name}</p><p class="cstage__denom">${w.denom} · ${FS.collection(w.collection).name}</p></div>
       <dl class="cstage__facts"><div><dt>Vista</dt><dd>${w.vista || '<span class="tbd">da confermare</span>'}</dd></div>
       <div><dt>Profumi</dt><dd>${w.aromi.length ? w.aromi.slice(0, 4).join(', ') : '<span class="tbd">da confermare</span>'}</dd></div>
-      <div><dt>A tavola</dt><dd>${w.abb}</dd></div></dl>
+      <div><dt>A tavola</dt><dd>${w.abb || '<span class="tbd">Non indicato nel catalogo</span>'}</dd></div></dl>
       <a class="btn btn--gold cstage__go" href="${FS.wineUrl(w.id)}" data-wine="${w.id}">Apri la scheda</a>`;
     // nome gigante sul fondo, lettera per lettera
     sBg.innerHTML = [...w.name].map((c) => `<span>${c === ' ' ? '&nbsp;' : c}</span>`).join('');
@@ -168,7 +168,7 @@
     sRow.style.setProperty('--n', n);
     sRow.dataset.size = n <= 4 ? 'xl' : n <= 7 ? 'l' : n <= 12 ? 'm' : 's';
     const fill = () => {
-      sRow.innerHTML = st.wines.map((w) => `<a class="cstage__wine" href="${FS.wineUrl(w.id)}" data-wine="${w.id}" style="--wine:${w.color};--stain:${stainOf(w)}">
+      sRow.innerHTML = st.wines.map((w) => `<a class="cstage__wine" href="${FS.wineUrl(w.id)}" data-wine="${w.id}" style="--wine:${w.color};--stain:${stainOf(w)};--b:${w.fondo}">
           <span class="cstage__glass"><i class="cstage__stain"></i><img src="${w.bottle}" alt="" width="653" height="1024" decoding="async"></span>
           <span class="cstage__label">${hy(short(w))}</span></a>`).join('');
       focusWine(st.wines[0]);
@@ -267,7 +267,7 @@
     // sopra una sezione [data-nav-trasparente] (la fiaba, mentre si cammina in orizzontale) l'header resta senza fondo
     const tr = document.querySelector('[data-nav-trasparente]')?.getBoundingClientRect(), sopra = tr && tr.top <= 0 && tr.bottom > nav.offsetHeight;
     nav.classList.toggle('is-solid', panel || (scrollY > 8 && !sopra));
-    nav.dataset.tone = !panel && underIsDark() ? 'dark' : 'light';
+    nav.dataset.tone = !panel && (nav.dataset.forza ? nav.dataset.forza === 'dark' : underIsDark()) ? 'dark' : 'light'; // forza: in moderna H la sezione dopo è già dipinta sotto la barra (js/moderna-f.js)
     const line = innerHeight * 0.4;
     let cur = sections.find((id) => { const r = document.getElementById(id)?.getBoundingClientRect(); return r && r.top <= line && r.bottom > line; });
     if (!cur && document.body.classList.contains('page-vino')) cur = 'vino'; // nella scheda di un vino la voce corrente è Vini
@@ -349,8 +349,9 @@
     // da tastiera il click non ha coordinate: si versa dal centro del link
     const b = a.getBoundingClientRect();
     const x = e.detail ? e.clientX : b.left + b.width / 2, y = e.detail ? e.clientY : b.top + b.height / 2;
+    const bt = a.closest('.fb-zoom')?.querySelector('.fb-zoom__bt')?.getBoundingClientRect(); // dalla finestra della bottiglia: la scheda la fa partire da lì (js/pagine.js)
     spread(x, y, w.color, () => {
-      try { sessionStorage.setItem('fs-pour', JSON.stringify({ id: w.id, color: w.color, t: Date.now() })); } catch (err) {}
+      try { sessionStorage.setItem('fs-pour', JSON.stringify({ id: w.id, color: w.color, t: Date.now(), r: bt && [bt.left, bt.top, bt.width, bt.height] })); } catch (err) {}
       location.href = a.href;
     });
   });
@@ -395,15 +396,6 @@
   }
 
   /* ---------- footer ---------- */
-  const form = document.querySelector('.foot__form');
-  form?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const input = form.querySelector('input'), note = document.querySelector('.foot__note');
-    const ok = input.checkValidity();
-    input.setAttribute('aria-invalid', !ok);
-    note.textContent = ok ? 'Grazie. Nel prototipo l’iscrizione non è collegata: nessun dato è stato inviato.' : 'Scrivi un indirizzo email valido.';
-    if (!ok) input.focus();
-  });
   // le collezioni del footer aprono il menu dei vini sulla collezione
   document.querySelectorAll('.foot [data-col]').forEach((b) => b.addEventListener('click', () => document.dispatchEvent(new CustomEvent('fs:open-cantina', { detail: { col: b.dataset.col } }))));
 })();

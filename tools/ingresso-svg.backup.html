@@ -1,0 +1,24 @@
+<!-- INGRESSO dal portone: preloader della prima visita della home (js/ingresso.js, css/ingresso.css). Automatico, senza bottoni.
+     Esiste solo con html.ingresso-attivo (deciso nel <head>). Il marchio usa le coordinate di assets/logo/feudi-marchio.svg.
+     1) torre e corona si disegnano a filo d'oro  2) la torre si riempie d'oro come un calice, il livello è il caricamento vero
+     3) dal portone filtra la luce, i battenti si aprono  4) la camera attraversa il portone ed è la hero. -->
+<div class="ingresso" data-ingresso role="dialog" aria-modal="true" aria-label="Caricamento del sito">
+  <div class="ingresso-battenti" aria-hidden="true"><i></i><i></i></div>
+  <svg class="ingresso-scena" viewBox="0 0 60.05 89.35" aria-hidden="true" focusable="false">
+    <defs>
+      <clipPath id="ingresso-forma">
+        <path d="M0 0.53 17.69 13.2 30.02 0.34 42.35 13.2 60.05 0.53 60.05 23.31 0 23.31Z"/>
+        <path d="M0 29.14H60.05V89.35H36.27V56.31H23.78V89.35H0Z"/>
+      </clipPath>
+    </defs>
+    <path class="ingresso-notte" fill-rule="evenodd" d="M-1e4 -1e4H1e4V1e4H-1e4Z"/>
+    <path class="ingresso-oro" clip-path="url(#ingresso-forma)" d=""/>
+    <path class="ingresso-filo" pathLength="1" d="M0 0.53 17.69 13.2 30.02 0.34 42.35 13.2 60.05 0.53 60.05 23.31 0 23.31Z"/>
+    <path class="ingresso-filo" pathLength="1" d="M0 29.14H60.05V89.35H36.27V56.31H23.78V89.35H0Z"/>
+  </svg>
+  <div class="ingresso-ui" aria-hidden="true">
+    <span class="ingresso-scritta logo"></span>
+    <p class="ingresso-conta"><span data-conta>0</span>%</p>
+  </div>
+  <button class="btn ingresso-salta" type="button" aria-label="Salta l'ingresso">Salta</button>
+</div>

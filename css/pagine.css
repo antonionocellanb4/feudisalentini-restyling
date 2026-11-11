@@ -1,0 +1,372 @@
+/* PAGINE azienda.html e vino.html, versione 3 (6 nov 2026, "lo sticky laterale è un po' passato di moda"), nello stile di moderna H: fondi dipinti crema e notte,
+   passaggi a pennellate, foto vere, titoli sottili, un solo oro. Ogni pagina è un palco a tutto schermo: il soggetto sta al centro e le scene entrano ai lati
+   (js/pagine.js scena). Sul telefono le scene vanno in colonna. Le foto delle bottiglie non si toccano: si spostano solo perché il vetro posi sul filo
+   (--b / fondo = js/data.js FONDO). La versione 2 è in css/pagine-v2.css, la 1 in css/pagine-v1.css. Script: js/pagine.js */
+@property --k { syntax: '<number>'; inherits: false; initial-value: 1; }
+@property --r { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+
+.pg-crema { background: url(../assets/quadri/crema.webp) center / cover no-repeat, var(--cream); color: var(--ink); }
+.pg-crema-2 { background: var(--cream); color: var(--ink); }
+@media (max-width: 860px) { .pg-crema { background-image: url(../assets/quadri/crema-m.webp); } }
+.pg-sec { position: relative; padding: clamp(72px, 9vw, 128px) var(--pad-x); }
+.pg-in { max-width: var(--max); margin-inline: auto; }
+.pg-h1, .pg-h2 { margin: 0; font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); line-height: .96; text-wrap: balance; }
+.pg-h1 { font-size: clamp(3rem, 6.4vw, 7.6rem); }
+.pg-h2 { font-size: clamp(2.5rem, 4.8vw, 5rem); }
+.pg-lead { margin: 0; font-size: var(--fs-lead); line-height: 1.45; color: var(--ink-2); max-width: 44ch; text-wrap: pretty; }
+.pg-p { margin: 0; color: var(--ink-2); max-width: 54ch; text-wrap: pretty; }
+/* i palchi hanno il fondo crema dipinto; sopra, il crema o la notte entrano a pennellate (js/pagine.js pennella: bordo-v.webp è il filo di setole) */
+.vn__st, .az__st, .az-o__st, .vn__crema, .az__crema { background: url(../assets/quadri/crema.webp) center / cover no-repeat, var(--cream); }
+@media (max-width: 860px) { .vn__st, .az__st, .az-o__st, .vn__crema, .az__crema { background-image: url(../assets/quadri/crema-m.webp); } }
+.vn__crema, .az-o__notte, .az__crema { position: absolute; inset: 0; pointer-events: none;
+  -webkit-mask-image: url(../assets/quadri/bordo-v.webp), linear-gradient(#000, #000); mask-image: url(../assets/quadri/bordo-v.webp), linear-gradient(#000, #000);
+  -webkit-mask-repeat: repeat-y, no-repeat; mask-repeat: repeat-y, no-repeat; -webkit-mask-size: 170px auto, 0 100%; mask-size: 170px auto, 0 100%; -webkit-mask-position: 300vw 0, 300vw 0; mask-position: 300vw 0, 300vw 0; }
+.vn__crema { z-index: 0; }
+/* le scene dei palchi (js/pagine.js scena): sul computer stanno tutte nello stesso schermo e si danno il cambio; i titoli salgono lettera per lettera */
+:is(.vn-sc, .az-sc) .ch { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .12em; margin-bottom: -.12em; }
+:is(.vn-sc, .az-sc) .ch > span { display: inline-block; }
+
+/* ================= VINO ================= */
+.vn { position: relative; display: grid; background: var(--cream); }
+.vn__a, .vn__flusso { grid-area: 1 / 1; min-width: 0; }
+.vn__st { position: sticky; top: 0; height: 100lvh; overflow: hidden; }
+.vn__quadro { position: absolute; max-width: none; will-change: transform; }
+.vn[data-quadro="0"] .vn__quadro, .vn[data-quadro="0"] .vn__targa { display: none; }
+.vn__gigante { position: absolute; left: 0; right: 0; z-index: 2; margin: 0; text-align: center; white-space: nowrap; pointer-events: none;
+  font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: -.05em; line-height: .95; color: #ddd2c4; } /* come il nome grande del palco della cantina */
+.vn__gigante .ch { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .12em; margin-bottom: -.12em; }
+.vn__gigante .ch > span { display: inline-block; }
+.vn__macchia { position: absolute; z-index: 1; aspect-ratio: 1; translate: -50% -50%; background-color: var(--wine);
+  -webkit-mask: var(--stain) center / contain no-repeat; mask: var(--stain) center / contain no-repeat;
+  opacity: var(--su, 0); scale: calc((.45 + .55 * var(--su, 0)) * var(--k)); rotate: calc((1 - var(--su, 0)) * -30deg + var(--r) + var(--giro, 0deg));
+  transition: --k 1s var(--ease), --r 1.2s var(--ease), background-color .9s var(--ease); }
+/* le scene muovono la macchia: il calice la allarga (il colore del vino), la tavola la stringe, i riconoscimenti la fanno d'oro */
+.vn__st[data-cap="calice"] .vn__macchia { --k: 1.12; --r: 22deg; }
+.vn__st[data-cap="tavola"] .vn__macchia { --k: .88; --r: 10deg; }
+.vn__st[data-cap="cantina"] .vn__macchia { --k: 1; --r: 40deg; }
+.vn__st[data-cap="premi"] .vn__macchia { --k: 1.06; --r: -8deg; background-color: var(--gold); }
+.vn__foto { position: absolute; z-index: 3; width: auto; max-width: none; will-change: transform, opacity;
+  clip-path: inset(0 0 calc((1 - var(--fondo, .91)) * 100%) 0); } /* sotto il filo il riflesso non si vede */
+.vn__filo { position: absolute; z-index: 1; height: 1px; background: var(--ink); translate: -50% 0; }
+.vn__targa { position: absolute; left: var(--pad-x); bottom: clamp(20px, 5vh, 48px); z-index: 4; width: min(320px, calc(100vw - 2 * var(--pad-x))); margin: 0; padding: 16px 18px;
+  background: var(--cream); border-radius: var(--r); font-size: .9375rem; line-height: 1.36; color: var(--ink-2); }
+.vn__targa b { display: block; font-weight: 400; font-size: .875rem; color: var(--gold-ink); }
+.vn__targa strong { display: block; margin: 4px 0 6px; font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(1.7rem, 2.2vw, 2.1rem); line-height: 1.04; color: var(--ink); }
+
+.vn__flusso { position: relative; z-index: 4; height: calc(var(--lungo, 8) * 100lvh); pointer-events: none; }
+.vn__scena { position: sticky; top: 0; height: 100lvh; }
+.page-pg .m-pill { display: none; } /* qui fa quello che fa già Vini nell'header, e copriva la bottiglia */
+/* la bottiglia sta al centro sul filo; le scene ai due lati, fuori dalla macchia (--gap da js/pagine.js misura) */
+.vn-sc { position: absolute; inset: 0; visibility: hidden; }
+.vn-sx, .vn-dx { position: absolute; top: calc(var(--header-h) + 24px); bottom: 10lvh; display: grid; align-content: center; justify-items: start; gap: 18px; pointer-events: auto; }
+.vn-sx { left: var(--pad-x); right: calc(50% + var(--gap, 260px)); }
+.vn-dx { left: calc(50% + var(--gap, 260px)); right: var(--pad-x); }
+.vn-sc--intro .vn-nome { font-size: clamp(2.6rem, 4.2vw, 5.6rem); }
+.vn-sc--intro .vn-desc { font-size: 1.125rem; max-width: 52ch; }
+/* la tavola: il testo in alto, i piatti si posano sul filo ai lati della bottiglia, il nome sotto il filo */
+.vn-sc--tavola .vn-sx { align-content: start; padding-top: 4lvh; }
+.vn-tavola { list-style: none; margin: 0; padding: 0; }
+.vn-tavola li { position: absolute; display: grid; justify-items: center; gap: 10px; }
+.vn-tavola img { width: 100%; aspect-ratio: 1; object-fit: contain; }
+.vn-tavola span { font-size: var(--fs-small); line-height: 1.2; color: var(--ink-2); white-space: nowrap; }
+.vn__t { margin: 0; font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(1.9rem, 2.6vw, 2.8rem); line-height: 1; color: var(--gold-ink); }
+.vn-col { padding: 0; border: 0; background: none; font: inherit; font-size: var(--fs-small); color: var(--gold-ink); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+.vn-col:hover { color: var(--ink); }
+.vn-denom { margin: -4px 0 4px; font-size: 1.2rem; color: var(--ink); }
+.vn-fatti { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; margin: 8px 0 0; }
+.vn-fatti div { padding: 0 22px; border-left: 1px solid var(--line); }
+.vn-fatti div:first-child { padding-left: 0; border-left: 0; }
+.vn-fatti dt { font-size: var(--fs-small); color: var(--mute); }
+.vn-fatti dd { margin: 2px 0 0; font-size: 1.125rem; }
+.vn-grande { margin: 0; font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(2.4rem, 4.4vw, 4.6rem); line-height: 1.04; text-wrap: balance; }
+.vn-parole { list-style: none; margin: 0; padding: 0; font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(2rem, 3.4vw, 3.6rem); line-height: 1.08; }
+.vn-parole li:first-letter { text-transform: uppercase; }
+.vn-dati { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(24px, 3vw, 48px); width: 100%; margin: 0; }
+.vn-dati > div { padding: 14px 0 16px; border-top: 1px solid var(--line); }
+.vn-dati > .vn-dati__largo { grid-column: 1 / -1; }
+.vn-dati dt { font-size: var(--fs-small); color: var(--mute); }
+.vn-dati dd { margin: 4px 0 0; color: var(--ink); text-wrap: pretty; }
+.vn-medaglie { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); row-gap: 28px; width: min(100%, calc(var(--cols, 3) * 210px)); list-style: none; margin: 8px 0 0; padding: 0; }
+.vn-medaglie li { display: grid; align-content: start; gap: 10px; text-align: center; }
+.vn-med { display: block; overflow: clip; border-bottom: 1px solid var(--ink); } /* le medaglie salgono da dietro il filo; i fili si toccano */
+.vn-medaglie img { display: block; width: 100%; height: clamp(76px, 13vh, 112px); object-fit: contain; padding-inline: 10px; }
+.vn-medaglie p { margin: 0; display: grid; gap: 2px; padding-inline: 8px; font-size: var(--fs-small); line-height: 1.32; color: var(--ink-2); text-wrap: balance; }
+.vn-medaglie b { font-weight: 500; font-size: 1.0625rem; color: var(--gold-ink); }
+
+.vn-altri { display: grid; align-content: center; min-height: 100lvh; padding-block: calc(var(--header-h) + 24px) 40px; background: url(../assets/quadri/crema.webp) center / cover no-repeat, var(--cream); }
+.vn-altri .pg-in { display: grid; gap: 8px; width: 100%; }
+.vn-altri__k { margin: 0; font-size: var(--fs-small); color: var(--gold-ink); }
+/* tutti in fila, larghi quanto c'è posto: la Classica (12) sta in una riga da 1200px in su; sotto, la fila scorre di lato */
+.vn-fila { --fig: clamp(280px, 52svh, 600px); container-type: inline-size; display: flex; justify-content: safe center; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; list-style: none; margin: 40px 0 0; padding: 0; }
+.vn-fila::-webkit-scrollbar { display: none; }
+.vn-b { --slot: max(100px, min(250px, 100cqw / var(--n, 6))); flex: 0 0 var(--slot); min-width: 0; }
+.vn-b a { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; gap: 14px; color: inherit; text-decoration: none; }
+.vn-b__fig { display: flex; justify-content: center; align-items: flex-end; width: 100%; height: min(var(--fig), var(--slot) * 3); overflow: clip; border-bottom: 1px solid var(--ink); } /* i fili si toccano: una sola linea sotto tutte */
+.vn-b__fig img { flex: none; height: 100%; width: auto; max-width: none; translate: 0 calc((1 - var(--b, .91)) * 100%); transition: scale .5s var(--ease); transform-origin: 50% calc(var(--b, .91) * 100%); }
+.vn-b a:hover img { scale: 1.06; }
+.vn-b__n { width: 100%; text-align: center; font-size: .9375rem; line-height: 1.3; color: var(--ink-2); hyphens: auto; } /* niente spezzature a metà parola: Appassimento sta in 100px */
+.vn-b a:hover .vn-b__n { color: var(--ink); }
+.vn-b a:focus-visible { outline: 2px solid var(--gold-ink); outline-offset: 4px; }
+.vn-vuoto .pg-in { display: grid; gap: 24px; justify-items: start; padding-top: var(--header-h); }
+
+/* ================= AZIENDA ================= */
+/* un palco solo: sotto la cornice (il quadro del feudo che torna foto, poi la finestra), il crema, i luoghi a tutto schermo, il crema dei riconoscimenti; sopra le scene */
+.az { position: relative; display: grid; background: var(--cream); }
+.az__a, .az__flusso { grid-area: 1 / 1; min-width: 0; }
+.az__st { position: sticky; top: 0; height: 100lvh; overflow: hidden; }
+.az__cornice, .az__posti { position: absolute; inset: 0; overflow: hidden; }
+.az__cornice { z-index: 1; visibility: hidden; } /* la mostra js/pagine.js col primo disegno: prima degli script la foto non deve apparire a tutto schermo */ .az__crema { z-index: 2; } .az__posti { z-index: 3; } .az__crema--2 { z-index: 4; }
+.az__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.az__img { -webkit-mask-image: url(../assets/quadri/bordo-v.webp), linear-gradient(#000, #000); mask-image: url(../assets/quadri/bordo-v.webp), linear-gradient(#000, #000);
+  -webkit-mask-repeat: repeat-y, no-repeat; mask-repeat: repeat-y, no-repeat; -webkit-mask-size: 170px auto, 0 100%; mask-size: 170px auto, 0 100%;
+  -webkit-mask-position: 300vw 0, 300vw 0; mask-position: 300vw 0, 300vw 0; } /* ogni foto entra a pennellate (js/pagine.js pennella); prima il filo di setole sta fuori, a destra */
+.az__img.is-pieno { -webkit-mask: none; mask: none; }
+.az__cornice .az__img { object-position: 50% 10%; } /* nella finestra il feudo con un po' di cielo sopra le merlature */
+/* l'apertura: la notte dipinta, ferma sopra il palco; il nome al centro e i numeri dell'azienda attorno, grandi e di misure diverse
+   (js/pagine.js: scorrendo si allargano verso i bordi). Poi si ritira a pennellate verso destra (stessa maschera dei passaggi) */
+.az__apre { grid-area: 1 / 1; align-self: start; position: sticky; top: 0; z-index: 6; height: 100lvh; overflow: clip; pointer-events: none; }
+.az-apre { position: absolute; inset: 0; color: var(--paper); background: url(../assets/quadri/notte.webp) center / cover no-repeat, var(--night);
+  -webkit-mask-image: url(../assets/quadri/bordo-v.webp), linear-gradient(#000, #000); mask-image: url(../assets/quadri/bordo-v.webp), linear-gradient(#000, #000);
+  -webkit-mask-repeat: repeat-y, no-repeat; mask-repeat: repeat-y, no-repeat; }
+.az-apre { --hr: min(112lvh, 55vw); } /* l'altezza del ramo: il grappolo finisce a 1,25 volte questa misura dal bordo sinistro */
+.az-apre__testo { position: absolute; left: calc(var(--hr) * 1.25 - 4vw + 40px); right: var(--pad-x); top: 50%; translate: 0 -50%; display: grid; justify-items: start; gap: 18px; } /* sempre oltre il grappolo: mai sopra il dipinto */
+/* il ramo dipinto: entra dall'angolo in basso a sinistra, il grappolo verso il centro; il nome sta a destra, mai sopra il dipinto */
+.az-ramo { position: absolute; left: -4vw; top: calc(118lvh - var(--hr)); height: var(--hr); width: auto; max-width: none; transform-origin: 0 85%;
+  -webkit-mask-image: url(../assets/quadri/bordo-v.webp), linear-gradient(#000, #000); mask-image: url(../assets/quadri/bordo-v.webp), linear-gradient(#000, #000);
+  -webkit-mask-repeat: repeat-y, no-repeat; mask-repeat: repeat-y, no-repeat; -webkit-mask-size: 170px auto, 0 100%; mask-size: 170px auto, 0 100%; -webkit-mask-position: 300vw 0, 300vw 0; mask-position: 300vw 0, 300vw 0; }
+.az-ramo.is-pieno { -webkit-mask: none; mask: none; }
+.az-ramo--gl { width: auto; aspect-ratio: 3 / 2; } /* la tela del vento (js/pagine.js ventoPronto) prende il posto della foto dipinta */
+.az-apre__t { margin: 0; font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(3rem, min(6vw, 13vh), 8.4rem); line-height: .96; }
+.az-apre__d { margin: 0; max-width: 34rem; font-size: 1.125rem; line-height: 1.45; color: var(--paper-2); text-wrap: balance; }
+/* i numeri, sezione a parte sulla notte sotto il ramo: i dipinti (le altre prove in css/pagine-v4.css) */
+.az-num { position: absolute; inset: 0; pointer-events: none; }
+.az-num b { font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: -.05em; line-height: .85; color: var(--gold); }
+.az-num span, .az-num p { color: var(--paper); }
+/* due per schermo, la cifra d'oro dipinta (la macchia d'oro di H dentro le lettere) che arriva a pennellate */
+.az-n1 { position: absolute; top: 50%; width: 46vw; translate: 0 -50%; display: grid; justify-items: center; gap: 16px; text-align: center; visibility: hidden; }
+.az-n1--l { left: 2vw; } .az-n1--r { right: 2vw; }
+.az-n1 b { padding-inline: .08em; font-size: clamp(9rem, min(26vw, 52vh), 30rem); color: transparent; background: var(--nav-stain-0) center / cover, var(--gold); background-blend-mode: soft-light; -webkit-background-clip: text; background-clip: text;
+  -webkit-mask-image: url(../assets/quadri/bordo-v.webp), linear-gradient(#000, #000); mask-image: url(../assets/quadri/bordo-v.webp), linear-gradient(#000, #000);
+  -webkit-mask-repeat: repeat-y, no-repeat; mask-repeat: repeat-y, no-repeat; -webkit-mask-size: 170px auto, 0 100%; mask-size: 170px auto, 0 100%; -webkit-mask-position: 300vw 0, 300vw 0; mask-position: 300vw 0, 300vw 0; }
+.az-n1 > span { max-width: 22ch; font-size: 1.25rem; line-height: 1.35; opacity: 0; }
+/* il grappolo dipinto (tools/dipingi_grappolo.py) pende dall'alto fra le due cifre: il gambo sparisce sotto la barra, dondola piano */
+.az-grappolo { position: absolute; left: 50%; top: 0; height: min(92lvh, 50vw); width: auto; max-width: none; translate: -50% 0; transform-origin: 54% 0; visibility: hidden;
+  -webkit-mask-image: url(../assets/quadri/bordo-v.webp), linear-gradient(#000, #000); mask-image: url(../assets/quadri/bordo-v.webp), linear-gradient(#000, #000);
+  -webkit-mask-repeat: repeat-y, no-repeat; mask-repeat: repeat-y, no-repeat; -webkit-mask-size: 170px auto, 0 100%; mask-size: 170px auto, 0 100%; -webkit-mask-position: 300vw 0, 300vw 0; mask-position: 300vw 0, 300vw 0;
+  animation: az-dondola 3.8s ease-in-out infinite alternate paused; }
+.az-grappolo.is-on { animation-play-state: running; }
+@keyframes az-dondola { from { rotate: -1.6deg; } to { rotate: 1.6deg; } }
+@media (prefers-reduced-motion: reduce) { .az-grappolo { animation: none; } }
+.az__flusso { position: relative; z-index: 5; height: calc(var(--lungo, 12) * 100lvh); pointer-events: none; }
+.az__scena { position: sticky; top: 0; height: 100lvh; }
+.az-sc { --gapa: min(17vw, 42lvh); position: absolute; inset: 0; visibility: hidden; }
+.az-sx, .az-dx { position: absolute; top: calc(var(--header-h) + 24px); bottom: 8lvh; display: grid; align-content: center; justify-items: start; gap: 22px; margin: 0; pointer-events: auto; }
+.az__foto-m { display: none; }
+/* 1. la famiglia: il nome a sinistra, la finestra sulla masseria al centro (js/pagine.js: stessa misura di --gapa), il racconto a destra */
+.az-sc--famiglia .az-sx { left: var(--pad-x); right: calc(50% + var(--gapa) + 40px); }
+.az-sc--famiglia .az-dx { left: calc(50% + var(--gapa) + 40px); right: var(--pad-x); }
+.az-sc--famiglia .az-t { font-size: clamp(2.4rem, 3.8vw, 4.6rem); }
+/* il manifesto del catalogo: la frase al centro si accende parola per parola, le foto in bianco e nero del catalogo salgono ai lati (mai sotto il testo) */
+.az-sc--manifesto { clip-path: inset(var(--header-h) 0 0 0); } /* le foto che salgono spariscono sotto la barra, non ci passano sopra */
+.az-man__testo { position: absolute; left: 25vw; right: 25vw; top: 50%; translate: 0 -50%; display: grid; justify-items: center; gap: 26px; text-align: center; }
+.az-man__frase { margin: 0; font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(2.2rem, min(3.8vw, 8vh), 4.6rem); line-height: 1.08; text-wrap: balance; }
+.az-man__testo .pg-p { max-width: 50ch; font-size: 1.125rem; }
+.az-man__f { position: absolute; margin: 0; border-radius: var(--r); overflow: hidden; }
+.az-man__f img { display: block; width: 100%; height: auto; }
+.az-man__f--a { left: 4vw; top: 16lvh; width: min(15vw, 30lvh); }
+.az-man__f--b { right: 4vw; top: 30lvh; width: min(17vw, 34lvh); }
+.az-man__f--c { left: 8vw; top: 64lvh; width: min(14vw, 28lvh); }
+/* 2. i vitigni: in alto il titolo e i quattro nomi (acceso quello delle bottiglie), sotto le bottiglie sul filo col nome grande dietro */
+.az-sc--vitigni { --hb: min(46lvh, 440px); }
+.az-sc--vitigni .az-sx { left: var(--pad-x); right: 44%; bottom: auto; align-content: start; gap: 14px; }
+.az-sc--vitigni .az-dx { left: auto; right: var(--pad-x); width: min(30vw, 420px); bottom: auto; align-content: start; }
+.az-vit { list-style: none; padding: 0; width: 100%; gap: 0 !important; }
+.az-vit li { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 6px 0; border-top: 1px solid var(--line); }
+.az-vit li:last-child { border-bottom: 1px solid var(--line); }
+.az-vit span { font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(1.4rem, 2vw, 2.2rem); line-height: 1.1; color: #a39788; transition: color .5s var(--ease); } /* spenti ma leggibili */
+.az-vit li.is-on span { color: var(--ink); }
+.az-vit b { flex: none; font-weight: 400; font-size: var(--fs-small); color: var(--gold-ink); }
+.az-gigante { position: absolute; left: 0; right: 0; top: calc(92lvh - var(--hb) * .82); z-index: 0; margin: 0; text-align: center; white-space: nowrap; pointer-events: none;
+  font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: -.05em; line-height: .95; color: #ddd2c4; } /* come il nome grande della scheda del vino */
+.az-gigante .ch { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .12em; margin-bottom: -.12em; }
+.az-gigante .ch > span { display: inline-block; }
+.az-file { position: absolute; left: var(--pad-x); right: var(--pad-x); top: calc(92lvh - var(--hb)); z-index: 1; height: var(--hb); container-type: inline-size; }
+.az-fila { position: absolute; inset: 0; display: flex; justify-content: center; align-items: flex-end; list-style: none; margin: 0; padding: 0; }
+.az-fila li { --slot: min(calc(var(--hb) * .34), calc(100cqw / var(--n, 6))); flex: 0 0 var(--slot); min-width: 0; height: 100%; overflow-x: visible; overflow-y: clip; border-bottom: 1px solid var(--ink); } /* i fili si toccano: una sola linea */
+.az-fila a { display: flex; justify-content: center; align-items: flex-end; height: 100%; pointer-events: auto; transform: translateY(105%); }
+.az-fila img { flex: none; width: auto; max-width: none; height: min(100%, calc(var(--slot) / .34)); translate: 0 calc((1 - var(--b, .91)) * 100%); transform-origin: 50% calc(var(--b, .91) * 100%); transition: scale .5s var(--ease); pointer-events: none; }
+.az-fila a:hover img { scale: 1.05; }
+.az-fila a:focus-visible { outline: 2px solid var(--gold-ink); outline-offset: -2px; }
+/* 3. il territorio: il titolo in alto come in apertura, sotto la riga dei luoghi (acceso quello della foto) e la cornice dove entrano le foto; il racconto al centro prima delle foto */
+.az-sc--territorio .az-banda { position: absolute; top: calc(var(--header-h) + clamp(4px, 2.4vh, 28px)); left: var(--pad-x); right: var(--pad-x); display: grid; justify-items: center; gap: 12px; text-align: center; }
+.az-sc--territorio .pg-h2 { font-size: clamp(2.6rem, min(5.6vw, 10vh), 6.4rem); line-height: 1; }
+.az-luoghi { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 28px; list-style: none; margin: 0; padding: 0; opacity: 0; }
+.az-luoghi span { font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(1.2rem, 1.6vw, 1.7rem); line-height: 1.2; color: #a39788; transition: color .5s var(--ease); } /* spenti ma leggibili */
+.az-luoghi li.is-on span { color: var(--ink); }
+.az-terr-p { position: absolute; left: 50%; top: 58%; width: min(54ch, calc(100% - 2 * var(--pad-x))); translate: -50% -50%; margin: 0; font-size: 1.125rem; text-align: center; opacity: 0; }
+/* 4. i riconoscimenti anno per anno: in alto il titolo e gli anni (acceso quello in vista), l'anno grande dietro, le medaglie che salgono dal filo e sotto il filo concorso e vini */
+.az-sc--premi { --mh: min(17lvh, 150px); }
+.az-sc--premi .az-sx { left: var(--pad-x); right: 44%; bottom: auto; align-content: start; gap: 14px; }
+.az-sc--premi .az-dx { left: auto; right: var(--pad-x); width: min(30vw, 420px); bottom: auto; align-content: start; }
+.az-sc--premi .az-gigante { top: calc(66lvh - var(--mh) - 13lvh); }
+.az-anni { position: absolute; left: var(--pad-x); right: var(--pad-x); top: calc(66lvh - var(--mh)); bottom: 0; }
+.az-anno { position: absolute; inset: 0; }
+.az-anno__t { display: none; }
+.az-anno ul { display: flex; justify-content: center; list-style: none; margin: 0; padding: 0; }
+.az-anno li { flex: 0 1 min(200px, calc(100% / var(--n, 5))); min-width: 0; }
+.az-med { display: block; height: var(--mh); overflow: clip; border-bottom: 1px solid var(--ink); } /* i fili si toccano: una sola linea */
+.az-med img { display: block; width: 100%; height: 100%; object-fit: contain; padding-inline: 10px; transform: translateY(105%); }
+.az-anno p { display: grid; gap: 2px; margin: 12px 0 0; padding-inline: 10px; font-size: .9375rem; line-height: 1.3; text-align: center; color: var(--ink-2); text-wrap: balance; opacity: 0; }
+.az-anno p b { font-weight: 500; font-size: 1.0625rem; color: var(--gold-ink); }
+.az-anno p span { color: var(--mute); }
+
+/* 5. sostenibilità: la grammatica dei premi di H (moderna-e-sotto pv-dg) sul fondo notte. Prima le pennellate, poi i numeri in diagonale sopra la macchia d'oro, il testo che cambia con loro, gli obiettivi alla fine */
+.az-o { position: relative; color: var(--paper); }
+.az-o__a { height: calc((3.1 + var(--n, 6) * .7) * 100lvh); } /* pennellate e titolo (1,4 schermi), 0,7 per ogni numero, poi gli obiettivi */
+.az-o__st { position: sticky; top: 0; height: 100lvh; overflow: hidden; }
+.az-o__notte { z-index: 0; background: url(../assets/quadri/notte.webp) center / cover no-repeat, var(--night); }
+.az-o__oro { position: absolute; z-index: 1; left: 66%; top: calc(50% + 16px); width: min(58vw, 118vh); aspect-ratio: 1; translate: -50% -50%; pointer-events: none;
+  opacity: var(--su, 0); scale: calc(.7 + .3 * var(--su, 0)); background: var(--nav-stain-0) center / contain no-repeat, var(--gold); background-blend-mode: soft-light;
+  -webkit-mask: var(--nav-stain-0) center / contain no-repeat; mask: var(--nav-stain-0) center / contain no-repeat; } /* la stessa macchia d'oro dei premi di H */
+.az-o__testa { position: absolute; z-index: 3; left: var(--pad-x); top: 50%; display: grid; gap: 24px; width: min(46vw, 680px); transform: translateY(-50%); opacity: 0; }
+.az-o__testa .pg-h2 { font-size: clamp(3rem, 6.4vw, 7.6rem); }
+.az-o .pg-lead { color: var(--paper-2); }
+#az-o-t .ch { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .12em; margin-bottom: -.12em; }
+#az-o-t .ch > span { display: inline-block; }
+.az-o__dischi { position: absolute; inset: 0; z-index: 2; margin: 0; padding: 0; list-style: none; pointer-events: none; }
+.az-o__dischi li { position: absolute; left: 0; top: 0; display: grid; place-items: center; border-radius: 50%; background: var(--cream); container-type: size; visibility: hidden; will-change: transform; }
+.az-o__dischi span { font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: -.05em; font-size: 27cqw; line-height: 1; color: var(--ink); white-space: nowrap; }
+.az-o__testi { position: absolute; z-index: 3; left: var(--pad-x); bottom: clamp(32px, 9vh, 88px); width: min(36vw, 560px); height: 0; margin: 0; padding: 0; list-style: none; }
+.az-o__testi li { position: absolute; left: 0; right: 0; bottom: 0; opacity: 0; visibility: hidden; }
+.az-o__testi h3 { margin: 0 0 12px; font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(2rem, 3.6vw, 3.8rem); line-height: 1.02; text-wrap: balance; }
+.az-o__testi p { margin: 0; font-size: 1.0625rem; line-height: 1.45; color: var(--paper-2); text-wrap: pretty; }
+.az-o__fine { position: absolute; z-index: 3; left: var(--pad-x); top: 50%; display: grid; justify-items: start; gap: 22px; width: min(36vw, 560px); transform: translateY(-50%); visibility: hidden; }
+.az-o__fine > .pg-h2, .az-o__fine > .btn, .az-obiettivi li { opacity: 0; }
+.az-obiettivi { margin: 0; padding: 0; list-style: none; display: grid; gap: 0; width: 100%; }
+.az-obiettivi li { padding: 14px 0; border-top: 1px solid var(--line-dark); font-size: 1.2rem; line-height: 1.4; color: var(--paper); }
+.az-obiettivi li:last-child { border-bottom: 1px solid var(--line-dark); }
+
+/* 6. dove trovarci: indirizzo e contatti, accanto la mappa del catalogo che entra a pennellate */
+.az-dove { display: grid; align-content: center; min-height: 100lvh; padding-block: calc(var(--header-h) + 32px) 56px; }
+.az-dove__in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: clamp(32px, 6vw, 96px); width: 100%; }
+.az-dove__testo { display: grid; justify-items: start; gap: 24px; }
+.az-dove address { font-style: normal; font-size: 1.25rem; line-height: 1.5; color: var(--ink); }
+.az-dove__dati { display: grid; gap: 10px; margin: 0; }
+.az-dove__dati div { display: grid; grid-template-columns: 6.5rem 1fr; gap: 12px; }
+.az-dove__dati dt { color: var(--mute); }
+.az-dove__dati dd { margin: 0; color: var(--ink); }
+.az-dove__dati a { color: inherit; text-underline-offset: 4px; }
+.az-dove__mappa { justify-self: center; width: 100%; max-width: 620px; max-height: calc(100lvh - var(--header-h) - 96px); height: auto; object-fit: contain;
+  -webkit-mask-image: url(../assets/quadri/bordo-v.webp), linear-gradient(#000, #000); mask-image: url(../assets/quadri/bordo-v.webp), linear-gradient(#000, #000);
+  -webkit-mask-repeat: repeat-y, no-repeat; mask-repeat: repeat-y, no-repeat; -webkit-mask-size: 170px auto, 0 100%; mask-size: 170px auto, 0 100%; -webkit-mask-position: 300vw 0, 300vw 0; mask-position: 300vw 0, 300vw 0; }
+
+/* ---------- telefono ---------- */
+@media (max-width: 860px) {
+  .pg-h1 { font-size: clamp(2.6rem, 12vw, 3.8rem); }
+  .pg-h2 { font-size: clamp(2.2rem, 10vw, 3.2rem); }
+  /* vino: il quadro e la bottiglia in un palco a sé, poi le scene una sotto l'altra */
+  .vn { display: block; }
+  .vn__a { height: 250lvh; }
+  .vn[data-quadro="0"] .vn__a { height: 100lvh; }
+  .vn__flusso { height: auto; padding-inline: var(--pad-x); }
+  .vn__scena { position: static; height: auto; }
+  .vn-sc { position: static; visibility: visible; display: grid; gap: 22px; padding-block: 48px 0; }
+  .vn-sx, .vn-dx { position: static; gap: 16px; }
+  .vn-sc--intro { padding-top: 40px; }
+  .vn-sc--intro .vn-nome { font-size: clamp(2.6rem, 12vw, 3.8rem); }
+  .vn-sc--tavola .vn-sx { padding-top: 0; }
+  .vn-sc:last-child { padding-bottom: 56px; }
+  .vn-fatti div { padding: 0 16px; }
+  .vn-dati { grid-template-columns: minmax(0, 1fr); }
+  .vn-medaglie { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .vn-medaglie img { height: 88px; }
+  .vn-tavola { display: flex; flex-wrap: wrap; gap: 14px 28px; }
+  .vn-tavola li { position: static; width: 92px; }
+  .vn-tavola span { white-space: normal; text-align: center; }
+  .vn-fila { --fig: clamp(200px, 36svh, 280px); margin-inline: calc(var(--pad-x) * -1); padding-inline: var(--pad-x); scroll-snap-type: x mandatory; justify-content: flex-start; }
+  .vn-b { --slot: 104px; scroll-snap-align: start; }
+  /* azienda: il quadro torna foto in un palco a sé, poi le scene in colonna, ognuna con la sua foto */
+  .az { display: block; }
+  .az__flusso { height: auto; }
+  .az__scena { position: static; height: auto; }
+  .az-sc { position: static; visibility: visible; display: grid; gap: 22px; padding: 56px var(--pad-x) 16px; }
+  .az-sx, .az-dx { position: static; display: grid; gap: 18px; }
+  .az-gigante, .az-file { display: none; }
+  .az__foto-m { display: block; width: 100%; aspect-ratio: 4 / 3; height: auto; object-fit: cover; border-radius: var(--r); }
+  .az-vit span { color: var(--ink); font-size: 1.9rem; white-space: nowrap; }
+  .az__apre { margin-bottom: -100lvh; } /* qui .az non è una griglia: l'apertura sta sopra il palco d'apertura e poi sparisce */
+  .az-apre__t { font-size: clamp(2.6rem, 12vw, 3.6rem); }
+  .az-apre__d { font-size: 1rem; }
+  .az-apre__testo { top: calc(var(--header-h) + 3lvh); translate: none; left: var(--pad-x); right: var(--pad-x); width: auto; gap: 10px; }
+  .az-ramo { left: -78vw; top: auto; bottom: -6lvh; height: 64lvh; }
+  .az-n1 { left: var(--pad-x); right: var(--pad-x); width: auto; translate: none; justify-items: start; text-align: left; } /* a sinistra: a destra pende il grappolo */
+  .az-grappolo { left: auto; right: 2vw; height: min(44lvh, 92vw); translate: none; }
+  .az-n1--l { top: calc(var(--header-h) + 4lvh); right: 40vw; } .az-n1--r { top: 52lvh; }
+  .az-n1 b { font-size: 40vw; }
+  .az-n1 > span { font-size: 1.0625rem; }
+  .az-man__testo { position: static; translate: none; justify-items: start; text-align: left; gap: 16px; }
+  .az-man__frase { font-size: clamp(1.9rem, 8.4vw, 2.6rem); }
+  .az-sc--manifesto { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .az-sc--manifesto .az-man__testo { grid-column: 1 / -1; grid-row: 1; }
+  .az-man__f { position: static; width: auto !important; aspect-ratio: 1; }
+  .az-man__f img { height: 100%; object-fit: cover; }
+  .az-dove__in { grid-template-columns: minmax(0, 1fr); }
+  .az-dove__mappa { max-width: 420px; }
+  .az-sc--territorio .az-banda { display: contents; }
+  .az-sc--territorio .pg-h2 { font-size: clamp(2.2rem, 10vw, 3.2rem); text-align: left; }
+  .az-terr-p { position: static; order: 1; width: auto; translate: none; text-align: left; opacity: 1; }
+  .az-luoghi { display: block; order: 2; opacity: 1; text-align: left; }
+  .az-luoghi span { color: var(--ink); }
+  .az-luoghi li { display: grid; gap: 12px; padding: 20px 0; border-bottom: 1px solid var(--line); }
+  .az-luoghi span { font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: 1.9rem; line-height: 1.05; }
+  .az-anni { position: static; display: grid; gap: 28px; }
+  .az-anno { position: static; }
+  .az-anno__t { display: flex; align-items: baseline; gap: 12px; margin: 0 0 12px; font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: 2rem; }
+  .az-anno__t span { font-family: var(--font); font-size: var(--fs-small); color: var(--gold-ink); letter-spacing: 0; }
+  .az-anno ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 20px; }
+  .az-med { height: 96px; }
+  .az-med img { transform: none; }
+  .az-anno p { opacity: 1; }
+  .az-sc--premi .az-gigante, .az-anni-i { display: none; }
+  .az-o__oro { left: 50%; top: 33%; width: min(130vw, 72vh); }
+  .az-o__testa, .az-o__fine { right: var(--pad-x); width: auto; }
+  .az-o__testa .pg-h2 { font-size: clamp(2.6rem, 12vw, 3.8rem); }
+  .az-o__testi { left: var(--pad-x); right: var(--pad-x); width: auto; bottom: 7svh; }
+  .az-o__testi h3 { font-size: clamp(1.8rem, 8vw, 2.4rem); }
+  .az-o__testi p { font-size: 1rem; }
+  .az-obiettivi li { font-size: 1.0625rem; }
+}
+
+/* ---- 404 (404.template.html, tools/dipingi_404.py): un acino vola contro lo schermo e scoppia sul vetro, poi il succo cola giù colata per colata.
+   Il testo a sinistra; la macchia sta nella sua metà e non passa mai sotto il testo */
+.e4 { position: relative; min-height: 100lvh; overflow: clip; display: grid; align-items: center; padding: calc(var(--header-h) + 32px) var(--pad-x) 56px; }
+.e4__testo { position: relative; z-index: 1; width: min(44%, 620px); display: grid; justify-items: start; gap: 22px; }
+.e4__num { margin: 0 0 -6px; font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: -.05em; line-height: .8; font-size: clamp(7rem, min(17vw, 30vh), 16rem); color: var(--ink); }
+.e4__num span { display: inline-block; animation: e4-sale .8s cubic-bezier(.2, .8, .2, 1) 1.05s both; }
+.e4__num span:nth-child(2) { animation-delay: 1.13s; } .e4__num span:nth-child(3) { animation-delay: 1.21s; }
+.e4__testo > :not(.e4__num) { animation: e4-sale .8s cubic-bezier(.2, .8, .2, 1) 1.35s both; }
+.e4__testo > .e4__cta { animation-delay: 1.5s; }
+.e4__cta { display: flex; flex-wrap: wrap; gap: 12px; }
+.e4__vetro { position: absolute; top: 0; bottom: 0; left: 48%; right: 0; pointer-events: none; animation: e4-urto .26s ease-out .85s; }
+.e4__macchia { --W: min(48vw, 100lvh); position: absolute; left: 50%; top: calc(var(--header-h) + 8px + var(--W) * .45); width: var(--W); aspect-ratio: 1200 / 1700; translate: -50% -34.12%; }
+.e4__schizzo, .e4__acino, .e4__colata { position: absolute; display: block; }
+.e4__schizzo { inset: 0; width: 100%; height: 100%; transform-origin: 50% 34.12%; animation: e4-scoppia .34s cubic-bezier(.15, 1.35, .4, 1) .85s both; }
+.e4__acino { left: 50%; top: 34.12%; width: 22%; height: auto; translate: -50% -50%; opacity: 0; animation: e4-vola .55s cubic-bezier(.6, 0, .95, .6) .3s both; }
+@property --f { syntax: '<length-percentage>'; inherits: false; initial-value: 0%; }
+.e4__colata { --f: calc(100% + 30px); left: var(--l); top: var(--t); width: var(--w); height: var(--h); background: url(../assets/quadri/404/colate.webp) var(--bx) var(--by) / var(--sx) var(--sy) no-repeat;
+  -webkit-mask-image: linear-gradient(#000 calc(var(--f) - 26px), transparent var(--f)); mask-image: linear-gradient(#000 calc(var(--f) - 26px), transparent var(--f));
+  animation: e4-cola var(--d) cubic-bezier(.3, .65, .35, 1) var(--r0) both; } /* ogni colata scende per conto suo: rallenta come il succo vero */
+@keyframes e4-cola { from { --f: 0%; } to { --f: calc(100% + 30px); } }
+@keyframes e4-sale { from { opacity: 0; translate: 0 40px; } }
+@keyframes e4-scoppia { from { scale: .5; opacity: 0; } 25% { opacity: 1; } to { scale: 1; opacity: 1; } }
+@keyframes e4-vola { 0% { opacity: 0; scale: .05; rotate: -60deg; translate: -160% 60%; } 15% { opacity: 1; } 99% { opacity: 1; scale: 1; rotate: 30deg; translate: -50% -50%; } 100% { opacity: 0; scale: 1.05; rotate: 30deg; translate: -50% -50%; } }
+@keyframes e4-urto { 25% { translate: 6px -4px; } 50% { translate: -5px 3px; } 75% { translate: 2px -1px; } } /* il colpo sul vetro */
+@media (prefers-reduced-motion: reduce) { .e4 *, .e4__vetro { animation: none !important; } }
+@media (max-width: 860px) {
+  .e4 { display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; padding-top: 0; }
+  .e4__vetro { position: relative; inset: auto; flex: 1 1 auto; min-height: 46lvh; margin-inline: calc(-1 * var(--pad-x)); overflow: hidden;
+    -webkit-mask-image: linear-gradient(#000 80%, transparent); mask-image: linear-gradient(#000 80%, transparent); }
+  .e4__macchia { --W: min(90vw, 46lvh); }
+  .e4__testo { width: auto; gap: 18px; }
+  .e4__num { font-size: clamp(5.5rem, 30vw, 8rem); }
+}

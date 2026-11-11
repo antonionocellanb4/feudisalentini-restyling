@@ -1,0 +1,20 @@
+/* ingresso dal portone (three.js): overlay della prima visita. Senza html.ingresso-attivo (niente JS, reduced motion, già visto) non esiste.
+   Il fondo dell'overlay è trasparente: la notte è una parete 3D con il buco del portone, dietro c'è la pagina vera. */
+.ingresso { display: none; }
+.ingresso-attivo .ingresso, .ingresso.ingresso--via { display: block; position: fixed; inset: 0; z-index: 300; overflow: hidden; }
+/* prima che parta il 3D lo schermo è notte piena; rete di sicurezza: se lo script non arriva l'overlay si toglie da solo */
+.ingresso-attivo .ingresso { background: var(--night); animation: ingresso-sicurezza .3s linear 6s forwards; }
+.ingresso.is-3d { background: transparent; }
+@keyframes ingresso-sicurezza { to { opacity: 0; visibility: hidden; } }
+.ingresso.ingresso--via { opacity: 0; pointer-events: none; transition: opacity .35s var(--ease); }
+
+.ingresso-3d { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* scritta del marchio (il PNG originale, solo la riga del nome) e percentuale, sotto la torre */
+.ingresso-ui { position: absolute; left: 0; right: 0; top: 70%; display: flex; flex-direction: column; align-items: center; gap: 20px; color: var(--gold); opacity: 0; }
+.ingresso-scritta { width: clamp(150px, 16vw, 210px); aspect-ratio: 396 / 32; -webkit-mask-position: bottom; mask-position: bottom; -webkit-mask-size: 100% auto; mask-size: 100% auto; }
+.ingresso-conta { font-size: 1rem; letter-spacing: .02em; color: var(--paper-2); font-variant-numeric: tabular-nums; }
+
+.ingresso-salta { position: absolute; right: var(--pad-x); bottom: max(24px, env(safe-area-inset-bottom));
+  height: 40px; padding: 0 1rem; font-size: 1rem; background: transparent; color: var(--paper-2); border: 1px solid var(--line-dark); }
+.ingresso-salta:hover { background: var(--paper); color: var(--ink); border-color: var(--paper); }

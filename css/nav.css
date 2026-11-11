@@ -33,9 +33,6 @@ html.ingresso-attivo .nav:not(.is-in) { opacity: 0; translate: 0 -16px; visibili
 .nav__lang { display: flex; gap: .6rem; font-size: 1rem; line-height: 1; }
 .nav__lang-on { text-decoration: underline; text-underline-offset: 4px; }
 .nav__lang-off { color: var(--nav-mute, var(--mute)); cursor: not-allowed; }
-.nav__cta { height: 44px; padding: 0 1.15rem; }
-.nav[data-tone="light"] .nav__cta:hover { background: var(--ink); color: var(--paper); }
-.nav__cta-short { display: none; }
 .nav__burger { display: none; height: 44px; padding: 0 1rem; border: 1px solid currentColor; border-radius: 999px;
   font-size: 1.0625rem; transition: background-color .25s var(--ease), color .25s var(--ease); }
 .nav__burger:hover { background: var(--nav-fg); color: var(--nav-bg); }
@@ -55,7 +52,6 @@ html.nav-lock { overflow: hidden; }
   font-size: clamp(1.75rem, 7vw, 2.4rem); font-weight: var(--title-weight); letter-spacing: var(--title-track); line-height: 1.1; text-align: left; }
 .nav-menu__count { font-size: 1rem; letter-spacing: 0; color: var(--mute); align-self: flex-start; margin-top: .35em; }
 .nav-menu__chev { width: 28px; height: 28px; margin-left: auto; }
-.nav-menu__cta { margin-top: 28px; width: 100%; }
 .nav-menu__foot { margin-top: auto; padding-top: 28px; display: flex; justify-content: space-between; align-items: center; gap: 16px; font-size: 1rem; }
 .nav-menu__foot small { font-size: 1rem; }
 .nav-menu__foot a { text-decoration: underline; text-underline-offset: 4px; }
@@ -91,7 +87,7 @@ html.nav-lock { overflow: hidden; }
 .cantina__wine, .cantina__shelf { display: flex; flex-direction: column; min-width: 0; }
 .cantina__glass, .cantina__shelf-top { position: relative; height: var(--cantina-bottle); border-bottom: 1px solid var(--line); }
 .cantina__glass { display: flex; justify-content: center; }
-.cantina__glass img { position: relative; z-index: 1; height: 100%; width: auto; max-width: none; }
+.cantina__glass img { position: relative; z-index: 1; height: 100%; width: auto; max-width: none; translate: 0 calc((1 - var(--b, .91)) * 100%); clip-path: inset(0 0 calc((1 - var(--b, .91)) * 100%) 0); } /* il vetro posa sul filo dello scaffale, il riflesso sotto non si vede (la macchia dietro resta intera) */
 /* controluce: dietro la bottiglia si allarga la macchia del vino (maschera di pigmento generata in nav.js) */
 .cantina__stain { position: absolute; left: 50%; top: 60%; width: var(--cantina-stain); aspect-ratio: 1; translate: -50% -50%;
   background: var(--wine); -webkit-mask: var(--stain) center / contain no-repeat; mask: var(--stain) center / contain no-repeat;
@@ -146,8 +142,8 @@ html.nav-lock { overflow: hidden; }
   .cstage__row[data-size="s"] { --bh: 21vh; grid-template-columns: repeat(14, minmax(0, 1fr)); row-gap: 14px; }
   .cstage__wine { display: flex; flex-direction: column; align-items: center; min-width: 0; }
   .cstage__glass { position: relative; display: flex; justify-content: center; width: 100%; height: var(--bh); }
-  .cstage__glass img { position: relative; z-index: 1; height: 100%; width: auto; max-width: none; pointer-events: none; transition: translate .6s var(--ease); }
-  .cstage__wine.is-on .cstage__glass img { translate: 0 -5%; }
+  .cstage__glass img { position: relative; z-index: 1; height: 100%; width: auto; max-width: none; pointer-events: none; translate: 0 calc((.91 - var(--b, .91)) * 100%); transition: translate .6s var(--ease); } /* i fondi del vetro alla stessa altezza */
+  .cstage__wine.is-on .cstage__glass img { translate: 0 calc((.91 - var(--b, .91)) * 100% - 5%); }
   .cstage__stain { position: absolute; left: 50%; top: 52%; width: calc(var(--bh) * .8); aspect-ratio: 1; translate: -50% -50%;
     background: var(--wine); -webkit-mask: var(--stain) center / contain no-repeat; mask: var(--stain) center / contain no-repeat;
     opacity: 0; scale: .35; rotate: -40deg; transition: opacity .35s var(--ease), scale .9s var(--ease), rotate 1.2s var(--ease); }
@@ -203,9 +199,6 @@ html.nav-lock { overflow: hidden; }
 }
 @media (max-width: 560px) {
   .nav__logo { width: 96px; }
-  .nav__cta { padding: 0 1rem; }
-  .nav__cta-long { display: none; }
-  .nav__cta-short { display: inline; }
 }
 
 /* ---------- transizione versata ---------- */
@@ -214,13 +207,12 @@ html.nav-lock { overflow: hidden; }
 html.fs-poured .pour { display: block; background: var(--pour); }
 .pour canvas { width: 100%; height: 100%; }
 
-/* ---------- footer (30 ott, come il footer di klimtwine): chiaro, alto uno schermo; logo e newsletter in alto, collezioni / cantina /
+/* ---------- footer (30 ott, come il footer di klimtwine): chiaro, alto uno schermo; logo in alto, collezioni / cantina /
    contatti al centro, note legali in fondo ---------- */
-.foot { display: flex; flex-direction: column; padding-bottom: 24px; background: var(--stone); }
+.foot { display: flex; flex-direction: column; padding-bottom: 24px; background: var(--stone); color: var(--ink); }
 .foot__in { flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 56px; }
 .foot__top { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px clamp(24px, 4vw, 64px); align-items: end; } /* stesse colonne di .foot__mid */
 .foot__logo { display: block; width: clamp(150px, 14vw, 220px); color: var(--ink); }
-.foot__news { grid-column: 3; } /* newsletter sopra la colonna Contatti */
 .foot__h { margin-bottom: 16px; font-size: 1rem; font-weight: 400; color: var(--mute); }
 .foot__mid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px clamp(24px, 4vw, 64px); }
 .foot__col li + li { margin-top: 6px; }
@@ -233,18 +225,22 @@ html.fs-poured .pour { display: block; background: var(--pour); }
 .foot__contatti address a { text-decoration: underline; text-decoration-color: var(--mute); text-underline-offset: 4px; }
 .foot__contatti address a:hover { color: var(--gold-ink); }
 .foot .tbd { background: var(--cream); }
-.foot__form { display: flex; gap: 8px; }
-.foot__form input { flex: 1; min-width: 0; height: 52px; padding: 0 20px; border: 1px solid var(--line); border-radius: 999px;
-  background: var(--cream); color: var(--ink); font: inherit; font-size: 1.0625rem; }
-.foot__form input::placeholder { color: var(--mute); opacity: 1; }
-.foot__form input:focus-visible { outline: 2px solid var(--gold-ink); outline-offset: 2px; }
-.foot__form input[aria-invalid="true"] { border-color: var(--ink); }
-.foot__note { margin-top: 10px; font-size: .9375rem; color: var(--mute); }
 .foot__legal { display: flex; flex-wrap: wrap; gap: 8px 28px; padding-top: 20px; border-top: 1px solid var(--line); font-size: .9375rem; color: var(--ink-2); }
 .foot__legal a { text-decoration: underline; text-underline-offset: 4px; }
 .foot__legal a:hover { color: var(--gold-ink); }
 @media (max-width: 860px) {
   .foot__mid { grid-template-columns: 1fr; }
   .foot__top { grid-template-columns: 1fr; align-items: start; }
-  .foot__news { grid-column: auto; }
+}
+
+/* PROVA (11 nov): il selettore dei tre siti da confrontare, messo da js/main.js. Su desktop sotto l'header a sinistra coi nomi, sul telefono nell'header fra marchio e Menu coi numeri. A scelta fatta si toglie */
+.sito-alt { position: fixed; left: 16px; top: calc(var(--header-h) + 8px); z-index: 110; display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--paper); color: var(--ink); box-shadow: 0 2px 10px rgb(0 0 0 / .12); font-size: .875rem; line-height: 1.2; }
+.sito-alt a { padding: 8px 14px; border-radius: 999px; color: inherit; text-decoration: none; white-space: nowrap; }
+.sito-alt a[aria-current="true"] { background: var(--ink); color: var(--paper); }
+.sito-alt b { display: none; font-weight: inherit; }
+@media (max-width: 860px) {
+  .sito-alt { left: 50%; top: 14px; transform: translateX(-50%); }
+  .sito-alt a { padding: 8px 13px; }
+  .sito-alt span { display: none; }
+  .sito-alt b { display: inline; }
 }

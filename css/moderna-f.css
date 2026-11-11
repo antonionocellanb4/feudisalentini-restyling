@@ -1,0 +1,142 @@
+/* HOME MODERNA F "La galleria" (3 nov 2026): una visita in museo. Il quadro riempie lo schermo; i testi stanno su targhe e cartellini così non finiscono mai sul dipinto; le bottiglie sono dipinte dentro il quadro (quadro, bottiglie e movimento stanno negli shader di js/moderna-f.js): qui ci sono solo i bottoni invisibili che le seguono. Il resto viene da css/moderna-e.css */
+.page-mf .e-st { height: 1120lvh; }
+.page-mf .e-stage { background: var(--cream); }
+.page-mf .e-ink { display: none; } /* solo la maschera delle pennellate per lo shader */
+.page-mf .e-track { z-index: 2; }
+
+/* nelle sale l'intestazione non ha fondo: le voci sono targhette sul quadro, sopra un dipinto da sole non si leggerebbero; il logo resta com'è. Sul feudo e fuori dalla galleria resta quella di sempre */
+.f-sale .nav:not(.is-solid) :is(.nav__links, .nav__end) { --nav-mute: var(--mute); color: var(--ink); background: var(--cream); border-radius: var(--r); }
+.page-mf .nav:not(.is-solid) :is(.nav__links, .nav__end) { border-radius: var(--r); } /* anche mentre il fondo svanisce: senza, per un attimo resta un rettangolo grigio a spigoli vivi */
+.page-mf .nav :is(.nav__links, .nav__end) { transition: background-color .5s var(--ease), padding .5s var(--ease); }
+.f-sale .nav:not(.is-solid) .nav__links { height: 44px; padding: 0 16px; }
+.f-sale .nav:not(.is-solid) .nav__end { height: 44px; padding: 0 0 0 16px; }
+
+/* l'ingresso: niente cartellino, il titolo sta nel cielo calmo sopra il feudo */
+.page-mf .e-tappa--via .e-testo { top: calc(var(--header-h) + clamp(4px, 2.4vh, 28px)); bottom: auto; left: 0; right: 0; width: auto; padding: 0 var(--pad-x); background: none; border-radius: 0; text-align: center; }
+.page-mf .e-t { max-width: none; font-size: clamp(3.4rem, 7.2vw, 7.4rem); line-height: 1; }
+.page-mf .e-tappa--via .e-d { max-width: 34rem; margin: 14px auto 0; font-size: 1.125rem; color: var(--ink); }
+.page-mf .e-tappa--via .e-cta { justify-content: center; margin-top: 18px; }
+
+/* la targa accanto al quadro, come in museo: arriva prima delle bottiglie, 0,85 schermi avanti */
+.f-targa { position: absolute; left: calc(var(--pad-x) - var(--w) * .85); bottom: clamp(20px, 5vh, 48px); width: min(320px, calc(100vw - 2 * var(--pad-x))); padding: 16px 18px; background: var(--cream); border-radius: var(--r); font-size: .9375rem; line-height: 1.36; color: var(--ink-2); }
+.f-targa b { display: block; font-weight: 400; font-size: .875rem; color: var(--gold-ink); }
+.f-targa strong { display: block; margin: 4px 0 8px; font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(1.7rem, 2.2vw, 2.1rem); line-height: 1.04; color: var(--ink); }
+
+/* i bottoni e i nomi stanno fermi nel quadro come le bottiglie: --off compensa il cammino. La foto vera non si vede qui, serve alla scheda */
+.page-mf .e-bt { translate: var(--off, 0px) 0; visibility: hidden; }
+.page-mf .f-vivo .e-bt { visibility: visible; }
+.page-mf .f-gl .e-bt img { opacity: 0; }
+.page-mf .e-bt:hover img { transform: none; }
+.page-mf .e-nomi { top: calc(var(--edge) + 14px + 10px); opacity: 0; }
+.page-mf .e-nomi li { translate: var(--off, 0px) 0; }
+/* il cartellino del vino */
+.page-mf .e-testo { top: auto; bottom: clamp(16px, 4.4vh, 40px); left: var(--pad-x); right: auto; display: block; width: clamp(300px, 28vw, 400px); padding: 22px 24px; background: var(--cream); border-radius: var(--r); }
+.page-mf .e-t2 { font-size: clamp(2.2rem, 3.2vw, 3.2rem); margin-top: 4px; }
+.page-mf .e-n { font-size: .9375rem; }
+.page-mf .e-d { margin-top: 10px; font-size: 1.0625rem; line-height: 1.38; }
+.page-mf .e-cta { margin-top: 16px; }
+.page-mf .e-cta--vini { flex-direction: row; align-items: center; justify-content: space-between; gap: 12px; }
+.page-mf .e-vini__n { font-size: 1rem; }
+.page-mf .e-nomi button { display: inline-block; padding: 3px 10px; font-size: .9375rem; line-height: 1.3; background: var(--cream); border-radius: var(--r); text-decoration: none; white-space: nowrap; }
+.page-mf .e-nomi button:hover { color: var(--ink); background: var(--gold); }
+
+@media (max-width: 860px) {
+  .page-mf .e-st { height: 1000lvh; }
+  .f-sale .nav:not(.is-solid) .nav__end { height: 44px; padding: 0; }
+  .f-sale .nav:not(.is-solid) .nav__burger { border-color: transparent; }
+  .page-mf .e-testo { left: 12px; right: 12px; bottom: 12px; width: auto; padding: 14px 16px; }
+  .page-mf .e-tappa--via .e-testo { left: 0; right: 0; padding: 0 16px; }
+  .page-mf .e-tappa:not(.e-tappa--via) .e-h { display: block; }
+  .page-mf .e-n { white-space: normal; font-size: .875rem; }
+  .f-targa { left: calc(12px - var(--w) * .85); bottom: 12px; width: calc(var(--w) * .8 - 24px); padding: 12px 14px; font-size: .875rem; }
+  .page-mf .e-t { font-size: clamp(2.6rem, 13vw, 3.4rem); }
+  .page-mf .e-tappa--via .e-d { margin-top: 8px; font-size: 1rem; line-height: 1.34; }
+  .page-mf .e-t2 { font-size: clamp(1.7rem, 7.4vw, 2.2rem); margin-top: 0; }
+  .page-mf .e-d { margin-top: 6px; font-size: .9375rem; line-height: 1.32; }
+  .page-mf .e-cta { margin-top: 10px; }
+  .page-mf .e-cta .btn { flex: 0 1 auto; }
+  .page-mf .e-tappa--via .e-cta .btn { flex: 0 1 auto; padding: 0 22px; }
+  .page-mf .e-vini__n { display: block; font-size: .9375rem; }
+  .page-mf .e-nomi button { font-size: .8125rem; padding: 2px 7px; }
+}
+
+/* moderna-g: si entra nel quadro con uno zoom lungo e continuo, niente cammino laterale. I bottoni seguono le bottiglie anche in verticale */
+.page-mg .e-st { height: 1400lvh; }
+.page-mg .e-bt, .page-mg .e-nomi li { translate: var(--off, 0px) var(--offy, 0px); }
+.page-mg .e-stage { cursor: default; touch-action: auto; }
+.page-mg .e-tappa { left: 0; }
+.page-mg .f-targa { left: var(--pad-x); opacity: 0; visibility: hidden; }
+@media (max-width: 860px) { .page-mg .e-st { height: 1200lvh; } .page-mg .f-targa { left: 12px; } }
+
+/* ---------- F, G, H: le due sezioni sotto la storia (sections/moderna-f-tavola.html, js/tavola.js). Bottiglie vere sulla loro macchia, come nella cantina e nelle schede ---------- */
+.tv-v__fig { position: relative; display: flex; align-items: flex-end; justify-content: center; width: 100%; height: var(--fig); }
+.tv-macchia { position: absolute; left: 50%; top: 56%; width: 118%; aspect-ratio: 1; translate: -50% -50%; opacity: var(--luce, 1); background: var(--stain) center / contain no-repeat, var(--wine); background-blend-mode: soft-light;
+  -webkit-mask: var(--stain) center / contain no-repeat; mask: var(--stain) center / contain no-repeat; transition: rotate .7s var(--ease), scale .7s var(--ease), opacity .6s var(--ease); }
+.tv-v__fig img { position: relative; height: 100%; width: auto; max-width: none; translate: 0 calc((1 - var(--b, .91)) * 100%); } /* il vetro finisce a --b: tutte le bottiglie poggiano sulla stessa riga */
+.tv__fr { display: grid; place-items: center; flex: none; width: 48px; height: 48px; border: 1px solid var(--ink); border-radius: 999px; background: none; color: var(--ink); cursor: pointer; transition: background .25s, color .25s, opacity .25s; }
+.tv__fr svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.tv__fr:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
+.tv__fr:disabled { opacity: .3; cursor: default; }
+:is(.tv-p, .tv__fr, .bv-v a, .tv-b a):focus-visible { outline: 2px solid var(--gold-ink); outline-offset: 4px; }
+
+/* I più venduti: la giostra a tutta larghezza, la bottiglia al centro è la più grande */
+.bv { height: 400svh; } /* il palco resta fermo per tre schermi: scorrendo passano tutte le bottiglie (js/tavola.js) */
+.bv__st { position: sticky; top: 0; display: flex; flex-direction: column; height: 100svh; padding: calc(var(--header-h) + 40px) 0 88px; overflow: hidden; } /* 88: in basso c'è la pillola dei vini, fissa */
+.bv__t { padding: 0 var(--pad-x); font-size: clamp(2.8rem, 5vw, 5.4rem); }
+.bv__giostra { --fig: clamp(240px, calc(100svh - var(--header-h) - 200px), 980px); position: absolute; left: 0; right: 0; top: calc(var(--header-h) + 16px); bottom: 162px; touch-action: pan-y; cursor: grab; user-select: none; } /* alta quanto lo schermo: la bottiglia al centro sale fino all'header (lì il titolo non c'è); quelle ai lati sono più piccole e restano sotto il titolo */
+.bv__giostra:active { cursor: grabbing; }
+.bv__fila { margin: 0; padding: 0; list-style: none; }
+.bv-v { position: absolute; left: 50%; bottom: 0; width: calc(var(--fig) * .62); transform-origin: 50% 100%; will-change: transform; }
+.bv-v a { display: block; }
+.bv-v .tv-macchia { rotate: var(--giro, 0deg); scale: var(--fiore, 1); transition: none; } /* la macchia sboccia arrivando al centro e gira mentre passa: tutto dallo scroll, niente ritardi */
+.bv__piede { position: relative; z-index: 110; margin-top: auto; display: flex; align-items: center; justify-content: center; gap: clamp(16px, 3vw, 48px); padding: 0 var(--pad-x); }
+.bv__nome { display: grid; justify-items: center; min-width: min(60vw, 420px); text-align: center; }
+.bv__n1 { font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(1.6rem, 2.4vw, 2.2rem); line-height: 1.1; }
+.bv__n2 { margin-top: 6px; color: var(--ink-2); }
+
+/* Cosa c'è in tavola?: in alto il titolo e i piatti incisi, sotto la tavola: tutti i vini del piatto in fila sulla stessa linea */
+.tv__st { --alt: clamp(180px, calc(100svh - var(--header-h) - 370px), 440px); container-type: inline-size; display: flex; flex-direction: column; min-height: 100svh; padding: calc(var(--header-h) + 40px) var(--pad-x) 88px; } /* 88: in basso c'è la pillola dei vini, fissa */
+.tv__su { display: flex; align-items: flex-start; justify-content: space-between; gap: clamp(24px, 4vw, 80px); }
+.tv__t { flex: none; max-width: 6.2em; font-size: clamp(2.2rem, 3.6vw, 4.2rem); }
+.tv__menu { display: grid; grid-template-columns: repeat(10, minmax(0, 84px)); gap: 6px; margin: 0; padding: 0; list-style: none; } /* i piatti incisi di E: quello scelto si riempie d'oro */
+.tv-p { --ico: clamp(48px, min(4.4vw, 9vh), 76px); display: grid; justify-items: center; align-content: start; gap: 8px; width: 100%; padding: 0; border: 0; background: none; color: var(--ink-2); font-size: .8125rem; line-height: 1.2; text-align: center; cursor: pointer; transition: color .3s; }
+.tv-p svg { display: block; width: var(--ico); aspect-ratio: 1; border-radius: 50%; color: var(--ink); overflow: visible; transition: transform .5s var(--ease), background-color .25s var(--ease); }
+.tv-p path { fill: none; stroke: currentColor; stroke-width: 1; vector-effect: non-scaling-stroke; }
+.tv-p .o { stroke: var(--gold-ink); }
+.tv-p:hover svg { transform: translateY(-4px); }
+.tv-p:hover, .tv-p[aria-pressed="true"] { color: var(--ink); }
+.tv-p[aria-pressed="true"] svg { background: var(--gold); }
+.tv__scelto { margin: auto 0 0; padding-top: 20px; text-align: center; font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(1.2rem, 1.6vw, 1.5rem); }
+.tv__scelto span { margin-left: 8px; font-family: var(--font-body, inherit); font-size: .9375rem; letter-spacing: 0; color: var(--ink-2); }
+.tv__tavola { --slot: min(190px, 100cqw / var(--n, 6)); --h: min(var(--alt), var(--slot) * 3.6); display: flex; justify-content: center; margin: 14px 0 0; padding: 0; list-style: none;
+  background: linear-gradient(var(--ink), var(--ink)) 0 var(--h) / 100% 1px no-repeat; } /* il bordo della tavola: un filo d'inchiostro dove poggiano le bottiglie */
+.tv-b { flex: 0 0 var(--slot); min-width: 0; }
+.tv-b a { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; color: inherit; text-decoration: none; } /* la foto è larga (bordi trasparenti): non deve allargare il posto */
+.tv-b__fig { display: flex; justify-content: center; align-items: flex-end; width: 100%; height: var(--h); overflow: clip; } /* sotto il filo non si vede niente: cambiando piatto le bottiglie spuntano da dietro */
+.tv-b__fig img { flex: none; height: 100%; width: auto; max-width: none; translate: 0 calc((1 - var(--b, .91)) * 100%); transform-origin: 50% calc(var(--b, .91) * 100%); transition: scale .5s var(--ease); }
+.tv-b a:hover img { scale: 1.05; }
+.tv-b__n { margin-top: 12px; padding: 0 4px; font-size: .875rem; line-height: 1.25; text-align: center; color: var(--ink-2); hyphens: auto; transition: color .25s; } /* Susumaniello è più largo del posto su telefono: si va a capo sillabando */
+.tv-b a:hover .tv-b__n { color: var(--ink); }
+@media (max-width: 860px) {
+  .bv__st { padding: calc(var(--header-h) + 28px) 0 80px; }
+  .bv__t { padding: 0 16px; }
+  .bv__giostra { --fig: clamp(180px, calc(100svh - var(--header-h) - 312px), 470px); position: relative; inset: auto; flex: 1; min-height: calc(var(--fig) + 30px); margin-top: 8px; }
+  .bv-v { bottom: 10px; }
+  .bv-v { width: 52vw; }
+  .bv__piede { padding: 0 16px; gap: 12px; }
+  .bv__nome { min-width: 0; flex: 1; }
+  .tv__st { --alt: clamp(170px, calc(100svh - 440px), 280px); padding: calc(var(--header-h) + 28px) 0 80px; }
+  .tv__su { flex-direction: column; gap: 12px; }
+  .tv__t { max-width: none; padding: 0 16px; }
+  .tv__menu { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px 4px; width: 100%; padding: 0 16px; }
+  .tv-p span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); } /* i nomi non ci stanno: si legge quello scelto, sopra la tavola */
+  .tv-p { --ico: clamp(40px, 6.4svh, 56px); }
+  .tv__scelto { padding: 16px 16px 0; font-size: 1.15rem; }
+  .tv__tavola { margin-bottom: auto; } /* lo spazio libero metà sopra e metà sotto */
+  .tv__tavola { --slot: clamp(76px, (100cqw - 32px) / var(--n, 6), 84px); justify-content: flex-start; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scrollbar-width: none; padding: 0 16px; background-attachment: local; } /* su telefono la fila si scorre di lato */
+  .tv__tavola::-webkit-scrollbar { display: none; } /* quattro o cinque in vista, i successivi si vedono tagliati. 76: ci sta Susumaniello senza toccare il vicino */
+  .tv-b { scroll-snap-align: center; }
+  .tv-b:first-child { margin-left: auto; } /* pochi vini: in centro */
+  .tv-b:last-child { margin-right: auto; }
+  .tv-b__n { padding: 0 2px; font-size: .75rem; }
+}

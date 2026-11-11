@@ -19,6 +19,9 @@
   const WW = 10600, GROUND = 640;
   const TAPPE = [{ x: 0, col: 'luxury' }, { x: 2400, col: 'terra' }, { x: 4400, col: 'organic' }, { x: 6300, col: 'classica' }, { x: 8300, col: 'lounge' }];
   const narrow = () => innerWidth <= 860;
+  // telefono: il pin è alto 100lvh (con 100svh sotto spuntava la sezione dopo), ma il disegno è impaginato su 100svh, quello che si vede sempre con le barre del browser aperte; sotto il prato continua fino a Y0
+  const alto = pin.appendChild(Object.assign(document.createElement('i'), { className: 'fb-alto' }));
+  const Y0 = 900 + (narrow() ? (pin.offsetHeight - alto.offsetHeight) / Math.min(alto.offsetHeight / 900, innerWidth / 500) + 30 : 0); // +30: il bordo strappato dell'acquerello resta fuori schermo
   const S = { intro: M.RM ? 1 : 0 };
   let k = 1, oy = 0, vw = innerWidth, vh = innerHeight, cam = 0, cs = 0, ce = 1, prog = 0, st = null; // cs, ce: dove parte e dove finisce la camera (telefono: dalla torre alla tavola)
   let camY = 0, YE = 1, DV = 2, hp = 1; // discesa: camY px già scesi, YE px in fondo, DV px di scroll che dura, hp px di scroll del cammino
@@ -234,7 +237,7 @@
   const riva = (x) => 652 + 14 * Math.sin(x / 260) + 8 * Math.sin(x / 90);
   const zona = (x0, x1, c, al, top) => {
     const t = []; for (let x = x0; x <= x1; x += 40) t.push([x, top(x)]);
-    add({ w: [M.wash([...t, [x1 + 170, 760], [x1 + 70, 905], [x0 - 90, 905], [x0 + 130, 770]], { color: c, alpha: al, amp: 9, origin: [x0, top(x0)] })] }); // bordi in diagonale: le zone si fondono
+    add({ w: [M.wash([...t, [x1 + 170, 760], [x1 + 70, Y0 + 5], [x0 - 90, Y0 + 5], [x0 + 130, 770]], { color: c, alpha: al, amp: 9, origin: [x0, top(x0)] })] }); // bordi in diagonale: le zone si fondono
   };
   zona(-40, 2440, '#d9cfb5', 0.3, gy); zona(2380, 4440, '#b5523a', 0.3, gy); zona(4380, 6300, '#a3b06c', 0.3, gy);
   zona(6250, 8320, '#e3cf9f', 0.42, riva); zona(8280, WW + 40, '#d4c3a3', 0.3, gy);
@@ -287,7 +290,7 @@
   const L4 = 690; add(lastra(6650, 7020, L4, 22)); // scoglio piatto sulla riva
   add(agave(7760, 712), { sway: [7760, 712, 90] });
   // tappa 5: il tramonto
-  add(pergola(8800, 9700, 330, 760));
+  add(pergola(8800, 9700, narrow() ? 390 : 330, 760)); // sul telefono più bassa: il saluto finale sta nel cielo sopra la trave
   add(tavola(8850, 9650, 600, [[8930, '#eba9a1'], [9500, '#721024'], [9575, '#741426']]));
 
   /* ---- il portone della torre: si apre al passaggio del cursore (o al tocco), dentro c'è la luce d'oro ---- */
@@ -349,7 +352,8 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, -dpr * cy);
     if (sky) { sky.color = lerpC(SKY, prog); sky.progress = M.clamp(S.intro * 2); M.drawWash(ctx, sky, f); }
     // il sole attraversa il cielo: in alto a destra al mattino, basso sull'orizzonte al tramonto
-    const sx = vw * (0.88 - 0.06 * prog), sy = (narrow() ? oy + k * (290 + 210 * prog ** 1.5) : oy + k * (110 + 380 * prog ** 1.5)) - cy;
+    // telefono: a fine giornata tramonta tra due bottiglie (a 0.82 ci finiva dietro)
+    const sx = vw * (0.88 - (mob ? 0.22 : 0.06) * prog), sy = (narrow() ? oy + k * (290 + 210 * prog ** 1.5) : oy + k * (110 + 380 * prog ** 1.5)) - cy;
     ctx.setTransform(dpr * k, 0, 0, dpr * k, dpr * sx, dpr * sy);
     sole.w.color = lerpC(['#f2c94c', '#f0b23e', '#e8743a'], prog); sole.w.progress = M.clamp(S.intro * 2 - 0.4); M.drawWash(ctx, sole.w, f);
     sole.s.progress = M.clamp(S.intro * 2 - 0.2); M.draw(ctx, sole.s, f);
@@ -384,7 +388,7 @@
     if (moving) sheet.kick(120);
     // testi e bottiglie seguono il mondo
     track.style.transform = `translate3d(${-cam}px,${-camY}px,0)`;
-    const testo = !mob ? -1 : prog > 0.97 ? testi.length - 1 : testi.reduce((c, h, i) => (k * h.x - cam < vw * (h.carta ? 1 : 0.55) ? i : c), 0); // in fondo: il saluto con le CTA
+    const testo = !mob ? -1 : prog > 0.995 ? testi.length - 1 : testi.reduce((c, h, i) => (k * h.x - cam < vw * (h.carta ? 1 : 0.55) ? i : c), 0); // in fondo: il saluto con le CTA
     for (const h of htmlEls) {
       if (mob && h.testo && !h.carta) { // telefono: i testi non scorrono, stanno fermi in alto e si danno il cambio (il biglietto invece segue il disegno)
         const o = testi[testo] === h ? M.clamp(S.intro * 2) : 0, left = `${cam + 16}px`;
@@ -392,7 +396,7 @@
         continue;
       }
       if (!mob && h.el.style.left) h.el.style.left = '';
-      const sxh = k * h.x - cam, rv = M.clamp((front - sxh) / (0.45 * vw)); if (rv > h.rev) h.rev = rv;
+      const sxh = k * h.x - cam, rv = M.clamp((front + (mob ? 0.3 * vw : 0) - sxh) / (0.45 * vw)); if (rv > h.rev) h.rev = rv; // telefono: già piena appena dentro lo schermo (le bottiglie a destra restavano sbiadite)
       const o = M.clamp(h.rev * 1.6 - 0.25);
       if (o !== h.o) { h.o = o; h.el.style.opacity = o; h.el.style.translate = `0 ${(1 - o) * 14}px`; h.el.style.visibility = o > 0 ? '' : 'hidden'; }
     }
@@ -409,7 +413,7 @@
   const cvEl = sec.querySelector('.fb-canvas');
   let sotto = [];
   const sottoterra = () => {
-    const Rs = M.rng(7), rs = (a, b) => a + Rs() * (b - a), y0 = 900, yE = (vh + YE - oy) / k, D = yE - y0;
+    const Rs = M.rng(7), rs = (a, b) => a + Rs() * (b - a), y0 = Y0, yE = (vh + YE - oy) / k, D = yE - y0;
     const xa = ce / k - 160, xb = (ce + vw) / k + 160, it = [];
     const pad = document.querySelector('.dv-pad')?.getBoundingClientRect(), xp = (ce + (pad?.width ? pad.left + pad.width / 2 : vw / 2)) / k; // sopra il centro del foglio da disegno
     const metti = (o, a, b) => { if (o.w) o.al = o.w.alpha; it.push({ ...o, a, b: Math.max(a + 1, b) }); };
@@ -448,7 +452,7 @@
   };
 
   /* ---- bottiglie vere (HTML) nel disegno ---- */
-  const FONDO = { 'assets/bottles/philia.webp': 0.958, 'assets/bottles/resale.webp': 0.958 }; // dove finisce il vetro nella foto (misurato sull'alfa); le altre ~0,91
+  const { FONDO } = Scheda;
   const bottiglia = (id, x, y, h, row) => {
     const w = FS.wine(id), a = document.createElement('a');
     a.className = 'fb-bt'; a.href = FS.wineUrl(id); a.dataset.wine = id;
@@ -523,79 +527,15 @@
   navBtns.forEach((b, i) => b.addEventListener('click', () => {
     apri(false);
     if (!st) return;
-    const p = M.clamp((TAPPE[i].x * k - (i ? vw * 0.04 : 0) - cs) / Math.max(1, ce - cs)), y = st.start + p * hp;
+    const g = GRUPPI[i][0], xc = (g[0][1] + g[g.length - 1][1]) / 2; // le bottiglie della tappa al centro dello schermo
+    const p = M.clamp((xc * k - vw / 2 - cs) / Math.max(1, ce - cs)), y = st.start + p * hp;
     FS.lenis ? FS.lenis.scrollTo(y, { duration: 1.6 }) : scrollTo({ top: y, behavior: 'smooth' });
   }));
   sec.querySelectorAll('[data-col]').forEach((b) => b.addEventListener('click', () => document.dispatchEvent(new CustomEvent('fs:open-cantina', { detail: b.dataset.col ? { col: b.dataset.col } : {} }))));
 
-  /* ---- bottiglia al centro: clic su una bottiglia → il disegno si vela, la bottiglia scivola al centro con un solo movimento morbido
-     (30 ott: niente salto né rotazioni, niente disegni attorno oltre alla macchia del suo colore e all'ombra), accanto la scheda.
-     Esc, Chiudi o clic sul velo la riportano al suo posto. Dati veri di js/data.js ---- */
-  const zoom = sec.querySelector('.fb-zoom'), zq = (c) => zoom.querySelector(c), zImg = zq('.fb-zoom__bt');
-  const zInfo = [...zq('.fb-zoom__info').children], zX = zq('.fb-zoom__x');
-  const zst = { wash: 0, fade: 1 };
-  let zs = null;
-  const zSheet = new M.Sheet(zq('.fb-zoom__cv'), (ctx, f) => {
-    if (!zs) return;
-    zs.wash.progress = zst.wash; zs.wash.alpha = zs.washA * zst.fade; M.drawWash(ctx, zs.wash, f);
-    zs.base.progress = zst.wash; zs.base.alpha = zst.fade; M.draw(ctx, zs.base, f);
-  });
-  const zScena = (w) => { // misure, macchia e ombra, in px dell'overlay
-    const W = zoom.clientWidth, H = zoom.clientHeight, mob = narrow();
-    const Hb = mob ? H * 0.36 : H * 0.7, Wb = (Hb * 653) / 1024, bx = mob ? W / 2 : W * 0.62, by = mob ? 76 + 64 : (H - Hb) / 2 + H * 0.03;
-    const yb = by + Hb * (FONDO[w.bottle] ?? 0.91), [r, g, b] = M.rgb(w.color), lum = (0.3 * r + 0.59 * g + 0.11 * b) / 255;
-    return { w, bx, by, Hb, Wb, washA: lum > 0.6 ? 0.45 : 0.24,
-      wash: M.wash(M.ellipse(bx, by + Hb * 0.56, Wb * 0.62, Hb * 0.38, 0, 0, 1, 40), { color: w.color, origin: [bx, by + Hb * 0.6], amp: 6 }),
-      base: M.stroke(M.ellipse(bx, yb, Wb * 0.36, Hb * 0.024, 0, -2.4, 1.1, 40), { w: 1.5, amp: 0.8 }) };
-  };
-  const zScheda = (w) => {
-    zq('.fb-zoom__col').textContent = FS.collection(w.collection)?.name || '';
-    zq('.fb-zoom__t').textContent = w.name;
-    zq('.fb-zoom__meta').textContent = [w.denom, w.uve, w.alcool].filter(Boolean).join(' · ');
-    zq('.fb-zoom__desc').textContent = w.desc || '';
-    const ar = w.aromi.join(', ').replace(/^./, (c) => c.toUpperCase());
-    zq('.fb-zoom__dati').innerHTML = [['Vista', w.vista], ['Aromi', ar || '<span class="tbd">Non indicati sul sito attuale</span>'], ['In tavola', w.abb]]
-      .filter(([, v]) => v).map(([t, v]) => `<div><dt>${t}</dt><dd>${v}</dd></div>`).join('');
-    zq('.fb-zoom__go').href = w.url;
-    zq('.fb-zoom__col-go').dataset.col = w.collection;
-  };
-  const zApri = (a) => {
-    if (zs) return;
-    const w = FS.wine(a.dataset.wine);
-    zScheda(w);
-    zoom.hidden = false; sec.classList.add('is-zoom'); zSheet.resize(); FS.lenis?.stop();
-    Object.assign(zst, { wash: 0, fade: 1 });
-    zs = zScena(w); zs.a = a;
-    zImg.src = w.bottle;
-    zImg.style.cssText = `left:${zs.bx - zs.Wb / 2}px;top:${zs.by}px;height:${zs.Hb}px`;
-    const r0 = a.querySelector('img').getBoundingClientRect(), zr = zoom.getBoundingClientRect();
-    zs.da = { x: r0.left + r0.width / 2 - zr.left - zs.bx, y: r0.top + r0.height / 2 - zr.top - (zs.by + zs.Hb / 2), scale: r0.height / zs.Hb };
-    gsap.set(zImg, zs.da);
-    a.style.visibility = 'hidden';
-    zs.tl = gsap.timeline({ onUpdate: () => zSheet.kick(120) })
-      .fromTo(zoom, { '--velo': 0 }, { '--velo': 1, duration: 0.6, ease: 'power1.out' }, 0)
-      .to(zImg, { x: 0, y: 0, scale: 1, duration: 1.3, ease: 'expo.inOut' }, 0)
-      .to(zst, { wash: 1, duration: 1.4, ease: 'power1.out' }, 0.8)
-      .fromTo([...zInfo, zX], { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.06, ease: 'power2.out' }, 0.8);
-    zX.focus({ preventScroll: true });
-  };
-  const zChiudi = (poi) => {
-    if (!zs || zs.via) return;
-    const z = zs; z.via = true; z.tl.kill();
-    gsap.timeline({ onUpdate: () => zSheet.kick(120), onComplete: () => {
-      z.a.style.visibility = ''; zoom.hidden = true; sec.classList.remove('is-zoom'); zs = null; FS.lenis?.start(); z.a.focus({ preventScroll: true }); poi?.();
-    } })
-      .to(zst, { fade: 0, duration: 0.35 }, 0)
-      .to([...zInfo, zX], { opacity: 0, duration: 0.25 }, 0)
-      .to(zImg, { ...z.da, duration: 0.9, ease: 'expo.inOut' }, 0.1)
-      .to(zoom, { '--velo': 0, duration: 0.45 }, 0.4);
-  };
-  track.addEventListener('click', (e) => { const a = e.target.closest('.fb-bt'); if (!a) return; e.preventDefault(); zApri(a); });
-  zX.addEventListener('click', () => zChiudi());
-  zoom.addEventListener('click', (e) => { if (e.target === zoom) zChiudi(); });
-  zq('.fb-zoom__col-go').addEventListener('click', (e) => { const col = e.currentTarget.dataset.col; zChiudi(() => document.dispatchEvent(new CustomEvent('fs:open-cantina', { detail: { col } }))); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && zs) zChiudi(); });
-  addEventListener('resize', () => zChiudi()); // shortcut: chiude invece di ricalcolare la scena, da rivedere se dà fastidio ruotando il telefono
+  /* ---- bottiglia al centro: js/scheda.js ---- */
+  const scheda = Scheda(sec);
+  track.addEventListener('click', (e) => { const a = e.target.closest('.fb-bt'); if (!a) return; e.preventDefault(); scheda.apri(FS.wine(a.dataset.wine), a); });
 
   /* ---- vento, portone ---- */
   const scr = (x, y) => [k * x - cam, oy + k * y - camY]; // dal mondo allo schermo (coordinate del canvas)
@@ -625,10 +565,11 @@
   const total = () => Math.max(1, WW * k - vw);
   const sheet = new M.Sheet(cvEl, render, (w, h) => {
     vw = w; vh = h;
-    k = narrow() ? Math.min(h / 900, w / 500) : h / 900;
-    oy = h - 900 * k + (narrow() ? 0 : 80 * k); // desktop: scena più bassa (30 ott); oltre 80 la cassetta di 125 Organic tocca la pillola delle tappe
+    const hv = narrow() ? alto.offsetHeight : h;
+    k = narrow() ? Math.min(hv / 900, w / 500) : h / 900;
+    oy = hv - 900 * k + (narrow() ? 0 : 80 * k); // desktop: scena più bassa (30 ott); oltre 80 la cassetta di 125 Organic tocca la pillola delle tappe
     cs = narrow() ? Math.max(0, k * 1050 - w / 2) : 0;
-    ce = narrow() ? Math.min(total(), k * 9300 - w / 2) : total();
+    ce = narrow() ? Math.min(total(), k * 9200 - w / 2) : total(); // telefono: si ferma con le tre bottiglie della tavola al centro
     hp = Math.max(1, (ce - cs) * (narrow() ? 0.65 : 1));
     YE = Math.round(h * 0.85); DV = 2 * YE; // con camY = u²/2DV la discesa parte ferma e finisce alla velocità dello scroll
     if (camY) camY = YE;

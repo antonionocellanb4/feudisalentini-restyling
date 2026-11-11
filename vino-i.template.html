@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="it">
+<head>
+<!-- @include sections/_head.html -->
+<!-- SCHEDA DEL VINO dello stile della home index (vino-i.html?id=<id di js/data.js>, 10 nov 2026): in apertura il quaderno del sommelier: la bottiglia vera
+     disegnata e sviluppata a matita, e scorrendo le frecce verso le note (vista, profumi coi loro disegni, tavola, uve, vigna; js/aromi.js); sotto la scheda coi dati veri.
+     Stesso linguaggio a matita e acquerello della home (js/matita.js) · Stile: css/home.css + css/pagine-i.css · Script: js/pagine-i.js -->
+<title>Il vino · Feudi Salentini</title>
+<meta name="description" content="La scheda del vino Feudi Salentini: la sua forma, gli aromi, i dati di vigna e cantina, i riconoscimenti.">
+<link rel="stylesheet" href="css/home.css">
+<link rel="stylesheet" href="css/pagine-i.css">
+</head>
+<body class="page-vi" data-sito="i">
+<!-- @include sections/header.html -->
+<main id="main">
+<section class="vi carta" aria-labelledby="vi-t">
+  <div class="vi-st">
+    <div class="vi-testo"></div>
+    <canvas class="vi-cv" aria-hidden="true"></canvas>
+    <img class="vi-foto" alt="" decoding="async">
+    <ul class="vi-note" aria-label="Note sul vino"></ul>
+  </div>
+</section>
+</main>
+<!-- @include sections/footer.html -->
+<!-- @include sections/_scripts.html -->
+<script src="js/matita.js"></script>
+<script src="js/aromi.js"></script>
+<script src="js/pagine-i.js"></script>
+</body>
+</html>

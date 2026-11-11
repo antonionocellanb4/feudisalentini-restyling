@@ -1,0 +1,86 @@
+<!-- HOME MODERNA (30 ott 2026, alternativa alla home disegnata index.html): scura, fotografica, un solo font. Movimenti in js/moderna.js,
+     la foto liquida dell'hero in js/moderna-hero.js (three.js), stile in css/moderna.css. Schede generate dai dati veri di js/data.js -->
+
+<section class="m-hero hero--dark" id="hero" aria-labelledby="m-hero-t">
+  <img class="m-hero__img" src="assets/photo/vigna-tramonto.webp" alt="" decoding="async">
+  <canvas class="m-hero__gl" aria-hidden="true"></canvas>
+  <div class="m-hero__top">
+    <p class="m-hero__luogo">Leporano · Taranto · Salento</p>
+    <div class="m-hero__intro">
+      <p class="m-hero__lead">I vini del Salento della famiglia Varvaglione: Primitivo di Manduria, Negroamaro, Malvasia e Susumaniello, a pochi passi dal mar Ionio.</p>
+      <div class="m-hero__cta">
+        <a class="btn btn--gold" href="#vini">Scopri i 28 vini</a>
+        <a class="btn btn--line" href="#esperienze">Prenota una visita</a>
+      </div>
+    </div>
+  </div>
+  <h1 class="m-hero__t" id="m-hero-t" aria-label="Feudi Salentini"><span class="m-hero__r">Feudi</span><span class="m-hero__r">Salentini</span></h1>
+</section>
+
+<section class="m-sec m-manifesto" id="azienda" aria-label="La cantina">
+  <p class="m-manifesto__t">Feudi Salentini è la cantina della famiglia Varvaglione a Leporano, in provincia di Taranto. Dalle uve del Salento, Primitivo, Negroamaro, Malvasia e Susumaniello, nascono 28 vini in 5 collezioni.</p>
+</section>
+
+<section class="m-sec m-col" id="collezioni" aria-labelledby="m-col-t">
+  <div class="m-head">
+    <h2 class="m-h2" id="m-col-t" data-righe>Cinque collezioni, una terra.</h2>
+  </div>
+  <ol class="m-col__list"></ol>
+  <div class="m-col__float" aria-hidden="true"></div>
+</section>
+
+<section class="m-cat" id="vini" aria-labelledby="m-cat-t">
+  <div class="m-cat__stage">
+    <h2 class="sr-only" id="m-cat-t">I 28 vini</h2>
+    <div class="m-cat__info">
+      <p class="m-cat__n"></p>
+      <p class="m-cat__col"></p>
+      <div class="m-cat__name" aria-live="polite"></div>
+      <p class="m-cat__meta"></p>
+      <p class="m-cat__aromi"></p>
+      <a class="btn btn--line m-cat__go" target="_blank" rel="noopener">Scheda del vino</a>
+    </div>
+    <div class="m-cat__bt"></div>
+    <ol class="m-cat__list" aria-label="Tutti i vini"></ol>
+  </div>
+</section>
+
+<section class="m-terra" aria-labelledby="m-terra-t">
+  <div class="m-terra__stage">
+    <img class="m-terra__img" src="assets/photo/mare-salento.webp" alt="Il mare del Salento" decoding="async">
+    <svg class="m-terra__mask" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <defs><mask id="m-terra-m"><rect x="-4000" y="-4000" width="9600" height="8900" fill="#fff"/><text class="m-terra__parola" x="800" y="520" text-anchor="middle">SALENTO</text></mask></defs>
+      <g class="m-terra__g"><rect x="-4000" y="-4000" width="9600" height="8900" fill="#15100d" mask="url(#m-terra-m)"/></g>
+    </svg>
+    <div class="m-terra__testo">
+      <h2 class="m-h2" id="m-terra-t">Leporano, sul mar&nbsp;Ionio.</h2>
+      <p class="m-terra__lead">A sud di Taranto, tra le vigne ad alberello e la costa. Qui nascono i nostri vini e qui si viene a degustarli.</p>
+      <dl class="m-num">
+        <div><dt>vini</dt><dd>28</dd></div>
+        <div><dt>collezioni</dt><dd>5</dd></div>
+        <div><dt>esperienze in cantina</dt><dd>3</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="m-sec m-es" id="esperienze" aria-labelledby="m-es-t">
+  <div class="m-head">
+    <h2 class="m-h2" id="m-es-t" data-righe>Prenota una visita.</h2>
+  </div>
+  <div class="m-es__panels"></div>
+</section>
+
+<section class="m-sec m-pr" id="premi" aria-labelledby="m-pr-t">
+  <div class="m-head">
+    <h2 class="m-h2" id="m-pr-t" data-righe>Premiati nei concorsi internazionali.</h2>
+  </div>
+  <div class="m-pr__nastro"><ul class="m-pr__track"></ul></div>
+</section>
+
+<section class="m-sec m-nw" id="news" aria-labelledby="m-nw-t">
+  <div class="m-head">
+    <h2 class="m-h2" id="m-nw-t" data-righe>Dalla cantina.</h2>
+  </div>
+  <div class="m-nw__grid"></div>
+</section>

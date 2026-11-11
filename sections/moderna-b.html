@@ -1,0 +1,35 @@
+<!-- HOME MODERNA, alternativa B "luminarie" (30 ott 2026): l'arte del posto, le luminarie delle feste del Salento (archi di lampadine).
+     Hero: una galleria di archi di luce che si accendono dal basso; scorrendo ci si cammina sotto e in fondo c'è la bottiglia vera.
+     La cantina si accende parola per parola, le collezioni stanno ognuna sotto il suo fascio di luce, le esperienze sono schede da scegliere,
+     i premi un elenco di nomi, le news righe. Movimenti in js/moderna-b.js, stile in css/moderna-b.css -->
+<section class="b-hero hero--dark" id="hero" aria-labelledby="b-hero-t">
+  <div class="b-hero__stage" data-subito>
+    <canvas class="b-hero__cv" aria-hidden="true"></canvas>
+    <div class="b-hero__testo">
+      <h1 class="b-hero__t" id="b-hero-t" data-chars data-ritardo="0.8">Feudi Salentini</h1>
+      <p class="b-hero__lead">I vini della famiglia Varvaglione, a Leporano sul mar Ionio, dalle uve del Salento.</p>
+    </div>
+    <p class="b-hero__vino" aria-hidden="true"><span></span><small></small></p>
+  </div>
+</section>
+
+<section class="b-cantina" id="azienda" aria-label="La cantina">
+  <p class="b-cantina__t">Feudi Salentini è la cantina della famiglia Varvaglione a Leporano, in provincia di Taranto. Produce vini dai vitigni autoctoni pugliesi per eccellenza, Primitivo, Negroamaro, Verdeca e Malvasia Bianca: in catalogo sono <span data-cantina-total>33</span>, in 6 collezioni.</p>
+  <div class="b-cantina__foto"><img src="assets/photo/masseria-vigne.webp" alt="La masseria di Feudi Salentini tra le vigne" loading="lazy" decoding="async"></div>
+</section>
+
+<section class="b-vini" id="vini" aria-labelledby="b-vini-t">
+  <h2 class="b-h2" id="b-vini-t" data-chars>Cinque collezioni.</h2>
+  <ul class="b-vini__fila"></ul>
+</section>
+
+
+<section class="b-pr" id="premi" aria-labelledby="b-pr-t">
+  <h2 class="b-pr__h" id="b-pr-t">Premiati da</h2>
+  <ul class="b-pr__nomi"></ul>
+</section>
+
+<section class="b-nw" id="news" aria-labelledby="b-nw-t">
+  <h2 class="b-h2" id="b-nw-t" data-chars>Dalla cantina.</h2>
+  <ul class="b-nw__righe"></ul>
+</section>

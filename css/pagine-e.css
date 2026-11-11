@@ -1,0 +1,135 @@
+/* PAGINE dello stile E "La giornata" (azienda-e.html, vino-e.html; 10 nov 2026). Palco, binario, tappe e testi sul ripiano sono quelli di css/moderna-e.css;
+   qui le incisioni delle tappe (assets/incisioni/, linee che si disegnano da sole: pathLength 1), la bottiglia vera della scheda, la fila degli altri vini,
+   piatti, dati e medaglie. Il cielo (--pe-cielo) e le misure (--edge, --u = px per unità dell'incisione, --bh) arrivano da js/pagine-e.js */
+.pe .e-stage { background: var(--pe-cielo, var(--cream)); }
+.pe .e-testo { top: calc(var(--edge) + 28px); }
+.pe .e-tappa--fila .e-testo { top: calc(var(--edge) + clamp(78px, 10svh, 104px)); }
+
+/* ---- le incisioni: il ripiano (y = 214) poggia sul filo; sotto il filo non si vede niente, ai lati possono uscire ---- */
+.pe-quadro { position: absolute; left: var(--cx, 50%); top: calc(var(--edge) - 514 * var(--u)); width: calc(var(--vbw, 600) * var(--u)); height: calc(514 * var(--u)); translate: -50% 0; clip-path: inset(-100vh -100vw 0 -100vw); pointer-events: none; }
+.pe--vino .e-tappa:not(.e-tappa--via) .pe-quadro { --cx: 62%; }
+.pe-quadro svg { position: absolute; left: 0; top: 0; width: 100%; height: calc(600 * var(--u)); overflow: visible; }
+.pe-quadro .t { fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; }
+.pe-quadro .v { stroke: var(--vino, #9a4a32); }
+.pe-quadro .o { fill: var(--pe-cielo, var(--cream)); }
+
+/* ---- la bottiglia vera: il fondo del vetro sul filo (js: altezza, alto, sinistra) ---- */
+.pe-bt { position: absolute; left: 50%; top: 0; width: auto; max-width: none; translate: -50% 0; pointer-events: none; user-select: none; -webkit-user-drag: none; }
+
+/* ---- la scheda: testi; descrizione e note di cantina sono lunghe (fino a 490 caratteri): il paragrafo si allarga su due colonne ---- */
+.pe-lungo .e-testo { grid-template-columns: minmax(0, .8fr) minmax(0, 1.6fr) auto; }
+.pe-lungo .e-d { max-width: none; columns: 2; column-gap: clamp(24px, 2.4vw, 40px); font-size: 1rem; line-height: 1.4; }
+.pe-col { padding: 0; font: inherit; font-size: 1rem; color: var(--gold-ink); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 4px; }
+.pe-col:hover { text-decoration-color: currentColor; }
+.pe-fatti { display: block; margin-top: 6px; color: var(--ink); }
+.pe-parole { max-width: 18rem; font-size: 1.125rem; line-height: 1.42; color: var(--ink); text-wrap: balance; }
+.pe-piatti { display: flex; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.pe-piatti li { width: clamp(64px, 6vw, 88px); text-align: center; font-size: .9375rem; line-height: 1.15; color: var(--ink-2); }
+.pe-piatti img { display: block; width: 100%; height: auto; margin-bottom: 6px; }
+.pe-dati { display: grid; gap: 6px; margin: 0; font-size: 1rem; line-height: 1.3; }
+.pe-dati div { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: 12px; }
+.pe-dati dt { color: var(--ink-2); }
+.pe-dati dd { margin: 0; }
+/* ---- i riconoscimenti: le medaglie vere appese a nastri incisi, sopra il ripiano (posizioni da js: --x, --m misura, --l nastro) ---- */
+.pe-asta { position: absolute; z-index: 3; height: 5px; border-top: 1.3px solid var(--ink); border-bottom: .6px solid var(--ink); pointer-events: none; } /* l'asta da cui pendono */
+.pe-appese { position: absolute; inset: 0; margin: 0; padding: 0; list-style: none; pointer-events: none; }
+.pe-appese li { position: absolute; left: var(--x); width: calc(var(--m) + 24px); translate: -50% 0; text-align: center; }
+.pe-nastro { display: block; width: calc(var(--m) * .34); height: var(--l); margin: 0 auto; overflow: visible; }
+.pe-nastro path { fill: none; vector-effect: non-scaling-stroke; }
+.pe-nastro .n { stroke: var(--ink); stroke-width: 1.1; }
+.pe-nastro .h { stroke: #a98a4a; stroke-width: .8; }
+.pe-appese img { display: block; width: var(--m); height: var(--m); margin: -2px auto 0; object-fit: contain; }
+.pe-appese p { margin-top: 10px; font-size: .9375rem; line-height: 1.25; color: var(--ink-2); }
+.pe-appese b { display: block; font-weight: 500; color: var(--ink); }
+.pe-conc { display: none; }
+
+/* ---- gli altri vini della collezione, in fila sul filo; il nome sotto, sul ripiano ---- */
+.pe-fila { position: absolute; inset: 0; margin: 0; padding: 0; list-style: none; }
+.pe-fila li { position: absolute; left: var(--x); top: 0; width: var(--s); translate: -50% 0; }
+.pe-fila a { position: absolute; left: 0; right: 0; top: calc(var(--edge) - var(--bh2) * var(--b)); height: calc(var(--bh2) * var(--b) + 64px); pointer-events: auto; }
+.pe-fila img { position: absolute; left: 50%; top: 0; height: var(--bh2); width: auto; max-width: none; translate: -50% 0; transition: transform .6s var(--ease); -webkit-user-drag: none; user-select: none; }
+.pe-fila a:hover img, .pe-fila a:focus-visible img { transform: translateY(-8px); }
+.pe-fila span { position: absolute; left: 0; right: 0; top: calc(var(--bh2) * var(--b) + 14px); text-align: center; font-size: 1rem; line-height: 1.2; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 4px; transition: color .25s var(--ease); }
+.pe-fila a:hover span { color: var(--gold-ink); text-decoration-color: currentColor; }
+
+/* ---- vino non trovato ---- */
+.pe-vuoto { display: grid; align-content: center; justify-items: start; gap: 20px; min-height: 100lvh; padding: calc(var(--header-h) + 24px) var(--pad-x) 48px; }
+
+@media (max-width: 860px) {
+  .pe .e-testo { top: calc(var(--edge) + 14px); }
+  .pe .e-h { display: block; } /* "05 · Concorsi internazionali" accanto al titolo lo schiaccerebbe: qui la riga sta sopra */
+  .pe .e-n { margin-bottom: 2px; }
+  .pe .e-tappa--fila .e-testo { top: calc(var(--edge) + 72px); }
+  .pe--vino .e-tappa:not(.e-tappa--via) .pe-quadro { --cx: 60%; }
+  .pe-parole, .pe-piatti, .pe-dati { margin-top: clamp(8px, 1.8svh, 14px); max-width: none; }
+  .pe-parole { font-size: 1rem; }
+  .pe-lungo .e-d { columns: auto; font-size: .9375rem; }
+  .pe .e-tappa .e-d { display: block; } /* moderna-e la toglie sui telefoni bassi: qui è il contenuto */
+  .pe-piatti li { width: 64px; font-size: .875rem; }
+  .pe-dati { font-size: .9375rem; }
+  .pe-appese li { width: var(--m); }
+  .pe-appese p { display: none; } /* sotto le medaglie non c'è posto: i concorsi sono nel testo, medaglia e anno sono stampati sulla medaglia */
+  .pe-nastro { width: calc(var(--m) * .22); }
+  .pe-conc { display: inline; }
+  .pe-fila span { font-size: .9375rem; }
+  .pe--vert .pe-premi-riga { margin-top: 18px; }
+  .pe--vert .pe-appese { flex-wrap: wrap; gap: 12px; padding: 0; }
+  .pe--vert .pe-appese li { width: var(--m); }
+}
+address.e-d { font-style: normal; }
+
+/* ---- versione verticale (vino-e.html?…&v=vert): le stesse tappe una sotto l'altra. Ogni tappa: il disegno su carta crema, poi sotto il filo la fascia di pietra
+   coi testi (il ripiano): dove finisce la fascia finisce la tappa (11 nov: "le sezioni non si capiscono, le suddivisioni, gli spazi") ---- */
+.e-st.pe--vert { height: auto; }
+.pe--vert .e-stage { position: relative; height: auto; overflow: visible; cursor: auto; touch-action: auto; background: none; --pe-cielo: var(--cream); }
+.pe--vert .e-ripiano { display: none; }
+.pe--vert .e-track { position: relative; height: auto; }
+.pe--vert .e-tappa { display: flow-root; position: relative; left: 0; width: 100%; height: auto; overflow-x: clip; background: var(--cream); }
+.pe--vert .e-testo, .pe--vert .e-tappa--via .e-testo { position: relative; top: auto; margin-top: var(--edge); padding-top: clamp(28px, 3.4vw, 48px); padding-bottom: clamp(44px, 6vw, 80px); background: var(--stone); border-top: 1px solid var(--ink); }
+.pe--vert .e-tappa:not(.e-tappa--via) .pe-quadro { --cx: 50%; }
+/* vini consigliati: le bottiglie in fila al centro, ognuna sul suo tratto di filo e col nome sotto; se non stanno su una riga vanno a capo. Poi la fascia col titolo */
+.pe--vert .e-tappa--fila .pe-fila { position: relative; inset: auto; display: flex; width: 100%; justify-content: safe center; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; max-width: var(--max, 1400px); margin: 0 auto; padding: clamp(32px, 4vw, 56px) var(--pad-x) clamp(48px, 6vw, 88px); } /* una riga sola: se non ci sta (telefono) scorre di lato */
+.pe--vert .pe-fila li { position: relative; left: auto; flex: none; width: var(--s); translate: none; scroll-snap-align: center; }
+.pe--vert .pe-fila a { position: relative; top: auto; height: auto; display: flow-root; } /* flow-root: il margine che allinea i vetri resta dentro il link */
+.pe--vert .pe-fila a::before { content: ''; position: absolute; left: 0; right: 0; top: calc(var(--bh2) * .96); border-top: 1px solid var(--ink); } /* tutti i vetri finiscono a .96: il filo è una riga sola */
+.pe--vert .pe-fila img { position: relative; left: 50%; translate: -50% 0; display: block; margin: calc(var(--bh2) * (.96 - var(--b))) 0 0; } /* la foto è più larga della colonna: centrata sul nome, non spinta a destra */
+.pe--vert .pe-fila span { position: static; display: block; margin-top: calc(14px - var(--bh2) * (1 - var(--b))); padding: 0 4px; } /* sotto il vetro, non sotto la foto */
+/* 11 nov, l'azienda in verticale: sotto il testo di ogni capitolo le foto, la frase, i sei punti della sostenibilità, gli obiettivi */
+.pe-piu { grid-column: 1 / -1; display: grid; gap: clamp(32px, 4vw, 56px); margin-top: clamp(32px, 4vw, 56px); }
+.pe-foto { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: clamp(10px, 1.2vw, 16px); margin: 0; }
+.pe-foto figure { margin: 0; }
+.pe-foto img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--r); }
+.pe-foto--5 img { aspect-ratio: 4 / 5; }
+.pe-foto figcaption { margin-top: 10px; font-size: 1rem; color: var(--ink); }
+.pe-frase { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 72px); align-items: end; }
+.pe-frase .e-t2 { font-size: clamp(2rem, 3.2vw, 3.4rem); }
+.pe-sost { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(32px, 3.6vw, 56px) clamp(24px, 3vw, 48px); margin: 0; padding: 0; list-style: none; }
+.pe-sost li { padding-top: 18px; border-top: 1px solid var(--ink); }
+.pe-sost b { display: block; font-size: clamp(2.4rem, 3.6vw, 3.6rem); line-height: 1; font-weight: var(--title-weight); letter-spacing: var(--title-track); }
+.pe-sost h3 { margin-top: 14px; font-size: 1.1875rem; line-height: 1.25; font-weight: 500; }
+.pe-sost p { margin-top: 8px; font-size: 1.0625rem; line-height: 1.45; color: var(--ink-2); text-wrap: pretty; }
+.pe-obiettivi { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr); gap: clamp(24px, 4vw, 72px); align-items: start; }
+.pe-obiettivi ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin: 0; padding: 0; list-style: none; }
+.pe-obiettivi li { padding-top: 14px; border-top: 1px solid var(--ink); font-size: 1.125rem; line-height: 1.4; }
+@media (max-width: 860px) {
+  .pe-foto { grid-auto-columns: 78%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: calc(var(--pad-x) * -1); padding-inline: var(--pad-x); scroll-padding-inline: var(--pad-x); } /* sul telefono le foto scorrono di lato */
+  .pe-foto--5 { grid-auto-columns: 62%; }
+  .pe-foto figure { scroll-snap-align: start; }
+  .pe-frase, .pe-obiettivi, .pe-obiettivi ul, .pe-sost { grid-template-columns: 1fr; }
+}
+
+/* gli altri vini: il titolo sopra la fila, sulla carta e non su una fascia, così si stacca dai riconoscimenti */
+.pe--vert .e-tappa--fila { display: flex; flex-direction: column; }
+.pe--vert .e-tappa--fila .e-testo { order: -1; top: auto; margin-top: 0; padding-top: clamp(64px, 8vw, 120px); padding-bottom: 0; background: none; border-top: 0; }
+/* riconoscimenti in verticale: una riga sola sulla fascia, titolo e testo a sinistra, le medaglie appese all'asta a destra */
+.pe--vert .pe-premi-v .e-testo { grid-template-columns: minmax(0, 1fr) minmax(0, .9fr) auto; align-items: center; }
+.pe--vert .pe-premi-riga .pe-asta { position: static; display: block; width: auto; }
+.pe--vert .pe-appese { position: static; display: flex; gap: 20px; padding: 0 12px; pointer-events: auto; }
+.pe--vert .pe-appese li { position: static; translate: none; width: calc(var(--m) + 30px); }
+.pe--vert .pe-nastro { height: 30px; }
+.pe--vert .pe-appese p { margin-top: 8px; font-size: .8125rem; }
+
+/* selettore provvisorio delle due versioni della scheda: si toglie quando l'utente ha scelto */
+.pe-alt { position: fixed; left: 16px; bottom: 16px; z-index: 60; display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--paper); box-shadow: 0 2px 10px rgb(0 0 0 / .12); font-size: .875rem; }
+.pe-alt a { padding: 8px 14px; border-radius: 999px; }
+.pe-alt a[aria-current="true"] { background: var(--ink); color: var(--paper); }

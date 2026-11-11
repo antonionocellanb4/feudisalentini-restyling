@@ -1,0 +1,76 @@
+<!-- HOME MODERNA F "La galleria" (3 nov 2026): una visita in museo. All'ingresso il feudo, poi cinque sale: ogni quadro è dipinto da una foto dei vostri luoghi (tools/dipingi.py, assets/quadri) e si muove da solo. Si cammina in orizzontale: prima il quadro con la targa, poi le bottiglie, dipinte anch'esse, si dipingono nel quadro; la sala dopo arriva a pennellate. Pagina in js/moderna-f.js -->
+<section class="e-st" id="hero" aria-labelledby="e-t" data-nav-trasparente>
+  <div class="e-stage">
+    <i class="e-alto"></i>
+    <canvas class="e-cv" aria-hidden="true"></canvas>
+    <canvas class="e-ink" aria-hidden="true"></canvas>
+
+    <div class="e-track">
+      <div class="e-tappa e-tappa--via" data-subito>
+        <div class="e-testo">
+          <h1 class="e-t" id="e-t" data-chars data-ritardo="0.5">La galleria del feudo.</h1>
+          <p class="e-d">Leporano, sul mar Ionio, a sud di Taranto. Cinque sale, in ognuna una collezione col suo quadro.</p>
+          <div class="e-cta"><button class="btn btn--gold" type="button" data-vai="1">Entra nella prima sala</button></div>
+        </div>
+      </div>
+
+      <article class="e-tappa" aria-labelledby="e-c1">
+        <p class="f-targa"><b>Sala 1</b><strong>Le vecchie vigne</strong>Dipinto da una fotografia</p>
+        <ul class="e-nomi"></ul>
+        <div class="e-testo">
+          <div class="e-h"><p class="e-n">Sala 1 · Le vecchie vigne</p><h2 class="e-t2" id="e-c1">Collezione 53</h2></div>
+          <p class="e-d">Grappoli da vecchie vigne, raccolti a mano dopo un'attenta selezione. Primitivo di Manduria affinato in barrique e Negroamaro.</p>
+          <div class="e-cta e-cta--vini"><p class="e-vini__n" aria-live="polite"></p><button class="btn btn--line e-vini__altri" type="button">Altri vini</button></div>
+        </div>
+      </article>
+
+      <article class="e-tappa" aria-labelledby="e-c2">
+        <p class="f-targa"><b>Sala 2</b><strong>La terra rossa</strong>Dipinto da una fotografia</p>
+        <ul class="e-nomi"></ul>
+        <div class="e-testo">
+          <div class="e-h"><p class="e-n">Sala 2 · La terra rossa</p><h2 class="e-t2" id="e-c2">Terra</h2></div>
+          <p class="e-d">Sette vini dalle uve del Salento: Primitivo di Manduria, Negroamaro, Malvasia bianca e nera, un rosato.</p>
+          <div class="e-cta e-cta--vini"><p class="e-vini__n" aria-live="polite"></p><button class="btn btn--line e-vini__altri" type="button">Altri vini</button></div>
+        </div>
+      </article>
+
+      <article class="e-tappa" aria-labelledby="e-c3">
+        <p class="f-targa"><b>Sala 3</b><strong>Il campo</strong>Dipinto da una fotografia</p>
+        <ul class="e-nomi"></ul>
+        <div class="e-testo">
+          <div class="e-h"><p class="e-n">Sala 3 · Il campo</p><h2 class="e-t2" id="e-c3">125 Organic</h2></div>
+          <p class="e-d">Un bianco e un Primitivo da agricoltura biologica, Puglia IGP.</p>
+          <div class="e-cta e-cta--vini"><p class="e-vini__n" aria-live="polite"></p><button class="btn btn--line e-vini__altri" type="button">Altri vini</button></div>
+        </div>
+      </article>
+
+      <article class="e-tappa" aria-labelledby="e-c4">
+        <p class="f-targa"><b>Sala 4</b><strong>Il mare</strong>Dipinto da una fotografia</p>
+        <ul class="e-nomi"></ul>
+        <div class="e-testo">
+          <div class="e-h"><p class="e-n">Sala 4 · Il mare</p><h2 class="e-t2" id="e-c4">Classica</h2></div>
+          <p class="e-d">La linea più ampia, tredici vini: dal bianco Càla al rosato Tre Cuori, fino al Sassirossi dei vigneti ad alberello.</p>
+          <div class="e-cta e-cta--vini"><p class="e-vini__n" aria-live="polite"></p><button class="btn btn--line e-vini__altri" type="button">Altri vini</button></div>
+        </div>
+      </article>
+
+      <article class="e-tappa" aria-labelledby="e-c5">
+        <p class="f-targa"><b>Sala 5</b><strong>Il tramonto</strong>Dipinto da una fotografia</p>
+        <ul class="e-nomi"></ul>
+        <div class="e-testo">
+          <div class="e-h"><p class="e-n">Sala 5 · Il tramonto</p><h2 class="e-t2" id="e-c5">125 Uno Due Cinque</h2></div>
+          <p class="e-d">La linea Lounge Bar per l'aperitivo e i primi piatti: Pinot Grigio, Malvasia Bianca, un rosato leggermente mosso, Primitivo, Negroamaro e Malvasia Nera.</p>
+          <div class="e-cta e-cta--vini"><p class="e-vini__n" aria-live="polite"></p><button class="btn btn--line e-vini__altri" type="button">Altri vini</button></div>
+        </div>
+      </article>
+    </div>
+
+    <nav class="fb-tappe" aria-label="Tappe della giornata"></nav>
+
+<!-- @include sections/scheda.html -->
+  </div>
+</section>
+
+<!-- @include sections/moderna-e-cantina.html -->
+<!-- @include sections/moderna-f-venduti.html -->
+<!-- @include sections/moderna-e-sotto.html -->

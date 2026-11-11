@@ -1,0 +1,58 @@
+<!-- HOME MODERNA, versione 2 (30 ott 2026, "font delicato ma animazioni come klimtwine"): la versione 1, scura con la foto liquida, è in
+     tools/moderna-v1/. Qui: una bottiglia sola che viaggia nella pagina e si inclina tra una sezione e l'altra, il fondo che cambia colore,
+     un capitolo fermo per collezione con il titolo che esce ed entra lettera per lettera, il paragrafo che si accende, la pillola dei vini.
+     Movimenti in js/moderna.js, stile in css/moderna.css, testi e vini dai dati veri di js/data.js -->
+<div class="k-luce" aria-hidden="true"></div>
+<div class="k-bottle" aria-hidden="true"><img alt="" decoding="async"></div>
+
+<section class="k-hero hero--dark" id="hero" aria-labelledby="k-hero-t">
+  <h1 class="k-hero__t" id="k-hero-t" data-chars>Feudi Salentini</h1>
+  <p class="k-hero__lead">I vini della famiglia Varvaglione, a Leporano sul mar Ionio, dalle uve del Salento.</p>
+  <p class="k-hero__scorri">Scorri</p>
+</section>
+
+<section class="k-about" id="azienda" aria-label="La cantina">
+  <p class="k-about__t">Feudi Salentini è la cantina della famiglia Varvaglione a Leporano, in provincia di Taranto. Dalle uve del Salento, Primitivo, Negroamaro, Malvasia e Susumaniello, nascono 28 vini in 5 collezioni.</p>
+</section>
+
+<section class="k-cap" id="vini" aria-label="Le collezioni">
+  <div class="k-cap__stage">
+    <h2 class="k-cap__t" aria-live="polite"></h2>
+    <div class="k-cap__sx">
+      <p class="k-cap__tipo"></p>
+      <p class="k-cap__note"></p>
+    </div>
+    <div class="k-cap__dx">
+      <p class="k-cap__denom"></p>
+      <h3 class="k-cap__nome"></h3>
+      <p class="k-cap__desc"></p>
+      <p class="k-cap__link"><button class="k-cap__col" type="button"></button><a class="k-cap__go" target="_blank" rel="noopener">Scheda del vino</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="k-taste" aria-labelledby="k-taste-t">
+  <h2 class="k-h2" id="k-taste-t" data-chars>Il resto si assaggia in&nbsp;cantina.</h2>
+  <div class="k-taste__dx">
+    <p>Visite e degustazioni a Leporano, tra le vigne e la masseria di famiglia, da € 17 a persona.</p>
+    <a class="btn btn--gold" href="#esperienze">Scegli la visita</a>
+  </div>
+  <div class="k-taste__piano" aria-hidden="true"><img class="k-taste__bt" alt="" loading="lazy" decoding="async"></div>
+</section>
+
+<section class="k-sec k-es" id="esperienze" aria-labelledby="k-es-t">
+  <h2 class="k-h2" id="k-es-t" data-chars>Prenota una&nbsp;visita.</h2>
+  <div class="k-es__grid"></div>
+</section>
+
+<section class="k-sec k-pr" id="premi" aria-labelledby="k-pr-t">
+  <h2 class="k-h2" id="k-pr-t" data-chars>Premiati nei concorsi internazionali.</h2>
+  <ul class="k-pr__list"></ul>
+</section>
+
+<section class="k-sec k-nw" id="news" aria-labelledby="k-nw-t">
+  <h2 class="k-h2" id="k-nw-t" data-chars>Dalla&nbsp;cantina.</h2>
+  <div class="k-nw__grid"></div>
+</section>
+
+<button class="k-pill" type="button" aria-label="Apri i nostri vini"><span class="k-pill__mini" aria-hidden="true"></span><span class="k-pill__t">I nostri vini</span><span class="k-pill__v" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span></button>

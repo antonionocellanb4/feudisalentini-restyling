@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#15100d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script>/* prova font: ?font=bricolage|funnel|archivo|newsreader, resta per la sessione */(function(){var F={klimt:"Fraunces:opsz,wght,SOFT,WONK@9..144,100..400,0..100,0..1&family=Instrument+Sans:wdth,wght@75..100,400..600",bricolage:"Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800",funnel:"Funnel+Display:wght@300..800&family=Funnel+Sans:wght@300..800",archivo:"Archivo:wdth,wght@62..125,100..900",newsreader:"Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800"};var f;try{f=new URLSearchParams(location.search).get("font")||sessionStorage.getItem("fs-font")}catch(e){}if(!F[f])f="klimt";try{sessionStorage.setItem("fs-font",f)}catch(e){}document.documentElement.dataset.font=f;document.write('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family='+F[f]+'&display=swap">')})()</script>
+<link rel="stylesheet" href="css/base.css?v=3c076e8f">
+<link rel="stylesheet" href="css/nav.css?v=bbc422a9">
+<!-- HOME MODERNA, alternativa C "archi" (30 ott 2026): chiara: gli archi delle masserie, l'hero che si apre in un arco, collezioni in nicchie, esperienze a righe alterne. Le altre: moderna.html (A), moderna-b.html (B), moderna-c.html (C) -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,200..500&family=Instrument+Sans:wdth,wght@75..100,400..600&display=swap">
+<title>Feudi Salentini · Vini del Salento (moderna C)</title>
+<meta name="description" content="Feudi Salentini: Primitivo di Manduria, Negroamaro e i vini del Salento della famiglia Varvaglione, a Leporano (TA).">
+<link rel="stylesheet" href="css/moderna-kit.css?v=d9e8b4c9">
+<link rel="stylesheet" href="css/moderna-c.css?v=743ba832">
+</head>
+<body class="page-moderna page-mc">
+<!-- NAVIGAZIONE: header fisso, menu telefono, cantina (mega menu dei vini), copertura della transizione versata.
+     Script: js/nav.js · Stile: css/nav.css · Altri agenti aprono la cantina con
+     document.dispatchEvent(new CustomEvent('fs:open-cantina', {detail:{tipo:'rosso'}})) -->
+<script>
+/* transizione versata: arrivando da un vino, la pagina parte coperta del suo colore già al primo disegno (poi nav.js la scopre) */
+try { var fsPour = JSON.parse(sessionStorage.getItem('fs-pour') || 'null'); sessionStorage.removeItem('fs-pour');
+  if (fsPour && Date.now() - fsPour.t < 10000 && new URLSearchParams(location.search).get('id') === fsPour.id && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('fs-poured'); document.documentElement.style.setProperty('--pour', fsPour.color); }
+} catch (e) {}
+</script>
+<a class="nav-skip" href="#main">Vai al contenuto</a>
+
+<header class="nav" data-nav data-tone="light">
+  <div class="nav__bar">
+    <nav class="nav__links" aria-label="Principale">
+      <button class="nav__link" type="button" data-cantina-toggle aria-expanded="false" aria-controls="cantina" data-nav-for="p-vini collezioni tavola vino">Vini</button>
+      <a class="nav__link" href="come-nasce.html" data-nav-for="p-nasce nasce">Come nasce</a>
+      <a class="nav__link" href="azienda.html" data-nav-for="p-azienda azienda">Azienda</a>
+      <a class="nav__link" href="index.html#premi" data-nav-for="p-premi premi">Premi</a>
+    </nav>
+    <a class="nav__logo" href="index.html" aria-label="Feudi Salentini, torna alla home"><span class="logo"></span></a>
+    <div class="nav__end">
+      <a class="nav__link nav__link--end" href="index.html#contatti" data-nav-for="contatti">Contatti</a>
+      <p class="nav__lang"><span class="sr-only">Lingua: </span><span class="nav__lang-on" aria-current="true">IT</span><span class="nav__lang-off" aria-disabled="true" title="In preparazione">EN<span class="sr-only"> (in preparazione)</span></span></p>
+      <button class="nav__burger" type="button" aria-expanded="false" aria-controls="nav-menu">Menu</button>
+    </div>
+  </div>
+</header>
+
+<div class="nav-menu" id="nav-menu" data-lenis-prevent>
+  <div class="nav-menu__in">
+    <nav aria-label="Menu">
+      <ul class="nav-menu__list">
+        <li><button class="nav-menu__item" type="button" data-cantina-toggle aria-expanded="false" aria-controls="cantina">Vini <span class="nav-menu__count" data-cantina-total>28</span><svg class="nav-menu__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button></li>
+        <li><a class="nav-menu__item" href="come-nasce.html">Come nasce il vino</a></li>
+        <li><a class="nav-menu__item" href="azienda.html">Azienda</a></li>
+        <li><a class="nav-menu__item" href="index.html#premi">Premi</a></li>
+        <li><a class="nav-menu__item" href="index.html#contatti">Contatti</a></li>
+      </ul>
+    </nav>
+    <div class="nav-menu__foot">
+      <p class="nav__lang"><span class="sr-only">Lingua: </span><span class="nav__lang-on" aria-current="true">IT</span><span class="nav__lang-off" aria-disabled="true" title="In preparazione">EN <small>in preparazione</small></span></p>
+      <a href="tel:+390995315370">+39 099 5315370</a>
+    </div>
+  </div>
+</div>
+
+<div class="cantina" id="cantina" role="dialog" aria-modal="true" aria-labelledby="cantina-title" data-lenis-prevent>
+  <div class="cantina__in">
+    <div class="cantina__top">
+      <button class="cantina__back" type="button" data-cantina-back><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Menu</button>
+      <h2 class="cantina__title" id="cantina-title">I vini</h2>
+      <div class="cantina__filters" role="group" aria-label="Filtra per tipo">
+        <button class="cantina__filter" type="button" data-tipo="tutti" aria-pressed="true">Tutti <span></span></button>
+        <button class="cantina__filter" type="button" data-tipo="rosso" aria-pressed="false">Rossi <span></span></button>
+        <button class="cantina__filter" type="button" data-tipo="rosato" aria-pressed="false">Rosati <span></span></button>
+        <button class="cantina__filter" type="button" data-tipo="bianco" aria-pressed="false">Bianchi <span></span></button>
+        <button class="cantina__filter" type="button" data-tipo="dolce" aria-pressed="false">Dolce <span></span></button>
+      </div>
+      <p class="cantina__vista"></p>
+      <button class="cantina__close" type="button" data-cantina-close>Chiudi</button>
+    </div>
+    <div class="cantina__shelves" data-cantina-shelves></div>
+  </div>
+</div>
+
+<div class="pour" aria-hidden="true"><canvas></canvas></div>
+<main id="main">
+<!-- HOME MODERNA, alternativa C "archi" (30 ott 2026): chiara, gli archi delle masserie del Salento come forma di tutta la pagina.
+     Hero: un arco con la corte della masseria e la bottiglia sulla soglia, "Feudi" e "Salentini" ai lati; scorrendo l'arco si apre fino a
+     tutto schermo. La cantina con tre foto ad arco che salgono a velocità diverse, le collezioni in cinque nicchie, le esperienze a righe
+     alterne, i premi in due colonne, le news una grande e due in elenco. Movimenti in js/moderna-c.js, stile in css/moderna-c.css -->
+<section class="c-hero" id="hero" aria-labelledby="c-hero-t">
+  <div class="c-hero__stage" data-subito>
+    <div class="c-hero__foto"><img src="assets/photo/masseria-cortile.webp" alt="" fetchpriority="high" decoding="async"></div>
+    <img class="c-hero__bt" alt="" decoding="async">
+    <h1 class="c-hero__t" id="c-hero-t" aria-label="Feudi Salentini"><span class="c-hero__sx" data-chars data-ritardo="0.6">Feudi</span><span class="c-hero__dx" data-chars data-ritardo="0.7">Salentini</span></h1>
+    <p class="c-hero__lead">I vini della famiglia Varvaglione, a Leporano sul mar Ionio, dalle uve del Salento.</p>
+  </div>
+</section>
+
+<section class="c-cantina" id="azienda" aria-label="La cantina">
+  <p class="c-cantina__t">Feudi Salentini è la cantina della famiglia Varvaglione a Leporano, in provincia di Taranto. Produce vini dai vitigni autoctoni pugliesi per eccellenza, Primitivo, Negroamaro, Verdeca e Malvasia Bianca: in catalogo sono <span data-cantina-total>33</span>, in 6 collezioni.</p>
+  <div class="c-cantina__archi" aria-hidden="true">
+    <div class="c-ad" data-v="-60"><img src="assets/photo/alberello.webp" alt="" loading="lazy" decoding="async"></div>
+    <div class="c-ad" data-v="40"><img src="assets/photo/barriques.webp" alt="" loading="lazy" decoding="async"></div>
+    <div class="c-ad" data-v="-20"><img src="assets/photo/mare-salento.webp" alt="" loading="lazy" decoding="async"></div>
+  </div>
+</section>
+
+<section class="c-vini" id="vini" aria-labelledby="c-vini-t">
+  <h2 class="c-h2" id="c-vini-t" data-chars>Cinque collezioni.</h2>
+  <ul class="c-vini__nicchie"></ul>
+</section>
+
+
+<section class="c-pr" id="premi" aria-labelledby="c-pr-t">
+  <h2 class="c-h2" id="c-pr-t" data-chars>Premiati nei concorsi internazionali.</h2>
+  <ul class="c-pr__lista"></ul>
+</section>
+
+<section class="c-nw" id="news" aria-labelledby="c-nw-t">
+  <h2 class="c-h2" id="c-nw-t" data-chars>Dalla cantina.</h2>
+  <div class="c-nw__grid"></div>
+</section>
+</main>
+<!-- NAVIGAZIONE: footer (30 ott, come il footer di klimtwine): chiaro, alto uno schermo; logo in alto (newsletter tolta il 6 nov 2026, su sua richiesta), collezioni / cantina /
+     contatti al centro, note legali in fondo. Il blocco scuro "Vieni a trovarci" è stato tolto. Dall'11 nov niente esperienze né degustazioni: non le fanno più.
+     Stile: css/nav.css · Script: js/nav.js (collezioni che aprono il menu dei vini) -->
+<footer id="contatti" class="foot sec">
+  <div class="foot__in">
+    <div class="foot__top">
+      <a class="foot__logo" href="#hero" aria-label="Feudi Salentini, torna all'inizio"><span class="logo"></span></a>
+    </div>
+
+    <div class="foot__mid">
+      <nav class="foot__col" aria-labelledby="foot-vini">
+        <h2 class="foot__h" id="foot-vini">I vini</h2>
+        <ul>
+          <li><button type="button" data-col="luxury">Collezione 53</button></li>
+          <li><button type="button" data-col="terra">Terra</button></li>
+          <li><button type="button" data-col="organic">125 Organic</button></li>
+          <li><button type="button" data-col="classica">Classica</button></li>
+          <li><button type="button" data-col="lounge">125 Uno Due Cinque</button></li>
+        </ul>
+      </nav>
+      <nav class="foot__col" aria-labelledby="foot-cantina">
+        <h2 class="foot__h" id="foot-cantina">La cantina</h2>
+        <ul>
+          <li><a href="azienda.html">La famiglia Varvaglione</a></li>
+          <li><a href="azienda.html#sostenibilita">Sostenibilità</a></li>
+          <li><a href="#premi">Premi</a></li>
+          <li><a href="#news">News</a></li>
+          <li><a href="https://feudisalentini.com/wp-content/uploads/2026/08/Feudi_bilancio-di-sostenibilita_2025.pdf" target="_blank" rel="noopener">Bilancio di sostenibilità 2025 (PDF)</a></li>
+        </ul>
+      </nav>
+      <div class="foot__col foot__contatti">
+        <h2 class="foot__h">Contatti</h2>
+        <a class="foot__tel" href="tel:+390995315370">+39 099 5315370</a>
+        <p>Fax +39 099 5315739</p>
+        <address>Feudi Salentini srl<br><a href="https://www.google.com/maps/search/?api=1&amp;query=Feudi+Salentini+Via+Esterna+Talsano+36+Leporano" target="_blank" rel="noopener">Via Esterna Talsano, 36, 74020 Leporano (TA)</a></address>
+        <p class="foot__tbd"><span class="tbd">Indirizzo da confermare: il sito attuale riporta anche Via Amendola 36</span></p>
+      </div>
+    </div>
+
+    <div class="foot__legal">
+      <span>© 2026 Feudi Salentini srl</span>
+      <span>P.IVA 02592180737</span>
+      <a href="https://feudisalentini.com/privacy-policy/" target="_blank" rel="noopener">Privacy policy</a>
+    </div>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="js/data.js?v=a0547593"></script>
+<script src="js/main.js?v=104079be"></script>
+<script defer src="js/nav.js?v=ded32337"></script>
+<script src="js/moderna-kit.js?v=e5730034"></script>
+<script src="js/moderna-c.js?v=4e7f67e2"></script>
+</body>
+</html>

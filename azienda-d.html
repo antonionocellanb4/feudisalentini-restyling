@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#15100d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script>/* prova font: ?font=bricolage|funnel|archivo|newsreader, resta per la sessione */(function(){var F={klimt:"Fraunces:opsz,wght,SOFT,WONK@9..144,100..400,0..100,0..1&family=Instrument+Sans:wdth,wght@75..100,400..600",bricolage:"Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800",funnel:"Funnel+Display:wght@300..800&family=Funnel+Sans:wght@300..800",archivo:"Archivo:wdth,wght@62..125,100..900",newsreader:"Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800"};var f;try{f=new URLSearchParams(location.search).get("font")||sessionStorage.getItem("fs-font")}catch(e){}if(!F[f])f="klimt";try{sessionStorage.setItem("fs-font",f)}catch(e){}document.documentElement.dataset.font=f;document.write('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family='+F[f]+'&display=swap">')})()</script>
+<link rel="stylesheet" href="css/base.css?v=3c076e8f">
+<link rel="stylesheet" href="css/nav.css?v=bbc422a9">
+<!-- PAGINA AZIENDA dello stile D "Cinque porte" (10 nov 2026): si attraversano le porte come nella home, ma i capitoli sono la storia della cantina:
+     la torre, la corte (la famiglia), la terra rossa (la filosofia), il mare (il Salento), il campo con le api (la sostenibilità), la pergola (la visita). Sotto, la ruota dei premi.
+     Lo stesso teatrino di carta della home D (js/moderna-d.js), coi capitoli di questa pagina (js/pagine-d.js) · Stile: css/moderna-d.css + css/pagine-d.css -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..500&family=Instrument+Sans:wdth,wght@75..100,400..600&display=swap">
+<title>L'azienda · Feudi Salentini</title>
+<meta name="description" content="Feudi Salentini, la cantina della famiglia Varvaglione a Leporano (TA): la famiglia, la filosofia, il Salento, la sostenibilità e i riconoscimenti.">
+<link rel="stylesheet" href="css/moderna-kit.css?v=d9e8b4c9">
+<link rel="stylesheet" href="css/fiaba.css?v=bc12d618">
+<link rel="stylesheet" href="css/moderna-d.css?v=7ae9b586">
+<link rel="stylesheet" href="css/pagine-d.css?v=cd79470d">
+</head>
+<body class="page-moderna page-md page-ad" data-sito="d">
+<!-- NAVIGAZIONE: header fisso, menu telefono, cantina (mega menu dei vini), copertura della transizione versata.
+     Script: js/nav.js · Stile: css/nav.css · Altri agenti aprono la cantina con
+     document.dispatchEvent(new CustomEvent('fs:open-cantina', {detail:{tipo:'rosso'}})) -->
+<script>
+/* transizione versata: arrivando da un vino, la pagina parte coperta del suo colore già al primo disegno (poi nav.js la scopre) */
+try { var fsPour = JSON.parse(sessionStorage.getItem('fs-pour') || 'null'); sessionStorage.removeItem('fs-pour');
+  if (fsPour && Date.now() - fsPour.t < 10000 && new URLSearchParams(location.search).get('id') === fsPour.id && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('fs-poured'); document.documentElement.style.setProperty('--pour', fsPour.color); }
+} catch (e) {}
+</script>
+<a class="nav-skip" href="#main">Vai al contenuto</a>
+
+<header class="nav" data-nav data-tone="light">
+  <div class="nav__bar">
+    <nav class="nav__links" aria-label="Principale">
+      <button class="nav__link" type="button" data-cantina-toggle aria-expanded="false" aria-controls="cantina" data-nav-for="p-vini collezioni tavola vino">Vini</button>
+      <a class="nav__link" href="come-nasce.html" data-nav-for="p-nasce nasce">Come nasce</a>
+      <a class="nav__link" href="azienda.html" data-nav-for="p-azienda azienda">Azienda</a>
+      <a class="nav__link" href="index.html#premi" data-nav-for="p-premi premi">Premi</a>
+    </nav>
+    <a class="nav__logo" href="index.html" aria-label="Feudi Salentini, torna alla home"><span class="logo"></span></a>
+    <div class="nav__end">
+      <a class="nav__link nav__link--end" href="index.html#contatti" data-nav-for="contatti">Contatti</a>
+      <p class="nav__lang"><span class="sr-only">Lingua: </span><span class="nav__lang-on" aria-current="true">IT</span><span class="nav__lang-off" aria-disabled="true" title="In preparazione">EN<span class="sr-only"> (in preparazione)</span></span></p>
+      <button class="nav__burger" type="button" aria-expanded="false" aria-controls="nav-menu">Menu</button>
+    </div>
+  </div>
+</header>
+
+<div class="nav-menu" id="nav-menu" data-lenis-prevent>
+  <div class="nav-menu__in">
+    <nav aria-label="Menu">
+      <ul class="nav-menu__list">
+        <li><button class="nav-menu__item" type="button" data-cantina-toggle aria-expanded="false" aria-controls="cantina">Vini <span class="nav-menu__count" data-cantina-total>28</span><svg class="nav-menu__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button></li>
+        <li><a class="nav-menu__item" href="come-nasce.html">Come nasce il vino</a></li>
+        <li><a class="nav-menu__item" href="azienda.html">Azienda</a></li>
+        <li><a class="nav-menu__item" href="index.html#premi">Premi</a></li>
+        <li><a class="nav-menu__item" href="index.html#contatti">Contatti</a></li>
+      </ul>
+    </nav>
+    <div class="nav-menu__foot">
+      <p class="nav__lang"><span class="sr-only">Lingua: </span><span class="nav__lang-on" aria-current="true">IT</span><span class="nav__lang-off" aria-disabled="true" title="In preparazione">EN <small>in preparazione</small></span></p>
+      <a href="tel:+390995315370">+39 099 5315370</a>
+    </div>
+  </div>
+</div>
+
+<div class="cantina" id="cantina" role="dialog" aria-modal="true" aria-labelledby="cantina-title" data-lenis-prevent>
+  <div class="cantina__in">
+    <div class="cantina__top">
+      <button class="cantina__back" type="button" data-cantina-back><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Menu</button>
+      <h2 class="cantina__title" id="cantina-title">I vini</h2>
+      <div class="cantina__filters" role="group" aria-label="Filtra per tipo">
+        <button class="cantina__filter" type="button" data-tipo="tutti" aria-pressed="true">Tutti <span></span></button>
+        <button class="cantina__filter" type="button" data-tipo="rosso" aria-pressed="false">Rossi <span></span></button>
+        <button class="cantina__filter" type="button" data-tipo="rosato" aria-pressed="false">Rosati <span></span></button>
+        <button class="cantina__filter" type="button" data-tipo="bianco" aria-pressed="false">Bianchi <span></span></button>
+        <button class="cantina__filter" type="button" data-tipo="dolce" aria-pressed="false">Dolce <span></span></button>
+      </div>
+      <p class="cantina__vista"></p>
+      <button class="cantina__close" type="button" data-cantina-close>Chiudi</button>
+    </div>
+    <div class="cantina__shelves" data-cantina-shelves></div>
+  </div>
+</div>
+
+<div class="pour" aria-hidden="true"><canvas></canvas></div>
+<main id="main">
+<section class="d-st" id="hero" aria-labelledby="d-t" data-nav-trasparente>
+  <div class="d-stage">
+    <canvas class="d-cv" aria-hidden="true"></canvas>
+    <i class="d-alto"></i>
+
+    <div class="d-cap d-cap--hero" data-subito>
+      <div class="d-cap__testo">
+        <h1 class="d-cap__t" id="d-t" data-chars data-ritardo="0.5">Feudi Salentini.</h1>
+        <p class="d-cap__d">La cantina della famiglia Varvaglione a Leporano, sul mar Ionio, a sud di Taranto. Scorri e attraversa le porte: la famiglia, la filosofia, il Salento, la sostenibilità.</p>
+        <div class="d-cap__cta"><button class="btn btn--gold" type="button" data-vai>Apri la prima porta</button></div>
+      </div>
+    </div>
+
+    <article class="d-cap" aria-labelledby="d-c1">
+      <ul class="d-nomi"></ul>
+      <div class="d-cap__testo">
+        <div class="d-cap__h"><p class="d-cap__n">01 · Quarta generazione</p><h2 class="d-cap__t" id="d-c1">La famiglia Varvaglione.</h2></div>
+        <p class="d-cap__d">Cosimo, Maria Teresa, Marzia, Angelo e Francesca Varvaglione portano avanti l'azienda, giunta alla quarta generazione.</p>
+        <div class="d-cap__cta"><button class="btn btn--line" type="button" data-vai>Apri la porta</button></div>
+      </div>
+    </article>
+    <article class="d-cap" aria-labelledby="d-c2">
+      <ul class="d-nomi"></ul>
+      <div class="d-cap__testo">
+        <div class="d-cap__h"><p class="d-cap__n">02 · Vitigni autoctoni</p><h2 class="d-cap__t" id="d-c2">La nostra filosofia.</h2></div>
+        <p class="d-cap__d">Vini dai vitigni autoctoni pugliesi per eccellenza: Primitivo, Negroamaro, Verdeca e Malvasia Bianca, con tecniche di vinificazione moderne e un occhio all'ambiente.</p>
+        <div class="d-cap__cta"><button class="btn btn--line" type="button" data-vai>Apri la porta</button></div>
+      </div>
+    </article>
+    <article class="d-cap" aria-labelledby="d-c3">
+      <ul class="d-nomi"></ul>
+      <div class="d-cap__testo">
+        <div class="d-cap__h"><p class="d-cap__n">03 · Il territorio</p><h2 class="d-cap__t" id="d-c3">Il Salento, una terra divina.</h2></div>
+        <p class="d-cap__d">Castelli, storia e tradizioni, in una terra rinomata per il Primitivo di Manduria. I muretti a secco, gli uliveti secolari e il mare turchese danno vita a vino e olio.</p>
+        <div class="d-cap__cta"><button class="btn btn--line" type="button" data-vai>Apri la porta</button></div>
+      </div>
+    </article>
+    <article class="d-cap" aria-labelledby="d-c4">
+      <ul class="d-nomi"></ul>
+      <div class="d-cap__testo">
+        <div class="d-cap__h"><p class="d-cap__n">04 · Equalitas dal 2022</p><h2 class="d-cap__t" id="d-c4">Sostenibilità.</h2></div>
+        <p class="d-cap__d">Dal 2022 Feudi Salentini è certificata Equalitas, lo standard che valuta la sostenibilità ambientale, sociale ed economica delle aziende del vino.</p>
+        <div class="d-cap__cta"><a class="btn btn--line" href="https://feudisalentini.com/wp-content/uploads/2026/08/Feudi_bilancio-di-sostenibilita_2025.pdf" target="_blank" rel="noopener">Il bilancio 2025 (PDF)</a><button class="btn btn--line" type="button" data-vai>Apri la porta</button></div>
+      </div>
+    </article>
+    <article class="d-cap" aria-labelledby="d-c5">
+      <ul class="d-nomi"></ul>
+      <div class="d-cap__testo">
+        <div class="d-cap__h"><p class="d-cap__n">05 · Leporano (TA)</p><h2 class="d-cap__t" id="d-c5">Vieni a trovarci.</h2></div>
+        <p class="d-cap__d">Via Esterna Talsano, 36, 74020 Leporano (TA). Telefono <a href="tel:+390995315370">+39 099 5315370</a>, <a href="mailto:info@feudisalentini.com">info@feudisalentini.com</a></p>
+        <div class="d-cap__cta"><a class="btn btn--gold" href="https://www.google.com/maps/search/?api=1&amp;query=Feudi+Salentini+Via+Esterna+Talsano+36+Leporano" target="_blank" rel="noopener">Indicazioni stradali</a></div>
+      </div>
+    </article>
+
+<!-- bottiglia al centro: si apre col clic su una bottiglia (js/scheda.js), uguale in fiaba, moderna-d e moderna-e -->
+<div class="fb-zoom" role="dialog" aria-modal="true" aria-labelledby="fb-zoom-t" tabindex="-1" hidden>
+  <canvas class="fb-zoom__cv" aria-hidden="true"></canvas>
+  <img class="fb-zoom__bt" alt="" decoding="async">
+  <div class="fb-zoom__info">
+    <p class="fb-zoom__col"></p>
+    <h2 class="fb-zoom__t" id="fb-zoom-t"></h2>
+    <p class="fb-zoom__meta"></p>
+    <p class="fb-zoom__desc"></p>
+    <dl class="fb-zoom__dati"></dl>
+    <div class="fb-zoom__cta"><a class="btn btn--gold fb-zoom__go">Scheda del vino</a><button class="btn btn--line fb-zoom__col-go" type="button">Vini della collezione</button></div>
+  </div>
+  <button class="btn btn--line fb-zoom__x" type="button">Chiudi</button>
+</div>
+  </div>
+</section>
+
+<section class="d-sez d-pr" id="premi" aria-labelledby="d-pr-t">
+  <div class="d-pr__st">
+    <h2 class="d-pr__h" id="d-pr-t" data-chars><span data-premi-totale>65</span> riconoscimenti nei concorsi internazionali.</h2>
+    <div class="d-pr__ruota" aria-hidden="true"><i></i></div>
+    <ul class="d-pr__lista"></ul>
+  </div>
+</section>
+</main>
+<!-- NAVIGAZIONE: footer (30 ott, come il footer di klimtwine): chiaro, alto uno schermo; logo in alto (newsletter tolta il 6 nov 2026, su sua richiesta), collezioni / cantina /
+     contatti al centro, note legali in fondo. Il blocco scuro "Vieni a trovarci" è stato tolto. Dall'11 nov niente esperienze né degustazioni: non le fanno più.
+     Stile: css/nav.css · Script: js/nav.js (collezioni che aprono il menu dei vini) -->
+<footer id="contatti" class="foot sec">
+  <div class="foot__in">
+    <div class="foot__top">
+      <a class="foot__logo" href="#hero" aria-label="Feudi Salentini, torna all'inizio"><span class="logo"></span></a>
+    </div>
+
+    <div class="foot__mid">
+      <nav class="foot__col" aria-labelledby="foot-vini">
+        <h2 class="foot__h" id="foot-vini">I vini</h2>
+        <ul>
+          <li><button type="button" data-col="luxury">Collezione 53</button></li>
+          <li><button type="button" data-col="terra">Terra</button></li>
+          <li><button type="button" data-col="organic">125 Organic</button></li>
+          <li><button type="button" data-col="classica">Classica</button></li>
+          <li><button type="button" data-col="lounge">125 Uno Due Cinque</button></li>
+        </ul>
+      </nav>
+      <nav class="foot__col" aria-labelledby="foot-cantina">
+        <h2 class="foot__h" id="foot-cantina">La cantina</h2>
+        <ul>
+          <li><a href="azienda.html">La famiglia Varvaglione</a></li>
+          <li><a href="azienda.html#sostenibilita">Sostenibilità</a></li>
+          <li><a href="#premi">Premi</a></li>
+          <li><a href="#news">News</a></li>
+          <li><a href="https://feudisalentini.com/wp-content/uploads/2026/08/Feudi_bilancio-di-sostenibilita_2025.pdf" target="_blank" rel="noopener">Bilancio di sostenibilità 2025 (PDF)</a></li>
+        </ul>
+      </nav>
+      <div class="foot__col foot__contatti">
+        <h2 class="foot__h">Contatti</h2>
+        <a class="foot__tel" href="tel:+390995315370">+39 099 5315370</a>
+        <p>Fax +39 099 5315739</p>
+        <address>Feudi Salentini srl<br><a href="https://www.google.com/maps/search/?api=1&amp;query=Feudi+Salentini+Via+Esterna+Talsano+36+Leporano" target="_blank" rel="noopener">Via Esterna Talsano, 36, 74020 Leporano (TA)</a></address>
+        <p class="foot__tbd"><span class="tbd">Indirizzo da confermare: il sito attuale riporta anche Via Amendola 36</span></p>
+      </div>
+    </div>
+
+    <div class="foot__legal">
+      <span>© 2026 Feudi Salentini srl</span>
+      <span>P.IVA 02592180737</span>
+      <a href="https://feudisalentini.com/privacy-policy/" target="_blank" rel="noopener">Privacy policy</a>
+    </div>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="js/data.js?v=a0547593"></script>
+<script src="js/main.js?v=104079be"></script>
+<script defer src="js/nav.js?v=ded32337"></script>
+<script src="js/moderna-kit.js?v=e5730034"></script>
+<script src="js/scheda.js?v=e374d8c2"></script>
+<script src="js/carta.js?v=f2722cbc"></script>
+<script src="js/pagine-d.js?v=36b8c6e7"></script>
+<script src="js/moderna-d.js?v=ec80b7cb"></script>
+</body>
+</html>

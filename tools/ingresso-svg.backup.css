@@ -1,0 +1,27 @@
+/* ingresso dal portone: preloader della prima visita. Senza html.ingresso-attivo (niente JS, reduced motion, già visto) non esiste. */
+.ingresso { display: none; }
+.ingresso-attivo .ingresso, .ingresso.ingresso--via { display: block; position: fixed; inset: 0; z-index: 300; overflow: hidden; }
+/* rete di sicurezza: se js/ingresso.js non arriva, l'overlay si toglie da solo (lo script la spegne appena parte) */
+.ingresso-attivo .ingresso { animation: ingresso-sicurezza .3s linear 6s forwards; }
+@keyframes ingresso-sicurezza { to { opacity: 0; visibility: hidden; } }
+.ingresso.ingresso--via { opacity: 0; pointer-events: none; transition: opacity .35s var(--ease); }
+
+.ingresso-scena { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; }
+.ingresso-notte { fill: var(--night); }
+.ingresso-oro { fill: var(--gold); }
+/* filo d'oro: si disegna, poi resta sotto il riempimento */
+.ingresso-filo { fill: none; stroke: var(--gold); stroke-width: 1.2px; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 1; stroke-linejoin: round; }
+
+/* battenti: dietro la scena, si vedono solo dal vano; fra i due una lama della luce che sta dietro */
+.ingresso-battenti { position: absolute; left: 0; top: 0; display: flex; gap: var(--seam, 0px); transform-origin: 0 0; }
+.ingresso-battenti i { flex: 1; background: linear-gradient(90deg, #1b1411, #241a15 70%, #2c2019); transform-origin: left center; }
+.ingresso-battenti i + i { background: linear-gradient(-90deg, #1b1411, #241a15 70%, #2c2019); transform-origin: right center; }
+
+/* scritta del marchio (il PNG originale, solo la riga del nome) e percentuale */
+.ingresso-ui { position: absolute; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; gap: 22px; color: var(--gold); }
+.ingresso-scritta { width: clamp(150px, 16vw, 210px); aspect-ratio: 396 / 32; -webkit-mask-position: bottom; mask-position: bottom; -webkit-mask-size: 100% auto; mask-size: 100% auto; }
+.ingresso-conta { font-size: 1rem; letter-spacing: .02em; color: var(--paper-2); font-variant-numeric: tabular-nums; }
+
+.ingresso-salta { position: absolute; right: var(--pad-x); bottom: max(24px, env(safe-area-inset-bottom));
+  height: 40px; padding: 0 1rem; font-size: 1rem; background: transparent; color: var(--paper-2); border: 1px solid var(--line-dark); }
+.ingresso-salta:hover { background: var(--paper); color: var(--ink); border-color: var(--paper); }

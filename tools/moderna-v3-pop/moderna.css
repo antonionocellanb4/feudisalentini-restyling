@@ -1,0 +1,104 @@
+/* HOME MODERNA, versione 3 "pop" (30 ott 2026): font delicato (Fraunces sottile + Instrument Sans), movimenti come klimtwine, il linguaggio
+   delle serie pop (fondi pieni, la stessa immagine ripetuta, punti Ben-Day). Le foto delle bottiglie restano come sono: il pop sta intorno.
+   Il fondo della pagina è il body, che cambia colore sezione per sezione (js/moderna.js). Versione 2: tools/moderna-v2/, versione 1: tools/moderna-v1/ */
+.page-moderna {
+  --font: 'Instrument Sans', system-ui, sans-serif; --font-display: 'Fraunces', Georgia, serif;
+  --title-weight: 200; --title-track: -0.045em; --title-wdth: 100%;
+  font-family: var(--font); background: var(--cream); color: var(--ink);
+}
+.page-moderna :is(h1, h2, h3, .k-h2) { font-variation-settings: 'SOFT' 0, 'WONK' 0; }
+.page-moderna main > section { position: relative; z-index: 1; }
+
+.k-h2 { font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(2.8rem, 7vw, 7.6rem); line-height: .95; text-wrap: balance; }
+[data-chars] .ch { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .1em; margin-bottom: -.1em; }
+[data-chars] .ch > span { display: inline-block; }
+
+/* ---- la tela pop: fondo pieno (--c), un campo di punti Ben-Day nel colore della serie (--d) tagliato in diagonale, la bottiglia vera ---- */
+.p-pan { position: relative; overflow: hidden; border-radius: var(--r); background: var(--c); }
+.p-pan__punti { position: absolute; inset: 0; background: radial-gradient(circle, var(--d) 32%, transparent 34%) 0 0 / 12px 12px;
+  clip-path: polygon(100% 40%, 100% 100%, 18% 100%); transition: clip-path .8s var(--ease); }
+.p-pan__b { position: absolute; inset: 0; display: flex; justify-content: center; align-items: flex-end; padding-bottom: 5%; }
+.p-pan__b img { height: 94%; width: auto; max-width: none; }
+
+/* ---- hero: testo a sinistra, quattro tele della stessa bottiglia a destra; scorrendo si entra nell'ultima (palco fermo, js/moderna.js) ---- */
+.p-hero { height: 220vh; }
+.p-hero__stage { position: sticky; top: 0; height: 100vh; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center;
+  gap: clamp(24px, 4vw, 64px); padding: calc(var(--header-h) + 16px) var(--pad-x) 24px; }
+.p-hero__t { font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(3.6rem, 9.4vw, 10.5rem); line-height: .9; }
+.p-hero__lead { max-width: 24rem; margin-top: clamp(24px, 4vh, 40px); font-size: 1.125rem; color: var(--ink-2); }
+.p-hero__cta { margin-top: 24px; }
+.p-quattro { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; height: 100%; max-height: 860px; aspect-ratio: 3 / 4; } /* niente will-change: ingrandendo, i punti vanno ridisegnati nitidi */
+
+/* ---- la cantina: il colore dell'ultima tela, il paragrafo che si accende ---- */
+.p-about { min-height: 100vh; display: grid; place-items: center; padding: var(--sec-y) var(--pad-x); background: var(--zoom, #f49ac2); }
+.p-about__t { max-width: 24ch; text-align: center; font-weight: 500; letter-spacing: -0.03em; font-size: clamp(1.7rem, 3.4vw, 3.4rem); line-height: 1.12; }
+.p-about__t .w { opacity: .2; }
+
+/* ---- il muro dei vini: una tela per vino, il colore dice la collezione; nome e denominazione sempre leggibili sotto ---- */
+.p-muro { padding: var(--sec-y) var(--pad-x); }
+.p-muro__top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 48px; margin-bottom: clamp(32px, 4vw, 56px); }
+.p-filtri { display: flex; flex-wrap: wrap; gap: 8px; }
+.p-filtri button { display: inline-flex; align-items: center; gap: 10px; height: 44px; padding: 0 18px; border-radius: 999px; background: var(--stone); font-size: 1rem;
+  transition: background-color .25s var(--ease), color .25s var(--ease); }
+.p-filtri button[data-col]:not([data-col=""])::before { content: ''; width: 12px; height: 12px; border-radius: 3px; background: var(--c); }
+.p-filtri button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.p-muro__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 32px clamp(10px, 1vw, 16px); }
+.p-tela a { display: block; }
+.p-tela .p-pan { aspect-ratio: 3 / 4; }
+.p-tela .p-pan__b img { transition: transform .8s var(--ease); }
+.p-tela a:hover .p-pan__b img { transform: translateY(-6px); }
+.p-tela a:hover .p-pan__punti { clip-path: polygon(100% 0%, 100% 100%, 0% 100%); }
+.p-tela__n { display: block; margin-top: 12px; font-weight: 500; line-height: 1.25; }
+.p-tela__d { display: block; margin-top: 4px; font-size: .875rem; line-height: 1.35; color: var(--ink-2); }
+
+/* ---- esperienze, premi, news ---- */
+.k-sec { padding: var(--sec-y) var(--pad-x); }
+.k-sec .k-h2 { margin-bottom: clamp(36px, 5vw, 72px); }
+.k-es__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2vw, 28px); }
+.k-es__card { display: flex; flex-direction: column; }
+.k-es__fig { aspect-ratio: 4 / 5; border-radius: var(--r); overflow: hidden; }
+.k-es__fig img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+.k-es__card:hover .k-es__fig img { transform: scale(1.04); }
+.k-es__name { margin-top: 18px; font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(1.8rem, 2.4vw, 2.4rem); line-height: 1.02; }
+.k-es__meta { margin-top: 8px; font-size: 1rem; color: var(--ink-2); }
+.k-es__desc { margin-top: 12px; color: var(--ink-2); text-wrap: pretty; }
+.k-es__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 20px; }
+.k-es__price strong { font-weight: 500; font-size: 1.25rem; }
+.k-pr__list { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 32px clamp(16px, 2vw, 32px); }
+.k-pr__list a { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.k-pr__logo { width: clamp(104px, 9vw, 140px); aspect-ratio: 1; border-radius: 50%; overflow: hidden; background: #fff; }
+.k-pr__logo img { width: 100%; height: 100%; object-fit: cover; }
+.k-pr__n { margin-top: 18px; font-weight: 500; }
+.k-pr__d { margin-top: 6px; font-size: 1rem; color: var(--ink-2); text-wrap: pretty; }
+.k-nw__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2vw, 28px); }
+.k-nw__fig { aspect-ratio: 16 / 10; border-radius: var(--r); overflow: hidden; background: #fff; }
+.k-nw__fig img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+.k-nw__item:hover .k-nw__fig img { transform: scale(1.04); }
+.k-nw__date { margin-top: 14px; font-size: 1rem; color: var(--ink-2); }
+.k-nw__title { margin-top: 6px; font-size: 1.25rem; line-height: 1.3; text-wrap: balance; }
+.k-nw__item:hover .k-nw__title { color: var(--gold-ink); }
+
+/* ---- pillola fissa dei vini (come la "Our Wines" di klimtwine): apre il menu dei vini ---- */
+.k-pill { position: fixed; left: 50%; bottom: max(16px, env(safe-area-inset-bottom)); z-index: 90; translate: -50% 0; display: flex; align-items: center; gap: 12px;
+  height: 56px; padding: 0 8px 0 14px; border-radius: 999px; background: #fff; color: var(--ink); white-space: nowrap;
+  transition: opacity .4s var(--ease), translate .4s var(--ease); }
+.k-pill.is-via { opacity: 0; translate: -50% 24px; pointer-events: none; }
+.k-pill__mini { display: flex; align-items: flex-end; height: 42px; padding-left: 6px; }
+.k-pill__mini img { height: 100%; width: auto; max-width: none; margin-left: -16px; }
+.k-pill__t { min-width: 9em; text-align: center; font-size: 1rem; }
+.k-pill__v { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--stone); transition: background-color .25s var(--ease), color .25s var(--ease); }
+.k-pill__v svg { width: 20px; height: 20px; }
+.k-pill:hover .k-pill__v { background: var(--ink); color: var(--paper); }
+
+@media (prefers-reduced-motion: reduce) { .p-hero { height: auto; } .p-hero__stage { position: relative; } }
+@media (max-width: 1100px) { .p-muro__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 860px) {
+  .p-hero__stage { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); align-items: start; gap: 20px; padding-bottom: 88px; }
+  .p-hero__t { font-size: clamp(3.4rem, 17vw, 5rem); }
+  .p-hero__lead, .p-hero__cta { display: none; } /* sul telefono il titolo e le quattro tele; la frase è subito sotto nella cantina */
+  .p-quattro { width: 100%; height: auto; max-height: 100%; justify-self: center; }
+  .p-pan__punti { background-size: 9px 9px; }
+  .p-muro__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 12px; }
+  .k-es__grid, .k-nw__grid { grid-template-columns: minmax(0, 1fr); }
+  .k-pr__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

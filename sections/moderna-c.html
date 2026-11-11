@@ -1,0 +1,37 @@
+<!-- HOME MODERNA, alternativa C "archi" (30 ott 2026): chiara, gli archi delle masserie del Salento come forma di tutta la pagina.
+     Hero: un arco con la corte della masseria e la bottiglia sulla soglia, "Feudi" e "Salentini" ai lati; scorrendo l'arco si apre fino a
+     tutto schermo. La cantina con tre foto ad arco che salgono a velocità diverse, le collezioni in cinque nicchie, le esperienze a righe
+     alterne, i premi in due colonne, le news una grande e due in elenco. Movimenti in js/moderna-c.js, stile in css/moderna-c.css -->
+<section class="c-hero" id="hero" aria-labelledby="c-hero-t">
+  <div class="c-hero__stage" data-subito>
+    <div class="c-hero__foto"><img src="assets/photo/masseria-cortile.webp" alt="" fetchpriority="high" decoding="async"></div>
+    <img class="c-hero__bt" alt="" decoding="async">
+    <h1 class="c-hero__t" id="c-hero-t" aria-label="Feudi Salentini"><span class="c-hero__sx" data-chars data-ritardo="0.6">Feudi</span><span class="c-hero__dx" data-chars data-ritardo="0.7">Salentini</span></h1>
+    <p class="c-hero__lead">I vini della famiglia Varvaglione, a Leporano sul mar Ionio, dalle uve del Salento.</p>
+  </div>
+</section>
+
+<section class="c-cantina" id="azienda" aria-label="La cantina">
+  <p class="c-cantina__t">Feudi Salentini è la cantina della famiglia Varvaglione a Leporano, in provincia di Taranto. Produce vini dai vitigni autoctoni pugliesi per eccellenza, Primitivo, Negroamaro, Verdeca e Malvasia Bianca: in catalogo sono <span data-cantina-total>33</span>, in 6 collezioni.</p>
+  <div class="c-cantina__archi" aria-hidden="true">
+    <div class="c-ad" data-v="-60"><img src="assets/photo/alberello.webp" alt="" loading="lazy" decoding="async"></div>
+    <div class="c-ad" data-v="40"><img src="assets/photo/barriques.webp" alt="" loading="lazy" decoding="async"></div>
+    <div class="c-ad" data-v="-20"><img src="assets/photo/mare-salento.webp" alt="" loading="lazy" decoding="async"></div>
+  </div>
+</section>
+
+<section class="c-vini" id="vini" aria-labelledby="c-vini-t">
+  <h2 class="c-h2" id="c-vini-t" data-chars>Cinque collezioni.</h2>
+  <ul class="c-vini__nicchie"></ul>
+</section>
+
+
+<section class="c-pr" id="premi" aria-labelledby="c-pr-t">
+  <h2 class="c-h2" id="c-pr-t" data-chars>Premiati nei concorsi internazionali.</h2>
+  <ul class="c-pr__lista"></ul>
+</section>
+
+<section class="c-nw" id="news" aria-labelledby="c-nw-t">
+  <h2 class="c-h2" id="c-nw-t" data-chars>Dalla cantina.</h2>
+  <div class="c-nw__grid"></div>
+</section>

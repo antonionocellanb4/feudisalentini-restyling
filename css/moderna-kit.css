@@ -1,0 +1,17 @@
+/* KIT comune alle tre alternative della home moderna (A cinema, B luminarie, C archi): titoli spezzati, paragrafo che si accende, pillola.
+   Ogni variante ha il suo css/moderna-x.css con font, colori e layout propri. */
+.page-moderna main > section { position: relative; z-index: 1; }
+[data-chars] .ch { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .12em; margin-bottom: -.12em; }
+[data-chars] .ch > span { display: inline-block; }
+
+/* pillola fissa dei vini (come la "Our Wines" di klimtwine) */
+.m-pill { position: fixed; left: 50%; bottom: max(16px, env(safe-area-inset-bottom)); z-index: 90; translate: -50% 0; display: flex; align-items: center; gap: 12px;
+  height: 56px; padding: 0 8px 0 14px; border-radius: 999px; background: #fff; color: var(--ink); white-space: nowrap; font-family: var(--font);
+  transition: opacity .4s var(--ease), translate .4s var(--ease); }
+.m-pill.is-via { opacity: 0; translate: -50% 24px; pointer-events: none; }
+.m-pill__mini { display: flex; align-items: flex-end; height: 42px; padding-left: 6px; }
+.m-pill__mini img { height: 100%; width: auto; max-width: none; margin-left: -16px; }
+.m-pill__t { min-width: 9em; text-align: center; font-size: 1rem; }
+.m-pill__v { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--stone); transition: background-color .25s var(--ease), color .25s var(--ease); }
+.m-pill__v svg { width: 20px; height: 20px; }
+.m-pill:hover .m-pill__v { background: var(--ink); color: var(--paper); }

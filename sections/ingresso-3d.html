@@ -1,0 +1,12 @@
+<!-- INGRESSO dal portone in 3D, ingresso di moderna.html (js/ingresso-3d.js, modulo; css/ingresso-3d.css). Quello a matita è in sections/ingresso.html. Automatico.
+     Esiste solo con html.ingresso-attivo (deciso nel <head>). La torre del marchio è un volume d'oro vero (coordinate di
+     assets/logo/feudi-marchio.svg), i battenti di legno; la parete scura ha un buco sul portone: dietro si vede la hero vera.
+     La torre è già completa: la luce la rivela, i battenti si aprono, la camera entra.
+     Versione precedente a SVG: tools/ingresso-svg.backup.* -->
+<div class="ingresso" data-ingresso role="dialog" aria-modal="true" aria-label="Caricamento del sito">
+  <canvas class="ingresso-3d" aria-hidden="true"></canvas>
+  <div class="ingresso-ui" aria-hidden="true">
+    <span class="ingresso-scritta logo"></span>
+  </div>
+  <button class="btn ingresso-salta" type="button" aria-label="Salta l'ingresso">Salta</button>
+</div>

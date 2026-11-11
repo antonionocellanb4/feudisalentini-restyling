@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="it">
+<head>
+<!-- @include sections/_head.html -->
+<!-- PAGINA AZIENDA, versione 7 (6 nov 2026, "l'hero l'avrei fatta con altro, un ramo di vigna dipinto; con i numeri ci avrei giocato sotto, sezione a parte"):
+     un palco solo a tutto schermo e le scene che si danno il cambio, come le sale di H. Si apre sulla notte dipinta col ramo di vite dipinto
+     (tools/dipingi_ramo.py, dalla foto vera dell'alberello) e il nome accanto; sotto, sezione a parte sulla stessa notte, i numeri dell'azienda arrivano dai bordi
+     (le bottiglie delle collezioni accanto ai vini, le medaglie accanto ai premi); poi la notte si ritira a pennellate sulla finestra della famiglia. Poi il manifesto del catalogo,
+     La nostra filosofia coi vitigni, Il Salento una terra divina, i riconoscimenti anno per anno (medaglie dal filo, l'anno grande dietro), la sostenibilità, Dove trovarci.
+     Sul telefono le scene vanno in colonna. Testi veri: catalogo del cliente (pagine 2-6 e 35), Bilancio di sostenibilità 2025, numeri e medaglie da js/data.js.
+     Le versioni di prima: azienda-v5.html (le due aperture), azienda-v3.html, azienda-v1.html. Stile: css/pagine.css · Script: js/pagine.js -->
+<title>L'azienda · Feudi Salentini</title>
+<meta name="description" content="Feudi Salentini, la cantina della famiglia Varvaglione a Leporano (TA): vitigni autoctoni pugliesi, il Salento e la sostenibilità, certificata Equalitas dal 2022.">
+<link rel="stylesheet" href="css/moderna-kit.css">
+<link rel="stylesheet" href="css/pagine.css">
+</head>
+<body class="page-moderna page-pg page-azienda page-mh" data-sito="h">
+<!-- @include sections/header.html -->
+<main id="main">
+
+  <section class="az" aria-labelledby="az-t">
+    <div class="az__apre" data-subito>
+      <div class="az-apre">
+        <img class="az-ramo" src="assets/quadri/ramo.webp" alt="Un ramo di vite ad alberello col grappolo, dipinto" width="1200" height="800" decoding="async" fetchpriority="high">
+        <div class="az-apre__testo">
+          <h1 class="az-apre__t" id="az-t" data-chars data-ritardo="0.3">Feudi Salentini.</h1>
+          <p class="az-apre__d">La cantina della famiglia Varvaglione a Leporano, sul mar Ionio, a sud di Taranto.</p>
+        </div>
+        <div class="az-num" role="group" aria-label="L'azienda in numeri"><img class="az-grappolo" src="assets/quadri/grappolo.webp" alt="" width="480" height="1260" decoding="async" fetchpriority="low"></div>
+      </div>
+    </div>
+    <div class="az__a">
+      <div class="az__st" aria-hidden="true">
+        <div class="az__cornice">
+          <img class="az__img is-pieno" data-k="famiglia" src="assets/photo/masseria-vigne.webp" alt="" decoding="async" fetchpriority="high">
+        </div>
+        <i class="az__crema"></i>
+        <div class="az__posti">
+          <img class="az__img" data-k="torri" src="assets/photo/torre-mare.webp" alt="" loading="lazy" decoding="async">
+          <img class="az__img" data-k="masserie" src="assets/photo/masseria-cortile.webp" alt="" loading="lazy" decoding="async">
+          <img class="az__img" data-k="muretti" src="assets/photo/muretto-secco.webp" alt="" loading="lazy" decoding="async">
+          <img class="az__img" data-k="ulivi" src="assets/photo/ulivo-trulli.webp" alt="" loading="lazy" decoding="async">
+          <img class="az__img" data-k="mare" src="assets/photo/mare-salento.webp" alt="" loading="lazy" decoding="async">
+        </div>
+        <i class="az__crema az__crema--2"></i>
+      </div>
+    </div>
+    <div class="az__flusso">
+      <div class="az__scena">
+        <div class="az-sc az-sc--famiglia" data-sc="famiglia">
+          <div class="az-sx">
+            <h2 class="pg-h2 az-t">La famiglia Varvaglione.</h2>
+          </div>
+          <div class="az-dx">
+            <p class="pg-lead pz">Cosimo, Maria Teresa, Marzia, Angelo e Francesca Varvaglione portano avanti l'azienda, giunta alla quarta generazione.</p>
+          </div>
+          <img class="az__foto-m" src="assets/photo/masseria-vigne.webp" alt="La masseria tra le vigne" loading="lazy" decoding="async">
+        </div>
+        <div class="az-sc az-sc--manifesto" data-sc="manifesto">
+          <figure class="az-man__f az-man__f--a"><img src="assets/photo/catalogo-vite.webp" alt="Il tronco di una vecchia vite" width="627" height="627" loading="lazy" decoding="async"></figure>
+          <figure class="az-man__f az-man__f--b"><img src="assets/photo/catalogo-mani.webp" alt="Le mani che tagliano un grappolo alla vendemmia" width="797" height="797" loading="lazy" decoding="async"></figure>
+          <figure class="az-man__f az-man__f--c"><img src="assets/photo/catalogo-vigna.webp" alt="I filari della vigna sotto un cielo di nuvole" width="1134" height="913" loading="lazy" decoding="async"></figure>
+          <div class="az-man__testo">
+            <p class="az-man__frase">Coltiviamo vitigni autoctoni che offrono la loro piena espressione nei vini di Feudi Salentini.</p>
+            <p class="pg-p pz">L'azienda mette a frutto tecnologia, best practices e passione. Forte di radici, valori e tradizioni, Feudi Salentini guarda a un futuro sostenibile e pulito, riunendo storia e innovazione.</p>
+          </div>
+        </div>
+        <div class="az-sc az-sc--vitigni" data-sc="vitigni">
+          <div class="az-sx">
+            <h2 class="pg-h2 az-t">La nostra filosofia.</h2>
+            <p class="pg-p pz">Feudi Salentini produce vini dai vitigni autoctoni pugliesi per eccellenza: Primitivo, Negroamaro, Verdeca e Malvasia Bianca, usando tecniche di vinificazione moderne, con un occhio all'ambiente per salvaguardare la terra.</p>
+          </div>
+          <ol class="az-dx az-vit"></ol>
+          <p class="az-gigante" aria-hidden="true"></p>
+          <div class="az-file"></div>
+          <img class="az__foto-m" src="assets/photo/alberello.webp" alt="Una vecchia vite di Primitivo ad alberello" loading="lazy" decoding="async">
+        </div>
+        <div class="az-sc az-sc--territorio" data-sc="territorio">
+          <div class="az-banda">
+            <h2 class="pg-h2 az-t">Il Salento, una terra divina.</h2>
+            <ol class="az-luoghi">
+              <li data-k="torri"><span>Le torri sul mare</span><img class="az__foto-m" src="assets/photo/torre-mare.webp" alt="Una torre costiera sul mare del Salento" loading="lazy" decoding="async"></li>
+              <li data-k="masserie"><span>Le masserie</span><img class="az__foto-m" src="assets/photo/masseria-cortile.webp" alt="Il cortile bianco di una masseria" loading="lazy" decoding="async"></li>
+              <li data-k="muretti"><span>I muretti a secco</span><img class="az__foto-m" src="assets/photo/muretto-secco.webp" alt="Un muretto a secco tra le vigne" loading="lazy" decoding="async"></li>
+              <li data-k="ulivi"><span>Gli ulivi secolari</span><img class="az__foto-m" src="assets/photo/ulivo-trulli.webp" alt="Rami di ulivo con le olive davanti a un trullo" loading="lazy" decoding="async"></li>
+              <li data-k="mare"><span>Il mare turchese</span><img class="az__foto-m" src="assets/photo/mare-salento.webp" alt="La costa del Salento, sabbia e mare turchese" loading="lazy" decoding="async"></li>
+            </ol>
+          </div>
+          <p class="pg-p az-terr-p">Il Salento è ricco di castelli, di storia e di tradizioni. Feudi Salentini nasce qui, in una terra rinomata per la produzione del Primitivo di Manduria. I muretti a secco, gli uliveti con alberi secolari e il mare turchese fanno parte di uno scenario che dà vita a vino e olio.</p>
+        </div>
+        <div class="az-sc az-sc--premi" data-sc="premi">
+          <div class="az-sx">
+            <h2 class="pg-h2 az-t"><span data-premi-totale>65</span> riconoscimenti.</h2>
+            <p class="pg-p pz az-premi__lead"></p>
+          </div>
+          <ol class="az-dx az-vit az-anni-i"></ol>
+          <p class="az-gigante" aria-hidden="true"></p>
+          <div class="az-anni"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="az-o" id="sostenibilita" aria-labelledby="az-o-t">
+    <div class="az-o__a">
+      <div class="az-o__st">
+        <i class="az-o__notte" aria-hidden="true"></i>
+        <i class="az-o__oro" aria-hidden="true"></i>
+        <div class="az-o__testa">
+          <h2 class="pg-h2" id="az-o-t">Sostenibilità.</h2>
+          <p class="pg-lead">Dal 2022 Feudi Salentini è certificata Equalitas, lo standard che valuta la sostenibilità ambientale, sociale ed economica delle aziende del vino.</p>
+        </div>
+        <ul class="az-o__dischi" aria-hidden="true">
+          <li><span>2022</span></li><li><span>2025</span></li><li><span>100%</span></li><li><span>3 Cuori</span></li><li><span>WWF</span></li><li><span>GRI</span></li>
+        </ul>
+        <ol class="az-o__testi">
+          <li><h3><span class="sr-only">2022: </span>Certificazione Equalitas</h3><p>Il 100% dei fornitori di vino è certificato Equalitas e sostenibile. La certificazione guarda anche alle persone: condizioni di lavoro eque e progetti sociali e culturali sul territorio.</p></li>
+          <li><h3><span class="sr-only">2025: </span>Impronta di carbonio e impronta idrica</h3><p>Calcolate per la prima volta nel 2025 sui dati del 2024, secondo le norme UNI EN ISO 14064:2018 e ISO 14046:2014. L'obiettivo è misurarle negli anni e ridurre le emissioni.</p></li>
+          <li><h3><span class="sr-only">100%: </span>Tappi Nomacorc</h3><p>Tutte le bottiglie sono chiuse con tappi Nomacorc, che aiutano a prevenire ossidazione e riduzione del vino. I Nomacorc Green sono fatti con polimeri vegetali ricavati dalla canna da zucchero.</p></li>
+          <li><h3><span class="sr-only">3 Cuori: </span>Persone</h3><p>Nel 2025 il turnover è stato zero e i contratti a tempo indeterminato sono saliti del 75%. Dal 2025 c'è il Piano Welfare 3 Cuori, per i collaboratori e le loro famiglie.</p></li>
+          <li><h3><span class="sr-only">WWF: </span>Territorio</h3><p>Nel 2025 Feudi Salentini ha fornito attrezzature al WWF di Taranto per la tutela dell'ambiente. Sostiene le parrocchie e le associazioni no profit della zona.</p></li>
+          <li><h3><span class="sr-only">GRI: </span>Trasparenza</h3><p>Ogni fase della produzione è documentata: di ogni bottiglia si conoscono l'origine e il percorso. La rendicontazione si sta allineando agli standard del Global Reporting Initiative.</p></li>
+        </ol>
+        <div class="az-o__fine">
+          <h3 class="pg-h2">I prossimi obiettivi.</h3>
+          <ul class="az-obiettivi">
+            <li>Comprare solo da fornitori certificati per la sostenibilità.</li>
+            <li>Ricalcolare ogni anno l'impronta di carbonio e quella idrica.</li>
+            <li>Sostenere le associazioni che lavorano per l'ambiente.</li>
+          </ul>
+          <a class="btn btn--gold" href="https://feudisalentini.com/wp-content/uploads/2026/08/Feudi_bilancio-di-sostenibilita_2025.pdf" target="_blank" rel="noopener">Leggi il bilancio 2025 (PDF)</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pg-sec pg-crema az-dove" id="dove" aria-labelledby="az-dove-t">
+    <div class="pg-in az-dove__in">
+      <div class="az-dove__testo">
+        <h2 class="pg-h2" id="az-dove-t" data-chars>Dove trovarci.</h2>
+        <address>Feudi Salentini srl<br>Via Esterna Talsano, 36<br>74020 Leporano (TA), Italia</address>
+        <dl class="az-dove__dati">
+          <div><dt>Telefono</dt><dd><a href="tel:+390995315370">+39 099 5315370</a></dd></div>
+          <div><dt>Fax</dt><dd>+39 099 5315739</dd></div>
+          <div><dt>Email</dt><dd><a href="mailto:info@feudisalentini.com">info@feudisalentini.com</a></dd></div>
+        </dl>
+        <a class="btn btn--gold" href="https://www.google.com/maps/search/?api=1&amp;query=Feudi+Salentini+Via+Esterna+Talsano+36+Leporano" target="_blank" rel="noopener">Indicazioni stradali</a>
+      </div>
+      <img class="az-dove__mappa" src="assets/quadri/mappa-puglia.webp" alt="La Puglia dal Gargano al Salento, con la Murgia e la Valle d'Itria: Feudi Salentini è a Leporano, vicino a Taranto" width="1211" height="1667" loading="lazy" decoding="async">
+    </div>
+  </section>
+
+</main>
+<!-- @include sections/footer.html -->
+<!-- @include sections/_scripts.html -->
+<script src="js/moderna-kit.js"></script>
+<script src="js/pagine.js"></script>
+</body>
+</html>

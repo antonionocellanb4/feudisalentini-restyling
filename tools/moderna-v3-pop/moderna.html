@@ -1,0 +1,44 @@
+<!-- HOME MODERNA, versione 3 "pop" (30 ott 2026, "ci vuole qualcosa legato all'arte, nel moderno qualcosa di pop"; le foto dei vini non si
+     toccano). Riferimento: le serie di Warhol (la stessa immagine ripetuta su fondi pieni diversi, i 32 barattoli in fila) e i punti Ben-Day
+     di Lichtenstein. Hero: quattro tele della stessa bottiglia; scorrendo si entra nell'ultima, attraverso il retino, e il suo colore diventa
+     la cantina. Poi il muro dei 28 vini, una tela per vino, colore per collezione. Versione 2 in tools/moderna-v2/, versione 1 in tools/moderna-v1/.
+     Movimenti in js/moderna.js, stile in css/moderna.css, testi e vini dai dati veri di js/data.js -->
+<section class="p-hero" id="hero" aria-labelledby="p-hero-t">
+  <div class="p-hero__stage">
+    <div class="p-hero__testo">
+      <h1 class="p-hero__t" id="p-hero-t" data-chars>Feudi Salentini</h1>
+      <p class="p-hero__lead">I vini della famiglia Varvaglione, a Leporano sul mar Ionio, dalle uve del Salento.</p>
+      <a class="btn btn--gold p-hero__cta" href="#vini">Vedi i 28 vini</a>
+    </div>
+    <div class="p-quattro" aria-hidden="true"></div>
+  </div>
+</section>
+
+<section class="p-about" id="azienda" aria-label="La cantina">
+  <p class="p-about__t">Feudi Salentini è la cantina della famiglia Varvaglione a Leporano, in provincia di Taranto. Dalle uve del Salento, Primitivo, Negroamaro, Malvasia e Susumaniello, nascono 28 vini in 5 collezioni.</p>
+</section>
+
+<section class="p-muro" id="vini" aria-labelledby="p-muro-t">
+  <div class="p-muro__top">
+    <h2 class="k-h2" id="p-muro-t" data-chars>I nostri 28&nbsp;vini.</h2>
+    <div class="p-filtri" role="group" aria-label="Filtra per collezione"></div>
+  </div>
+  <ul class="p-muro__grid"></ul>
+</section>
+
+<section class="k-sec k-es" id="esperienze" aria-labelledby="k-es-t">
+  <h2 class="k-h2" id="k-es-t" data-chars>Prenota una&nbsp;visita.</h2>
+  <div class="k-es__grid"></div>
+</section>
+
+<section class="k-sec k-pr" id="premi" aria-labelledby="k-pr-t">
+  <h2 class="k-h2" id="k-pr-t" data-chars>Premiati nei concorsi internazionali.</h2>
+  <ul class="k-pr__list"></ul>
+</section>
+
+<section class="k-sec k-nw" id="news" aria-labelledby="k-nw-t">
+  <h2 class="k-h2" id="k-nw-t" data-chars>Dalla&nbsp;cantina.</h2>
+  <div class="k-nw__grid"></div>
+</section>
+
+<button class="k-pill" type="button" aria-label="Apri i nostri vini"><span class="k-pill__mini" aria-hidden="true"></span><span class="k-pill__t">I nostri vini</span><span class="k-pill__v" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span></button>

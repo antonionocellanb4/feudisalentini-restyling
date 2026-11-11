@@ -1,0 +1,98 @@
+<!-- HOME MODERNA, alternativa D "Cinque porte" (2 nov 2026): teatrino di carta ritagliata. Si scorre in avanti, in profondità: la torre del logo,
+     poi una porta d'oro per ogni collezione, e dietro ogni porta il suo paesaggio con le bottiglie vere che salgono dal palco.
+     Il sole cammina nel cielo dietro la scena e con lui cambia la luce di tutto (alba, giorno, tramonto). Si interagisce così: tocchi una porta e la apri, tocchi una bottiglia e leggi la scheda.
+     Disegno e movimenti in js/moderna-d.js (tutto su canvas), stile in css/moderna-d.css. Testi e vini dai dati veri di js/data.js -->
+<section class="d-st" id="hero" aria-labelledby="d-t" data-nav-trasparente>
+  <div class="d-stage">
+    <canvas class="d-cv" aria-hidden="true"></canvas>
+    <i class="d-alto"></i>
+
+    <div class="d-cap d-cap--hero" data-subito>
+      <div class="d-cap__testo">
+        <h1 class="d-cap__t" id="d-t" data-chars data-ritardo="0.5">Cinque porte.</h1>
+        <p class="d-cap__d">Leporano, sul mar Ionio, a sud di Taranto. Scorri e attraversale: dietro ogni porta c'è una collezione di Feudi Salentini.</p>
+        <div class="d-cap__cta"><button class="btn btn--gold" type="button" data-vai>Apri la prima porta</button></div>
+      </div>
+    </div>
+
+    <article class="d-cap" aria-labelledby="d-c1">
+      <ul class="d-nomi"></ul>
+      <div class="d-cap__testo">
+        <div class="d-cap__h"><p class="d-cap__n">01 · La torre</p><h2 class="d-cap__t" id="d-c1">Collezione 53</h2></div>
+        <p class="d-cap__d">La linea Luxury: Primitivo di Manduria da vecchie vigne e Negroamaro, da uve selezionate a mano.</p>
+        <div class="d-cap__cta"><button class="btn btn--gold" type="button" data-col="luxury">Vedi i 3 vini</button><button class="btn btn--line" type="button" data-vai>Apri la porta</button></div>
+      </div>
+    </article>
+
+    <article class="d-cap" aria-labelledby="d-c2">
+      <ul class="d-nomi"></ul>
+      <div class="d-cap__testo">
+        <div class="d-cap__h"><p class="d-cap__n">02 · La terra rossa</p><h2 class="d-cap__t" id="d-c2">Terra</h2></div>
+        <p class="d-cap__d">Sette vini dalle uve del Salento: Primitivo di Manduria, Negroamaro, Malvasia bianca e nera, un rosato.</p>
+        <div class="d-cap__cta"><button class="btn btn--gold" type="button" data-col="terra">Vedi i 7 vini</button><button class="btn btn--line" type="button" data-vai>Apri la porta</button></div>
+      </div>
+    </article>
+
+    <article class="d-cap" aria-labelledby="d-c3">
+      <ul class="d-nomi"></ul>
+      <div class="d-cap__testo">
+        <div class="d-cap__h"><p class="d-cap__n">03 · Il campo</p><h2 class="d-cap__t" id="d-c3">125 Organic</h2></div>
+        <p class="d-cap__d">Un bianco e un Primitivo da agricoltura biologica, Puglia IGP.</p>
+        <div class="d-cap__cta"><button class="btn btn--gold" type="button" data-col="organic">Vedi i 2 vini</button><button class="btn btn--line" type="button" data-vai>Apri la porta</button></div>
+      </div>
+    </article>
+
+    <article class="d-cap" aria-labelledby="d-c4">
+      <ul class="d-nomi"></ul>
+      <div class="d-cap__testo">
+        <div class="d-cap__h"><p class="d-cap__n">04 · Il mare</p><h2 class="d-cap__t" id="d-c4">Classica</h2></div>
+        <p class="d-cap__d">La linea più ampia, tredici vini: dal Sassirossi delle vigne ad alberello al Susumaniello, dal bianco Càla al rosato Tre Cuori.</p>
+        <div class="d-cap__cta"><button class="btn btn--gold" type="button" data-col="classica">Vedi i 12 vini</button><button class="btn btn--line" type="button" data-vai>Apri la porta</button></div>
+      </div>
+    </article>
+
+    <article class="d-cap" aria-labelledby="d-c5">
+      <ul class="d-nomi"></ul>
+      <div class="d-cap__testo">
+        <div class="d-cap__h"><p class="d-cap__n">05 · Il tramonto</p><h2 class="d-cap__t" id="d-c5">125 Uno Due Cinque</h2></div>
+        <p class="d-cap__d">La linea Lounge Bar per l'aperitivo e i primi piatti: Pinot Grigio, Malvasia Bianca, un rosato leggermente mosso, Primitivo, Negroamaro e Malvasia Nera.</p>
+        <div class="d-cap__cta"><button class="btn btn--gold" type="button" data-col="">Tutti i <span data-cantina-total>33</span> vini</button></div>
+      </div>
+    </article>
+
+<!-- @include sections/scheda.html -->
+  </div>
+</section>
+
+<section class="d-sez d-cantina" id="azienda" aria-label="La cantina">
+  <div class="d-cantina__st">
+    <div class="d-tun" aria-hidden="true">
+      <div class="d-ritaglio d-tun__f"><img src="assets/photo/masseria-cortile.webp" alt="" decoding="async"></div>
+      <div class="d-ritaglio d-tun__f"><img src="assets/photo/alberello.webp" alt="" decoding="async"></div>
+      <div class="d-ritaglio d-tun__f"><img src="assets/photo/barriques.webp" alt="" decoding="async"></div>
+      <div class="d-ritaglio d-tun__f"><img src="assets/photo/mare-salento.webp" alt="" decoding="async"></div>
+      <div class="d-ritaglio d-tun__f"><img src="assets/photo/uva.webp" alt="" decoding="async"></div>
+      <div class="d-ritaglio d-tun__f"><img src="assets/photo/ulivo-trulli.webp" alt="" decoding="async"></div>
+      <div class="d-ritaglio d-tun__f"><img src="assets/photo/pajara.webp" alt="" decoding="async"></div>
+      <div class="d-ritaglio d-tun__f"><img src="assets/photo/masseria-vigne.webp" alt="" decoding="async"></div>
+      <div class="d-tun__fine"><img src="assets/photo/vigna-tramonto.webp" alt="" decoding="async"></div>
+    </div>
+    <p class="d-cantina__t">Feudi Salentini è la cantina della famiglia Varvaglione a Leporano, in provincia di Taranto. Produce vini dai vitigni autoctoni pugliesi per eccellenza, Primitivo, Negroamaro, Verdeca e Malvasia Bianca: in catalogo sono <span data-cantina-total>33</span>, in 6 collezioni.</p>
+  </div>
+</section>
+
+<section class="d-sez d-pr" id="premi" aria-labelledby="d-pr-t">
+  <div class="d-pr__st">
+    <h2 class="d-pr__h" id="d-pr-t" data-chars>Premiati nei concorsi internazionali.</h2>
+    <div class="d-pr__ruota" aria-hidden="true"><i></i></div>
+    <ul class="d-pr__lista"></ul>
+  </div>
+</section>
+
+<section class="d-sez d-nw" id="news" aria-labelledby="d-nw-t">
+  <div class="d-nw__st">
+    <h2 class="d-h2" id="d-nw-t" data-chars>Dalla cantina.</h2>
+    <div class="d-nw__grid"></div>
+  </div>
+</section>
+

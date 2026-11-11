@@ -1,0 +1,40 @@
+<!-- HOME MODERNA, alternativa A "cinema" (30 ott 2026): scura e fotografica. La foto della vigna si apre come uno schermo, il paragrafo
+     si accende sopra una pellicola di foto che scorre, le collezioni sono un elenco grande che si apre sul vino, le esperienze carte che si
+     impilano, i premi titoli di coda, le news una grande e due piccole. Movimenti in js/moderna-a.js, stile in css/moderna-a.css -->
+<section class="a-hero hero--dark" id="hero" aria-labelledby="a-hero-t" data-subito>
+  <div class="a-hero__foto"><img src="assets/photo/vigna-tramonto.webp" alt="" fetchpriority="high" decoding="async"></div>
+  <div class="a-hero__testo">
+    <h1 class="a-hero__t" id="a-hero-t" data-chars data-ritardo="1">Feudi Salentini</h1>
+    <div class="a-hero__dx">
+      <p>I vini della famiglia Varvaglione, a Leporano sul mar Ionio, dalle uve del Salento.</p>
+      <a class="btn btn--gold" href="#vini">Vedi le collezioni</a>
+    </div>
+  </div>
+</section>
+
+<section class="a-cantina" id="azienda" aria-label="La cantina">
+  <p class="a-cantina__t">Feudi Salentini è la cantina della famiglia Varvaglione a Leporano, in provincia di Taranto. Produce vini dai vitigni autoctoni pugliesi per eccellenza, Primitivo, Negroamaro, Verdeca e Malvasia Bianca: in catalogo sono <span data-cantina-total>33</span>, in 6 collezioni.</p>
+  <div class="a-pellicola" aria-hidden="true"><div class="a-pellicola__nastro">
+    <img src="assets/photo/alberello.webp" alt="" loading="lazy" decoding="async"><img src="assets/photo/masseria-cortile.webp" alt="" loading="lazy" decoding="async"><img src="assets/photo/barriques.webp" alt="" loading="lazy" decoding="async"><img src="assets/photo/uva.webp" alt="" loading="lazy" decoding="async"><img src="assets/photo/mare-salento.webp" alt="" loading="lazy" decoding="async"><img src="assets/photo/muretto-secco.webp" alt="" loading="lazy" decoding="async">
+  </div></div>
+</section>
+
+<section class="a-col" id="vini" aria-labelledby="a-col-t">
+  <h2 class="a-h2" id="a-col-t" data-chars>Le collezioni.</h2>
+  <ol class="a-col__list"></ol>
+</section>
+
+<section class="a-es" id="esperienze" aria-labelledby="a-es-t">
+  <h2 class="a-h2" id="a-es-t" data-chars>Prenota una visita.</h2>
+  <div class="a-es__pila"></div>
+</section>
+
+<section class="a-pr" id="premi" aria-labelledby="a-pr-t">
+  <h2 class="a-h2" id="a-pr-t" data-chars>Premiati nel mondo.</h2>
+  <ul class="a-pr__coda"></ul>
+</section>
+
+<section class="a-nw" id="news" aria-labelledby="a-nw-t">
+  <h2 class="a-h2" id="a-nw-t" data-chars>Dalla cantina.</h2>
+  <div class="a-nw__grid"></div>
+</section>

@@ -1,0 +1,68 @@
+/* HOME MODERNA B "luminarie" (30 ott 2026): notte, luce calda (l'oro del marchio è la luce delle lampadine), Fraunces sottile + Instrument Sans. */
+.page-mb { --font: 'Instrument Sans', system-ui, sans-serif; --font-display: 'Fraunces', Georgia, serif; font-family: var(--font); background: var(--night); color: var(--paper); }
+.page-mb :is(h1, h2, h3) { font-variation-settings: 'SOFT' 0, 'WONK' 0; }
+.b-h2 { font-family: var(--font-display); font-weight: 200; letter-spacing: -0.045em; font-size: clamp(2.8rem, 7vw, 7.4rem); line-height: .95; margin-bottom: clamp(36px, 5vw, 72px); }
+
+/* ---- hero: palco fermo, la galleria di luci sul canvas, titolo a sinistra e frase a destra ai lati degli archi ---- */
+.b-hero { height: 300vh; }
+.b-hero__stage { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+.b-hero__cv { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; }
+.b-hero__testo { position: absolute; inset: calc(var(--header-h) + 16px) var(--pad-x) 104px; display: flex; align-items: center; justify-content: space-between; gap: 32px; pointer-events: none; }
+.b-hero__t { max-width: 6ch; font-family: var(--font-display); font-weight: 200; letter-spacing: -0.05em; font-size: clamp(3rem, 6.6vw, 7.6rem); line-height: .9; }
+.b-hero__lead { max-width: 15rem; font-size: 1.125rem; line-height: 1.45; text-align: right; }
+.b-hero__vino { position: absolute; top: 50%; left: 50%; display: flex; flex-direction: column; gap: 4px; max-width: 16rem; opacity: 0; translate: 0 -50%; pointer-events: none; }
+.b-hero__vino span { font-family: var(--font-display); font-weight: 300; font-size: 1.75rem; line-height: 1.1; letter-spacing: -0.02em; }
+.b-hero__vino small { font-size: 1rem; color: var(--paper-2); }
+
+/* ---- la cantina: il paragrafo si accende, poi la masseria tra le vigne che si allarga ---- */
+.b-cantina { padding: var(--sec-y) 0; }
+.b-cantina__t { max-width: 26ch; margin: 0 auto; padding: 0 var(--pad-x); text-align: center; font-family: var(--font-display); font-weight: 300; letter-spacing: -0.03em; font-size: clamp(1.9rem, 4vw, 4.2rem); line-height: 1.1; }
+.b-cantina__foto { margin-top: clamp(64px, 9vw, 140px); height: 90vh; overflow: hidden; }
+.b-cantina__foto img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---- collezioni: ogni bottiglia sotto il suo fascio di luce, che si accende entrando ---- */
+.b-vini { padding: var(--sec-y) var(--pad-x); overflow-x: clip; }
+.b-vini__fila { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: clamp(12px, 2vw, 32px); }
+.b-vetrina { position: relative; display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; padding-top: 40px; text-align: center; color: inherit; }
+.b-vetrina__luce { position: absolute; left: 50%; top: 0; width: 130%; height: 78%; translate: -50% 0; pointer-events: none; mask-image: linear-gradient(transparent, #000 28%); /* il fascio nasce sfumato, niente bordo netto in alto */
+  background: radial-gradient(50% 100% at 50% 0%, rgb(255 214 150 / .34), rgb(255 214 150 / .08) 60%, transparent 75%); transition: opacity .6s var(--ease); }
+.b-vetrina__bt { position: relative; height: clamp(240px, 46vh, 440px); width: auto; max-width: none; translate: 0 calc((.91 - var(--b, .91)) * 100%); transition: translate .8s var(--ease); } /* i fondi del vetro alla stessa altezza */
+.b-vetrina__nome { position: relative; margin-top: 18px; font-family: var(--font-display); font-weight: 300; font-size: clamp(1.4rem, 1.9vw, 1.9rem); line-height: 1.1; letter-spacing: -0.02em; }
+.b-vetrina__info { position: relative; margin-top: 6px; color: var(--paper-2); }
+.b-vetrina__vai { position: relative; margin-top: auto; padding-top: 14px; /* in fondo alla scheda: allineati anche se un nome va a capo */ font-size: 1rem; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: rgb(243 239 234 / .4); }
+.b-vetrina:hover .b-vetrina__bt { translate: 0 calc((.91 - var(--b, .91)) * 100% - 8px); }
+.b-vetrina:hover .b-vetrina__vai { color: var(--gold); }
+
+/* ---- premi: i nomi in fila, grandi, ognuno col suo logo ---- */
+.b-pr { padding: var(--sec-y) var(--pad-x); text-align: center; }
+.b-pr__h { font-size: 1.125rem; color: var(--paper-2); }
+.b-pr__nomi { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px 28px; max-width: 1200px; margin: 28px auto 0; }
+.b-pr__nomi a { display: inline-flex; align-items: center; gap: 14px; font-family: var(--font-display); font-weight: 200; letter-spacing: -0.035em; font-size: clamp(2rem, 4.4vw, 4.6rem); line-height: 1.15; transition: color .3s var(--ease); }
+.b-pr__nomi img { width: clamp(44px, 4vw, 64px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; background: #fff; }
+.b-pr__nomi a:hover { color: var(--gold); }
+
+/* ---- news: righe ---- */
+.b-nw { padding: var(--sec-y) var(--pad-x) calc(var(--sec-y) + 40px); }
+.b-nw__righe { border-top: 1px solid rgb(243 239 234 / .18); }
+.b-nw__righe a { display: grid; grid-template-columns: minmax(120px, 1fr) minmax(0, 3fr) clamp(120px, 14vw, 200px); align-items: center; gap: clamp(16px, 3vw, 48px); padding: 20px 0; border-bottom: 1px solid rgb(243 239 234 / .18); }
+.b-nw__date { color: var(--paper-2); }
+.b-nw__title { font-family: var(--font-display); font-weight: 300; font-size: clamp(1.4rem, 2.2vw, 2.2rem); line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance; transition: color .3s var(--ease); }
+.b-nw__fig { aspect-ratio: 16 / 10; border-radius: var(--r); overflow: hidden; background: #fff; }
+.b-nw__fig img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+.b-nw__righe a:hover .b-nw__title { color: var(--gold); }
+.b-nw__righe a:hover .b-nw__fig img { transform: scale(1.05); }
+
+@media (prefers-reduced-motion: reduce) { .b-hero { height: auto; } .b-hero__stage { position: relative; } }
+@media (max-width: 860px) {
+  .b-hero__testo { flex-direction: column; align-items: flex-start; justify-content: flex-start; inset: calc(var(--header-h) + 8px) var(--pad-x) 96px; }
+  .b-hero__t { max-width: none; font-size: clamp(2.8rem, 13vw, 4rem); }
+  .b-hero__lead { display: none; }
+  .b-hero__vino { top: auto; bottom: 84px; left: var(--pad-x) !important; right: var(--pad-x); max-width: none; align-items: center; text-align: center; translate: none; }
+  .b-cantina__foto { height: 60vh; }
+  .b-vini__fila { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 calc(var(--pad-x) * -1); padding: 0 var(--pad-x); scrollbar-width: none; }
+  .b-vini__fila > li { flex: 0 0 64%; min-width: 0; scroll-snap-align: center; }
+  .b-nw__righe a { grid-template-columns: minmax(0, 1fr) 96px; }
+  .b-nw__date { grid-column: 1; font-size: .9375rem; }
+  .b-nw__title { grid-column: 1; }
+  .b-nw__fig { grid-column: 2; grid-row: 1 / span 2; }
+}

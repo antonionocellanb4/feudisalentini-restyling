@@ -1,0 +1,196 @@
+/* AZIENDA dello stile E, verticale "dallo schizzo alla foto" (11 nov 2026, quarto giro). Ogni sezione ha un palco alto uno schermo (.az-st) che
+   js/azienda-e.js ferma (pin) mentre i suoi movimenti seguono la rotella (scrub). Nessun fondo o bordo che divide: cambia solo il cielo (--cielo).
+   Tipografia di css/moderna-e.css (.e-t, .e-t2, .e-d, .e-n, .e-cta). Un solo accento: l'oro. */
+.az { --cielo: var(--cream); background: var(--cielo); overflow-x: clip; }
+.az:not(.is-pronto) > section { visibility: hidden; } /* niente lampo prima che lo script abbia messo le cose al loro posto */
+.page-me:has(.az:not(.is-pronto)) .m-pill { opacity: 0; transition: none; }
+.az-st { position: relative; height: 100svh; overflow: hidden; }
+.az .e-d { color: var(--ink-2); }
+address.e-d { font-style: normal; }
+
+/* ---- le incisioni (riquadro di 600, versione larga su desktop), tagliate al loro filo di terra ---- */
+.az-sc { position: absolute; left: 50%; translate: -50% 0; width: calc(var(--vbw, 600) * var(--u, 1px)); height: calc(514 * var(--u, 1px)); clip-path: inset(-60% -100vw 0 -100vw); pointer-events: none; }
+.az-sc svg { position: absolute; left: 0; top: 0; width: 100%; height: calc(100% * 600 / 514); overflow: visible; }
+.az-sc .t { fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; }
+.az-sc .v { stroke: var(--vino, #9a4a32); }
+.az-sc .o { fill: var(--cielo); }
+
+/* ---- apertura: un mondo inciso in prospettiva (js/azienda-e.js); scorrendo si cammina lungo il viale di cipressi fino al casale ---- */
+.az-apre__tx { position: absolute; left: var(--pad-x); top: calc(var(--header-h) + clamp(24px, 6vh, 72px)); z-index: 2; max-width: 44rem; }
+.az-apre__tx .e-d { max-width: 24rem; margin-top: 18px; } /* stretto: il primo cipresso del viale gli passa accanto */
+.az-gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; } /* il mondo in WebGL (js/mondo-gl.js); l'svg sotto resta per ?mondo=svg e dove WebGL2 manca */
+.az-mondo { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.az-mondo path, .az-mondo line { vector-effect: non-scaling-stroke; } /* vicine o lontane, le linee restano sottili come un'incisione */
+.az-mondo .t { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.az-mondo .v { stroke: var(--vino); }
+.az-mondo .o { fill: var(--cielo); }
+.az-mondo line { stroke: var(--ink); stroke-width: .8; }
+.az-mondo .az3-suolo { fill: #ebe3d6; } /* la terra */
+.az-mondo .az3-strada { fill: var(--cielo); } /* il viale, più chiaro */
+/* la famiglia: alla fine del viale, sotto il casale, sulla terra che si è svuotata */
+.az-apre__fam { position: absolute; left: var(--pad-x); right: var(--pad-x); bottom: clamp(28px, 6vh, 64px); z-index: 4; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); column-gap: clamp(32px, 6vw, 112px); align-items: end; max-width: var(--max); margin: 0 auto; }
+.az-apre__fam .e-d { max-width: 32rem; }
+/* col portone che si apre (az--porta, js/azienda-e.js): la famiglia sta al centro, nella colonna libera fra i battenti aperti (--entro, misurata dallo script) */
+.az--porta .az-apre__fam { left: 50%; right: auto; bottom: auto; top: 50%; transform: translate(-50%, -50%); width: var(--entro, 30rem); max-width: none; margin: 0; grid-template-columns: minmax(0, 1fr); row-gap: clamp(12px, 2vh, 20px); }
+
+/* ---- filosofia: testo e frase a sinistra, le due foto in lungo a destra, la seconda più in basso ---- */
+.az-fil .az-st { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; column-gap: clamp(32px, 6vw, 112px); max-width: var(--max); margin: 0 auto; padding: calc(var(--header-h) + 16px) var(--pad-x) 24px; }
+.az-fil__tx .e-d { margin-top: 18px; max-width: 32rem; }
+.az-frase { margin-top: clamp(24px, 4vh, 44px); max-width: 17em; font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(1.6rem, 2.3vw, 2.5rem); line-height: 1.1; color: var(--ink); }
+.az-frase .w { opacity: .16; }
+.az-fil__sc { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(12px, 1.6vw, 24px); height: min(78svh, 760px); }
+.az-fil__f { height: calc(100% - 12svh); margin: 0; overflow: hidden; border-radius: var(--r); }
+.az-fil__f + .az-fil__f { align-self: end; }
+.az-fil__f img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* ---- i vitigni e i loro vini: in alto titolo ed elenco dei vitigni in riga (si accende quello che passa), sotto le bottiglie (due prove, ?vit=) ---- */
+.az-vit__tx { position: absolute; left: var(--pad-x); right: var(--pad-x); top: calc(var(--header-h) + clamp(24px, 6vh, 72px)); z-index: 2; }
+.az-vit__l { display: flex; flex-wrap: wrap; gap: 12px clamp(24px, 3vw, 48px); margin: clamp(18px, 3vh, 32px) 0 0; padding: 0; list-style: none; }
+.az-vit__l li { display: grid; gap: 4px; }
+.az-vit__l b { font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(1.5rem, 2vw, 2.1rem); line-height: 1; }
+.az-vit__l b::after { content: ''; display: block; width: 40px; height: 3px; margin-top: 10px; border-radius: 2px; background: var(--c); } /* il colore dell'uva, pieno */
+.az-vit__l span { font-size: 1rem; color: var(--ink-2); }
+.az-vit__pista { --bh: min(44svh, 400px); position: absolute; left: 0; right: 0; bottom: clamp(28px, 6vh, 64px); }
+.az-bt { flex: none; min-width: 0; }
+.az-bt a { display: block; text-decoration: none; color: var(--ink); }
+.az-bt .f { position: relative; display: block; height: calc(var(--bh) * var(--b, .96)); overflow: hidden; } /* tagliata dove finisce il vetro: la bottiglia sta sul filo */
+.az-bt img { position: absolute; left: 0; right: 0; top: 0; height: var(--bh); width: auto; max-width: none; margin: 0 auto; -webkit-user-drag: none; user-select: none; } /* centrata coi margini, il transform lo usa lo script */
+.az-bt .n { display: block; height: 2.4em; overflow: hidden; margin-top: 10px; padding: 0 4px; text-align: center; font-size: .9375rem; line-height: 1.2; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 4px; transition: color .25s var(--ease); }
+.az-bt a:hover .n, .az-bt a:focus-visible .n { color: var(--gold-ink); text-decoration-color: currentColor; }
+/* ruota: le bottiglie sul bordo di una ruota incisa col centro sotto lo schermo; lo script la gira e porta in cima una bottiglia alla volta */
+.az--ruota .az-vit__pista { --bh: min(34svh, 300px); inset: 0; bottom: auto; height: 100%; pointer-events: none; }
+.az-ruota { --R: 900px; --passo: 6deg; position: absolute; left: 50%; top: calc(74% + var(--R)); width: 0; height: 0; margin: 0; padding: 0; list-style: none; }
+.az-ruota::before { content: ''; position: absolute; left: calc(-1 * var(--R)); top: calc(-1 * var(--R)); width: calc(2 * var(--R)); height: calc(2 * var(--R)); border: 1px solid var(--ink); border-radius: 50%; box-sizing: border-box; }
+.az-ruota .az-bt { position: absolute; left: calc(var(--bh) * -.2); bottom: 0; width: calc(var(--bh) * .4); height: calc(var(--R) + var(--bh) * var(--b, .96)); transform-origin: 50% 100%; transform: rotate(calc(var(--k) * var(--passo))); }
+.az-ruota .az-bt a { pointer-events: auto; }
+.az-ruota .az-bt .f { overflow: visible; }
+.az-ruota .az-bt img { transform-origin: 50% calc(var(--b, .96) * 100%); transition: transform .5s var(--ease); }
+.az-ruota .az-bt.is-su img { transform: scale(1.14); }
+.az-ruota .az-bt .n { display: none; } /* il nome di quella in cima sta nella didascalia */
+.az-ruota__cap { position: absolute; left: 50%; top: calc(74% + 18px); translate: -50% 0; width: min(28rem, 84vw); margin: 0; display: grid; gap: 4px; text-align: center; pointer-events: auto; }
+.az-ruota__cap a { font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(1.6rem, 2.2vw, 2.4rem); line-height: 1.05; color: var(--ink); text-decoration: underline; text-decoration-color: var(--line); text-decoration-thickness: 1px; text-underline-offset: 6px; }
+.az-ruota__cap a:hover { color: var(--gold-ink); text-decoration-color: currentColor; }
+.az-ruota__cap span { font-size: 1rem; color: var(--ink-2); }
+/* il selettore delle prove (provvisorio) */
+
+.az-sal__tx { position: absolute; left: var(--pad-x); top: calc(var(--header-h) + clamp(24px, 6vh, 72px)); z-index: 2; width: min(34rem, 36vw); }
+.az-sal__d { position: absolute; left: var(--pad-x); bottom: clamp(28px, 6vh, 64px); z-index: 2; width: min(34rem, 36vw); margin: 0; }
+.az-sal__foto { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.az-sal__foto figure { position: absolute; margin: 0; }
+.az-sal__foto img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: var(--r); }
+.az-sal__foto figcaption { position: absolute; left: 12px; top: 12px; padding: 7px 14px; border-radius: 999px; background: var(--cream); color: var(--ink); font-size: 1rem; line-height: 1.2; white-space: nowrap; }
+.az-cella { position: relative; border-radius: var(--r); background: var(--stone); overflow: hidden; }
+.az-cella .az-sc { bottom: 8%; }
+/* griglia: si parte dentro la prima foto, la camera arretra fino alla griglia dei luoghi con la torre incisa nell'ultima casella */
+.az-sal .az-sal__foto { inset: calc(var(--header-h) + clamp(16px, 4vh, 40px)) var(--pad-x) clamp(28px, 6vh, 64px) auto; width: min(58vw, 1000px); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: clamp(8px, 1vw, 14px); }
+.az-sal .az-sal__foto figure, .az-sal .az-cella { position: relative; }
+.az-sal .az-cella { grid-column: 3; grid-row: 2; }
+
+
+/* ---- sostenibilità: testo a sinistra, i sei punti che salgono dal fondo e si impilano a destra, il campo inciso sotto ---- */
+.az-sost .az-sc { bottom: 0; }
+.az-sost__tx { position: absolute; left: var(--pad-x); top: calc(var(--header-h) + clamp(24px, 6vh, 72px)); z-index: 2; width: min(30rem, 32vw); }
+.az-sost__tx .e-d { margin-top: 18px; }
+.az-sost__tx .e-cta { margin-top: 24px; }
+.az-carte { position: absolute; right: var(--pad-x); top: calc(var(--header-h) + clamp(24px, 6vh, 72px)); bottom: clamp(28px, 6vh, 64px); z-index: 3; width: min(54vw, 880px); margin: 0; padding: 0; list-style: none; }
+.az-carte > li { position: absolute; inset: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); column-gap: clamp(20px, 2.6vw, 40px); padding: clamp(24px, 3vw, 44px); background: var(--stone); border: 1px solid var(--line); border-radius: var(--r); transform-origin: 50% 100%; overflow: hidden; }
+.az-carte > li > * { transition: opacity .4s var(--ease); }
+.az-carte > li.is-sotto > * { opacity: 0; } /* le carte già passate restano dietro senza testo che spunta */
+.az-carte b { font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(3rem, 5vw, 5.6rem); line-height: .9; }
+.az-carte h3 { font-size: 1.3125rem; line-height: 1.25; font-weight: 500; }
+.az-carte p, .az-carte ul { margin-top: 12px; font-size: 1.0625rem; line-height: 1.5; color: var(--ink-2); max-width: 34rem; }
+.az-carte ul { display: grid; gap: 10px; padding: 0; list-style: none; }
+.az-carte ul li + li { padding-top: 10px; border-top: 1px solid var(--line); }
+.az-carte > li:not(:has(img)) { grid-template-columns: minmax(0, 1fr); } /* senza foto il numero diventa il protagonista, grande in fondo: niente mezza carta vuota */
+.az-carte > li:not(:has(img)) > div { order: -1; }
+.az-carte > li:not(:has(img)) b { align-self: end; font-size: clamp(6rem, 13vw, 14rem); line-height: .82; }
+.az-carte img { grid-column: 1 / -1; align-self: end; width: 100%; height: 100%; min-height: 0; margin-top: clamp(18px, 2.6vh, 28px); object-fit: cover; border-radius: calc(var(--r) - 2px); }
+
+/* ---- riconoscimenti anno per anno: testo ed elenco degli anni a sinistra; a destra l'anno grande e sotto il filo da cui scendono le medaglie dell'anno ---- */
+.az-premi__tx { position: absolute; left: var(--pad-x); top: calc(var(--header-h) + clamp(24px, 6vh, 72px)); z-index: 2; width: min(30rem, 32vw); }
+.az-premi__tx .e-d { margin-top: 18px; }
+.az-premi__anni { display: grid; gap: 6px; margin: clamp(24px, 4vh, 44px) 0 0; padding: 0; list-style: none; }
+.az-premi__anni li { display: flex; align-items: baseline; gap: 14px; }
+.az-premi__anni b { font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(1.6rem, 2.2vw, 2.4rem); line-height: 1; }
+.az-premi__anni span { font-size: 1rem; color: var(--ink-2); }
+.az-premi__anno { position: absolute; right: var(--pad-x); top: calc(var(--header-h) + clamp(8px, 3vh, 40px)); display: grid; width: min(58vw, 1000px); text-align: right; font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(6rem, 24svh, 16rem); line-height: .9; }
+.az-premi__anno > span { grid-area: 1 / 1; }
+.az-premi__anno .ch { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .12em; margin-bottom: -.12em; } /* la maschera delle cifre, come [data-chars] */
+.az-premi__anno .ch > span { display: inline-block; }
+.az-premi__filo { position: absolute; right: var(--pad-x); top: calc(var(--header-h) + clamp(8px, 3vh, 40px) + clamp(6rem, 24svh, 16rem)); bottom: 0; z-index: 3; display: grid; width: min(58vw, 1000px); overflow: hidden; } /* le medaglie escono dal filo */
+.az-premi__filo::before { content: ''; position: absolute; left: 0; right: 0; top: 0; z-index: 1; height: 1.3px; background: var(--ink); transform: scaleX(var(--or, 1)); }
+.az-med { grid-area: 1 / 1; display: flex; justify-content: center; align-items: flex-start; gap: clamp(10px, 1.6vw, 28px); margin: 0; padding: 0; list-style: none; }
+.az-med:not(:first-child) { visibility: hidden; }
+.az-med li { flex: 0 1 clamp(96px, 9vw, 140px); min-width: 0; transform-origin: 50% 0; cursor: grab; }
+.az-med p .az-med__v { margin-top: 4px; color: var(--ink); }
+.az-med .az-pend { transform-origin: 50% 0; animation: az-dondola 5s ease-in-out infinite alternate; animation-delay: var(--d, 0s); }
+.az-nastro { display: block; width: 34%; height: var(--l, 90px); margin: 0 auto; overflow: visible; }
+.az-nastro .n { fill: none; stroke: var(--ink); stroke-width: 1.1; vector-effect: non-scaling-stroke; }
+.az-nastro .h { fill: none; stroke: var(--gold-ink); stroke-width: .8; vector-effect: non-scaling-stroke; }
+.az-med img { display: block; width: 100%; height: auto; margin-top: -4px; -webkit-user-drag: none; user-select: none; }
+.az-med p { margin-top: 10px; text-align: center; font-size: .9375rem; line-height: 1.22; }
+.az-med p span { display: block; color: var(--ink-2); }
+@keyframes az-dondola { from { rotate: -1.4deg; } to { rotate: 1.4deg; } }
+
+/* ---- fine: i due calici si incidono e brindano, sotto il testo al centro; poi la foto che si apre dal centro ---- */
+.az-brindisi { top: calc(var(--header-h) + clamp(8px, 2vh, 24px)); }
+.az-fine__tx { position: absolute; left: var(--pad-x); right: var(--pad-x); bottom: clamp(32px, 7vh, 80px); z-index: 2; text-align: center; }
+.az-fine__tx .e-d { max-width: 36rem; margin: 16px auto 0; }
+.az-fine__tx .e-cta { justify-content: center; margin-top: 24px; }
+.az-fine__f { margin: 0; } /* a tutta larghezza e attaccata al footer: lo script la allarga dal riquadro fino ai bordi */
+.az-fine__f img { display: block; width: 100%; height: auto; aspect-ratio: 21 / 9; object-fit: cover; }
+
+/* ---- telefono ---- */
+@media (max-width: 860px) {
+  .az-apre__tx { right: var(--pad-x); }
+  .az-fil .az-st { display: block; height: auto; padding: 96px var(--pad-x) 40px; }
+  .az-fil__sc { height: 96vw; margin-top: 28px; }
+  .az-vit__tx { top: calc(var(--header-h) + 12px); }
+  .az-vit__l { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; margin-top: 18px; }
+  .az-vit__l b { font-size: 1.375rem; }
+  .az-vit__l b::after { margin-top: 6px; width: 28px; }
+  .az-vit__l span { font-size: .875rem; }
+  .az-vit__pista { --bh: min(36svh, 280px); bottom: 20px; }
+  .az-bt .n { font-size: .875rem; }
+  .az--ruota .az-vit__pista { --bh: min(26svh, 210px); }
+  .az-ruota { top: calc(72% + var(--R)); }
+  .az-ruota__cap { top: calc(72% + 14px); }
+  .az-premi__tx { right: var(--pad-x); width: auto; top: calc(var(--header-h) + 12px); }
+  .az-premi__tx .e-d { font-size: .9375rem; line-height: 1.38; }
+  .az-premi__anni { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 16px; }
+  .az-premi__anni b { font-size: 1.375rem; }
+  .az-premi__anni span { display: none; } /* sul telefono gli anni in riga; quanti premi lo dice il gruppo sotto */
+  .az-premi__anno { left: var(--pad-x); width: auto; top: auto; bottom: 46svh; font-size: clamp(4rem, 24vw, 6rem); }
+  .az-premi__filo { left: 0; right: 0; width: auto; top: 54svh; padding: 0 var(--pad-x); }
+  .az-apre__fam { grid-template-columns: minmax(0, 1fr); }
+  .az-apre__fam .e-d { margin-top: 10px; }
+  .az-sal__tx { right: var(--pad-x); width: auto; top: calc(var(--header-h) + 12px); }
+  .az-sal__d { right: var(--pad-x); width: auto; bottom: 16px; font-size: .9375rem; line-height: 1.38; }
+  .az-sal .az-sal__foto { inset: calc(var(--header-h) + 110px) var(--pad-x) 160px var(--pad-x); width: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(0, 1fr)); }
+  .az-sal .az-cella { grid-column: 2; grid-row: 3; }
+  .az-sost__tx { right: var(--pad-x); width: auto; }
+  .az-sost__tx .e-d { display: none; } /* sul telefono il palco è corto: resta il titolo col bilancio, i punti parlano da soli */
+  .az-carte { left: var(--pad-x); width: auto; top: calc(var(--header-h) + 150px); bottom: 16px; }
+  .az-carte > li { grid-template-columns: minmax(0, 1fr); padding: 22px; }
+  .az-carte b { font-size: clamp(2.6rem, 12vw, 3.4rem); }
+  .az-carte h3 { margin-top: 10px; }
+  .az-carte img { display: none; }
+  .az-med { gap: 0 6px; }
+  .az-med li { flex-basis: 23%; }
+  .az-med p { display: none; } /* i concorsi sono nel testo */
+  .az-nastro { height: calc(var(--l) * .4); }
+  /* da cinque medaglie in su due altezze sfalsate, tutte appese al filo: quelle dietro hanno il nastro più lungo e stanno fra le prime */
+  .az-med:has(li:nth-child(5)) { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); }
+  .az-med:has(li:nth-child(5)) li { grid-row: 1; }
+  .az-med li:nth-child(1) { grid-column: 1 / 3; }
+  .az-med li:nth-child(2) { grid-column: 3 / 5; }
+  .az-med li:nth-child(3) { grid-column: 5 / 7; }
+  .az-med li:nth-child(4) { grid-column: 7 / 9; }
+  .az-med li:nth-child(5) { grid-column: 2 / 4; }
+  .az-med li:nth-child(6) { grid-column: 4 / 6; }
+  .az-med li:nth-child(7) { grid-column: 6 / 8; }
+  .az-med li:nth-child(n+5) .az-nastro { height: calc(var(--l) * .4 + 140px); }
+}
+@media (max-width: 860px) { .az-fine__f img { aspect-ratio: 4 / 3; } }
+@media (prefers-reduced-motion: reduce) { .az-apre__fam { left: 0; right: 0; bottom: 0; max-width: none; padding: 20px var(--pad-x) clamp(24px, 5vh, 48px); background: var(--cielo); border-top: 1px solid var(--ink); } /* senza movimento apertura e famiglia stanno nello stesso schermo: il testo su una fascia sua, non sopra i muretti */
+  .az-med .az-pend { animation: none; } .az-premi__anno span + span { display: none; } .az-vit__pista { overflow-x: auto; } }

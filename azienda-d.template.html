@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="it">
+<head>
+<!-- @include sections/_head.html -->
+<!-- PAGINA AZIENDA dello stile D "Cinque porte" (10 nov 2026): si attraversano le porte come nella home, ma i capitoli sono la storia della cantina:
+     la torre, la corte (la famiglia), la terra rossa (la filosofia), il mare (il Salento), il campo con le api (la sostenibilità), la pergola (la visita). Sotto, la ruota dei premi.
+     Lo stesso teatrino di carta della home D (js/moderna-d.js), coi capitoli di questa pagina (js/pagine-d.js) · Stile: css/moderna-d.css + css/pagine-d.css -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..500&family=Instrument+Sans:wdth,wght@75..100,400..600&display=swap">
+<title>L'azienda · Feudi Salentini</title>
+<meta name="description" content="Feudi Salentini, la cantina della famiglia Varvaglione a Leporano (TA): la famiglia, la filosofia, il Salento, la sostenibilità e i riconoscimenti.">
+<link rel="stylesheet" href="css/moderna-kit.css">
+<link rel="stylesheet" href="css/fiaba.css">
+<link rel="stylesheet" href="css/moderna-d.css">
+<link rel="stylesheet" href="css/pagine-d.css">
+</head>
+<body class="page-moderna page-md page-ad" data-sito="d">
+<!-- @include sections/header.html -->
+<main id="main">
+<section class="d-st" id="hero" aria-labelledby="d-t" data-nav-trasparente>
+  <div class="d-stage">
+    <canvas class="d-cv" aria-hidden="true"></canvas>
+    <i class="d-alto"></i>
+
+    <div class="d-cap d-cap--hero" data-subito>
+      <div class="d-cap__testo">
+        <h1 class="d-cap__t" id="d-t" data-chars data-ritardo="0.5">Feudi Salentini.</h1>
+        <p class="d-cap__d">La cantina della famiglia Varvaglione a Leporano, sul mar Ionio, a sud di Taranto. Scorri e attraversa le porte: la famiglia, la filosofia, il Salento, la sostenibilità.</p>
+        <div class="d-cap__cta"><button class="btn btn--gold" type="button" data-vai>Apri la prima porta</button></div>
+      </div>
+    </div>
+
+    <article class="d-cap" aria-labelledby="d-c1">
+      <ul class="d-nomi"></ul>
+      <div class="d-cap__testo">
+        <div class="d-cap__h"><p class="d-cap__n">01 · Quarta generazione</p><h2 class="d-cap__t" id="d-c1">La famiglia Varvaglione.</h2></div>
+        <p class="d-cap__d">Cosimo, Maria Teresa, Marzia, Angelo e Francesca Varvaglione portano avanti l'azienda, giunta alla quarta generazione.</p>
+        <div class="d-cap__cta"><button class="btn btn--line" type="button" data-vai>Apri la porta</button></div>
+      </div>
+    </article>
+    <article class="d-cap" aria-labelledby="d-c2">
+      <ul class="d-nomi"></ul>
+      <div class="d-cap__testo">
+        <div class="d-cap__h"><p class="d-cap__n">02 · Vitigni autoctoni</p><h2 class="d-cap__t" id="d-c2">La nostra filosofia.</h2></div>
+        <p class="d-cap__d">Vini dai vitigni autoctoni pugliesi per eccellenza: Primitivo, Negroamaro, Verdeca e Malvasia Bianca, con tecniche di vinificazione moderne e un occhio all'ambiente.</p>
+        <div class="d-cap__cta"><button class="btn btn--line" type="button" data-vai>Apri la porta</button></div>
+      </div>
+    </article>
+    <article class="d-cap" aria-labelledby="d-c3">
+      <ul class="d-nomi"></ul>
+      <div class="d-cap__testo">
+        <div class="d-cap__h"><p class="d-cap__n">03 · Il territorio</p><h2 class="d-cap__t" id="d-c3">Il Salento, una terra divina.</h2></div>
+        <p class="d-cap__d">Castelli, storia e tradizioni, in una terra rinomata per il Primitivo di Manduria. I muretti a secco, gli uliveti secolari e il mare turchese danno vita a vino e olio.</p>
+        <div class="d-cap__cta"><button class="btn btn--line" type="button" data-vai>Apri la porta</button></div>
+      </div>
+    </article>
+    <article class="d-cap" aria-labelledby="d-c4">
+      <ul class="d-nomi"></ul>
+      <div class="d-cap__testo">
+        <div class="d-cap__h"><p class="d-cap__n">04 · Equalitas dal 2022</p><h2 class="d-cap__t" id="d-c4">Sostenibilità.</h2></div>
+        <p class="d-cap__d">Dal 2022 Feudi Salentini è certificata Equalitas, lo standard che valuta la sostenibilità ambientale, sociale ed economica delle aziende del vino.</p>
+        <div class="d-cap__cta"><a class="btn btn--line" href="https://feudisalentini.com/wp-content/uploads/2026/08/Feudi_bilancio-di-sostenibilita_2025.pdf" target="_blank" rel="noopener">Il bilancio 2025 (PDF)</a><button class="btn btn--line" type="button" data-vai>Apri la porta</button></div>
+      </div>
+    </article>
+    <article class="d-cap" aria-labelledby="d-c5">
+      <ul class="d-nomi"></ul>
+      <div class="d-cap__testo">
+        <div class="d-cap__h"><p class="d-cap__n">05 · Leporano (TA)</p><h2 class="d-cap__t" id="d-c5">Vieni a trovarci.</h2></div>
+        <p class="d-cap__d">Via Esterna Talsano, 36, 74020 Leporano (TA). Telefono <a href="tel:+390995315370">+39 099 5315370</a>, <a href="mailto:info@feudisalentini.com">info@feudisalentini.com</a></p>
+        <div class="d-cap__cta"><a class="btn btn--gold" href="https://www.google.com/maps/search/?api=1&amp;query=Feudi+Salentini+Via+Esterna+Talsano+36+Leporano" target="_blank" rel="noopener">Indicazioni stradali</a></div>
+      </div>
+    </article>
+
+<!-- @include sections/scheda.html -->
+  </div>
+</section>
+
+<section class="d-sez d-pr" id="premi" aria-labelledby="d-pr-t">
+  <div class="d-pr__st">
+    <h2 class="d-pr__h" id="d-pr-t" data-chars><span data-premi-totale>65</span> riconoscimenti nei concorsi internazionali.</h2>
+    <div class="d-pr__ruota" aria-hidden="true"><i></i></div>
+    <ul class="d-pr__lista"></ul>
+  </div>
+</section>
+</main>
+<!-- @include sections/footer.html -->
+<!-- @include sections/_scripts.html -->
+<script src="js/moderna-kit.js"></script>
+<script src="js/scheda.js"></script>
+<script src="js/carta.js"></script>
+<script src="js/pagine-d.js"></script>
+<script src="js/moderna-d.js"></script>
+</body>
+</html>

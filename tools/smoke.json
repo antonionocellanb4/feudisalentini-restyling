@@ -1,0 +1,1 @@
+[{"wait":500},{"js":"JSON.stringify({fs:!!window.FS,wines:FS.data.wines.length,lenis:!!FS.lenis,font:document.fonts.check(\"300 40px Newsreader\")})"}]

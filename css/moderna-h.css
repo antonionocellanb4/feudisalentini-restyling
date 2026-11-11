@@ -1,0 +1,77 @@
+/* HOME MODERNA H (3 nov 2026): le bottiglie sono dipinte dentro i quadri. Qui i bottoni invisibili che stanno sopra di loro, i nomi sotto, e il cartellino in un punto dove non le copre. Il resto viene da css/moderna-f.css */
+.page-mh .e-bt { left: 0; top: 0; width: calc(var(--bh) * .29); translate: var(--off, 0px) var(--offy, 0px); } /* larga come il vetro: le bottiglie sono vicine */
+.page-mh .e-st { height: 860lvh; } /* le sale sono più corte: cartellino e nomi arrivano col quadro. In fondo un passaggio in più, verso la cantina */
+.page-mh .e-nomi { top: 0; }
+.page-mh .e-nomi li { left: 0; width: auto; translate: var(--off, 0px) var(--offy, 0px); }
+.page-mh .e-tappa--destra .e-testo { left: auto; right: var(--pad-x); }
+
+@media (max-width: 860px) {
+  /* sul telefono le bottiglie stanno in basso e il luogo sopra: il cartellino va in alto, sul cielo */
+  .page-mh .e-tappa:not(.e-tappa--via) .e-testo, .page-mh .e-tappa--destra .e-testo { top: calc(var(--header-h) + 62px); bottom: auto; left: 12px; right: 12px; }
+  .page-mh .e-tappa:not(.e-tappa--via) .e-d { display: none; } /* il cartellino resta piccolo per non coprire il luogo: il racconto del vino è nella scheda */
+  .page-mh .e-st { height: 770lvh; }
+}
+
+/* la pillola delle sale al centro, sottile e subito sotto il logo: alta come prima coprirebbe i colli delle bottiglie sugli schermi larghi e bassi. ?fermo: a sinistra, com'era */
+@media (min-width: 861px) {
+  .page-mh:not(.h-fermo) .fb-tappe { top: 80px; }
+  .page-mh:not(.h-fermo) .fb-pill { height: 40px; padding: 0 5px 0 14px; gap: 10px; }
+  .page-mh:not(.h-fermo) .fb-pill__v { width: 30px; height: 30px; }
+  .page-mh:not(.h-fermo) .fb-pill .fb-mini { height: 32px; padding-left: 10px; }
+  .page-mh:not(.h-fermo) .fb-pill .fb-mini img { margin-left: -12px; }
+  .page-mh.h-fermo .fb-tappe { left: var(--pad-x); right: auto; transform: none; translate: none; margin: 0; }
+}
+@media (max-width: 860px) and (max-height: 700px) { .page-mh .e-n { display: none; } .page-mh .e-tappa:not(.e-tappa--via) .e-testo { padding: 10px 14px; } .page-mh .e-cta { margin-top: 4px; } } /* telefoni bassi: il cartellino non deve toccare le bottiglie */
+
+/* la cantina dopo la galleria: le ultime pennellate la scoprono al suo posto, senza uno schermo vuoto in mezzo. Sta sopra l'ultimo schermo della galleria (js/moderna-f.js): lì è trasparente e non si tocca, sotto è piena */
+.page-mh .ca.h-sopra { position: relative; z-index: 2; margin-top: -100lvh; }
+.page-mh .ca.h-passa { background: linear-gradient(transparent 100lvh, var(--night) 100lvh); pointer-events: none; }
+/* il fondo blu a pennellate (tools/dipingi_soggetto.py --notte), lo stesso che le pennellate dipingono nel canvas: finché passano si vede quello, poi questo */
+.page-mh .ca-stage { background: url(../assets/quadri/notte.webp) center / cover no-repeat; }
+.page-mh .ca.h-passa .ca-stage { background-size: 0 0; }
+@media (max-width: 860px) { .page-mh .ca-stage { background-image: url(../assets/quadri/notte-m.webp); } }
+
+/* lo stile dei quadri continua nel resto di H: macchie a pennello dietro le bottiglie (mega menu e schede), fondi dipinti, bordi a pennello fra le sezioni. Le foto restano quelle vere. Tutto da tools/dipingi_soggetto.py --notte */
+.page-mh :is(.cantina__stain, .cstage__stain, .cantina__swatch) { background: var(--stain) center / contain no-repeat, var(--wine); background-blend-mode: soft-light; }
+.h-macchia { display: block; width: 100%; height: 100%; background: var(--stain) center / contain no-repeat, var(--wine); background-blend-mode: soft-light; -webkit-mask: var(--stain) center / contain no-repeat; mask: var(--stain) center / contain no-repeat; }
+.page-mh .fb-zoom::before { background: url(../assets/quadri/crema.webp) center / cover no-repeat, var(--cream); }
+.page-mh .fb-zoom--pulita :is(.fb-zoom__info, .fb-zoom__x:not(:hover)) { background: none; } /* il testo sta già sul crema calmo: un riquadro pieno si vedrebbe */
+
+.page-mh .pv-crema :is(.pv-dg__stage, .pv-fi__stage) { background: url(../assets/quadri/crema.webp) center / cover no-repeat; }
+.page-mh .pv-ti__st { background: url(../assets/quadri/notte.webp) center / cover no-repeat, var(--night); }
+/* premi: quando il titolo se ne va, dietro al logo al centro resta una macchia oro */
+.page-mh .pv-dg__foto::before { content: ''; position: absolute; left: 64%; top: calc(50% + 16px); width: min(58vw, 120vh); aspect-ratio: 1; translate: -50% -50%; opacity: calc(1 - var(--titolo, 1)); background: var(--nav-stain-0) center / contain no-repeat, var(--gold); background-blend-mode: soft-light; -webkit-mask: var(--nav-stain-0) center / contain no-repeat; mask: var(--nav-stain-0) center / contain no-repeat; pointer-events: none; }
+
+/* fra le sezioni: quella ferma resta da leggere, poi quella dopo le si dipinge sopra a passate orizzontali che salgono (js/moderna-f.js, canvas .h-pittore). Ognuna ha uno schermo e un po' in più in fondo per questo, e quella dopo parte uno schermo prima, nascosta */
+.h-pittore { position: fixed; left: 0; top: 0; z-index: 50; width: 100%; height: 100lvh; pointer-events: none; visibility: hidden; }
+.h-pittore.is-su { visibility: visible; } /* via di colpo: sotto c'è lo stesso fondo e lo stesso contenuto. Con una dissolvenza il contenuto, che scende sotto la tela, sparirebbe e tornerebbe */
+.page-mh .h-segue { position: relative; z-index: 3; margin-top: -100lvh; }
+.page-mh .h-segue.h-sotto { z-index: 51; background: none; pointer-events: none; } /* mentre passa il pennello la sezione dopo sta sopra la tela, senza fondo: appare dietro alle passate, così lo schermo non resta mai vuoto */
+.h-sotto :is(.pv-dg__stage, .pv-fi__stage, .pv-ti__st, .pv-dg__testi) { background: none !important; }
+.page-mh .foot.h-segue { min-height: 100lvh; } /* il footer deve arrivare in cima, altrimenti resterebbe nascosto */
+.page-mh .ca.h-coda { height: 680vh; }
+.page-mh .pv-dg.h-coda { height: calc(var(--n, 3) * 90lvh + 240lvh); }
+.page-mh .pv-ti__b.h-coda { height: 320lvh; }
+.page-mh .pv-fi.h-coda { height: 420lvh; }
+
+@media (max-width: 860px) {
+  .page-mh .fb-zoom::before { background-image: url(../assets/quadri/crema-m.webp); }
+  .page-mh .pv-crema :is(.pv-dg__stage, .pv-fi__stage) { background-image: url(../assets/quadri/crema-m.webp); }
+  .page-mh .pv-ti__st { background-image: url(../assets/quadri/notte-m.webp); }
+  .page-mh .pv-dg__testi { background: var(--cream); }
+  .page-mh .pv-dg__foto::before { left: 50%; top: 36%; width: min(132vw, 110vh); }
+}
+
+/* le due sezioni nuove in H (I più venduti, Cosa c'è in tavola?): arrivano a pennellate (tappeS in js/moderna-f.js) sulla tela crema. Il palco resta fermo: 100lvh per arrivare, 100 da sola, 100 mentre la dopo la ridipinge */
+.page-mh :is(.bv, .tv).h-coda { height: 300lvh; padding: 0; }
+.page-mh .bv.h-coda { height: 500lvh; } /* i più venduti: tre schermi fermi in cui scorrono tutte le bottiglie (js/tavola.js) */
+.page-mh :is(.bv__st, .tv__st) { position: sticky; top: 0; height: 100lvh; min-height: 0; overflow: hidden; background: url(../assets/quadri/crema.webp) center / cover no-repeat; }
+.h-sotto :is(.bv__st, .tv__st) { background: none !important; }
+@media (max-width: 860px) { .page-mh :is(.bv__st, .tv__st) { background-image: url(../assets/quadri/crema-m.webp); } }
+/* Cosa c'è in tavola?: i piatti dipinti come il resto della pagina (tools/dipingi_piatti.py). Quello scelto ha dietro una macchia d'oro dipinta, come le bottiglie */
+.page-mh .tv-p { position: relative; gap: 12px; }
+.page-mh .tv-p img { position: relative; display: block; width: var(--ico); aspect-ratio: 1; transition: transform .5s var(--ease); }
+.page-mh .tv-p:hover img { transform: translateY(-4px); }
+.page-mh .tv-p::before { content: ''; position: absolute; left: 50%; top: calc(var(--ico) / 2); width: calc(var(--ico) * 1.22); aspect-ratio: 1; translate: -50% -50%; background: var(--nav-stain-1) center / contain no-repeat, var(--gold); background-blend-mode: soft-light;
+  -webkit-mask: var(--nav-stain-1) center / contain no-repeat; mask: var(--nav-stain-1) center / contain no-repeat; opacity: 0; scale: .6; rotate: -25deg; transition: opacity .35s, scale .6s var(--ease), rotate .6s var(--ease); } /* 1,22: non arriva al nome sotto né ai piatti accanto */
+.page-mh .tv-p[aria-pressed="true"]::before { opacity: 1; scale: 1; rotate: 0deg; }

@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="css/home.css">
 <script>/* ingresso: deciso prima del primo disegno, così niente lampo */try{var q=new URLSearchParams(location.search).get("ingresso");if(q!=="0"&&(q||!sessionStorage.getItem("fs-ingresso"))&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("ingresso-attivo")}catch(e){}</script>
 </head>
-<body class="page-home">
+<body class="page-home" data-sito="i">
 <!-- @include sections/ingresso.html -->
 <!-- @include sections/header.html -->
 <main id="main">
@@ -22,7 +22,9 @@
 <!-- @include sections/footer.html -->
 <!-- @include sections/_scripts.html -->
 <script src="js/matita.js"></script>
+<script src="js/scheda.js"></script>
 <script src="js/fiaba.js"></script>
+<script src="js/aromi.js"></script>
 <script src="js/disegna.js"></script>
 <script src="js/home.js"></script>
 <script src="js/ingresso.js"></script>

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="it">
+<head>
+<!-- @include sections/_head.html -->
+<!-- font delicato come klimtwine (Fraunces sottile per i titoli, Instrument Sans per i testi), qualunque sia la prova font della sessione -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,100..400,0..100,0..1&family=Instrument+Sans:wdth,wght@75..100,400..600&display=swap">
+<title>Feudi Salentini · Vini del Salento (home moderna)</title>
+<meta name="description" content="Feudi Salentini: Primitivo di Manduria, Negroamaro e i vini del Salento della famiglia Varvaglione, a Leporano (TA).">
+<link rel="stylesheet" href="css/moderna.css">
+<!-- ingresso dal portone in 3D (three.js): non in uso (30 ott), tenuto; si vede solo con ?ingresso=3d. La home disegnata ha quello a matita -->
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="css/ingresso-3d.css">
+<script>/* ingresso 3D: NON in uso (30 ott), tenuto: parte solo con ?ingresso=3d */try{if(new URLSearchParams(location.search).get("ingresso")==="3d"&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("ingresso-attivo")}catch(e){}</script>
+</head>
+<body class="page-moderna">
+<!-- @include sections/ingresso-3d.html -->
+<!-- @include sections/header.html -->
+<main id="main">
+<!-- @include sections/moderna.html -->
+</main>
+<!-- @include sections/footer.html -->
+<!-- @include sections/_scripts.html -->
+<script src="js/moderna.js"></script>
+<script type="module" src="js/ingresso-3d.js"></script>
+</body>
+</html>

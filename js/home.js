@@ -4,71 +4,11 @@
    i loghi dei premi cerchiati. In fondo, il passaggio tra le sezioni (come klimtwine). Dipende da: matita.js, gsap + ScrollTrigger, FS / FS_DATA. */
 (() => {
   const M = window.Matita, D = window.FS_DATA;
-  if (!M || !D || !document.getElementById('esperienze')) return;
-  ['#esperienze', '#azienda', '#premi', '#news'].forEach((id) => document.querySelectorAll(`${id} [data-righe]`).forEach(FS.righe));
+  if (!M || !D || !document.getElementById('azienda')) return; // 11 nov: le esperienze sono tolte, non le fanno più
+  ['#azienda', '#premi', '#news'].forEach((id) => document.querySelectorAll(`${id} [data-righe]`).forEach(FS.righe));
   const vista = (el, fn) => FS.dopoIngresso(() => ScrollTrigger.create({ trigger: el, start: 'top 78%', once: true, onEnter: fn }));
   const rectIn = (el, cv) => { const a = el.getBoundingClientRect(), b = cv.getBoundingClientRect(); return { x: a.left - b.left, y: a.top - b.top, w: a.width, h: a.height }; };
   const graf = (pts, w = 1.5) => M.stroke(pts, { w, amp: 1 });
-
-  /* ---- esperienze: schede, persone, calici sul tavolo ---- */
-  const MAX = 20; // shortcut: tetto fisso alle persone prenotabili da qui, da allineare alle regole vere della cantina
-  const calice = (x, b, col) => {
-    const coppa = M.smooth([[x + 13, b - 36], [x + 6, b - 25], [x, b - 23], [x - 6, b - 25], [x - 13, b - 36]]), o = { w: 1.3, amp: 0.7, sketch: false };
-    return { p: 0, a: 1, w: [M.wash([[x - 12.6, b - 40], [x + 12.6, b - 40], ...coppa], { color: col, alpha: 0.85, amp: 0.8 })],
-      s: [M.stroke(M.smooth([[x - 11, b - 54], [x - 13, b - 36], [x - 6, b - 25], [x, b - 23], [x + 6, b - 25], [x + 13, b - 36], [x + 11, b - 54]]), { ...o, w: 1.4 }),
-        M.stroke(M.ellipse(x, b - 54, 11, 2.4, 0, 0, 1.06, 16), o), M.stroke([[x, b - 23], [x, b - 4]], o), M.stroke(M.ellipse(x, b - 3, 8, 1.8, 0, 0, 1.06, 14), o)] };
-  };
-  const grid = document.querySelector('.es-grid');
-  D.experiences.forEach((x) => {
-    const cols = x.wines.map((w) => (typeof w === 'string' ? FS.wine(w)?.color : w.color)).filter(Boolean);
-    const card = document.createElement('article');
-    card.className = 'es-card';
-    card.innerHTML = `<img class="es-foto" src="${x.photos[0]}" alt="" loading="lazy" decoding="async">
-      <div class="es-body">
-        <h3 class="es-name">${x.name}</h3>
-        <p class="es-meta">${x.durata} · da ${x.min} persone</p>
-        <p class="es-desc">${x.desc}</p>
-        <ul class="es-inc">${x.include.map((i) => `<li>${i}</li>`).join('')}</ul>
-        ${x.lunch ? `<label class="es-pranzo"><input type="checkbox">${x.lunch.label} (${FS.euro(x.lunch.price)} a persona)</label>` : ''}
-        <div class="es-tavolo">
-          <canvas class="es-calici" aria-hidden="true"></canvas>
-          <div class="es-riga">
-            <div class="es-conta" role="group" aria-label="Persone"><span class="es-conta__l">Persone</span>
-              <button type="button" data-d="-1" aria-label="Una persona in meno">−</button><output aria-live="polite">${x.min}</output><button type="button" data-d="1" aria-label="Una persona in più">+</button></div>
-            <p class="es-tot"><small></small><strong></strong></p>
-          </div>
-          <a class="btn btn--gold es-go" href="${x.url}">Prenota</a>
-        </div>
-      </div>`;
-    grid.append(card);
-
-    const cv = card.querySelector('.es-calici'), out = card.querySelector('output'), [meno, piu] = card.querySelectorAll('[data-d]'), pranzo = card.querySelector('.es-pranzo input');
-    let n = x.min, glasses = [], W = 0, visto = false;
-    const posto = (i) => [18 + i * 32, 66], capienza = () => Math.max(1, Math.floor((W - 12) / 32));
-    const nuovo = (i) => { const [gx, gb] = posto(i); return calice(gx, gb, cols[i % cols.length]); };
-    const sheet = new M.Sheet(cv, (ctx, f) => glasses.forEach((g) => {
-      const k = g.s.length;
-      g.w.forEach((w) => { w.progress = M.clamp(g.p * 2 - 1); w.alpha = 0.85 * g.a; M.drawWash(ctx, w, f); });
-      g.s.forEach((t, i) => { t.progress = M.clamp(g.p * k * 1.2 - i); t.alpha = g.a; M.draw(ctx, t, f); });
-    }), (w) => { W = w; if (visto) glasses = Array.from({ length: Math.min(n, capienza()) }, (_, i) => Object.assign(nuovo(i), { p: 1 })); });
-    const conto = () => {
-      const per = pranzo?.checked ? x.lunch.price : x.price;
-      out.textContent = n;
-      card.querySelector('.es-tot small').textContent = `${FS.euro(per)} a persona`;
-      card.querySelector('.es-tot strong').textContent = `Totale ${FS.euro(per * n)}`;
-      meno.disabled = n <= x.min; piu.disabled = n >= MAX;
-    };
-    const apparecchia = (lento) => { // porta i calici disegnati al numero di persone (fin dove ci stanno)
-      const want = Math.min(n, capienza());
-      while (glasses.length < want) { const g = nuovo(glasses.length); glasses.push(g); gsap.to(g, { p: 1, duration: 0.7, delay: lento ? glasses.length * 0.22 : 0, ease: 'power1.inOut' }); }
-      glasses.slice(want).forEach((g) => { if (!g.via) { g.via = true; gsap.to(g, { a: 0, duration: 0.3, onComplete: () => (glasses = glasses.filter((q) => q !== g)) }); } });
-      sheet.kick(lento ? 2500 : 900);
-    };
-    [meno, piu].forEach((b) => b.addEventListener('click', () => { n = M.clamp(n + +b.dataset.d, x.min, MAX); conto(); if (visto) apparecchia(); }));
-    pranzo?.addEventListener('change', conto);
-    conto();
-    vista(card, () => { visto = true; apparecchia(true); });
-  });
 
   /* ---- cantina, la parte fotografica (come klimtwine): la foto dentro il titolo si ingrandisce mentre il titolo sbiadisce, le foto
      passano in diagonale (entrano in basso a destra, escono in alto a sinistra) e quella al centro ha la sua nota con la freccia a
@@ -163,7 +103,7 @@
     el.classList.add('tinta');
     ScrollTrigger.create({ trigger: el, start: 'top 55%', end: 'bottom 55%', onToggle: (st) => st.isActive && gsap.to(document.body, { backgroundColor: col, duration: 0.9, ease: 'power1.out', overwrite: true }) });
   };
-  [['#premi', '--stone'], ['#news', '--cream'], ['#esperienze', '--cream'], ['#contatti', '--stone']].forEach(([q, v]) => tinta(q, v));
+  [['#premi', '--stone'], ['#news', '--cream'], ['#contatti', '--stone']].forEach(([q, v]) => tinta(q, v));
   const schizzo = (wrap, item, foto) => { // foto: cosa si sviluppa dentro la cornice (null = tutto il blocco)
     if (FS.reduce) return;
     const cv = document.createElement('canvas'), els = [...wrap.querySelectorAll(item)], k = els.map(() => ({ p: 0, a: 1 })), dentro = (el) => (foto ? el.querySelector(foto) : el);
@@ -180,5 +120,4 @@
       .to(resto(el), { opacity: 1, y: 0, duration: 0.6, stagger: 0.06, ease: 'power2.out' }, 0.9)));
   };
   schizzo(document.querySelector('.nw-grid'), '.nw-item', 'img');
-  schizzo(grid, '.es-card', null);
 })();

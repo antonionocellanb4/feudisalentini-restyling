@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="it">
+<head>
+<!-- @include sections/_head.html -->
+<!-- SCHEDA DEL VINO, versione 3 (6 nov 2026, "carina la prima parte, poi lo sticky laterale è un po' passato di moda"): vino.html?id=<id di js/data.js>, nello stile di moderna H.
+     Si apre sulla bottiglia vera: arriva da dove la mostrava la finestra della home (10 nov: "non ripassiamo più da un quadro dipinto"), poi sale il nome grande dietro.
+     Poi la bottiglia resta al centro, sul filo, e le scene le si danno il cambio attorno: il nome e la descrizione ai due lati, la vista e i profumi (la macchia
+     si allarga), la tavola (il filo diventa la tavola e i piatti ci scivolano sopra), i dati di vigna e cantina, i riconoscimenti che salgono dal filo.
+     Sul telefono le scene vanno in colonna sotto il palco. Dati veri: catalogo PDF del cliente; riconoscimenti dal Bilancio di sostenibilità 2025 e dal catalogo.
+     La versione 2 è in vino-v2.html, la 1 in vino-v1.html. Stile: css/pagine.css · Script: js/pagine.js -->
+<title>Il vino · Feudi Salentini</title>
+<meta name="description" content="La scheda del vino Feudi Salentini: descrizione, dati tecnici, abbinamenti e riconoscimenti.">
+<link rel="stylesheet" href="css/moderna-kit.css">
+<link rel="stylesheet" href="css/pagine.css">
+</head>
+<body class="page-moderna page-pg page-vino page-mh" data-sito="h">
+<!-- @include sections/header.html -->
+<main id="main">
+
+  <section class="vn" aria-labelledby="vn-t">
+    <div class="vn__a">
+      <div class="vn__st" aria-hidden="true">
+        <div class="vn__crema"></div>
+        <p class="vn__gigante"></p>
+        <i class="vn__macchia"></i>
+        <img class="vn__foto" alt="" width="653" height="1024" decoding="async">
+        <i class="vn__filo"></i>
+      </div>
+    </div>
+    <div class="vn__flusso">
+      <div class="vn__scena">
+        <div class="vn-sc vn-sc--intro" data-sc="intro">
+          <div class="vn-sx">
+            <button class="vn-col pz" type="button"></button>
+            <h1 class="pg-h1 vn-nome" id="vn-t"></h1>
+            <p class="vn-denom pz"></p>
+          </div>
+          <div class="vn-dx">
+            <p class="pg-lead vn-desc pz"></p>
+            <dl class="vn-fatti pz"></dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pg-sec pg-crema-2 vn-altri" aria-labelledby="vn-al-t" hidden>
+    <div class="pg-in">
+      <p class="vn-altri__k">Gli altri vini della collezione</p>
+      <h2 class="pg-h2" id="vn-al-t"></h2>
+      <ul class="vn-fila"></ul>
+    </div>
+  </section>
+
+</main>
+<!-- @include sections/footer.html -->
+<!-- @include sections/_scripts.html -->
+<script src="js/moderna-kit.js"></script>
+<script src="js/pagine.js"></script>
+</body>
+</html>

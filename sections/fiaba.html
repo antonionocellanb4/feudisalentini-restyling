@@ -33,22 +33,20 @@
       <article class="fb-cap fb-testo" data-tappa="3" style="--x:6360;--y:150">
         <p class="fb-cap__n">04 · Il mare</p>
         <h2 class="fb-cap__t">Classica</h2>
-        <p class="fb-cap__d">La linea più ampia, dodici vini: dal Sassirossi delle vigne ad alberello al Susumaniello, dal bianco Cala al rosato Tre Cuori.</p>
+        <p class="fb-cap__d">La linea più ampia, tredici vini: dal Sassirossi delle vigne ad alberello al Susumaniello, dal bianco Càla al rosato Tre Cuori.</p>
         <button class="btn btn--line fb-cap__go" type="button" data-col="classica">Vedi i 12 vini</button>
       </article>
       <article class="fb-cap fb-testo" data-tappa="4" style="--x:8360;--y:150">
         <p class="fb-cap__n">05 · Il tramonto</p>
         <h2 class="fb-cap__t">125 Uno Due Cinque</h2>
-        <p class="fb-cap__d">La linea Lounge Bar per l'aperitivo e i primi piatti: un rosato leggermente mosso, Primitivo, Negroamaro e Malvasia Nera.</p>
+        <p class="fb-cap__d">La linea Lounge Bar per l'aperitivo e i primi piatti: Pinot Grigio, Malvasia Bianca, un rosato leggermente mosso, Primitivo, Negroamaro e Malvasia Nera.</p>
         <button class="btn btn--line fb-cap__go" type="button" data-col="lounge">Vedi i 4 vini</button>
       </article>
 
       <div class="fb-fine fb-testo" style="--x:9850;--y:230">
         <h2 class="fb-fine__t">Fine della giornata.</h2>
-        <p class="t-lead">Il resto si assaggia in cantina, a Leporano.</p>
         <div class="fb-fine__cta">
-          <a class="btn btn--gold" href="#esperienze">Prenota una degustazione</a>
-          <button class="btn btn--line" type="button" data-col="">Tutti i 28 vini</button>
+          <button class="btn btn--gold" type="button" data-col="">Tutti i <span data-cantina-total>33</span> vini</button>
         </div>
       </div>
       <!-- bottiglie: generate da js/fiaba.js -->
@@ -56,19 +54,6 @@
     <!-- prova a (?info=a): la didascalia della tappa ferma in alto, come i capitoli di klimtwine (js/fiaba.js) -->
     <div class="fb-fisso" aria-live="polite"><h2 class="fb-fisso__t"></h2><div class="fb-fisso__dx"><p class="fb-fisso__d"></p><button class="fb-fisso__go" type="button"></button></div></div>
     <nav class="fb-tappe" aria-label="Tappe della giornata"></nav>
-    <!-- bottiglia al centro: si apre col clic su una bottiglia (js/fiaba.js) -->
-    <div class="fb-zoom" role="dialog" aria-modal="true" aria-labelledby="fb-zoom-t" hidden>
-      <canvas class="fb-zoom__cv" aria-hidden="true"></canvas>
-      <img class="fb-zoom__bt" alt="" decoding="async">
-      <div class="fb-zoom__info">
-        <p class="fb-zoom__col"></p>
-        <h2 class="fb-zoom__t" id="fb-zoom-t"></h2>
-        <p class="fb-zoom__meta"></p>
-        <p class="fb-zoom__desc"></p>
-        <dl class="fb-zoom__dati"></dl>
-        <div class="fb-zoom__cta"><a class="btn btn--gold fb-zoom__go" target="_blank" rel="noopener">Scheda del vino</a><button class="btn btn--line fb-zoom__col-go" type="button">Vini della collezione</button></div>
-      </div>
-      <button class="btn btn--line fb-zoom__x" type="button">Chiudi</button>
-    </div>
+<!-- @include sections/scheda.html -->
   </div>
 </section>

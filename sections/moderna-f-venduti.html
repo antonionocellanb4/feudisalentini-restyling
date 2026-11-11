@@ -1,0 +1,15 @@
+<!-- F, G, H: I più venduti, subito dopo la cantina e prima dei premi (6 nov 2026). Giostra infinita che gira da sola, si trascina e accelera con lo scorrimento della pagina.
+     I vini sono SCELTI PER PROVA (VENDUTI in js/tavola.js): i dati veri delle vendite non ci sono. Script: js/tavola.js · Stile: css/moderna-f.css, in H anche css/moderna-h.css -->
+<section class="bv pv-crema" id="venduti" aria-labelledby="bv-t">
+  <div class="bv__st">
+    <h2 class="pv-h2 bv__t" id="bv-t">I più venduti</h2>
+    <div class="bv__giostra" aria-roledescription="carosello" aria-label="I più venduti">
+      <ul class="bv__fila"></ul>
+    </div>
+    <div class="bv__piede">
+      <button class="tv__fr" type="button" data-d="-1" aria-label="Vino precedente"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <p class="bv__nome"><span class="bv__n1"></span><span class="bv__n2"></span></p>
+      <button class="tv__fr" type="button" data-d="1" aria-label="Vino successivo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+  </div>
+</section>
