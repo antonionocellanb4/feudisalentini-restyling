@@ -78,7 +78,7 @@
 }
 address.e-d { font-style: normal; }
 
-/* ---- versione verticale (vino-e.html?…&v=vert): le stesse tappe una sotto l'altra. Ogni tappa: il disegno su carta crema, poi sotto il filo la fascia di pietra
+/* ---- versione verticale (quella che si apre; l'orizzontale con &v=oriz): le stesse tappe una sotto l'altra. Ogni tappa: il disegno su carta crema, poi sotto il filo la fascia di pietra
    coi testi (il ripiano): dove finisce la fascia finisce la tappa (11 nov: "le sezioni non si capiscono, le suddivisioni, gli spazi") ---- */
 .e-st.pe--vert { height: auto; }
 .pe--vert .e-stage { position: relative; height: auto; overflow: visible; cursor: auto; touch-action: auto; background: none; --pe-cielo: var(--cream); }
@@ -129,7 +129,10 @@ address.e-d { font-style: normal; }
 .pe--vert .pe-nastro { height: 30px; }
 .pe--vert .pe-appese p { margin-top: 8px; font-size: .8125rem; }
 
-/* selettore provvisorio delle due versioni della scheda: si toglie quando l'utente ha scelto */
-.pe-alt { position: fixed; left: 16px; bottom: 16px; z-index: 60; display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--paper); box-shadow: 0 2px 10px rgb(0 0 0 / .12); font-size: .875rem; }
+/* selettore delle due versioni della scheda: restano tutte e due per farle vedere alla cliente (11 nov) */
+.pe-alt { position: fixed; left: 16px; top: calc(var(--header-h) + 8px); z-index: 60; display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--paper); box-shadow: 0 2px 10px rgb(0 0 0 / .12); font-size: .875rem; }
 .pe-alt a { padding: 8px 14px; border-radius: 999px; }
 .pe-alt a[aria-current="true"] { background: var(--ink); color: var(--paper); }
+@media (min-width: 861px) { .pe-alt { top: calc(var(--header-h) + 57px); } }
+@media (max-width: 860px) { .pe-alt--o { top: auto; bottom: 16px; } } /* sul telefono, nell'orizzontale, in alto toccherebbe le medaglie: lì resta in basso */
+/* di norma in alto a sinistra sotto l'header (su desktop sotto il selettore dei siti): in basso copriva i titoli nell'orizzontale e, sul telefono, il bottone dell'apertura */

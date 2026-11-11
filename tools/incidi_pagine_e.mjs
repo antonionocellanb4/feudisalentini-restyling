@@ -68,7 +68,7 @@ const LATI = {
   grappolo: (v) => [colleL([[-L, 150], [-1060, 112], [-820, 146], [-600, 108], [-420, 150], [-300, PIEDE]], v), colleL([[300, PIEDE], [440, 140], [640, 102], [880, 136], [1100, 104], [L, 140]], v), suoloL(PIEDE),
     cipresso(-760, PIEDE, 200, 0.88), cipresso(980, PIEDE, 180, 0.8), cipresso(1036, PIEDE, 120, 0.6), vigna(-L, -330), vigna(330, L)],
   filari: (v) => { const h = 96, out = LATI2.map(([a, b]) => riga(Array.from({ length: Math.round((b - a) / 30) + 1 }, (_, i) => [a + i * 30, h - 5 * Math.sin((a + i * 30 + 300) / 37.5) - 3]), INK, 1));
-    for (const s of [-1, 1]) for (let a = 8; a <= 42; a += 2) { const xb = s * a * 50; out.push(riga([[xb * 0.08, h + 2], [xb, 300]], TERRA, 0.75)); /* ai lati un solco su due: la terra rossa non diventa una macchia */ if (a % 4 === 0) for (let k = 0; k < 3; k++) { const q = ((k + 0.5) / 6) ** 1.6, x = xb * (0.08 + 0.92 * q), y = h + (300 - h) * q, z = 0.4 + q * 1.1; if (Math.abs(x) < L) out.push(riga([[x, y], [x + 2 * z, y - 22 * z]], INK, 0.8), fogliaVite(x + 2 * z, y - 20 * z, -2.5, 15 * z), fogliaVite(x + 2 * z, y - 20 * z, -0.64, 15 * z)); } }
+    for (const s of [-1, 1]) for (let a = 8; a <= 42; a += 2) { const xb = s * a * 50; out.push(riga([[xb * 0.08, h + 2], [xb, 300]], TERRA, 0.75)); } /* ai lati un solco su due: la terra rossa non diventa una macchia. Le viti le mette SCENE.filari(v, 2100), tutte insieme: le vicine coprono le lontane */
     return [out, cipresso(-560, h + 2, 120, 0.6), cipresso(-520, h + 2, 84, 0.46), cipresso(900, h + 2, 110, 0.56)]; },
   pajara: (v) => [cirri([[-1100, -240, 200], [-700, -190, 150], [600, -250, 190], [1000, -200, 150]]), suoloL(PIEDE), mur(-L, -720, PIEDE), pajara(-520, PIEDE + 2, 0.5, v), mur(300, 1060, PIEDE), cipresso(1150, PIEDE, 180, 0.8), olivo(-960, 0.56)],
   ulivo: (v) => [colleL([[-L, 150], [-1080, 118], [-860, 140], [-640, 100], [-440, 130], [-300, 176]], v, 176), colleL([[300, 176], [460, 126], [680, 104], [900, 138], [1100, 112], [L, 146]], v, 176), suoloL(176), suoloL(PIEDE),
@@ -90,8 +90,8 @@ const LATI = {
   calici: (v) => { const st = []; for (const [a, b] of LATI2) for (let x = a + 20; x < b; x += 68) for (let w = 0; w < 4; w++) { const xx = x + r(-22, 22), y = -284 + w * 50 + r(-14, 14), q = r(3, 6); st.push(riga([[xx - q, y], [xx + q, y]], ORO, 0.9), riga([[xx, y - q], [xx, y + q]], ORO, 0.9)); } return [st, suoloL(PIEDE)]; },
 };
 // le scene: la masseria è più larga (le mura escono dal riquadro); le dieci di moderna-e col tratteggio nel colore del vino
-const SCENE_E = { masseria: { vb: '-450 -300 900 600', cose: masseria }, medaglia: { cose: medaglia }, ...Object.fromEntries(Object.keys(SCENE).map((k) => [k, { cose: () => SCENE[k](VINO) }])),
-  ...Object.fromEntries(Object.keys(LATI).map((k) => [`${k}-largo`, { vb: `${-L} -300 ${2 * L} 600`, cose: () => [k === 'masseria' ? masseria() : SCENE[k](VINO), LATI[k](VINO)] }])) }; // le larghe dopo: le scene di sempre restano identiche
+const SCENE_E = { masseria: { vb: '-450 -300 900 600', cose: masseria }, medaglia: { cose: medaglia }, ...Object.fromEntries(Object.keys(SCENE).map((k) => [k, { cose: () => SCENE[k](VINO, 500) }])),
+  ...Object.fromEntries(Object.keys(LATI).map((k) => [`${k}-largo`, { vb: `${-L} -300 ${2 * L} 600`, cose: () => [k === 'masseria' ? masseria() : SCENE[k](VINO, 2100), LATI[k](VINO)] }])) }; // le larghe dopo: le scene di sempre restano identiche
 const n1 = (v) => v.toFixed(1);
 const d = (rr) => { const per = new Map(); rr.flat(Infinity).forEach((s) => { const q = `${s.c}|${s.w}`; if (!per.has(q)) per.set(q, { c: s.c, w: s.w, d: '' }); per.get(q).d += `M${s.pts.map(([x, y]) => `${n1(x)} ${n1(y)}`).join('L')}`; });
   return [...per.values()].map((p) => `<path class="t${p.c === VINO ? ' v' : ''}"${p.c === VINO ? '' : ` stroke="${p.c}"`} stroke-width="${p.w}" pathLength="1" d="${p.d}"/>`).join(''); };

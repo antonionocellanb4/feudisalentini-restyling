@@ -9,8 +9,8 @@
   const sec = $('.pe'), PIEDE = 214, SOPRA = 514; // dall'alto del riquadro (-300) al ripiano
   $$('.foot a[href^="#"]').forEach((a) => { if (!document.getElementById(a.hash.slice(1))) a.href = FS.home + a.hash; }); // ancore della home nel footer comune
   const mob = () => innerWidth <= 860;
-  // 10 nov, "proverei a fare anche una versione verticale": vino-e.html?id=…&v=vert, le stesse tappe una sotto l'altra. Selettore provvisorio per confrontarle
-  const VERT = !sec.classList.contains('pe--vino') || new URLSearchParams(location.search).get('v') === 'vert'; // 11 nov: l'azienda solo in verticale, "racconta meglio" (foto, sostenibilità)
+  // 10 nov, "proverei a fare anche una versione verticale": le stesse tappe una sotto l'altra. 11 nov: si apre in verticale, l'orizzontale resta con &v=oriz e il selettore, per farle vedere alla cliente
+  const VERT = !sec.classList.contains('pe--vino') || new URLSearchParams(location.search).get('v') !== 'oriz'; // 11 nov: l'azienda solo in verticale, "racconta meglio" (foto, sostenibilità)
   const breve = (w) => w.name.replace(/^(Collezione 53|125 Organic|125|Terra)\s+/, '').replace(/\s+(Organic|Edition)$/, ''); // come i nomi sul ripiano della home E
 
   /* ---- la scheda del vino: le tappe si fanno dai dati ---- */
@@ -60,8 +60,8 @@
   const stage = $('.e-stage', sec), track = $('.e-track', sec), alto = $('.e-alto', sec), tappe = $$('.e-tappa', sec), N = tappe.length;
   const bt = $('.pe-bt', sec), fila = $$('.pe-fila li', sec), FILA = tappe.findIndex((t) => t.classList.contains('e-tappa--fila'));
   if (w) {
-    const u = (v) => `vino-e.html?id=${encodeURIComponent(w.id)}${v ? '&v=vert' : ''}`;
-    document.body.insertAdjacentHTML('beforeend', `<nav class="pe-alt" aria-label="Versioni da confrontare"><a href="${u(0)}" aria-current="${!VERT}">Orizzontale</a><a href="${u(1)}" aria-current="${VERT}">Verticale</a></nav>`);
+    const u = (o) => `vino-e.html?id=${encodeURIComponent(w.id)}${o ? '&v=oriz' : ''}`;
+    document.body.insertAdjacentHTML('beforeend', `<nav class="pe-alt${VERT ? '' : ' pe-alt--o'}" aria-label="Versioni da confrontare"><a href="${u(0)}" aria-current="${VERT}">Verticale</a><a href="${u(1)}" aria-current="${!VERT}">Orizzontale</a></nav>`);
   }
   if (VERT) { sec.classList.add('pe--vert'); sec.removeAttribute('data-nav-trasparente'); if (bt) tappe[0].append(bt); }
   if (VERT && $('.pe-appese', sec)) { // 11 nov, "i riconoscimenti su un'unica riga": in verticale medaglie e asta stanno nella fascia, accanto a titolo e testo

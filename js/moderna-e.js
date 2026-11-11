@@ -361,6 +361,31 @@
   const barca = (x, y, k) => { const P = (l) => l.map(([u, v]) => [x + u * k, y + v * k]), sc = P([[6, -14], [6, -150], [84, -20]]), fi = P([[-6, -14], [-6, -112], [-58, -18]]), sf = P([[-80, -6], [90, -8], [60, 24], [-58, 24]]); return [riga(P([[0, -8], [0, -158]]), INK, 1.1), { occ: sc, righe: [riga(chiudi(sc), INK, 1), ...tratteggio(sc, 0.2, 9, INK, 0.45)] }, { occ: fi, righe: [riga(chiudi(fi), INK, 1)] }, { occ: sf, righe: [riga(chiudi(sf), INK, 1.2), riga(P([[-68, 6], [76, 4]]), INK, 0.6)] }]; };
   const torreta = (x, b, k, vino = INK) => { const a = 40 * k, tt = b - 170 * k, fa = b - 56 * k, q = [[x - a - 10 * k, b + 4 * k], [x - a, fa], [x - a, tt], [x + a, tt], [x + a, fa], [x + a + 10 * k, b + 4 * k]], me = []; for (let i = 0; i < 4; i++) { const m = x - a + i * 22 * k; me.push(riga(chiudi([[m, tt], [m, tt - 13 * k], [m + 14 * k, tt - 13 * k], [m + 14 * k, tt]]), INK, 1)); } return { occ: q, righe: [riga(q, INK, 1.2), riga([[x - a, fa], [x + a, fa]], INK, 0.8), ...me, ...tratteggio([[x + a * 0.2, tt], [x + a, tt], [x + a, b], [x + a * 0.2, b]], -1, 6 * Math.sqrt(k), vino, 0.6), riga(chiudi([[x - 7 * k, tt + 34 * k], [x + 7 * k, tt + 34 * k], [x + 7 * k, tt + 56 * k], [x - 7 * k, tt + 56 * k]]), INK, 0.9), riga([[x - 11 * k, b + 2], [x - 11 * k, b - 34 * k], [x + 11 * k, b - 34 * k], [x + 11 * k, b + 2]], ORO, 1.3)] }; };
   const spiga = (x, b, h) => { const t = x + r(-14, 14), y = b - h, o = [TR([[x, b], [(x + t) / 2 + r(-5, 5), b - h * 0.5], [t, y]], INK, 0.8), riga([[t, y + 3], [t, y - 9]], ORO, 1)]; for (let k = 0; k < 6; k++) for (const q of [-1, 1]) o.push(riga([[t, y + k * 8 + 3], [t + q * 6, y + k * 8 - 6]], ORO, 1)); return o; };
+  /* 11 nov, "i rami dobbiamo mettere": nei filari viti ad alberello (ceppo, due braccia, foglie) al posto del bastoncino con le foglie in cima. Stanno su un solco ogni quattro,
+     sfalsate da un filare all'altro, grandi quanto vuole la prospettiva (orizzonte h; la prima quasi sul ripiano), le vicine davanti alle lontane. Tre misure di dettaglio:
+     davanti l'alberello vero con meno punti, in mezzo ceppo a forca e cinque foglie, in fondo tre foglioline. xbMax = fin dove arriva il campo ai lati */
+  const viteFilare = (x, y, s) => {
+    const sp = q(0, 1) < 0.5 ? -1 : 1, w = Math.round(Math.min(1, 0.4 + s * 1.3) * 10) / 10, P = ([u, v]) => [x + u * s * sp, y + v * s], rado = (l, k) => l.filter((_, i) => i % k === 0 || i === l.length - 1), L = (pts) => riga(pts.map(P), INK, w);
+    if (s >= 0.4) { /* l'alberello vero, un tratto solo; i tralci sono un pezzo senza fondo, così le viti davanti li coprono */
+      const a = alberello(false), pz = a.filter((c) => c.righe), uve = pz.filter((c) => c.righe.some((l) => l.c === ORO)), foglie = pz.slice(3).filter((c) => !uve.includes(c)).filter((_, i) => s > 0.5 || i % 3 !== 1), tralci = a.filter((c) => !c.righe && c.c === INK).map((l) => L(l.pts));
+      const porta = (c, k) => ({ occ: typeof c.occ[0][0] === 'number' ? rado(c.occ, k).map(P) : c.occ.map((o) => o.map(P)), righe: c.righe.map((l) => riga(rado(l.pts, k).map(P), l.c, w)) });
+      return [{ occ: [tralci[0].pts[0], tralci[0].pts[0], tralci[0].pts[0]], righe: tralci }, ...pz.slice(0, 3).map((c) => porta(c, 3)), ...foglie.map((c) => porta(c, 2)), ...uve.map((c) => porta(c, 1))];
+    }
+    const F = [q(-8, 8), -q(46, 54)], capi = [-1, 1].map((d) => [F[0] + d * q(28, 38), F[1] - q(28, 40)]);
+    if (s >= 0.19) { /* tronco e braccia a contorno, cinque foglie a lobi */
+      const asta = (a, b, wa, wb, pg) => { const mx = (a[0] + b[0]) / 2 + pg, my = (a[1] + b[1]) / 2, wm = (wa + wb) / 2; return [[[a[0] - wa, a[1]], [mx - wm, my], [b[0] - wb, b[1]]], [[a[0] + wa, a[1]], [mx + wm, my], [b[0] + wb, b[1]]]]; };
+      const legni = [asta([q(-2, 2), 0], F, 8.5, 5.5, q(-5, 5)), ...capi.map((C, i) => asta(F, C, 5, 2.6, i ? 5 : -5))];
+      const lobi = (px, py, a, l) => { const c = Math.cos(a), n = Math.sin(a); return chiudi([[0, 0], [0.06, 0.4], [0.3, 0.64], [0.46, 0.5], [0.66, 0.56], [0.74, 0.3], [1.02, 0], [0.74, -0.3], [0.66, -0.56], [0.46, -0.5], [0.3, -0.64], [0.06, -0.4]].map(([u, v]) => [px + (u * c - v * n) * l, py + (u * n + v * c) * l])); };
+      const fg = [...capi.flatMap((C, i) => { const d = i ? 1 : -1; return [lobi(C[0], C[1] + 4, -1.57 + d * q(0.1, 0.5), q(32, 40)), lobi(C[0] + d * 2, C[1] + 8, -1.57 + d * q(1.1, 1.6), q(28, 34))]; }), lobi(F[0] + q(-3, 3), F[1] - 8, -1.57 + q(-0.35, 0.35), q(32, 38))];
+      return [{ occ: legni.map(([sx, dx]) => [...sx, ...dx.slice().reverse()].map(P)), righe: legni.flatMap(([sx, dx]) => [L(sx), L(dx)]) }, { occ: fg.map((f) => f.map(P)), righe: fg.map(L) }];
+    }
+    const rombo = (px, py, a, l) => { const c = Math.cos(a), n = Math.sin(a), w2 = l * 0.3; return [[px, py], [px + c * l * 0.5 - n * w2, py + n * l * 0.5 + c * w2], [px + c * l, py + n * l], [px + c * l * 0.5 + n * w2, py + n * l * 0.5 - c * w2], [px, py]]; };
+    const fg = [rombo(capi[0][0], capi[0][1] + 6, -2.2 + q(-0.3, 0.3), q(40, 50)), rombo(capi[1][0], capi[1][1] + 6, -0.94 + q(-0.3, 0.3), q(40, 50)), rombo(F[0], F[1] - 10, -1.57 + q(-0.3, 0.3), q(44, 54))];
+    return [{ occ: fg.map((f) => f.map(P)), righe: [L([[0, 0], F]), L([capi[0], F, capi[1]]), ...fg.map(L)] }];
+  };
+  const vitiFilari = (h, xbMax) => { const K = PIEDE - 9 - h, viti = [];
+    for (let xb = 100; xb <= xbMax; xb += 200) for (const lt of [-1, 1]) for (let i = 0; i < 5; i++) { const Z = 1 + 0.6 * i + (xb % 400 === 300 ? 0.3 : 0); viti.push([h + K / Z, lt * xb * (0.08 + (0.92 * K) / Z / (300 - h)), 0.58 / Z]); }
+    return viti.sort((a, b) => a[0] - b[0]).map(([y, x, sc]) => viteFilare(x, y, sc)); };
   const SCENE = {
     // Collezione 53, le vecchie vigne
     vite: (v) => [colle([[-300, PIEDE], [-190, 120], [-40, 74], [120, 92], [236, 146], [300, PIEDE]], v), suolo(),
@@ -372,9 +397,9 @@
     grappolo: (v) => { const acini = []; [[-188, 5], [-132, 6], [-76, 7], [-20, 6], [36, 5], [92, 4]].forEach(([y, n]) => { for (let i = 0; i < n; i++) { const x = (i - (n - 1) / 2) * 66, o = cerchio(x, y, 37, 37, 0, 20); acini.push({ occ: o, righe: [riga(o, INK, 1), ...tratteggio(cerchio(x, y, 33, 33, -0.5, 10, 0.5), 0.72, 7, v, 0.65), riga(cerchio(x, y, 27, 27, 3.6, 6, 0.2), INK, 0.6)] }); } });
       return [suolo(), acini, ramo([[0, -216], [6, -244], [-4, -272]], 6, 3), fogliaVite(-10, -226, -2.9, 96), fogliaVite(10, -226, -0.24, 96), viticcio(-150, -214, 2.6, 1.3), viticcio(150, -214, 0.5, 1.3)]; },
     // Terra, la terra rossa: i filari, la pajara, il muretto a secco
-    filari: (v) => { const h = 96, out = [...sorge(h, 236, v), riga(Array.from({ length: 21 }, (_, i) => [-300 + i * 30, h - 5 * Math.sin(i * 0.8) - 3]), INK, 1)];
-      for (let a = -6; a <= 6; a++) { const xb = (a / 6) * 300; if (a) out.push(riga([[xb * 0.08, h + 2], [xb, 300]], TERRA, 0.9)); if (a % 2 === 0 && a) for (let k = 0; k < 6; k++) { const q = ((k + 0.5) / 6) ** 1.6, x = xb * (0.08 + 0.92 * q), y = h + (300 - h) * q, z = 0.4 + q * 1.1; out.push(riga([[x, y], [x + 2 * z, y - 22 * z]], INK, 0.8), fogliaVite(x + 2 * z, y - 20 * z, -2.5, 15 * z), fogliaVite(x + 2 * z, y - 20 * z, -0.64, 15 * z), fogliaVite(x + 2 * z, y - 21 * z, -1.57, 17 * z)); } }
-      out.push(pajara(238, h + 4, 0.44)); return out; },
+    filari: (v, campo = 300) => { /* campo: fin dove arrivano le viti ai lati. 300 nella scheda della home (il disegno non va sotto i testi), 500 nelle tappe di vino-e (riempie il riquadro), 2100 nella scena larga, dove i solchi oltre 300 li mette LATI.filari di tools/incidi_pagine_e.mjs */ const h = 96, out = [...sorge(h, 236, v), riga(Array.from({ length: 21 }, (_, i) => [-300 + i * 30, h - 5 * Math.sin(i * 0.8) - 3]), INK, 1)];
+      for (let a = campo === 500 ? -10 : -6; a <= (campo === 500 ? 10 : 6); a++) { const xb = a * 50; if (a) out.push(riga([[xb * 0.08, h + 2], [xb, 300]], TERRA, 0.9)); }
+      out.push(pajara(238, h + 4, 0.44)); return [out, vitiFilari(h, campo)]; },
     pajara: (v) => { const te = []; for (let a = -6; a <= 6; a++) if (a) te.push(riga([[a * 31, PIEDE + 1], [a * 50, 298]], TERRA, 0.9));
       return [...cirro(-262, -240, 190), ...cirro(-210, -170, 130), suolo(), te,
         ramo([[196, PIEDE - 40], [184, 60], [208, -20], [196, -84]], 12, 6), tralcio([[196, -84], [146, -128], [104, -196]], 5, [[0.5, -2.6, 44], [1, -2, 50]], [[0.55, 1.15]]), tralcio([[196, -84], [244, -122], [270, -186]], 5, [[0.5, -0.5, 44], [1, -1.1, 50]], [[0.6, 1.1]]),
