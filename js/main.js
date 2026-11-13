@@ -16,16 +16,16 @@
 
   const D = window.FS_DATA;
   // ogni stile è un sito a sé (body data-sito): home, azienda e scheda del vino sue, e l'header comune porta lì. Senza data-sito restano quelle di H
-  const SITI = { i: ['index.html', 'azienda-i.html', 'vino-i.html'], d: ['moderna-d.html', 'azienda-d.html', 'vino.html'], e: ['moderna-e.html', 'azienda-e.html', 'vino-e.html'], h: ['moderna-h.html', 'azienda.html', 'vino.html'] }, SITO = SITI[document.body.dataset.sito];
+  const SITI = { i: ['index.html', 'azienda-i.html', 'vino-i.html'], d: ['moderna-d.html', 'azienda-d.html', 'vino.html'], e: ['moderna-e.html', 'azienda-e.html', 'vino-e.html'], h: ['moderna-h.html', 'azienda.html', 'vino.html'], b: ['botanica.html', 'azienda.html', 'vino-b.html'], f: ['foto.html', 'azienda.html', 'vino-f.html'] /* Botanica e Fotografia (13 nov): home e pagina del vino loro; l'azienda è ancora quella di Pittura */ }, SITO = SITI[document.body.dataset.sito];
   const [home, azienda, vino] = SITO || ['index.html', 'azienda.html', 'vino.html'];
   if (SITO) {
     const qui = location.pathname.split('/').pop() || 'index.html';
     document.querySelectorAll(qui === home ? 'a[href="index.html"]' : 'a[href^="index.html"]').forEach((a) => a.setAttribute('href', home + a.getAttribute('href').slice(10))); // sulla home stessa solo il logo: le ancore le sistema moderna-kit
     document.querySelectorAll('a[href^="azienda.html"]').forEach((a) => a.setAttribute('href', azienda + a.getAttribute('href').slice(12)));
   }
-  if (SITO && 'ieh'.includes(document.body.dataset.sito)) { // PROVA (11 nov): le tre versioni da confrontare, index, E e H, con un selettore fisso. Porta alla stessa pagina dell'altra versione: home, azienda, scheda dello stesso vino. Stile in css/nav.css (.sito-alt). A scelta fatta si toglie
+  if (SITO && 'iehbf'.includes(document.body.dataset.sito)) { // PROVA (11 nov): le tre versioni da confrontare, index, E e H, con un selettore fisso. Porta alla stessa pagina dell'altra versione: home, azienda, scheda dello stesso vino. Stile in css/nav.css (.sito-alt). A scelta fatta si toglie
     const ruolo = Math.max(0, SITO.indexOf(location.pathname.split('/').pop() || 'index.html')), id = new URLSearchParams(location.search).get('id');
-    document.body.insertAdjacentHTML('beforeend', `<nav class="sito-alt" aria-label="Versioni del sito da confrontare">${[['i', 'Acquerello'], ['e', 'Incisione'], ['h', 'Pittura']].map(([k, n], j) => `<a href="${SITI[k][ruolo]}${ruolo === 2 && id ? `?id=${encodeURIComponent(id)}` : ''}" aria-label="Versione ${j + 1}, ${n}" aria-current="${k === document.body.dataset.sito}"><b>${j + 1}</b><span>${n}</span></a>`).join('')}</nav>`);
+    document.body.insertAdjacentHTML('beforeend', `<nav class="sito-alt" aria-label="Versioni del sito da confrontare">${[['i', 'Acquerello'], ['e', 'Incisione'], ['h', 'Pittura'], ['b', 'Botanica'], ['f', 'Fotografia']].filter(([k]) => !'bf'.includes(k) || ruolo !== 1).map(([k, n], j) => `<a href="${SITI[k][ruolo]}${ruolo === 2 && id ? `?id=${encodeURIComponent(id)}` : ''}" aria-label="Versione ${j + 1}, ${n}" aria-current="${k === document.body.dataset.sito}"><b>${j + 1}</b><span>${n}</span></a>`).join('')}</nav>`);
   }
   window.FS = {
     data: D,

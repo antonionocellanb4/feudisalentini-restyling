@@ -66,7 +66,7 @@
     return `<div class="cantina__shelf" data-cantina-col="${c.id}">
         <span class="cantina__shelf-top"><span class="cantina__shelf-name">${c.name}</span></span>
         <span class="cantina__shelf-meta">${c.line !== c.name ? `<span>${c.line}</span>` : ''}<span data-n>${plural(ws.length, 'vino', 'vini')}</span></span>
-      </div>` + ws.map((w) => `<a class="cantina__wine" href="${FS.wineUrl(w.id)}" data-wine="${w.id}" data-tipo="${w.tipo}" data-cantina-col="${c.id}" style="--wine:${w.color};--stain:${stainOf(w)};--b:${w.fondo}">
+      </div>` + ws.map((w) => `<a class="cantina__wine" href="${FS.wineUrl(w.id)}" data-wine="${w.id}" data-tipo="${w.tipo}" data-cantina-col="${c.id}" style="--wine:${w.color};--stain:${stainOf(w)};--b:${w.fondo}${FS.stileVino?.(w) ?? ''}">
         <span class="cantina__glass"><i class="cantina__stain"></i><img src="${w.bottle}" alt="" width="653" height="1024" loading="lazy" decoding="async"></span>
         <span class="cantina__name">${w.name}</span>
         <span class="cantina__denom">${w.denom}</span>
@@ -77,14 +77,26 @@
   const wineEls = [...shelves.querySelectorAll('[data-wine]')];
   const shelfEls = [...shelves.querySelectorAll('.cantina__shelf')];
   document.querySelectorAll('[data-cantina-total]').forEach((el) => (el.textContent = data.wines.length));
-  filters.forEach((b) => (b.querySelector('span').textContent = data.wines.filter((w) => b.dataset.tipo === 'tutti' || w.tipo === b.dataset.tipo).length));
+
+  /* ricerca (13 nov): filtra mentre si scrive, senza accenti né maiuscole; ogni parola scritta deve trovarsi in nome, denominazione, uve, collezione, colore, profumi o abbinamenti */
+  const tipoLabel = { rosso: 'Rossi', rosato: 'Rosati', bianco: 'Bianchi', dolce: 'Dolce' };
+  const norm = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const testo = new Map(data.wines.map((w) => { const c = FS.collection(w.collection); return [w.id, norm([w.name, w.denom, w.uve, c.name, c.line, w.tipo, tipoLabel[w.tipo], ...w.aromi, w.abb].join(' '))]; }));
+  let q = [], frase = '';
+  const trova = (w) => q.every((p) => testo.get(w.id).includes(p));
+  const conta = () => filters.forEach((b) => (b.querySelector('span').textContent = data.wines.filter((w) => (b.dataset.tipo === 'tutti' || w.tipo === b.dataset.tipo) && trova(w)).length));
+  conta();
+  const cercaHTML = `<div class="cantina__cerca"><input type="search" data-cantina-cerca aria-label="Cerca un vino" placeholder="Cerca vino, vitigno o piatto" autocomplete="off" spellcheck="false" enterkeyhint="search"><button type="button" data-cantina-cerca-x aria-label="Cancella la ricerca" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button></div>`;
+  cantina.querySelector('.cantina__title').insertAdjacentHTML('afterend', cercaHTML);
+  shelves.insertAdjacentHTML('afterend', '<p class="cantina__vuoto" role="status" hidden></p>');
+  const vuoto = shelves.nextElementSibling;
 
   let tipo = 'tutti', shown = data.wines.length, cols = data.collections.length;
   const restVista = () => (vista.innerHTML = `<span>${plural(shown, 'vino', 'vini')} in ${plural(cols, 'collezione', 'collezioni')}</span>`);
   const setTipo = (t, animate) => {
     tipo = filters.some((b) => b.dataset.tipo === t) ? t : 'tutti';
     filters.forEach((b) => b.setAttribute('aria-pressed', b.dataset.tipo === tipo));
-    wineEls.forEach((a) => (a.hidden = tipo !== 'tutti' && a.dataset.tipo !== tipo));
+    wineEls.forEach((a) => (a.hidden = (tipo !== 'tutti' && a.dataset.tipo !== tipo) || !trova(FS.wine(a.dataset.wine))));
     shown = 0; cols = 0;
     shelfEls.forEach((sh) => {
       const n = wineEls.filter((a) => a.dataset.cantinaCol === sh.dataset.cantinaCol && !a.hidden).length;
@@ -94,6 +106,8 @@
     // pochi vini: una sola fila, scaffali più grandi (colonne = celle visibili, almeno 6)
     shelves.classList.toggle('is-few', shown <= 8);
     shelves.style.setProperty('--cantina-cols', Math.max(6, shown + cols));
+    vuoto.hidden = !!shown; const altri = shown ? 0 : data.wines.filter(trova).length; /* zero per colpa del filtro del colore: lo dice, invece di far credere che il vino non ci sia */
+    vuoto.textContent = shown ? '' : altri ? `Nessun vino per «${frase}» con questo filtro. In «Tutti» ${altri === 1 ? 'ce n’è 1' : `ce ne sono ${altri}`}.` : `Nessun vino per «${frase}». Si cerca per nome, vitigno, collezione, profumi e abbinamenti.`;
     restVista();
     if (animate && !reduce) [...shelves.children].filter((el) => !el.hidden).forEach((el, i) =>
       el.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 420, delay: i * 18, easing: 'cubic-bezier(.22,.8,.2,1)', fill: 'backwards' }));
@@ -113,7 +127,7 @@
 
   /* ---------- palcoscenico (desktop): una collezione o un colore alla volta, bottiglie grandi in piedi,
      il vino sotto il mouse si alza con la macchia dietro e il suo nome gigante sul fondo ---------- */
-  const tipoLabel = { rosso: 'Rossi', rosato: 'Rosati', bianco: 'Bianchi', dolce: 'Dolce' };
+  const cercaSet = { key: 'cerca', wines: [], ids: '' }; /* i risultati della ricerca: sul palco prendono il posto della collezione */
   const sets = [
     ...data.collections.map((c) => ({ key: 'col:' + c.id, group: 'col', name: c.name, sub: c.line !== c.name ? c.line : '', wines: data.wines.filter((w) => w.collection === c.id) })),
     ...Object.keys(tipoLabel).map((t) => ({ key: 'tipo:' + t, group: 'tipo', name: tipoLabel[t], wines: data.wines.filter((w) => w.tipo === t) })),
@@ -126,7 +140,6 @@
     <div class="cstage__nav">
       <p class="cstage__h">Collezioni</p><ul>${sets.filter((s) => s.group === 'col').map(setBtn).join('')}</ul>
       <p class="cstage__h">Per colore</p><ul class="cstage__tipi">${sets.filter((s) => s.group === 'tipo').map(setBtn).join('')}</ul>
-      <a class="cstage__all" href="vini.html">Pagina dei vini</a>
     </div>
     <div class="cstage__main">
       <p class="cstage__bg" aria-hidden="true"></p>
@@ -135,6 +148,7 @@
     </div>
     <button class="cstage__close" type="button" data-cantina-close>Chiudi</button>`;
   cantina.querySelector('.cantina__in').append(stage);
+  stage.querySelector('.cstage__nav').insertAdjacentHTML('afterbegin', cercaHTML);
   const sRow = stage.querySelector('.cstage__row'), sInfo = stage.querySelector('.cstage__info'), sBg = stage.querySelector('.cstage__bg');
   const sBtns = [...stage.querySelectorAll('[data-set]')];
   let curSet = null, curWine = null, setTimer = 0;
@@ -143,9 +157,10 @@
   const hy = (t) => t.replace(/\S{10,}/g, (m) => m.slice(0, Math.ceil(m.length / 2)) + '­' + m.slice(Math.ceil(m.length / 2)));
 
   const focusWine = (w) => {
-    if (!w || w === curWine) return;
-    curWine = w;
+    if (!w) return;
     sRow.querySelectorAll('[data-wine]').forEach((a) => a.classList.toggle('is-on', a.dataset.wine === w.id));
+    if (w === curWine) return; /* stesso vino con la fila ridisegnata (ricerca): si riaccende senza rifare nome e dati */
+    curWine = w;
     sInfo.innerHTML = `<div class="cstage__id"><p class="cstage__name">${w.name}</p><p class="cstage__denom">${w.denom} · ${FS.collection(w.collection).name}</p></div>
       <dl class="cstage__facts"><div><dt>Vista</dt><dd>${w.vista || '<span class="tbd">da confermare</span>'}</dd></div>
       <div><dt>Profumi</dt><dd>${w.aromi.length ? w.aromi.slice(0, 4).join(', ') : '<span class="tbd">da confermare</span>'}</dd></div>
@@ -159,30 +174,57 @@
     if (!reduce) gsap.fromTo(sBg.children, { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.9, ease: 'expo.out', stagger: 0.022 });
   };
 
-  const showSet = (key, animate = true) => {
-    const st = sets.find((s) => s.key === key) || sets[0];
-    if (st === curSet) return;
-    curSet = st; curWine = null;
+  /* 13 nov: sul palco mai più di sei bottiglie alla volta, così restano grandi come quando la collezione ne ha tre o sei ("se apro la Classica si vedono le bottiglie mini").
+     Se sono di più, in fondo alla fila c'è "Altri vini" col numero di quelli che mancano; all'ultimo giro dice Ricomincia. Vale per collezioni, colori e risultati della ricerca */
+  const SEI = 6; let da = 0;
+  const showSet = (key, animate = true, pagina = false) => {
+    const st = key === 'cerca' ? cercaSet : sets.find((s) => s.key === key) || sets[0];
+    if (st === curSet && st !== cercaSet && !pagina) return;
+    if (!pagina) da = 0;
+    curSet = st; if (st !== cercaSet) curWine = null;
     sBtns.forEach((b) => b.setAttribute('aria-pressed', b.dataset.set === st.key));
-    const n = st.wines.length;
-    sRow.style.setProperty('--n', n);
-    sRow.dataset.size = n <= 4 ? 'xl' : n <= 7 ? 'l' : n <= 12 ? 'm' : 's';
+    const n = st.wines.length, vis = st.wines.slice(da, da + SEI), resto = n - da - vis.length;
     const fill = () => {
-      sRow.innerHTML = st.wines.map((w) => `<a class="cstage__wine" href="${FS.wineUrl(w.id)}" data-wine="${w.id}" style="--wine:${w.color};--stain:${stainOf(w)};--b:${w.fondo}">
-          <span class="cstage__glass"><i class="cstage__stain"></i><img src="${w.bottle}" alt="" width="653" height="1024" decoding="async"></span>
-          <span class="cstage__label">${hy(short(w))}</span></a>`).join('');
-      focusWine(st.wines[0]);
+      if (curSet !== st) return; /* una fila in uscita non riscrive quella arrivata dopo (la ricerca disegna subito) */
+      sRow.style.setProperty('--n', vis.length + (n > SEI));
+      sRow.dataset.size = Math.min(n, SEI) <= 4 ? 'xl' : 'l';
+      sRow.innerHTML = vis.map((w) => `<a class="cstage__wine" href="${FS.wineUrl(w.id)}" data-wine="${w.id}" style="--wine:${w.color};--stain:${stainOf(w)};--b:${w.fondo}${FS.stileVino?.(w) ?? ''}">
+          <span class="cstage__glass"><i class="cstage__stain"></i><img src="${w.bottle}" alt="" width="653" height="1024" decoding="${st === cercaSet ? 'sync' : 'async'}"></span>
+          <span class="cstage__label">${hy(short(w))}</span></a>`).join('')
+        + (n > SEI ? `<button class="cstage__altri" type="button" aria-label="${resto ? `Altri ${resto} vini` : 'Ricomincia dai primi'}"><span class="cstage__glass"><b>${resto ? `+${resto}` : '1–' + SEI}</b></span><span class="cstage__label">${resto ? 'Altri vini' : 'Ricomincia'}</span></button>` : '');
+      if (!n) { curWine = null; sBg.textContent = ''; sInfo.innerHTML = '<div class="cstage__id cstage__id--vuoto"><p class="cstage__name"></p><p class="cstage__denom">Si cerca per nome, vitigno, collezione, profumi e abbinamenti.</p></div>'; sInfo.querySelector('.cstage__name').textContent = `Nessun vino per «${frase}»`; return; }
+      focusWine(vis.includes(curWine) ? curWine : vis[0]);
       if (animate && !reduce) gsap.fromTo(sRow.querySelectorAll('.cstage__glass img'), { yPercent: 40, rotation: -5, opacity: 0 },
-        { yPercent: 0, rotation: 0, opacity: 1, duration: 1.1, ease: 'expo.out', stagger: Math.min(0.06, 0.6 / n) });
+        { yPercent: 0, rotation: 0, opacity: 1, duration: 1.1, ease: 'expo.out', stagger: 0.06 });
     };
     const old = sRow.querySelectorAll('.cstage__glass img');
     if (animate && !reduce && old.length) gsap.to(old, { yPercent: 30, opacity: 0, duration: 0.22, ease: 'power2.in', stagger: 0.01, onComplete: fill });
     else fill();
   };
-
+  sRow.addEventListener('click', (e) => { if (!e.target.closest('.cstage__altri') || !curSet) return; da = da + SEI >= curSet.wines.length ? 0 : da + SEI; curWine = null; showSet(curSet.key, true, true); requestAnimationFrame(() => setTimeout(() => sRow.querySelector('.cstage__altri')?.focus({ preventScroll: true }), 300)); });
+  /* mentre si cerca, passare col mouse su una collezione non cambia il palco; il clic sì, e svuota il campo */
+  let prima = null;
+  const cerche = [...cantina.querySelectorAll('[data-cantina-cerca]')];
+  const cerca = (v) => {
+    frase = v.trim(); q = norm(frase).split(/\s+/).filter(Boolean);
+    cerche.forEach((i) => { if (i.value !== v) i.value = v; i.nextElementSibling.hidden = !v; });
+    conta(); setTipo(tipo);
+    if (q.length) {
+      const wines = data.wines.filter(trova), ids = wines.map((w) => w.id).join();
+      if (curSet === cercaSet && ids === cercaSet.ids && ids) return; /* stessi vini: la fila resta com'è */
+      prima ||= curSet === cercaSet ? null : curSet; cercaSet.wines = wines; cercaSet.ids = ids; showSet('cerca', false);
+    } else if (curSet === cercaSet) { const k = (prima || sets[0]).key; prima = null; showSet(k, false); }
+  };
+  cantina.addEventListener('input', (e) => { if (e.target.matches('[data-cantina-cerca]')) cerca(e.target.value); });
+  cantina.addEventListener('click', (e) => { const x = e.target.closest('[data-cantina-cerca-x]'); if (x) { cerca(''); x.previousElementSibling.focus(); } });
+  cantina.addEventListener('keydown', (e) => {
+    if (!e.target.matches('[data-cantina-cerca]')) return;
+    if (e.key === 'Escape' && e.target.value) { e.stopPropagation(); e.preventDefault(); cerca(''); } /* Esc prima svuota il campo, poi chiude */
+    if (e.key === 'Enter') (compact.matches ? wineEls.find((a) => !a.hidden) : sRow.querySelector('[data-wine].is-on'))?.click(); /* Invio apre il primo vino trovato */
+  });
   sBtns.forEach((b) => {
-    b.addEventListener('click', () => showSet(b.dataset.set));
-    b.addEventListener('pointerenter', () => { clearTimeout(setTimer); setTimer = setTimeout(() => showSet(b.dataset.set), 140); });
+    b.addEventListener('click', () => { if (q.length) { prima = null; cerca(''); } showSet(b.dataset.set); });
+    b.addEventListener('pointerenter', () => { clearTimeout(setTimer); if (!q.length) setTimer = setTimeout(() => showSet(b.dataset.set), 140); });
     b.addEventListener('pointerleave', () => clearTimeout(setTimer));
   });
   sRow.addEventListener('pointerover', (e) => { const a = e.target.closest('[data-wine]'); if (a) focusWine(FS.wine(a.dataset.wine)); });
@@ -209,12 +251,13 @@
   const focusIn = (el) => requestAnimationFrame(() => el?.focus({ preventScroll: true }));
   const openCantina = (t, col) => {
     if (!isOpen(cantina)) opener = document.activeElement;
+    if (frase || cerche.some((i) => i.value)) cerca(''); /* si riapre sempre senza una ricerca in corso */
     setTipo(t || 'tutti', isOpen(cantina));
     stageOpen(t, col);
     cantina.scrollTop = 0;
     cantina.classList.add('is-open');
     sync();
-    focusIn(cantina.querySelector(compact.matches ? '.cantina__filter[aria-pressed="true"]' : '.cstage__set[aria-pressed="true"]'));
+    focusIn(cantina.querySelector(compact.matches ? '.cantina__filter[aria-pressed="true"]' : '.cstage [data-cantina-cerca]')); /* su desktop si può scrivere subito; sul telefono no, la tastiera coprirebbe l'elenco */
   };
   const closeCantina = (refocus = true) => {
     if (!isOpen(cantina)) return;
@@ -340,7 +383,7 @@
 
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a[data-wine]');
-    if (!a || reduce || busy || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    if (!a || reduce || busy || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || ['b', 'f'].includes(document.body.dataset.sito)) return; /* in Botanica e Fotografia niente chiazza che si allarga tra una pagina e l'altra (13 nov): si passa e basta */
     if ((a.target && a.target !== '_self') || a.hasAttribute('download')) return;
     const w = FS.wine(a.dataset.wine);
     if (!w) return;

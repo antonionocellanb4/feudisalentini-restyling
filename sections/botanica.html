@@ -1,0 +1,46 @@
+<!-- BOTANICA (13 nov 2026), la quarta versione: dal profilo Instagram del cliente. La stessa passeggiata delle altre home (si cammina in orizzontale, una tappa per collezione, pillola delle tappe, scheda del vino),
+     qui dentro sei sale colorate: ogni collezione ha il suo colore e la sua pianta a retino, grande, che cresce e si muove mentre si passa. Le sale le scrive js/botanica.js dai dati; stile in css/botanica.css
+     (l'impaginazione del cammino è quella di css/moderna-e.css). Sotto, le sezioni delle altre versioni: cantina, più venduti, premi, news, cosa c'è in tavola.
+     Frasi in inglese: sono quelle del cliente su Instagram (biografia e copertine delle collezioni), non tradotte. -->
+<section class="e-st" id="hero" aria-labelledby="e-t" data-nav-trasparente>
+  <div class="e-stage">
+    <i class="e-alto"></i>
+
+    <div class="e-track">
+      <div class="e-tappa e-tappa--via bo-via">
+        <div class="bo-umori" aria-hidden="true"></div>
+        <h1 class="bo-titolo" id="e-t"><i>Wines that</i> <b>set the mood.</b></h1>
+        <div class="e-testo">
+          <p class="e-d">Leporano, sul mar Ionio, a sud di Taranto. Scorri o trascina: ogni tappa è una collezione, con il suo colore e la sua pianta.</p>
+          <ul class="bo-scegli" aria-label="Le collezioni"></ul>
+          <div class="e-cta"><button class="btn btn--gold" type="button" data-vai="1">Comincia dalla Collezione 53</button></div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="fb-tappe" aria-label="Le collezioni, tappa per tappa"></nav>
+
+<!-- @include sections/scheda.html -->
+  </div>
+</section>
+
+<!-- @include sections/moderna-e-cantina.html -->
+<!-- @include sections/moderna-f-venduti.html -->
+<!-- @include sections/moderna-e-sotto.html -->
+<!-- @include sections/moderna-f-tavola.html -->
+
+<section class="bo-mood" id="mood" aria-labelledby="bo-mood-t">
+  <div class="bo-mood__testa">
+    <h2 class="bo-mood__t" id="bo-mood-t" data-chars>Born in Salento, experienced worldwide.</h2>
+    <a class="btn btn--line" href="https://www.instagram.com/feudi_salentini/" target="_blank" rel="noopener">@feudi_salentini su Instagram</a>
+  </div>
+  <!-- fotografie dal profilo Instagram del cliente (assets/foto-ig, 1080 px dalle pagine dei singoli post: le stesse della versione Fotografia) -->
+  <div class="bo-mood__riga">
+    <img src="assets/foto-ig/tavola.webp" alt="Bottiglia di bianco, due calici e una ciotola di pomodorini su una tovaglia bianca al sole" width="1080" height="1350" loading="lazy" decoding="async">
+    <img src="assets/foto-ig/pizza.webp" alt="Due amici a tavola con la pizza e due bottiglie di Feudi Salentini" width="1080" height="1350" loading="lazy" decoding="async">
+    <img src="assets/foto-ig/piscina.webp" alt="Una bottiglia di bianco sul bordo della piscina, sotto un albero" width="1080" height="1350" loading="lazy" decoding="async">
+    <img src="assets/foto-ig/giardino.webp" alt="Una bottiglia di bianco su un tavolino in giardino, accanto alla piscina" width="1080" height="1350" loading="lazy" decoding="async">
+    <img src="assets/foto-ig/salotto.webp" alt="Due amiche in salotto con un calice e una bottiglia" width="1080" height="1350" loading="lazy" decoding="async">
+    <img src="assets/foto-ig/scacchi.webp" alt="Una partita a scacchi in giardino con un calice di bianco" width="1080" height="1350" loading="lazy" decoding="async">
+  </div>
+</section>

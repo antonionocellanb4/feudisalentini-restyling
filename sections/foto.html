@@ -1,0 +1,61 @@
+<!-- FOTOGRAFIA (13 nov 2026), la quinta versione: struttura di moncalisse.com/en, fotografie del profilo Instagram del cliente (assets/foto-ig, 1080 px: le più grandi che il profilo dà senza accesso, solo gli ultimi post).
+     Apertura con tre fotografie che cambiano, presentazione, due righe editoriali con le foto sfalsate, una foto larga, poi le collezioni: si cammina in orizzontale, una fotografia a tutto schermo e una carta per collezione.
+     Sotto, le sezioni delle altre versioni. Testi: quelli già usati nelle altre home; le due frasi in inglese sono del cliente (biografia di Instagram e copertine delle collezioni). Script js/foto.js, stile css/foto.css -->
+<section class="fo-apre hero--dark" id="hero" aria-labelledby="fo-t" data-nav-trasparente>
+  <div class="fo-apre__foto" aria-hidden="true">
+    <div class="fo-col"><img src="assets/foto-ig/salotto.webp" alt="" decoding="async"><img src="assets/foto-ig/piscina.webp" alt="" decoding="async" loading="lazy"><img src="assets/foto-ig/roccia.webp" alt="" decoding="async" loading="lazy"></div>
+    <div class="fo-col"><img src="assets/foto-ig/tavola.webp" alt="" decoding="async"><img src="assets/foto-ig/calice.webp" alt="" decoding="async" loading="lazy"><img src="assets/foto-ig/pizza.webp" alt="" decoding="async" loading="lazy"></div>
+    <div class="fo-col"><img src="assets/foto-ig/scacchi.webp" alt="" decoding="async"><img src="assets/foto-ig/giardino.webp" alt="" decoding="async" loading="lazy"><img src="assets/foto-ig/intonaco.webp" alt="" decoding="async" loading="lazy"></div>
+  </div>
+  <div class="fo-apre__testo" data-subito>
+    <h1 class="fo-apre__t" id="fo-t" data-chars data-ritardo="0.4">Wines that set the mood.</h1>
+    <div class="fo-apre__dx"><p class="fo-apre__s">Leporano, sul mar Ionio, a sud di Taranto</p><a class="btn btn--gold" href="#collezioni">Vai alle collezioni</a></div>
+  </div>
+</section>
+
+<section class="fo-intro" aria-labelledby="fo-i">
+  <h2 class="fo-h2 fo-intro__t" id="fo-i" data-chars>Born in Salento, experienced worldwide.</h2>
+  <div class="fo-intro__c">
+    <p class="fo-p">Feudi Salentini è a Leporano, in provincia di Taranto, sul mar Ionio. Produce vini dai vitigni autoctoni pugliesi per eccellenza: Primitivo, Negroamaro, Verdeca e Malvasia Bianca.</p>
+    <dl class="fo-num"><div><dt>vini</dt><dd data-cantina-total>33</dd></div><div><dt>collezioni</dt><dd>6</dd></div></dl>
+  </div>
+</section>
+
+<section class="fo-riga" aria-labelledby="fo-r1">
+  <h2 class="fo-h2" id="fo-r1" lang="en" data-chars>The gentle force of the land.</h2>
+  <div class="fo-riga__t">
+    <p class="fo-p">Terra: sette vini dalle uve del Salento. Primitivo di Manduria, Negroamaro, Malvasia bianca e nera, un rosato.</p>
+    <button class="fo-link" type="button" data-col="terra">I vini Terra</button>
+  </div>
+  <div class="fo-riga__f">
+    <img class="fo-riga__f1" src="assets/foto-ig/tavola.webp" alt="Una bottiglia di Terra Malvasia Bianca, due calici e una ciotola di pomodorini su una tovaglia bianca al sole" width="1080" height="1350" loading="lazy" decoding="async" data-par="6">
+    <img class="fo-riga__f2" src="assets/foto-ig/rosato.webp" alt="Una bottiglia di rosato e due calici su un tavolo all'aperto" width="1080" height="1350" loading="lazy" decoding="async" data-par="14">
+  </div>
+</section>
+
+<figure class="fo-largo"><img src="assets/photo/masseria-vigne.webp" alt="La masseria tra le vigne" loading="lazy" decoding="async" data-par="8"></figure>
+
+<section class="fo-riga fo-riga--inv" aria-labelledby="fo-r2">
+  <div class="fo-riga__f">
+    <img class="fo-riga__f1" src="assets/foto-ig/piscina.webp" alt="Una bottiglia di 125 Organic bianco sul bordo della piscina, sotto un albero" width="1080" height="1350" loading="lazy" decoding="async" data-par="8">
+  </div>
+  <h2 class="fo-h2" id="fo-r2" lang="en" data-chars>Daily devotion.</h2>
+  <div class="fo-riga__t">
+    <p class="fo-p">125 Organic: un bianco e un Primitivo da agricoltura biologica, Puglia IGP.</p>
+    <button class="fo-link" type="button" data-col="organic">I vini 125 Organic</button>
+  </div>
+</section>
+
+<section class="fo-giro" id="collezioni" aria-labelledby="fo-g">
+  <div class="fo-giro__st">
+    <h2 class="pv-vh" id="fo-g">Le collezioni</h2>
+    <div class="fo-giro__track"></div>
+    <nav class="fo-giro__nomi" aria-label="Le collezioni"></nav>
+<!-- @include sections/scheda.html -->
+  </div>
+</section>
+
+<!-- @include sections/moderna-e-cantina.html -->
+<!-- @include sections/moderna-f-venduti.html -->
+<!-- @include sections/moderna-e-sotto.html -->
+<!-- @include sections/moderna-f-tavola.html -->

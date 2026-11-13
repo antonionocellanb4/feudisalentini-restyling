@@ -128,7 +128,6 @@ html.nav-lock { overflow: hidden; }
   .cstage__set:hover, .cstage__set[aria-pressed="true"] { color: var(--ink); }
   .cstage__set[aria-pressed="true"] { translate: 14px 0; }
   .cstage__set[aria-pressed="true"]::before { content: ''; position: absolute; width: 8px; height: 8px; margin-left: -18px; align-self: center; border-radius: 50%; background: var(--gold-ink); }
-  .cstage__all { margin-top: auto; padding-top: 20px; font-size: 1rem; text-decoration: underline; text-underline-offset: 4px; }
 
   .cstage__main { position: relative; display: grid; grid-template-rows: minmax(0, 1fr) auto; min-height: 0; }
   .cstage__bg { position: absolute; inset: 0 0 auto; z-index: 0; margin: 0; overflow: hidden; white-space: nowrap; text-align: center; pointer-events: none;
@@ -143,7 +142,7 @@ html.nav-lock { overflow: hidden; }
   .cstage__wine { display: flex; flex-direction: column; align-items: center; min-width: 0; }
   .cstage__glass { position: relative; display: flex; justify-content: center; width: 100%; height: var(--bh); }
   .cstage__glass img { position: relative; z-index: 1; height: 100%; width: auto; max-width: none; pointer-events: none; translate: 0 calc((.91 - var(--b, .91)) * 100%); transition: translate .6s var(--ease); } /* i fondi del vetro alla stessa altezza */
-  .cstage__wine.is-on .cstage__glass img { translate: 0 calc((.91 - var(--b, .91)) * 100% - 5%); }
+  /* 13 nov: il vino acceso non si alza più ("il primo vino è sempre più in alto delle altre"): le bottiglie stanno tutte sulla stessa linea, quella accesa la dicono il fondo dietro e l'etichetta */
   .cstage__stain { position: absolute; left: 50%; top: 52%; width: calc(var(--bh) * .8); aspect-ratio: 1; translate: -50% -50%;
     background: var(--wine); -webkit-mask: var(--stain) center / contain no-repeat; mask: var(--stain) center / contain no-repeat;
     opacity: 0; scale: .35; rotate: -40deg; transition: opacity .35s var(--ease), scale .9s var(--ease), rotate 1.2s var(--ease); }
@@ -154,6 +153,11 @@ html.nav-lock { overflow: hidden; }
   /* con tutti i 28 vini le etichette non ci stanno: il nome del vino sotto il mouse è sul fondo e nei dati */
   .cstage__row[data-size="s"] .cstage__label { font-size: 0; padding-top: 0; height: 1px; }
   .cstage__wine:focus-visible { outline-offset: -2px; }
+  /* in fondo alla fila, quando i vini sono più di sei: un tondo col numero di quelli che mancano, alto come le bottiglie e con la stessa etichetta sotto */
+  .cstage__altri { display: flex; flex-direction: column; align-items: center; min-width: 0; color: var(--ink); }
+  .cstage__altri .cstage__glass { align-items: center; }
+  .cstage__altri b { display: grid; place-items: center; width: clamp(64px, 6vw, 92px); aspect-ratio: 1; border: 1px solid var(--ink); border-radius: 50%; font-weight: 400; font-size: 1.125rem; font-variant-numeric: tabular-nums; transition: background-color .25s var(--ease), color .25s var(--ease); }
+  .cstage__altri:hover b, .cstage__altri:focus-visible b { background: var(--ink); color: var(--paper); }
 
   .cstage__info { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) auto; gap: 32px; align-items: end; margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--line); }
   .cstage__name { font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); font-size: clamp(1.8rem, 2.5vw, 2.6rem); line-height: 1; }
@@ -244,3 +248,22 @@ html.fs-poured .pour { display: block; background: var(--pour); }
   .sito-alt span { display: none; }
   .sito-alt b { display: inline; }
 }
+@media (max-width: 430px) { .sito-alt { left: auto; right: 104px; transform: none; } .sito-alt a { padding: 8px 9px; } } /* con cinque versioni sta fra il marchio e Menu, agganciato a destra: al centro toccava il marchio */
+
+/* ricerca nella cantina (13 nov): filtra mentre si scrive (js/nav.js). Stessa altezza, bordo e raggio dei filtri; sul telefono sta fra il titolo e i filtri, su desktop in cima alla colonna delle collezioni */
+.cantina__cerca { position: relative; flex: 1 1 100%; }
+.cantina__cerca input { display: block; width: 100%; height: 44px; padding: 0 44px 0 16px; border: 1px solid var(--line); border-radius: 999px; background: none; color: var(--ink);
+  font: inherit; font-size: 1rem; -webkit-appearance: none; appearance: none; transition: border-color .25s var(--ease); }
+.cantina__cerca input::placeholder { color: var(--mute); opacity: 1; }
+.cantina__cerca input::-webkit-search-cancel-button { display: none; } /* la crocetta è la nostra, uguale su ogni browser (su iPhone quella del sistema non c'è) */
+.cantina__cerca input:hover, .cantina__cerca input:focus { border-color: var(--ink); outline: none; }
+.cantina__cerca button { position: absolute; right: 0; top: 0; width: 44px; height: 44px; display: grid; place-items: center; color: var(--ink); }
+.cantina__cerca button svg { width: 18px; height: 18px; }
+.cantina__vuoto { padding: 28px 0; font-size: 1.125rem; line-height: 1.4; color: var(--ink-2); }
+@media (min-width: 1080px) {
+  .cantina__vuoto { display: none; }
+  .cstage .cantina__cerca { flex: none; width: calc(100% - 14px); margin-top: 4px; }
+  .cstage__id--vuoto { grid-column: 1 / -1; }
+}
+@media (min-width: 1080px) and (max-height: 700px) { .cstage__h { margin-top: 14px; } } /* schermi bassi (1366x650): col campo di ricerca la colonna non deve scorrere */
+@media (max-width: 380px) { .sito-alt a { padding: 8px 7px; } } /* cinque versioni a 360 px: senza, il selettore toccava il marchio */
