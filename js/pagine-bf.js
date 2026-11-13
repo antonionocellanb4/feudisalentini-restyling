@@ -24,7 +24,8 @@
   const testa = `<p class="vp-col">${BO ? `<i>Collezione</i> <b>${t.nome}</b>` : col.name}</p><h1 class="vp-t" id="vp-t" data-chars>${w.name}</h1><p class="vp-meta">${[w.denom, w.uve, w.alcool].filter(Boolean).join(' · ')}</p><button class="${BO ? 'btn btn--line' : 'fo-link'}" type="button" data-col="${w.collection}">Vini della collezione</button>`;
   const calice = dl([['Vista', w.vista], ['Profumi', aromi], ['In tavola', w.abb]]), cantina = `${w.tecnica ? `<p class="vp-p">${w.tecnica}</p>` : ''}${dl([['Zona', w.zona], ['Resa', w.resa], ['Gradazione', w.alcool]])}`;
   const medaglie = `<ul class="vp-medaglie">${premi.map((p) => `<li><img src="${p.img}" alt="" width="96" height="96" loading="lazy" decoding="async"><span><b>${p.medaglia} ${p.anno}</b><br>${p.concorso}</span></li>`).join('')}</ul>`;
-  const fila = altri.length ? `<section class="vp-sez vp-altri" aria-labelledby="vp-a"><h2 class="vp-h2" id="vp-a" data-chars>Gli altri vini della collezione</h2><div class="vp-fila">${altri.map((x) => `<a class="vp-altro" href="${FS.wineUrl(x.id)}" data-wine="${x.id}" style="--b:${x.fondo}"><span class="vp-altro__f">${BO ? targa('vp-altro__t') : ''}<img src="${x.bottle}" alt="" width="653" height="1024" loading="lazy" decoding="async"></span><span class="vp-altro__n">${corto(x)}</span></a>`).join('')}</div></section>` : '';
+  const frecce = altri.length > 6 ? `<p class="vp-frecce">${[[-1, 'precedenti', 'M15 5l-7 7 7 7'], [1, 'successivi', 'M9 5l7 7-7 7']].map(([d, n, p]) => `<button class="vp-fr" type="button" data-fila="${d}" aria-label="Vini ${n}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${p}"/></svg></button>`).join('')}</p>` : ''; /* una riga sola, sei alla volta: oltre i sei, le frecce */
+  const fila = altri.length ? `<section class="vp-sez vp-altri" aria-labelledby="vp-a"><div class="vp-altri__t"><h2 class="vp-h2" id="vp-a" data-chars>Gli altri vini della collezione</h2>${frecce}</div><div class="vp-fila">${altri.map((x) => `<a class="vp-altro" href="${FS.wineUrl(x.id)}" data-wine="${x.id}" style="--b:${x.fondo}"><span class="vp-altro__f">${BO ? targa('vp-altro__t') : ''}<img src="${x.bottle}" alt="" width="653" height="1024" loading="lazy" decoding="async"></span><span class="vp-altro__n">${corto(x)}</span></a>`).join('')}</div></section>` : '';
   const bottiglia = (c) => `<img class="${c}" src="${w.bottle}" alt="La bottiglia di ${w.name}" width="653" height="1024" decoding="async">${BO ? `<img class="${c} vp-bt--o" src="${w.bottle}" alt="" width="653" height="1024" decoding="async">` : ''}`;
 
   if (PALCO) {
@@ -48,7 +49,7 @@
     gsap.set(sogg, { x: lato(0) });
     if (BO) tl.fromTo('.vp-targa > i', { '--g': 0.72 }, { '--g': 1.06, ease: 'none', duration: N }, 0); /* la pianta cresce nella targa per tutta la pagina */
     const ic = scene.findIndex(([k]) => k === 'cantina');
-    if (foto) tl.fromTo(foto, { autoAlpha: 0, clipPath: 'inset(22% 41% 22% 41%)' }, { autoAlpha: 1, clipPath: 'inset(0% 0% 0% 0%)', duration: 0.5 }, ic - 0.5).to(foto, { autoAlpha: 0, duration: 0.3 }, Math.min(N - 0.02, ic + 0.62))
+    if (foto) tl.fromTo(foto, { autoAlpha: 0, clipPath: 'inset(22% 41% 22% 41%)' }, { autoAlpha: 1, clipPath: 'inset(0% 0% 0% 0%)', duration: 0.5 }, ic - 0.5).to(foto, { autoAlpha: 0, duration: 0.3 }, Math.min(N - 0.02, ic + 0.62)).fromTo(blocchi[ic], { '--f': 1 }, { '--f': 0, duration: 0.1, ease: 'none' }, ic + 0.72) /* la foto se ne va: il testo torna scuro, a metà della dissolvenza */
       .to('.vq-pannello', { autoAlpha: 0, duration: 0.2 }, ic - 0.45).to('.vq-pannello', { autoAlpha: 1, duration: 0.3 }, Math.min(N - 0.02, ic + 0.7)); /* a "vigna e cantina" la fotografia si apre dal centro a tutto schermo */
     gsap.fromTo('.vp-bt:not(.vp-bt--o)', { opacity: 0 }, { opacity: 1, duration: 1.1, ease: 'power2.out', delay: 0.25 }); gsap.fromTo('.vp-bt--o', { opacity: 0 }, { opacity: 0.3, duration: 1.1, delay: 0.5 }); /* solo l'opacità: le bottiglie sono centrate col translate del css, che gsap azzererebbe */
     if (BO) gsap.fromTo('.vp-targa', { '--s': 0.86, opacity: 0 }, { '--s': 1, opacity: 1, duration: 1.2, ease: 'expo.out', delay: 0.1 });
@@ -78,6 +79,12 @@
   if (!reduce && innerWidth > 860) document.body.insertAdjacentHTML('beforeend', `<nav class="vp-alt" aria-label="Due modi della pagina da confrontare"><a href="${url(0)}" aria-current="${PALCO}">Palco</a><a href="${url(1)}" aria-current="${!PALCO}">Pagina</a></nav>`);
   $$('.foot a[href^="#"]').forEach((a) => { if (!document.getElementById(a.hash.slice(1))) a.href = FS.home + a.hash; }); /* le ancore della home nel footer comune */
   $$('[data-col]', main).forEach((b) => b.addEventListener('click', () => apri(b.dataset.col)));
+  const riga = $('.vp-fila'), fr = $$('[data-fila]');
+  if (fr.length) {
+    const stato = () => fr.forEach((b) => { b.disabled = b.dataset.fila < 0 ? riga.scrollLeft < 4 : riga.scrollLeft > riga.scrollWidth - riga.clientWidth - 4; });
+    fr.forEach((b) => b.addEventListener('click', () => riga.scrollBy({ left: b.dataset.fila * riga.clientWidth, behavior: reduce ? 'auto' : 'smooth' })));
+    riga.addEventListener('scroll', stato, { passive: true }); stato();
+  }
   titoli();
   if (!reduce) $$('.vp-altro').forEach((el) => gsap.fromTo(el, { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 92%', once: true } }));
   if (!reduce && !PALCO) $$('.vp-dl > div, .vp-medaglie > li').forEach((el) => gsap.fromTo(el, { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 90%', once: true } }));

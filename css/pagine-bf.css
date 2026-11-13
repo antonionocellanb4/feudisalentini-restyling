@@ -19,9 +19,18 @@
 .vp-medaglie li { display: flex; align-items: center; gap: 14px; font-size: 1rem; line-height: 1.35; }
 .vp-medaglie img { width: 88px; height: 88px; object-fit: contain; }
 .vp-medaglie b { font-weight: 500; }
-.vp-fila { display: flex; flex-wrap: wrap; gap: 28px clamp(4px, 1.6vw, 24px); margin-top: clamp(24px, 3vw, 44px); }
-.vp-altro { width: clamp(112px, 12.5vw, 176px); display: grid; justify-items: center; text-align: center; }
-.vp-altro__f { position: relative; display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); place-items: center; height: clamp(210px, 27vw, 340px); width: 100%; } /* riga fissa, come nell'apertura: senza, la bottiglia prendeva la sua misura vera e copriva tutto */
+/* gli altri vini: una riga sola, sei alla volta (tre sul telefono), gli altri con le frecce o trascinando; mai su due righe, mai bottiglie mini */
+.vp-altri__t { display: flex; align-items: end; justify-content: space-between; gap: 24px; }
+.vp-frecce { display: flex; gap: 10px; margin: 0; }
+.vp-fr { display: grid; place-items: center; flex: none; width: 48px; height: 48px; border: 1px solid var(--ink); border-radius: 999px; background: none; color: var(--ink); cursor: pointer; transition: background .25s, color .25s, opacity .25s; } /* come le frecce dei più venduti (.tv__fr) */
+.vp-fr svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.vp-fr:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
+.vp-fr:disabled { opacity: .3; cursor: default; }
+.vp-fr:focus-visible { outline: 2px solid var(--gold-ink); outline-offset: 4px; }
+.vp-fila { --fh: clamp(210px, 27vw, 340px); display: grid; grid-auto-flow: column; grid-auto-columns: calc(100% / 6); overflow: auto hidden; scroll-snap-type: x mandatory; scrollbar-width: none; margin-top: clamp(24px, 3vw, 44px); }
+.vp-fila::-webkit-scrollbar { display: none; }
+.vp-altro { min-width: 0; display: grid; justify-items: center; text-align: center; scroll-snap-align: start; }
+.vp-altro__f { position: relative; display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); place-items: center; height: var(--fh); width: 100%; } /* riga fissa, come nell'apertura: senza, la bottiglia prendeva la sua misura vera e copriva tutto */
 .vp-altro__f img { position: relative; z-index: 1; height: 100%; width: auto; max-width: none; clip-path: inset(0 0 calc((1 - var(--b, .91)) * 100%) 0); margin-bottom: calc((1 - var(--b, .91)) * -100%); transition: translate .5s var(--ease); }
 .vp-altro:hover img, .vp-altro:focus-visible img { translate: 0 -6px; }
 .vp-altro__n { margin-top: 12px; font-size: 1rem; line-height: 1.22; }
@@ -41,15 +50,22 @@
 .vp-muro { position: absolute; inset: 0; pointer-events: none; }
 .vp-muro .bo-pi--a { --h: 104%; left: -2%; --k: 0; }
 .vp-muro .bo-pi--b { --h: 88%; right: -2%; --k: 0; }
-.vp-altro__t { top: 4%; height: 88%; aspect-ratio: 5 / 7.4; translate: -50% 0; }
+/* gli altri vini, Botanica: le bottiglie in piedi su una linea sola, senza niente dietro (dodici targhe scure pesavano); la targa col disegno cresce solo dietro quella indicata */
+.page-vb .vp-fila { background: linear-gradient(var(--line), var(--line)) 0 calc(var(--fh) - 1px) / 100% 1px no-repeat; }
+.page-vb .vp-altro__f { align-items: end; }
+.page-vb .vp-altro .vp-altro__f img { height: 92%; margin-bottom: 0; translate: 0 calc((1 - var(--b, .91)) * 100%); } /* il fondo del vetro sulla linea, anche al passaggio del mouse: non si alza */
+.vp-altro__t { background: color-mix(in srgb, var(--c2) 88%, #fff); /* un filo più chiaro del colore della collezione: sulla carta il disegno dentro si perdeva */ top: 2%; height: 92%; max-width: 100%; aspect-ratio: 5 / 7.4; translate: -50% 0; opacity: 0; transform: scaleY(.8); transform-origin: 50% 100%; transition: opacity .3s var(--ease), transform .5s var(--ease); }
+.vp-altro:hover .vp-altro__t, .vp-altro:focus-visible .vp-altro__t { opacity: 1; transform: none; }
 
 /* ---- Fotografia: crema, la bottiglia su un pannello chiaro, il nome con le grazie; a metà pagina una fotografia larga del profilo ---- */
 .page-vf .vp-apre { grid-template-columns: minmax(0, .9fr) minmax(0, 1fr); }
 .page-vf .vp-apre__f { order: -1; background: var(--stone); }
 .page-vf .vp-col { font-size: .9375rem; letter-spacing: .12em; text-transform: uppercase; color: var(--mute); }
 .page-vf .vp-foto { margin-block: 0; }
-.page-vf .vp-altro__f { background: var(--stone); }
-.page-vf .vp-altro__f img { height: 90%; }
+.page-vf .vp-altro__f { width: calc(100% - clamp(8px, 1.4vw, 20px)); background: var(--stone); }
+.page-vf .vp-altro__f { align-items: end; }
+.page-vf .vp-altro .vp-altro__f img { height: 90%; margin-bottom: 0; translate: 0 calc((1 - var(--b, .91)) * 100% - 9%); } /* il fondo del vetro alla stessa quota in tutti i pannelli (prima ballava di una decina di px da una bottiglia all'altra) */
+.page-vf .vp-altro:is(:hover, :focus-visible) .vp-altro__f img { translate: 0 calc((1 - var(--b, .91)) * 100% - 9% - 6px); }
 
 @media (max-width: 860px) {
   .vp-apre, .page-vf .vp-apre { grid-template-columns: minmax(0, 1fr); gap: 20px; min-height: 0; padding-top: calc(var(--header-h) + 12px); }
@@ -57,9 +73,8 @@
   .vp-dl { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .vp-muro { display: none; } /* sul telefono le piante finirebbero dietro il testo */
   .page-vb .vp-cantina { min-height: 0; }
-  .vp-fila { gap: 24px 0; }
-  .vp-altro { width: 33.33%; }
-  .vp-altro__f { height: 46vw; }
+  .vp-fila { --fh: 46vw; grid-auto-columns: 30%; } /* tre e l'inizio della quarta: si capisce che la riga continua */
+  .vp-frecce { display: none; }
 }
 
 /* ---- PALCO (13 nov, "alternative più fighe con gsap"): la bottiglia resta al centro e passa da un lato all'altro, attorno le scene una alla volta, dietro il nome in grande che attraversa. Solo desktop; tempi in js/pagine-bf.js ---- */
@@ -92,8 +107,9 @@
 .vq-foto { position: absolute; z-index: 1; inset: 0; visibility: hidden; }
 .vq-foto img { width: 100%; height: 100%; object-fit: cover; }
 .vq-foto::after { content: ''; position: absolute; inset: 0; background: rgb(27 21 18 / .5); }
-.page-vf .vq-sc--cantina { color: #fff; }
-.page-vf .vq-sc--cantina .vp-dl dt { color: #fff; }
+.page-vf .vq-sc--cantina { color: color-mix(in srgb, #fff calc(var(--f, 1) * 100%), var(--ink)); } /* --f: 1 sulla foto, 0 quando la foto se n'è andata (lo muove gsap) */
+.page-vf .vq-sc--cantina .vp-dl dt { color: color-mix(in srgb, #fff calc(var(--f, 1) * 100%), var(--mute)); }
+.page-vf .vq-sc--cantina .vp-dl div { border-color: color-mix(in srgb, rgb(255 255 255 / .4) calc(var(--f, 1) * 100%), var(--line)); }
 /* PROVA: selettore dei due modi, sotto quello delle versioni */
 .vp-alt { position: fixed; left: 16px; top: calc(var(--header-h) + 57px); z-index: 60; display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--paper); color: var(--ink); box-shadow: 0 2px 10px rgb(0 0 0 / .12); font-size: .875rem; }
 .vp-alt a { padding: 8px 14px; border-radius: 999px; }
