@@ -90,8 +90,8 @@ ul, ol { padding: 0; list-style: none; }
 .copre::after { content: ''; position: absolute; inset: 0; z-index: 50; background: var(--night); opacity: var(--velo, 0); pointer-events: none; }
 
 /* titolo che entra (FS.righe in main.js) riga per riga (parole da una maschera) */
-[data-righe] .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .08em; margin-bottom: -.08em; }
-[data-righe] .w > span { display: inline-block; transform: translateY(105%); }
+[data-righe] .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .22em; margin-bottom: -.22em; }
+[data-righe] .w > span { display: inline-block; transform: translateY(130%); }
 [data-righe].is-in .w > span { transition: transform 1s var(--ease); transition-delay: calc(var(--i) * 55ms); transform: none; }
 
 /* sezioni: alternanza chiaro/scuro */
