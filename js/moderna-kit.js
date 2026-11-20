@@ -16,7 +16,7 @@
   const entra = (ch, d = 0) => gsap.fromTo(ch, { yPercent: 110 }, { yPercent: 0, duration: 1.2, ease: 'expo.out', stagger: 0.025, delay: d });
   const titoli = () => $$('[data-chars]').forEach((el) => {
     const ch = spezza(el);
-    if (reduce) return;
+    if (reduce || (FS.arrivo && el.closest('[data-subito]'))) return; /* arrivati dal cambio di mood: le lettere dell'apertura erano già su */
     gsap.set(ch, { yPercent: 110 });
     if (el.closest('[data-subito]')) document.fonts.ready.then(() => entra(ch, +(el.dataset.ritardo || 0.3)));
     else ScrollTrigger.create({ trigger: el, start: 'top 85%', once: true, onEnter: () => entra(ch) });

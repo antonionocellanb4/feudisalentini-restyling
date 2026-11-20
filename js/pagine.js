@@ -9,7 +9,7 @@
   const lerp = (a, b, t) => a + (b - a) * t;
 
   // footer comune: le ancore della home (#premi, #news...) qui non ci sono, portano alla home
-  $$('.foot a[href^="#"]').forEach((a) => { if (!document.getElementById(a.hash.slice(1))) a.href = 'index.html' + a.hash; });
+  $$('.foot a[href^="#"]').forEach((a) => { if (!document.getElementById(a.hash.slice(1))) a.href = FS.home + a.hash; });
 
   // un solo giro di disegno per fotogramma, per tutte le parti che seguono lo scorrimento
   const ogni = [];

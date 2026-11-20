@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="it">
+<head>
+<!-- @include sections/_head.html -->
+<!-- PAGINA DEL VINO nello stile Pop (19 nov 2026): pop-vino.html?id=<id di js/data.js>. "passiamo alla pagina del singolo vino", "voglio qualcosa di wow con il 3d".
+     La bottiglia 3D fa da rullo: all'apertura attraversa lo schermo rotolando e dietro di sé stampa il nome gigante; scorrendo torna indietro e, dove passa, cancella un
+     capitolo e stampa il successivo (il vino, nel calice e in tavola, in vigna e in cantina, i riconoscimenti). Sul computer sta in piedi e va da un lato all'altro; sul
+     telefono è sdraiata, vista dall'alto, e va su e giù. Nelle bottiglie chiare il nome si legge attraverso il vino (js/lente-vino.js).
+     I vini che non hanno ancora la bottiglia 3D (assets/3d) usano la foto del catalogo, che scivola senza girare. Testi e dati: js/data.js (catalogo del cliente).
+     Con le animazioni ridotte, o se il 3D non parte: la foto in alto e i capitoli uno sotto l'altro.
+     Contenuto e movimenti in js/pop-vino.js, stile in css/pop-vino.css sopra css/foto.css e css/pop-prove.css (caratteri, riga a pennarello, menu e piede pop). -->
+<title>Il vino · Feudi Salentini</title>
+<meta name="description" content="La scheda del vino Feudi Salentini: descrizione, vista e profumi, abbinamenti, vigna e cantina, riconoscimenti.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=DM+Sans:opsz,wght@9..40,300..700&family=Londrina+Solid:wght@900&display=swap">
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.min.js"}}</script>
+<link rel="stylesheet" href="css/moderna-kit.css">
+<link rel="stylesheet" href="css/foto.css">
+<link rel="stylesheet" href="css/pop-prove.css">
+<link rel="stylesheet" href="css/pop-vino.css">
+</head>
+<body class="page-moderna page-fo page-sv" data-sito="f" data-pagine="pop-b.html,pop-azienda.html,pop-vino.html" data-titoli="londrina" data-testi="dm">
+<!-- @include sections/header.html -->
+<main id="main">
+<section class="sv" id="vino" aria-labelledby="sv-t">
+  <div class="sv-st">
+    <div class="sv-dentro">
+      <canvas class="sv-tela" aria-hidden="true"></canvas>
+      <div class="sv-presa" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+<section class="sv-altri" aria-labelledby="sv-a" hidden>
+  <div class="sv-altri__t"><p class="sv-k">Gli altri vini della collezione</p><button class="fo-link sv-altri__b" type="button" hidden></button></div>
+  <div class="sv-banco">
+    <h2 class="sv-coll" id="sv-a"></h2>
+    <svg class="pp-riga sv-piano" viewBox="0 0 1000 12" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M3 7 C120 2 260 11 400 6 S700 2 860 7 S960 9 997 5"/></svg>
+    <div class="sv-fila"></div>
+  </div>
+</section>
+</main>
+<!-- @include sections/footer.html -->
+<!-- @include sections/_scripts.html -->
+<script src="js/moderna-kit.js"></script>
+<script type="module" src="js/pop-vino.js"></script>
+<script type="module" src="js/pop-piede.js"></script>
+</body>
+</html>

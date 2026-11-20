@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#15100d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script>/* prova font: ?font=bricolage|funnel|archivo|newsreader, resta per la sessione */(function(){var F={klimt:"Fraunces:opsz,wght,SOFT,WONK@9..144,100..400,0..100,0..1&family=Instrument+Sans:wdth,wght@75..100,400..600",bricolage:"Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800",funnel:"Funnel+Display:wght@300..800&family=Funnel+Sans:wght@300..800",archivo:"Archivo:wdth,wght@62..125,100..900",newsreader:"Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800"};var f;try{f=new URLSearchParams(location.search).get("font")||sessionStorage.getItem("fs-font")}catch(e){}if(!F[f])f="klimt";try{sessionStorage.setItem("fs-font",f)}catch(e){}document.documentElement.dataset.font=f;document.write('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family='+F[f]+'&display=swap">')})()</script>
+<style>@media (prefers-reduced-motion: no-preference){@view-transition{navigation:auto}}</style>
+<script>/* cambio di mood (17 nov): la pagina nuova si apre da dove si è scelto (css/nav.css, mood-apre). Al clic si annota la forma di partenza, "da|a|opacità" (due clip-path, e se la pagina nuova parte trasparente): il riquadro del link, oppure quella scritta nel link (data-mood-da) o da js/mood.js. All'arrivo, prima del primo disegno, la si passa al css. Senza appunto il passaggio non parte: gli altri link cambiano pagina come sempre. A passaggio finito si avvisa la barra (un evento scroll): durante il passaggio js/nav.js non vede cosa c'è sotto e sbaglia il tono */addEventListener("click",function(e){var p=e.target.closest&&e.target.closest("a[data-mood],a[data-mood-da]");if(!p||e.defaultPrevented)return;var da=p.getAttribute("data-mood-da");if(!da){var r=p.getBoundingClientRect(),w=innerWidth,h=innerHeight;da="inset("+[r.top/h,1-r.right/w,1-r.bottom/h,r.left/w].map(function(n){return(Math.max(0,n)*100).toFixed(2)+"%"}).join(" ")+")"}try{sessionStorage.setItem("fs-mood-da",da)}catch(x){}});addEventListener("pagereveal",function(e){var da;try{da=sessionStorage.getItem("fs-mood-da");sessionStorage.removeItem("fs-mood-da")}catch(x){}if(!e.viewTransition)return;e.viewTransition.finished.then(function(){dispatchEvent(new Event("scroll"))},function(){});if(da){da=da.split("|");var s=document.documentElement.style;s.setProperty("--mood-da",da[0]);s.setProperty("--mood-a",da[1]||"inset(0% 0% 0% 0%)");s.setProperty("--mood-o",da[2]||"1")}else{e.viewTransition.ready.catch(function(){});e.viewTransition.skipTransition()}});</script>
+<link rel="stylesheet" href="css/base.css?v=3c076e8f">
+<link rel="stylesheet" href="css/nav.css?v=5e36c683">
+<!-- CAMPIONARIO (19 nov 2026): "fammi una lista di stili pop, fammi un html per capire cosa potremmo usare e/o sostituire". Dieci modi di indicare il vino in una foto, tutti sulla
+     stessa foto e con lo stesso vino, numerati; sotto, quelli che hanno senso sulle bottiglie dell'apertura (dove il fumetto è stato tolto: "nella hero quelle nuvolette così non mi
+     piacciono"), su una fila ferma di foto del catalogo. Solo inchiostro e bianco, niente colori nuovi, niente nastri né materiali presi da altri siti. Pagina di lavoro, non collegata:
+     scelti gli stili si toglie. Lo stile 1 è quello vero di pop-b.html (css/pop-prove.css, .pp-nuvola); gli altri stanno qui sotto. -->
+<title>Feudi Salentini · Stili pop, campionario</title>
+<meta name="robots" content="noindex">
+<!-- I CARATTERI (19 nov): "negli stili mi dai dei font pop, google font ovviamente, così magari ne testiamo altre". In fondo, con le lettere: tredici per le scritte grandi
+     (il primo è quello di adesso) e sei a mano per il nome accanto al cerchio. Ognuno è portato alla stessa larghezza di riga di Bricolage (--ps-k, lo misura lo script):
+     nella pagina vera la frase deve stare nello schermo, quindi un carattere largo viene più basso. I bottoni sopra le bottiglie ne provano uno nella frase. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Caveat+Brush&family=Anton&family=Bagel+Fat+One&family=Big+Shoulders:wght@900&family=Bowlby+One&family=Caprasimo&family=Climate+Crisis&family=Dela+Gothic+One&family=Gochi+Hand&family=Just+Another+Hand&family=Knewave&family=Londrina+Solid:wght@900&family=Permanent+Marker&family=Rubik:wght@900&family=Sedgwick+Ave+Display&family=Shrikhand&family=Titan+One&family=Unbounded:wght@900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..700&display=swap">
+<link rel="stylesheet" href="css/pop-prove.css?v=8ade0341">
+<style>
+.ps { --ps-fam: 'Bricolage Grotesque'; --ps-w: 700; --ps-st: 75%; --ps-ls: -.04em; --ps-lh: .84; --ps-k: 1; --ps-e: .19; /* il carattere in prova: lo cambiano i bottoni e le schede in fondo */
+  --cream: #fff; margin: 0; background: #fff; color: var(--ink); font-family: 'Bricolage Grotesque', system-ui, sans-serif; }
+.ps-main { padding: clamp(28px, 5vw, 64px) var(--pad-x) 96px; }
+.ps h1, .ps h2, .ps h3 { font-family: inherit; text-transform: none; }
+.ps-testa h1 { margin: 0 0 14px; font-size: clamp(2.75rem, 8vw, 6.5rem); font-weight: 700; font-stretch: 75%; line-height: .86; letter-spacing: -.03em; }
+.ps-testa p, .ps-nota { margin: 0; max-width: 46rem; font-size: 1.125rem; line-height: 1.45; color: var(--ink-2); }
+.ps-h2 { margin: 88px 0 10px; font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 700; font-stretch: 75%; line-height: .9; letter-spacing: -.02em; }
+.ps-griglia { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 48px 32px; margin-top: 32px; }
+.ps-carta h3 { display: flex; align-items: center; gap: .5em; margin: 0 0 6px; font-size: 1.5rem; font-weight: 700; font-stretch: 75%; line-height: 1; }
+.ps-num { display: inline-grid; place-items: center; min-width: 1.75em; height: 1.75em; border-radius: 50%; background: var(--ink); color: #fff; font-size: .8em; font-stretch: 100%; }
+.ps-scelto { margin-left: auto; padding: .25em .7em .3em; border-radius: 999px; background: var(--ink); color: #fff; font-size: .8125rem; font-weight: 400; font-stretch: 100%; white-space: nowrap; }
+.ps-carta p { margin: 0 0 14px; min-height: 2.9em; font-size: .9375rem; line-height: 1.45; color: var(--ink-2); }
+.ps-foto { position: relative; margin: 0; aspect-ratio: 4 / 5; container-type: size; }
+.ps-foto img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: var(--r); }
+.ps-foto > *:not(img) { position: absolute; z-index: 2; }
+.ps-foto b, .ps-apre b { font-weight: 700; font-stretch: 75%; }
+.ps-foto i, .ps-apre i { font-style: normal; }
+
+/* 2, il fumetto pieno */
+.ps-pieno { background: var(--ink); color: #fff; filter: none; rotate: 2deg; }
+.ps-pieno::after { display: none; }
+
+/* 3, il bollino: un adesivo tondo, pieno */
+.ps-bollino, .ps-apre[data-stile="bollino"] .ps-et-t { display: grid; place-content: center; justify-items: center; width: 7.8em; aspect-ratio: 1; padding: .5em; box-sizing: border-box; border-radius: 50%; background: var(--ink); color: #fff; box-shadow: 3px 3px 0 #fff, 3px 3px 0 1px var(--ink); text-align: center; white-space: normal; rotate: 10deg; translate: -50% -50%; }
+.ps-bollino { font-size: clamp(.75rem, 4.5cqw, 1rem); }
+.ps-bollino b, .ps-apre[data-stile="bollino"] .ps-et-t b { font-size: 1.45em; line-height: .95; letter-spacing: -.01em; text-wrap: balance; }
+.ps-bollino i, .ps-apre[data-stile="bollino"] .ps-et-t i { margin-top: .4em; font-size: .7em; line-height: 1.15; text-wrap: balance; }
+
+/* 4, punto e riga: un punto che batte sulla bottiglia, una riga, il nome */
+.ps-segno, .ps-apre[data-stile="punto"] .ps-et { width: 0; height: 0; }
+.ps-segno::before, .ps-apre[data-stile="punto"] .ps-et::before { content: ''; position: absolute; left: -8px; top: -8px; width: 16px; height: 16px; box-sizing: border-box; border: 2px solid var(--ink); border-radius: 50%; background: #fff; animation: ps-batte 1.8s ease-out infinite; }
+@keyframes ps-batte { from { box-shadow: 0 0 0 0 #fff; } to { box-shadow: 0 0 0 14px rgb(255 255 255 / 0); } }
+.ps-segno::after, .ps-apre[data-stile="punto"] .ps-et::after { content: ''; position: absolute; left: 8px; top: -1px; width: 2.6em; height: 2px; background: var(--ink); box-shadow: 0 0 0 1px #fff; }
+.ps-segno::after { left: -1px; top: auto; bottom: 8px; width: 2px; height: 36px; } /* sulle foto la riga sale e il nome sta sopra: di lato usciva dal riquadro */
+.ps-segno span, .ps-apre[data-stile="punto"] .ps-et-t { position: absolute; left: calc(8px + 2.6em); top: 0; translate: 0 -50%; display: grid; padding: .3em .65em .4em; background: #fff; color: var(--ink); font-size: .75rem; line-height: 1.2; white-space: nowrap; }
+.ps-segno b, .ps-apre[data-stile="punto"] .ps-et-t b { font-size: 1.5em; }
+.ps-segno span { left: 0; top: -44px; translate: -50% -100%; justify-items: center; }
+.ps-apre[data-stile="punto"] .ps-et-t { border: 1px solid var(--ink); }
+
+/* 5 e 6, a mano: scritta e freccia, oppure un cerchio attorno alla bottiglia. Bianco col bordo d'inchiostro: si legge su qualsiasi foto */
+.ps-mano, .ps-apre[data-stile="mano"] .ps-et-t { font-family: 'Caveat Brush', cursive; font-size: clamp(1.7rem, 11cqw, 2.6rem); line-height: .86; color: #fff; -webkit-text-stroke: 6px var(--ink); paint-order: stroke fill; rotate: -6deg; white-space: nowrap; }
+.ps-tratto { overflow: visible; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.ps-tratto path { vector-effect: non-scaling-stroke; }
+.ps-tratto .sotto { stroke: var(--ink); stroke-width: 9; }
+.ps-tratto .sopra { stroke: #fff; stroke-width: 4; }
+.ps-accanto { font-family: var(--ps-fam), sans-serif; font-size: calc(clamp(1.5rem, 9cqw, 2.25rem) * var(--ps-k)); line-height: .86; letter-spacing: -.02em; color: #fff; -webkit-text-stroke: 5px var(--ink); paint-order: stroke fill; rotate: -3deg; white-space: nowrap; }
+.ps-accanto b { font-weight: var(--ps-w); font-stretch: var(--ps-st); -webkit-text-stroke-width: max(2px, calc(5px * var(--ps-k))); } /* un carattere largo viene più piccolo: il bordo cala con lui, sennò mangia le lettere */
+.ps-amano { font-weight: 400; font-stretch: 100%; letter-spacing: 0; line-height: .9; } /* i caratteri a mano, nelle schede in fondo */
+
+/* 7, il cartellino appeso al collo con lo spago */
+.ps-spago { overflow: visible; fill: none; stroke-linecap: round; }
+.ps-spago path { vector-effect: non-scaling-stroke; stroke: var(--ink); stroke-width: 5; }
+.ps-spago path + path { stroke: #fff; stroke-width: 2; }
+.ps-cartellino, .ps-apre[data-stile="cartellino"] .ps-et-t { display: grid; padding: .5em .8em .55em 1.9em; border: 2px solid var(--ink); border-radius: 4px; background: #fff; color: var(--ink); font-size: .75rem; line-height: 1.2; white-space: nowrap; translate: -13px -50%; rotate: 6deg; transform-origin: 13px 50%; }
+.ps-cartellino::before, .ps-apre[data-stile="cartellino"] .ps-et-t::before { content: ''; position: absolute; left: 7px; top: calc(50% - 6px); width: 12px; height: 12px; box-sizing: border-box; border: 2px solid var(--ink); border-radius: 50%; background: #fff; }
+.ps-cartellino b, .ps-apre[data-stile="cartellino"] .ps-et-t b { font-size: 1.5em; line-height: 1; }
+.ps-carta:hover .ps-cartellino, .ps-apre[data-stile="cartellino"] .is-su .ps-et-t { animation: ps-dondola 1.1s ease-in-out; }
+@keyframes ps-dondola { 0% { rotate: 6deg; } 25% { rotate: 14deg; } 55% { rotate: 1deg; } 80% { rotate: 8deg; } 100% { rotate: 6deg; } }
+
+/* 8, lo scoppio dei fumetti */
+.ps-scoppio { display: grid; place-content: center; justify-items: center; width: 9.6em; aspect-ratio: 1; translate: -50% -50%; rotate: -8deg; font-size: clamp(.75rem, 4.5cqw, 1rem); text-align: center; color: var(--ink); }
+.ps-scoppio::before, .ps-scoppio::after { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--ink); clip-path: polygon(50.0% 0.0%, 57.9% 10.3%, 69.1% 3.8%, 72.5% 16.3%, 85.4% 14.6%, 83.7% 27.5%, 96.2% 30.9%, 89.7% 42.1%, 100.0% 50.0%, 89.7% 57.9%, 96.2% 69.1%, 83.7% 72.5%, 85.4% 85.4%, 72.5% 83.7%, 69.1% 96.2%, 57.9% 89.7%, 50.0% 100.0%, 42.1% 89.7%, 30.9% 96.2%, 27.5% 83.7%, 14.6% 85.4%, 16.3% 72.5%, 3.8% 69.1%, 10.3% 57.9%, 0.0% 50.0%, 10.3% 42.1%, 3.8% 30.9%, 16.3% 27.5%, 14.6% 14.6%, 27.5% 16.3%, 30.9% 3.8%, 42.1% 10.3%); }
+.ps-scoppio::after { inset: 5px; background: #fff; }
+.ps-scoppio b { font-size: 1.5em; line-height: .95; }
+.ps-scoppio i { margin-top: .35em; font-size: .7em; line-height: 1.15; max-width: 9em; }
+
+/* 9, il nome gigante, come le scritte della pagina */
+.ps-gigante { left: 4%; top: 4%; font-size: 12.4cqw; line-height: .86; letter-spacing: -.035em; color: #fff; -webkit-text-stroke: 5px var(--ink); paint-order: stroke fill; white-space: nowrap; }
+.ps-gigante b { font-weight: 800; }
+
+/* 10, la pillola che segue il puntatore */
+.ps-pillola { left: 44%; top: 40%; padding: .4em .9em .45em; border-radius: 999px; background: var(--ink); color: #fff; font-size: 1.0625rem; white-space: nowrap; pointer-events: none; transition: left .15s ease-out, top .15s ease-out; }
+
+/* ---- le bottiglie dell'apertura: una fila ferma di foto del catalogo, la frase dietro; lo stile si sceglie coi bottoni ---- */
+.ps-scelta { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 0; }
+.ps-scelta button { height: 44px; padding: 0 18px; border: 2px solid var(--ink); border-radius: 999px; background: #fff; color: var(--ink); font: inherit; font-size: 1rem; cursor: pointer; }
+.ps-scelta button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.ps-apre { --h: clamp(300px, 62vh, 560px); position: relative; display: grid; place-items: end center; margin-top: 28px; padding: 9vh 0 5vh; overflow: hidden; border: 1px solid var(--stone); border-radius: var(--r); }
+.ps-frase { position: absolute; z-index: 0; left: 0; right: 0; top: 34%; /* dietro i colli: lì si legge */ margin: 0; translate: 0 -50%; text-align: center; font-family: var(--ps-fam), sans-serif; font-size: calc(min(30vh, 16vw) * var(--ps-k)); font-weight: var(--ps-w); font-stretch: var(--ps-st); line-height: var(--ps-lh); letter-spacing: var(--ps-ls); white-space: nowrap; }
+.ps-fila { position: relative; z-index: 1; display: flex; gap: calc(var(--h) * .03); }
+.ps-b { position: relative; flex: none; width: calc(var(--h) * .26); height: var(--h); margin: 0; }
+.ps-b img { display: block; height: calc(100% * var(--k, 1)); width: auto; max-width: none; margin-left: calc(var(--h) * (.13 - .31885 * var(--k, 1))); margin-top: calc(var(--h) * var(--giu, 0)); pointer-events: none; } /* --k e --giu: Philia in catalogo è inquadrata più grande */
+.ps-et { position: absolute; z-index: 2; left: 50%; top: 26%; opacity: 0; scale: .7; transition: opacity .15s, scale .35s cubic-bezier(.3, 1.6, .5, 1); pointer-events: none; }
+.ps-b.is-su .ps-et { opacity: 1; scale: 1; }
+.ps-et svg { display: none; position: absolute; }
+.ps-et-t { display: grid; }
+.ps-apre[data-stile="bollino"] .ps-et { left: 86%; top: 30%; }
+.ps-apre[data-stile="bollino"] .ps-et-t { font-size: .875rem; }
+.ps-apre[data-stile="mano"] .ps-et { left: 78%; top: 3%; }
+.ps-apre[data-stile="mano"] .ps-et-t { font-size: 2rem; translate: 0 -40%; }
+.ps-apre[data-stile="mano"] .ps-et-t i { display: none; }
+.ps-apre[data-stile="mano"] .ps-et .ps-tratto { display: block; left: -1.4em; top: .9em; width: 2.2em; height: 3.2em; font-size: 2rem; }
+.ps-apre[data-stile="cartellino"] .ps-et { left: 62%; top: 20%; }
+.ps-apre[data-stile="cartellino"] .ps-et .ps-spago { display: block; left: 0; top: 0; width: 2.4em; height: 3.4em; }
+.ps-apre[data-stile="cartellino"] .ps-et-t { position: absolute; left: 2.4em; top: 3.4em; }
+.ps-apre[data-stile="piano"] .ps-et { left: 50%; top: 90.5%; translate: -50% 0; }
+.ps-apre[data-stile="piano"] .ps-et-t { justify-items: center; text-align: center; font-size: .8125rem; line-height: 1.25; white-space: nowrap; }
+.ps-apre[data-stile="piano"] .ps-et-t b { font-size: 1.6em; }
+.ps-apre[data-stile="frase"] .ps-et { display: none; }
+.ps-apre[data-stile="piano"] { padding-bottom: 9vh; }
+/* ---- i caratteri: la stessa frase e lo stesso nome in ogni carattere, larghi uguale (--ps-e: quanto è alto Bricolage per riempire la riga; --ps-k: la correzione di ognuno) ---- */
+.ps-scelta + .ps-scelta { margin-top: 12px; }
+.ps-carta { container-type: inline-size; }
+.ps-prova { margin-top: 6px; font-family: var(--ps-fam), sans-serif; font-size: calc(94cqw * var(--ps-e) * var(--ps-k)); font-weight: var(--ps-w); font-stretch: var(--ps-st); line-height: var(--ps-lh); letter-spacing: var(--ps-ls); white-space: nowrap; }
+.ps-prova + .ps-prova { margin-top: .5em; font-size: calc(94cqw * var(--ps-e) * var(--ps-k) * .5); line-height: 1; white-space: normal; }
+@media (max-width: 720px) {
+  .ps-apre { --h: clamp(220px, 46vw, 300px); }
+  .ps-fila { gap: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .ps-segno::before, .ps-et::before, .ps-cartellino, .ps-et-t { animation: none !important; } .ps-et, .ps-pillola { transition: none; } }
+
+/* ---- IL COLORE (19 nov: "dici che si potrebbero essere elementi colorati", "mi fai un file negli stili per vedere?"). Nove posti dove un colore potrebbe entrare, sempre come
+   elemento e mai come fondo, coi caratteri veri della pagina (Londrina Solid e DM Sans). I bottoni cambiano la tinta di tutti: --acc, e --acc-su per quello che ci sta scritto sopra
+   (inchiostro sulle tinte chiare, bianco sulle scure: lo decide lo script). Il C7 usa sempre il colore del suo vino ---- */
+.tin { --acc: #c6ff2d; --acc-su: var(--ink); }
+.tin-scelta { align-items: center; }
+.tin-scelta span { margin: 0 4px 0 14px; font-size: .9375rem; color: var(--ink-2); }
+.tin-scelta span:first-child { margin-left: 0; }
+.tin-scelta button { display: inline-flex; align-items: center; gap: 9px; padding: 0 16px 0 10px; }
+.tin-scelta button i { width: 22px; height: 22px; border-radius: 50%; background: var(--d); box-shadow: inset 0 0 0 1px rgb(0 0 0 / .18); }
+.tin-box { display: grid; align-content: center; gap: 14px; min-height: 250px; padding: 26px 22px; border: 1px solid var(--stone); border-radius: var(--r); background: #fff; color: var(--ink); font-family: 'DM Sans', system-ui, sans-serif; overflow: hidden; }
+.tin-box--pietra { background: var(--stone); }
+.tin .tin-box p { margin: 0; min-height: 0; } /* .ps-carta p (le descrizioni) vale più di una classe sola: qui i paragrafi sono gli esempi */
+.tin .tin-t { margin: 0; color: var(--ink); font-family: 'Londrina Solid', sans-serif; font-weight: 900; font-size: 17cqw; line-height: .9; letter-spacing: -.01em; }
+.tin .tin-t--m { font-size: 11cqw; line-height: .94; }
+.tin mark { position: relative; z-index: 0; padding: 0 .06em; background: none; color: var(--acc-su); white-space: nowrap; }
+.tin mark::before { content: ''; position: absolute; z-index: -1; inset: 10% -.03em 2%; border-radius: .06em .12em .05em .1em; background: var(--acc); rotate: -1.2deg; } /* la passata di evidenziatore: un poco storta, coi bordi non uguali */
+.tin-em { color: var(--acc); }
+.tin-grande { font-size: 2.3em; }
+.tin .tin-k { color: var(--ink); display: flex; align-items: baseline; gap: 10px; margin: 0; font-size: .875rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
+.tin-k b { font-family: 'Londrina Solid', sans-serif; font-size: 1.5rem; line-height: 1; letter-spacing: 0; }
+.tin-riga { display: block; width: 100%; height: 12px; overflow: visible; fill: none; stroke: var(--acc); stroke-width: 6; stroke-linecap: round; }
+.tin-riga--nera { stroke: var(--ink); stroke-width: 4.5; }
+.tin-p { margin: 0; font-size: 1rem; line-height: 1.4; color: var(--ink-2); }
+.tin-btn { justify-self: start; display: inline-flex; align-items: center; height: 48px; padding: 0 24px; border-radius: 999px; background: var(--ink); color: #fff; font-size: 1rem; font-weight: 500; }
+.tin-btn--acc { background: var(--acc); color: var(--acc-su); }
+.tin-btn--bordo { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 2px var(--ink), 5px 5px 0 var(--acc); }
+.tin-nota { font-size: .8125rem; color: var(--ink-2); }
+.tin .ps-foto .ps-tratto .sopra { stroke: var(--acc); }
+.tin .ps-foto .tin-nome { padding: .1em .3em .16em; border-radius: .12em; background: var(--acc); color: var(--acc-su); font-family: 'Londrina Solid', sans-serif; font-weight: 900; font-size: 7.4cqw; line-height: .92; }
+.tin-ombra { position: relative; margin: 0 14px 14px 0; aspect-ratio: 4 / 5; }
+.tin-ombra::before { content: ''; position: absolute; inset: 14px -14px -14px 14px; border-radius: var(--r); background: var(--acc); }
+.tin-ombra img { position: relative; display: block; width: 100%; height: 100%; object-fit: cover; border-radius: var(--r); }
+.tin-vini { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.tin-vini li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 14px; align-items: center; }
+.tin-vini i { grid-row: span 2; width: 46px; height: 46px; border-radius: 50%; background: var(--d); box-shadow: inset 0 0 0 1px rgb(0 0 0 / .14); }
+.tin-vini b { font-family: 'Londrina Solid', sans-serif; font-weight: 900; font-size: 1.5rem; line-height: 1; }
+.tin-vini span { font-size: .8125rem; color: var(--ink-2); }
+.tin-bott { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0 10px; align-items: center; }
+.tin-bott img { width: auto; height: 230px; margin: 0 -34px 0 -30px; }
+.tin-bollo { display: grid; place-items: center; align-content: center; width: 132px; aspect-ratio: 1; border-radius: 50%; background: var(--acc); color: var(--acc-su); text-align: center; rotate: -8deg; }
+.tin-bollo b { font-family: 'Londrina Solid', sans-serif; font-weight: 900; font-size: 2rem; line-height: .9; }
+.tin-bollo span { max-width: 7.5em; margin-top: 4px; font-size: .6875rem; line-height: 1.2; }
+.tin-chip { justify-self: start; padding: .3em .8em .36em; border-radius: 999px; background: var(--acc); color: var(--acc-su); font-size: .875rem; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; }
+</style>
+</head>
+<body class="ps">
+<main class="ps-main">
+  <header class="ps-testa">
+    <h1>Stili pop,<br>il campionario</h1>
+    <p>Dieci modi di dire quale vino c'è in una foto, tutti sulla stessa foto e con lo stesso vino. Ognuno ha un numero: dimmi quali teniamo e quali no. Più sotto gli stessi stili provati sulle bottiglie dell'apertura. In fondo i caratteri da provare, con le lettere, e <a href="#colore">il colore</a> (da C1 a C9).</p>
+  </header>
+
+  <h2 class="ps-h2">Sulle foto</h2>
+  <div class="ps-griglia">
+    <article class="ps-carta">
+      <h3><span class="ps-num">1</span>Fumetto</h3>
+      <p>Quello che c'è adesso nella frase e in Lettere: bianco, bordo e ombra neri, la coda sulla bottiglia.</p>
+      <figure class="ps-foto"><img src="assets/pop/pallone.webp" alt="" width="880" height="1100" loading="lazy" decoding="async"><span class="pp-nuvola" style="--bx:49%;--by:51%"><b>125 Bianco Organic</b><span>Bianco Puglia IGP biologico</span></span></figure>
+    </article>
+    <article class="ps-carta">
+      <h3><span class="ps-num">2</span>Fumetto pieno</h3>
+      <p>Lo stesso fumetto, nero con la scritta bianca e senza ombra. Più netto, pesa di più sulla foto.</p>
+      <figure class="ps-foto"><img src="assets/pop/pallone.webp" alt="" width="880" height="1100" loading="lazy" decoding="async"><span class="pp-nuvola ps-pieno" style="--bx:49%;--by:51%"><b>125 Bianco Organic</b><span>Bianco Puglia IGP biologico</span></span></figure>
+    </article>
+    <article class="ps-carta">
+      <h3><span class="ps-num">3</span>Bollino</h3>
+      <p>Un adesivo tondo attaccato vicino alla bottiglia. Non ha la coda: indica per vicinanza.</p>
+      <figure class="ps-foto"><img src="assets/pop/pallone.webp" alt="" width="880" height="1100" loading="lazy" decoding="async"><span class="ps-bollino" style="left:69%;top:41%"><b>125 Bianco Organic</b><i>Bianco Puglia IGP biologico</i></span></figure>
+    </article>
+    <article class="ps-carta">
+      <h3><span class="ps-num">4</span>Punto e riga</h3>
+      <p>Un punto che batte sulla bottiglia, una riga e il nome. Il più leggero: la foto resta quasi libera.</p>
+      <figure class="ps-foto"><img src="assets/pop/pallone.webp" alt="" width="880" height="1100" loading="lazy" decoding="async"><span class="ps-segno" style="left:49.4%;top:53.5%"><span><b>125 Bianco Organic</b><i>Bianco Puglia IGP biologico</i></span></span></figure>
+    </article>
+    <article class="ps-carta">
+      <h3><span class="ps-num">5</span>Scritta a mano</h3>
+      <p>Il nome scritto a pennarello sulla foto, con una freccia. Come un appunto su una stampa.</p>
+      <figure class="ps-foto"><img src="assets/pop/pallone.webp" alt="" width="880" height="1100" loading="lazy" decoding="async"><span class="ps-mano" style="left:45%;top:17%">125 Bianco<br>Organic</span><svg class="ps-tratto" viewBox="0 0 100 100" preserveAspectRatio="none" style="left:50%;top:36%;width:14%;height:13%" aria-hidden="true"><path class="sotto" d="M92,4 C86,46 58,76 14,90 M14,90 l34,-2 M14,90 l12,-30"/><path class="sopra" d="M92,4 C86,46 58,76 14,90 M14,90 l34,-2 M14,90 l12,-30"/></svg></figure>
+    </article>
+    <article class="ps-carta">
+      <h3><span class="ps-num">6</span>Cerchio a pennarello<span class="ps-scelto">scelto, è già nelle foto</span></h3>
+      <p>Un giro di pennarello attorno alla bottiglia e il nome accanto. Indica senza coprire niente.</p>
+      <figure class="ps-foto"><img src="assets/pop/pallone.webp" alt="" width="880" height="1100" loading="lazy" decoding="async"><svg class="ps-tratto" viewBox="0 0 100 200" preserveAspectRatio="none" style="left:38%;top:46%;width:23%;height:46%" aria-hidden="true"><path class="sotto" d="M62,8 C20,2 4,60 6,110 C8,165 30,196 55,194 C84,192 96,140 94,96 C92,45 75,10 40,14"/><path class="sopra" d="M62,8 C20,2 4,60 6,110 C8,165 30,196 55,194 C84,192 96,140 94,96 C92,45 75,10 40,14"/></svg><span class="ps-accanto" style="left:63%;top:57%"><b>125 Bianco<br>Organic</b></span></figure>
+    </article>
+    <article class="ps-carta">
+      <h3><span class="ps-num">7</span>Cartellino</h3>
+      <p>Un cartellino appeso al collo con lo spago, come in negozio. Passandoci sopra dondola.</p>
+      <figure class="ps-foto"><img src="assets/pop/pallone.webp" alt="" width="880" height="1100" loading="lazy" decoding="async"><svg class="ps-spago" viewBox="0 0 100 100" preserveAspectRatio="none" style="left:50.5%;top:57%;width:9.5%;height:10%" aria-hidden="true"><path d="M0,0 C18,62 55,96 100,100"/><path d="M0,0 C18,62 55,96 100,100"/></svg><span class="ps-cartellino" style="left:60%;top:67%"><b>125 Bianco<br>Organic</b><i>Bianco Puglia IGP<br>biologico</i></span></figure>
+    </article>
+    <article class="ps-carta">
+      <h3><span class="ps-num">8</span>Scoppio</h3>
+      <p>La stella dei fumetti. Il più rumoroso: va bene una volta, su una foto sola.</p>
+      <figure class="ps-foto"><img src="assets/pop/pallone.webp" alt="" width="880" height="1100" loading="lazy" decoding="async"><span class="ps-scoppio" style="left:72%;top:36%"><b>125 Bianco<br>Organic</b><i>Bianco Puglia IGP biologico</i></span></figure>
+    </article>
+    <article class="ps-carta">
+      <h3><span class="ps-num">9</span>Nome gigante</h3>
+      <p>Il nome grande in testa alla foto, col carattere delle scritte della pagina, e una freccia.</p>
+      <figure class="ps-foto"><img src="assets/pop/pallone.webp" alt="" width="880" height="1100" loading="lazy" decoding="async"><span class="ps-gigante"><b>125 Bianco Organic</b></span><svg class="ps-tratto" viewBox="0 0 100 100" preserveAspectRatio="none" style="left:44%;top:18%;width:10%;height:31%" aria-hidden="true"><path class="sotto" d="M70,2 C40,40 40,70 52,96 M52,96 l-30,-16 M52,96 l26,-22"/><path class="sopra" d="M70,2 C40,40 40,70 52,96 M52,96 l-30,-16 M52,96 l26,-22"/></svg></figure>
+    </article>
+    <article class="ps-carta">
+      <h3><span class="ps-num">10</span>Pillola che segue</h3>
+      <p>Il nome in una pillola che segue il puntatore sulla foto. Sul telefono resta ferma vicino alla bottiglia.</p>
+      <figure class="ps-foto" data-segue><img src="assets/pop/pallone.webp" alt="" width="880" height="1100" loading="lazy" decoding="async"><span class="ps-pillola"><b>125 Bianco Organic</b></span></figure>
+    </article>
+  </div>
+
+  <h2 class="ps-h2">Sulle bottiglie dell'apertura</h2>
+  <p class="ps-nota">Nell'apertura vera adesso al passaggio non succede niente: il fumetto e il 12 li abbiamo provati e tolti, cosa metterci è da decidere. Questi restano qui per confronto: scegli uno stile e passa su una bottiglia. Le bottiglie sono le foto del catalogo, ferme.</p>
+  <div class="ps-scelta" role="group" aria-label="Stile sulle bottiglie">
+    <button type="button" data-stile="bollino" aria-pressed="false">3 · Bollino</button>
+    <button type="button" data-stile="punto" aria-pressed="false">4 · Punto e riga</button>
+    <button type="button" data-stile="mano" aria-pressed="false">5 · Scritta a mano</button>
+    <button type="button" data-stile="cartellino" aria-pressed="false">7 · Cartellino</button>
+    <button type="button" data-stile="piano" aria-pressed="false">11 · Nome sul piano</button>
+    <button type="button" data-stile="frase" aria-pressed="true">12 · La frase diventa il nome (provato e tolto)</button>
+  </div>
+  <div class="ps-scelta" role="group" aria-label="Carattere della frase" data-caratteri></div>
+  <div class="ps-apre" data-stile="frase">
+    <p class="ps-frase" lang="en" aria-hidden="true">Wines that<br>set the mood.</p>
+    <div class="ps-fila">
+      <figure class="ps-b" data-nome="Collezione 53 Primitivo" data-den="Primitivo di Manduria DOP"><img src="assets/bottles/primitivo53.webp" alt="Collezione 53 Primitivo" width="653" height="1024" loading="lazy" decoding="async"></figure>
+      <figure class="ps-b" data-nome="125 Bianco Organic" data-den="Bianco Puglia IGP biologico"><img src="assets/bottles/biook-2.webp" alt="125 Bianco Organic" width="653" height="1024" loading="lazy" decoding="async"></figure>
+      <figure class="ps-b" data-nome="Tre Cuori" data-den="Rosa di Primitivo Puglia IGP"><img src="assets/bottles/3CUORI.webp" alt="Tre Cuori" width="653" height="1024" loading="lazy" decoding="async"></figure>
+      <figure class="ps-b" data-nome="Terra Negroamaro" data-den="Negroamaro Salento IGP"><img src="assets/bottles/negroamaro.webp" alt="Terra Negroamaro" width="653" height="1024" loading="lazy" decoding="async"></figure>
+    </div>
+  </div>
+
+  <h2 class="ps-h2">I caratteri</h2>
+  <p class="ps-nota">Tutti di Google Fonts, ognuno con una lettera. Il primo è quello di adesso. Sono portati alla stessa larghezza di riga: nella pagina la frase deve stare nello schermo, quindi un carattere largo viene più basso. Per vederne uno dietro le bottiglie usa i bottoni con le lettere qui sopra. Vanno sulle scritte grandi: i testi piccoli restano com'è adesso.</p>
+  <div class="ps-griglia" data-campioni></div>
+
+  <h2 class="ps-h2">A mano, accanto al cerchio</h2>
+  <p class="ps-nota">Se il nome vicino al giro di pennarello lo vuoi scritto a mano. Adesso è nello stesso carattere delle scritte grandi, come nel 6.</p>
+  <div class="ps-griglia" data-mano></div>
+
+  <h2 class="ps-h2" id="colore">Il colore</h2>
+  <p class="ps-nota">Nove posti dove un colore potrebbe entrare, sempre come elemento e mai come fondo. Scegli la tinta coi bottoni: cambia in tutti. Il verde acido è quello che avevo usato a occhio (#c6ff2d), i colori del vino vengono dalle descrizioni del catalogo, quelli delle collezioni dalle copertine del cliente. Dimmi i numeri che teniamo.</p>
+  <div class="tin">
+  <div class="ps-scelta tin-scelta" role="group" aria-label="Tinta degli esempi">
+    <span>Accento</span><button type="button" aria-pressed="true" data-tinta="#c6ff2d" style="--d:#c6ff2d"><i></i>Verde acido</button>
+    <span>Vino</span><button type="button" aria-pressed="false" data-tinta="#6e0c1c" style="--d:#6e0c1c"><i></i>Rosso</button><button type="button" aria-pressed="false" data-tinta="#d8645c" style="--d:#d8645c"><i></i>Rosato</button><button type="button" aria-pressed="false" data-tinta="#e9df9a" style="--d:#e9df9a"><i></i>Bianco</button>
+    <span>Collezione</span><button type="button" aria-pressed="false" data-tinta="#600028" style="--d:#600028"><i></i>53</button><button type="button" aria-pressed="false" data-tinta="#bf5138" style="--d:#bf5138"><i></i>Terra</button><button type="button" aria-pressed="false" data-tinta="#717b57" style="--d:#717b57"><i></i>Organic</button><button type="button" aria-pressed="false" data-tinta="#503323" style="--d:#503323"><i></i>Classica</button><button type="button" aria-pressed="false" data-tinta="#023e25" style="--d:#023e25"><i></i>125</button><button type="button" aria-pressed="false" data-tinta="#905e3b" style="--d:#905e3b"><i></i>Internazionali</button>
+  </div>
+  <div class="ps-griglia">
+    <article class="ps-carta">
+      <h3><span class="ps-num">C1</span>Evidenziatore nei titoli</h3>
+      <p>Una passata dietro una parola delle scritte giganti. Home, apertura.</p>
+      <div class="tin-box"><p class="tin-t" lang="en">Wines that<br>set the <mark>mood.</mark></p></div>
+    </article>
+    <article class="ps-carta">
+      <h3><span class="ps-num">C2</span>Parola colorata</h3>
+      <p>La parola prende il colore, senza passata. Con le tinte chiare si legge poco.</p>
+      <div class="tin-box"><p class="tin-t" lang="en">Born in<br><span class="tin-em">Salento,</span></p></div>
+    </article>
+    <article class="ps-carta">
+      <h3><span class="ps-num">C3</span>Bottoni</h3>
+      <p>Il primo è quello di adesso. Poi pieno di colore, e bianco con l'ombra netta colorata.</p>
+      <div class="tin-box"><span class="tin-btn">Vai alle collezioni</span><span class="tin-btn tin-btn--acc">Vai alle collezioni</span><span class="tin-btn tin-btn--bordo">Vai alle collezioni</span></div>
+    </article>
+    <article class="ps-carta">
+      <h3><span class="ps-num">C4</span>Riga a pennarello</h3>
+      <p>La riga che apre capitoli e notizie, colorata. Sotto com'è adesso, col solo numero evidenziato.</p>
+      <div class="tin-box"><svg class="tin-riga" viewBox="0 0 1000 12" preserveAspectRatio="none" aria-hidden="true"><path d="M3 7 C120 2 260 11 400 6 S700 2 860 7 S960 9 997 5"/></svg><p class="tin-k"><b>01</b><span>Quarta generazione</span></p><p class="tin-t tin-t--m">La famiglia Varvaglione.</p><svg class="tin-riga tin-riga--nera" viewBox="0 0 1000 12" preserveAspectRatio="none" aria-hidden="true"><path d="M3 7 C120 2 260 11 400 6 S700 2 860 7 S960 9 997 5"/></svg><p class="tin-k"><b><mark>02</mark></b><span>Vitigni autoctoni</span></p></div>
+    </article>
+    <article class="ps-carta">
+      <h3><span class="ps-num">C5</span>Giro sulle foto</h3>
+      <p>Il giro attorno alla bottiglia e il suo nome, a colore. Adesso sono bianco e inchiostro.</p>
+      <figure class="ps-foto"><img src="assets/pop/pallone.webp" alt="" width="880" height="1100" loading="lazy" decoding="async"><svg class="ps-tratto" viewBox="0 0 100 200" preserveAspectRatio="none" style="left:38%;top:46%;width:23%;height:46%" aria-hidden="true"><path class="sotto" d="M62,8 C20,2 4,60 6,110 C8,165 30,196 55,194 C84,192 96,140 94,96 C92,45 75,10 40,14"/><path class="sopra" d="M62,8 C20,2 4,60 6,110 C8,165 30,196 55,194 C84,192 96,140 94,96 C92,45 75,10 40,14"/></svg><span class="tin-nome" style="left:63%;top:57%">125 Bianco<br>Organic</span></figure>
+    </article>
+    <article class="ps-carta">
+      <h3><span class="ps-num">C6</span>Numeri</h3>
+      <p>Il numero dei premi sulla home, evidenziato.</p>
+      <div class="tin-box tin-box--pietra"><p class="tin-t tin-t--m"><mark class="tin-grande">65</mark><br>riconoscimenti.</p></div>
+    </article>
+    <article class="ps-carta">
+      <h3><span class="ps-num">C7</span>Il colore del vino</h3>
+      <p>Pagina del vino, nel calice: un campione accanto alla frase della vista. Non segue i bottoni: è il colore di quel vino.</p>
+      <div class="tin-box"><p class="tin-k"><b>02</b><span>Nel calice e in tavola</span></p><ul class="tin-vini"><li><i style="--d:#6e0c1c"></i><b>Rosso intenso con carichi riflessi violacei.</b><span>Collezione 53 Primitivo</span></li><li><i style="--d:#d8645c"></i><b>Rosa cerasuolo.</b><span>Tre Cuori</span></li><li><i style="--d:#e9df9a"></i><b>Giallo chiaro con lievi riflessi dorati.</b><span>Marpiccolo</span></li></ul></div>
+    </article>
+    <article class="ps-carta">
+      <h3><span class="ps-num">C8</span>Ombra netta dietro le foto</h3>
+      <p>Un blocco di colore spostato dietro la foto, come una stampa fuori registro.</p>
+      <div class="tin-box"><figure class="tin-ombra"><img src="assets/pop/rosato.webp" alt="" width="880" height="1100" loading="lazy" decoding="async"></figure></div>
+    </article>
+    <article class="ps-carta">
+      <h3><span class="ps-num">C9</span>Bollo e targhetta</h3>
+      <p>Un bollo accanto alla bottiglia per il premio più recente, e la targhetta della collezione.</p>
+      <div class="tin-box"><span class="tin-chip">Collezione 53</span><div class="tin-bott"><img src="assets/bottles/primitivo53.webp" alt="" width="653" height="1024" loading="lazy" decoding="async"><span class="tin-bollo"><b>Oro 2022</b><span>AWC Vienna International Wine Challenge</span></span></div></div>
+    </article>
+  </div>
+  </div>
+</main>
+<script>
+/* le etichette delle bottiglie si scrivono dai dati; lo stile lo dà .ps-apre[data-stile]. Quella di Marpiccolo si vede da subito, le altre al passaggio (o al tocco) */
+(() => {
+  const palco = document.querySelector('.ps-apre'), bott = [...palco.querySelectorAll('.ps-b')], frase = palco.querySelector('.ps-frase'), detta = frase.innerHTML;
+  const tratto = 'M96,6 C70,10 40,30 14,88 M14,88 l4,-34 M14,88 l30,-16', spago = 'M0,0 C10,60 50,96 100,100';
+  bott.forEach((b) => b.insertAdjacentHTML('beforeend', `<span class="ps-et" aria-hidden="true"><svg class="ps-tratto" viewBox="0 0 100 100" preserveAspectRatio="none"><path class="sotto" d="${tratto}"/><path class="sopra" d="${tratto}"/></svg><svg class="ps-spago" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${spago}"/><path d="${spago}"/></svg><span class="ps-et-t"><b>${b.dataset.nome}</b><i>${b.dataset.den}</i></span></span>`));
+  const mostra = (b) => { bott.forEach((x) => x.classList.toggle('is-su', x === b)); const nome = palco.dataset.stile === 'frase' && b; frase.innerHTML = nome ? '<span>' + (b.dataset.nome.length > 12 ? b.dataset.nome.replace(' ', '<br>') : b.dataset.nome) + '</span>' : detta;
+    frase.style.fontSize = ''; /* il nome prende quasi tutta la larghezza: esce ai lati della fila, come farebbe nell'apertura vera */
+    if (nome) { const s = frase.firstChild, f = parseFloat(getComputedStyle(frase).fontSize); frase.style.fontSize = Math.min((f * palco.clientWidth * 0.9) / s.offsetWidth, (palco.clientHeight * 0.7) / (s.innerHTML.includes('<br>') ? 2 : 1)) + 'px'; } };
+  bott.forEach((b) => { b.addEventListener('pointerenter', () => mostra(b)); b.addEventListener('click', () => mostra(b)); });
+  palco.addEventListener('pointerleave', () => mostra(palco.dataset.stile === 'frase' ? null : bott[1]));
+  document.querySelectorAll('.ps-scelta [data-stile]').forEach((p) => p.addEventListener('click', () => {
+    document.querySelectorAll('.ps-scelta [data-stile]').forEach((q) => q.setAttribute('aria-pressed', String(q === p)));
+    palco.dataset.stile = p.dataset.stile; mostra(p.dataset.stile === 'frase' ? null : bott[1]);
+  }));
+  mostra(palco.dataset.stile === 'frase' ? null : bott[1]);
+  /* 10: la pillola segue il puntatore dentro la foto, uscendo torna vicino alla bottiglia */
+  document.querySelectorAll('[data-segue]').forEach((f) => {
+    const p = f.querySelector('.ps-pillola');
+    f.addEventListener('pointermove', (e) => { if (e.pointerType !== 'mouse') return; const r = f.getBoundingClientRect(); p.style.left = `${e.clientX - r.left + 14}px`; p.style.top = `${e.clientY - r.top + 16}px`; });
+    f.addEventListener('pointerleave', () => { p.style.left = p.style.top = ''; });
+  });
+
+  /* i caratteri: famiglia, peso, larghezza, spaziatura (em), interlinea, due parole. La lettera viene dall'ordine. Il primo è quello di adesso */
+  const CAR = [
+    ['Bricolage Grotesque', 700, '75%', -0.04, 0.84, 'Quello di adesso.'],
+    ['Anton', 400, '100%', 0, 0.98, 'Stretto e alto, da manifesto.'],
+    ['Big Shoulders', 900, '100%', -0.01, 0.86, 'Stretto anche lui, più squadrato.'],
+    ['Bowlby One', 400, '100%', -0.02, 0.98, 'Grasso e largo, da insegna.'],
+    ['Dela Gothic One', 400, '100%', -0.03, 0.98, 'Nero pieno, con gli angoli un po\' strani.'],
+    ['Rubik', 900, '100%', -0.03, 0.9, 'Grasso, con gli angoli morbidi.'],
+    ['Unbounded', 900, '100%', -0.03, 0.95, 'Largo e tondo.'],
+    ['Climate Crisis', 400, '100%', 0.01, 0.95, 'Il più grasso di tutti.'],
+    ['Bagel Fat One', 400, '100%', -0.01, 0.92, 'Gonfio e tondo.'],
+    ['Titan One', 400, '100%', -0.01, 0.95, 'Tondo, da fumetto.'],
+    ['Londrina Solid', 900, '100%', 0, 0.9, 'Sembra ritagliato a mano.'],
+    ['Caprasimo', 400, '100%', -0.02, 0.95, 'Con le grazie, grasso, anni Settanta.'],
+    ['Shrikhand', 400, '100%', 0, 0.98, 'Corsivo grasso, da locandina.'],
+  ], MANO = [
+    ['Caveat Brush', 'Quello della scritta a mano, il 5.'],
+    ['Permanent Marker', 'Pennarello grosso.'],
+    ['Knewave', 'Pennello, grasso e inclinato.'],
+    ['Sedgwick Ave Display', 'Pennarello da muro.'],
+    ['Just Another Hand', 'Stretto e alto, occupa poco.'],
+    ['Gochi Hand', 'Tondo, da quaderno.'],
+  ], LETTERE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', RIGA = 'set the mood.', NOME = '125 Bianco';
+  const metro = document.body.appendChild(document.createElement('span'));
+  metro.style.cssText = 'position:absolute;left:0;top:0;visibility:hidden;white-space:nowrap;font-size:100px';
+  const largo = (testo, fam, peso, st, ls) => { Object.assign(metro.style, { fontFamily: `'${fam}', sans-serif`, fontWeight: peso, fontStretch: st, letterSpacing: `${ls}em` }); metro.textContent = testo; return metro.getBoundingClientRect().width; };
+  const veste = (c) => `--ps-fam:'${c[0]}';--ps-w:${c[1]};--ps-st:${c[2]};--ps-ls:${c[3]}em;--ps-lh:${c[4]};--ps-k:${c.k.toFixed(3)}`;
+  const pillole = document.querySelector('[data-caratteri]'), sei = document.querySelector('.ps-accanto').parentNode;
+  /* si misura a caratteri arrivati: prima la larghezza sarebbe quella del carattere di riserva */
+  Promise.all([...CAR, ...MANO].map((c) => document.fonts.load(`${c.length > 2 ? c[1] : 400} 100px '${c[0]}'`, RIGA + NOME).catch(() => {}))).then(() => {
+    const r0 = largo(RIGA, ...CAR[0]), n0 = largo(NOME, CAR[0][0], 700, '75%', -0.02);
+    document.body.style.setProperty('--ps-e', (100 / r0).toFixed(4));
+    CAR.forEach((c) => (c.k = r0 / largo(RIGA, ...c)));
+    document.querySelector('[data-campioni]').innerHTML = CAR.map((c, i) => `<article class="ps-carta" style="${veste(c)}"><h3><span class="ps-num">${LETTERE[i]}</span>${c[0]}</h3><p>${c[5]}</p><div class="ps-prova" lang="en">Wines that<br>set the mood.</div><div class="ps-prova">Collezione 53 Primitivo</div></article>`).join('');
+    document.querySelector('[data-mano]').innerHTML = MANO.map((c, i) => `<article class="ps-carta" style="--ps-fam:'${c[0]}';--ps-k:${((1.2 * n0) / largo(NOME, c[0], 400, '100%', 0)).toFixed(3)}"><h3><span class="ps-num">${LETTERE[CAR.length + i]}</span>${c[0]}</h3><p>${c[1]}</p><figure class="ps-foto">${sei.querySelector('img').outerHTML}${sei.querySelector('svg').outerHTML}<span class="ps-accanto ps-amano" style="left:63%;top:57%">125 Bianco<br>Organic</span></figure></article>`).join('');
+    pillole.innerHTML = CAR.map((c, i) => `<button type="button" data-car="${i}" aria-pressed="${!i}">${LETTERE[i]} · ${c[0]}${i ? '' : ' (adesso)'}</button>`).join('');
+    metro.remove();
+  });
+  pillole.addEventListener('click', (e) => {
+    const p = e.target.closest('[data-car]'); if (!p) return;
+    [...pillole.children].forEach((q) => q.setAttribute('aria-pressed', String(q === p)));
+    veste(CAR[p.dataset.car]).split(';').forEach((v) => document.body.style.setProperty(v.slice(0, v.indexOf(':')), v.slice(v.indexOf(':') + 1)));
+    mostra(palco.dataset.stile === 'frase' ? null : bott[1]); /* la frase si rimisura col carattere nuovo */
+  });
+})();
+</script>
+<script>
+/* il colore: i bottoni cambiano la tinta di tutti gli esempi; sopra una tinta chiara si scrive in inchiostro, sopra una scura in bianco */
+(() => {
+  const box = document.querySelector('.tin'), bott = [...box.querySelectorAll('[data-tinta]')];
+  bott.forEach((b) => b.addEventListener('click', () => {
+    bott.forEach((q) => q.setAttribute('aria-pressed', String(q === b)));
+    const [r, g, bl] = b.dataset.tinta.match(/[0-9a-f]{2}/gi).map((x) => parseInt(x, 16));
+    box.style.setProperty('--acc', b.dataset.tinta);
+    box.style.setProperty('--acc-su', (r * 299 + g * 587 + bl * 114) / 1000 > 150 ? 'var(--ink)' : '#fff');
+  }));
+})();
+</script>
+</body>
+</html>

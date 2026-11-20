@@ -1,0 +1,503 @@
+/* PROVA dell'apertura Pop (18 nov 2026), pop-b.html, non collegata dal sito. Dopo le prime due prove ("non mi piace nessuno dei due: le bottiglie devono essere grandi quanto lo schermo,
+   la A puoi toglierla, le bottiglie devono stare insieme come se fossero appoggiate sul fondo della hero, anche le foto le metterei in un'altra sezione"; la A e la B di prima sono in
+   _archivio-prove/pop-a-18nov): le quattro bottiglie 3D alte quanto lo schermo, in fila sul fondo, dietro la frase gigante; si girano trascinandole, scorrendo scorrono a destra ed entra la prima collezione.
+   Sotto, la fila dei quattro vini con le loro foto. La base è l'apertura di foto.html (css/foto.css); movimenti in js/pop-prove.js. */
+.pp-apre { height: 240lvh; } /* 140lvh di palco fermo: 40 per luogo e bottone che vanno via, 100 per il passaggio alla prima collezione (le collezioni partono 200lvh prima della fine) */
+
+/* la frase gigante dietro le bottiglie, su due righe che scorrendo si allontanano */
+/* 19 nov, più in alto ("potresti spostarla un po' più alta così si legge la frase"): la prima riga dietro i colli, dove fra una bottiglia e l'altra c'è spazio; prima stava al centro, dietro le etichette */
+.fo-apre__st > .pp-titolo { z-index: 1; inset: calc(var(--header-h) + 2svh) 0 0; height: auto; display: grid; align-content: start; padding-top: 5svh; justify-items: center; }
+.pp-titolo span { font-size: min(27svh, 13.5vw); font-weight: 700; font-stretch: 75%; line-height: .84; letter-spacing: -.04em; white-space: nowrap; }
+/* luogo e bottone sopra la tela (la tela prende il trascinamento), a destra uno sopra l'altro accanto alla fila; sul telefono a metà, fra la frase e le bottiglie */
+.fo-apre__st > .fo-apre__a.pp-sopra { z-index: 3; grid-template-columns: minmax(0, 1fr); justify-items: end; text-align: right; }
+.pp-sopra .fo-apre__s { max-width: 13rem; }
+@media (min-width: 861px) { .fo-apre__st > .fo-apre__a.pp-sopra { padding-bottom: calc(var(--r0, 76px) + 24px); } } /* sopra l'angolo del mood (css/nav.css .cmood), che toccava il bottone */
+/* le prove del 20 nov per questo blocco (?riga=, js/pop-prove.js) */
+.pp-cifra { display: block; margin-bottom: 6px; font-family: var(--tf, var(--font-display)), sans-serif; font-weight: 900; font-size: clamp(3rem, 5vw, 4.5rem); line-height: .9; letter-spacing: var(--tl, -.02em); }
+@media (min-width: 861px) { body[data-riga="sinistra"] .fo-apre__st > .fo-apre__a.pp-sopra { justify-items: start; text-align: left; } }
+body[data-riga="via"] .pp-sopra { display: none; }
+body[data-riga="numeri"] .pp-sopra .fo-apre__s { max-width: 16.5rem; } /* l'elenco dei colori in due righe, non tre con "un dolce" da solo */
+.pp-tela { pointer-events: auto; touch-action: pan-y; cursor: grab; }
+.pp-tela:active { cursor: grabbing; }
+
+@media (max-width: 860px) {
+  .fo-apre__st > .pp-titolo { align-content: start; padding-top: 6svh; }
+  .pp-titolo span { font-size: 15vw; }
+  .fo-apre__st > .fo-apre__a.pp-sopra { align-content: center; justify-items: start; text-align: left; padding-bottom: 6svh; }
+}
+
+/* il pannello delle prove (fila o in volo, e la sezione foto; js/pop-prove.js), in basso a sinistra: si toglie con le prove. Una, Giostra e il verde acido in _archivio-prove/pop-hero-varianti-18nov */
+.pp-varianti { position: fixed; z-index: 200; left: 12px; bottom: 12px; padding: 6px 10px; border-radius: var(--r); background: #fff; color: var(--ink); font-size: .8125rem; line-height: 1.3; box-shadow: 0 8px 28px -12px rgb(0 0 0 / .4); }
+.pp-varianti summary { cursor: pointer; font-weight: 600; }
+.pp-varianti.is-via:not([open]) { opacity: 0; pointer-events: none; } /* sul logo del piede, dove coprirebbe la scritta (js/pop-piede.js) */
+.pp-varianti nav { display: grid; gap: 4px; padding-top: 6px; }
+.pp-varianti p { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px; }
+.pp-varianti span { min-width: 4.6rem; font-weight: 600; }
+.pp-varianti a { padding: 3px 7px; border-radius: var(--r); text-decoration: none; }
+.pp-varianti a:hover { background: var(--stone); }
+.pp-varianti a[aria-current] { background: var(--ink); color: #fff; }
+@media (max-width: 860px) { .pp-varianti { right: 12px; font-size: .75rem; } .pp-varianti span { min-width: 3.8rem; } }
+
+/* ---- la frase con le foto (18 nov). Da sweet-tape.com la struttura, non i materiali ("non dovevi copiare o mettere gli scotch, va fatto in base allo stile che stiamo adottando"):
+   le foto stanno fra le parole giganti, nel carattere e nel raggio dell'apertura. La versione con carta da pacchi e nastro è in _archivio-prove/pop-carta-nastro-18nov, la curva coi
+   vitigni che stava sopra ("togliamo anche questa, non mi piace") in _archivio-prove/pop-curva-vitigni-18nov. Movimenti in js/pop-frase.js ---- */
+
+/* la frase scorre di lato sul palco fermo (la struttura delle parole giganti di sweet-tape, nel nostro carattere): lettere alte un terzo dello schermo, foto grandi due terzi */
+.pf { position: relative; }
+.pf-st { position: sticky; top: 0; height: 100lvh; overflow: hidden; display: flex; align-items: center; }
+.pf-rullo { display: flex; align-items: center; gap: .14em; width: max-content; padding-top: 3svh; font-size: 34svh; font-weight: 700; font-stretch: 75%; line-height: .84; letter-spacing: -.04em; white-space: nowrap; will-change: transform; }
+.pf-parola { display: block; }
+.pf-foto { position: relative; z-index: 1; flex: none; display: block; height: 64svh; aspect-ratio: 4 / 5; margin-inline: -.05em; font-size: 1rem; color: var(--ink); transform-origin: 50% 100%; translate: 0 var(--y, 0); }
+/* ognuna un po' più su o più giù della riga, e appena sopra le lettere vicine: davanti alla frase */
+.pf-foto:nth-of-type(1) { --y: -5svh; }
+.pf-foto:nth-of-type(2) { --y: 5svh; }
+.pf-foto:nth-of-type(3) { --y: -3svh; }
+.pf-foto:nth-of-type(4) { --y: 4svh; }
+.pf-foto img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: var(--r); }
+/* sotto la foto il nome del vino e la denominazione, sempre visibili e mai a capo */
+.pf-nome { position: absolute; left: 0; top: calc(100% + 12px); display: flex; gap: .6em; font-size: 1rem; font-weight: 400; font-stretch: 100%; line-height: 1.3; letter-spacing: 0; white-space: nowrap; }
+.pf-nome b { font-weight: 600; } /* le foto non sono link ("alle foto non voglio i link"): i vini si aprono dalle collezioni */
+/* la nuvoletta col nome del vino (19 nov: "dove mostriamo il vino ... un riferimento che indica il vino, una nuvoletta, qualcosa di pop, così se vado in hover alla bottiglia 3D"):
+   la punta della coda su --bx --by, sulla bottiglia; il corpo sopra (data-sotto: sotto); --cx dove sta la coda lungo il corpo, --coda quanto è lunga. Fondo pieno, bordo e ombra d'inchiostro.
+   Nella frase al posto della didascalia, e salta fuori quando la foto entra (js/pop-frase.js). Sulle bottiglie 3D dell'apertura no: provata e tolta lo stesso giorno
+   ("nella hero quelle nuvolette così non mi piacciono") */
+.pf-foto { container-type: size; } /* la coda lunga in cqh, in proporzione alla foto */
+.pp-nuvola { --cx: 50%; --coda: 18px; position: absolute; z-index: 3; left: var(--bx, 50%); top: var(--by, 50%); translate: calc(-1 * var(--cx)) calc(-100% - var(--coda)); rotate: -2deg; transform-origin: var(--cx) calc(100% + var(--coda)); display: grid; padding: .35em .9em .45em; border: 2px solid var(--ink); border-radius: 1.5em; background: #fff; color: var(--ink); filter: drop-shadow(3px 3px 0 var(--ink)); font-size: .75rem; font-weight: 400; font-stretch: 100%; line-height: 1.25; letter-spacing: 0; text-align: center; white-space: nowrap; pointer-events: none; }
+.pp-nuvola b { font-size: 1.667em; font-weight: 700; font-stretch: 75%; line-height: 1.05; letter-spacing: -.01em; }
+.pp-nuvola::before, .pp-nuvola::after { content: ''; position: absolute; left: var(--cx); translate: -50% 0; clip-path: polygon(0 0, 100% 0, 50% 100%); }
+.pp-nuvola::before { top: 100%; width: 18px; height: calc(var(--coda) + 2px); background: var(--ink); }
+.pp-nuvola::after { top: calc(100% - 1px); width: 14px; height: calc(var(--coda) * .78 + 2.5px); background: #fff; } /* bianco dentro la coda: il bordo resta largo 2 px anche sui lati obliqui */
+.pp-nuvola[data-sotto] { translate: calc(-1 * var(--cx)) var(--coda); transform-origin: var(--cx) calc(-1 * var(--coda)); }
+.pp-nuvola[data-sotto]::before, .pp-nuvola[data-sotto]::after { top: auto; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.pp-nuvola[data-sotto]::before { bottom: 100%; }
+.pp-nuvola[data-sotto]::after { bottom: calc(100% - 1px); }
+.pf-attesa .pp-nuvola { scale: .3; opacity: 0; transition: scale .45s cubic-bezier(.3, 1.6, .5, 1), opacity .15s; }
+.pf-attesa .pp-nuvola.is-su { scale: 1; opacity: 1; }
+/* il cerchio a pennarello (19 nov, scelto dal campionario pop-stili.html: "scelgo al momento cerchio pennarello ma lo farei anche sulle foto grandi"): un giro bianco col bordo
+   d'inchiostro attorno alla bottiglia e il nome accanto. Ha preso il posto del fumetto nella frase e in Lettere (il fumetto resta qui sopra per il campionario; la versione di
+   prima in _archivio-prove/pop-fumetto-foto-19nov). Il riquadro è la bottiglia: in centesimi della foto nella frase, in pixel in Lettere (lo mette js/pop-frase.js, che scrive
+   anche il tracciato alla misura vera: così il tratto è largo uguale ovunque). --su da 0 a 1 disegna il giro, in fondo compare il nome; data-lato dice da che parte sta */
+@property --su { syntax: '<number>'; inherits: true; initial-value: 1; }
+.pp-cerchio { --tr: 4px; position: absolute; z-index: 3; pointer-events: none; }
+/* a giro non ancora partito non si deve vedere niente: col tratteggio "1px" in fondo al tracciato ricominciava un tratto lungo zero, e la punta tonda ne faceva un punto
+   ("il punto nella foto lettere esce fuori"). Quindi il vuoto è più lungo del tracciato, e finché --su è zero il disegno è spento */
+.pp-cerchio svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; fill: none; stroke-linecap: round; stroke-linejoin: round; opacity: clamp(0, calc(var(--su, 1) * 100), 1); }
+.pp-cerchio path { stroke: var(--ink); stroke-width: calc(var(--tr) * 2.25); stroke-dasharray: 1px 2px; stroke-dashoffset: calc((1 - var(--su, 1)) * 1px); }
+.pp-cerchio path + path { stroke: #fff; stroke-width: var(--tr); }
+.pp-cerchio b { position: absolute; margin: var(--my, 0) 0 0 var(--mx, 0); font-size: clamp(1.5rem, 9cqw, 2.25rem); font-weight: 700; font-stretch: 75%; line-height: .86; letter-spacing: -.02em; white-space: nowrap; color: #fff; -webkit-text-stroke: calc(var(--tr) * 1.25) var(--ink); paint-order: stroke fill; rotate: -3deg; opacity: clamp(0, calc((var(--su, 1) - .7) * 4), 1); }
+.pp-cerchio[data-lato="dx"] b { left: calc(100% + .2em); top: 50%; translate: 0 -50%; }
+.pp-cerchio[data-lato="sx"] b { right: calc(100% + .2em); top: 50%; translate: 0 -50%; text-align: right; }
+.pp-cerchio[data-lato="su"] b { left: 50%; bottom: calc(100% + .1em); translate: -50% 0; text-align: center; }
+.pp-cerchio[data-lato="giu"] b { left: 50%; top: calc(100% + .1em); translate: -50% 0; text-align: center; }
+/* le altre cose del vino sotto il nome (Lettere: js/pop-frase.js le prende da js/data.js e le fa uscire una alla volta scorrendo). La stessa scritta, più piccola; stanno
+   appese sotto il nome, che così resta dov'era. --nw è il posto che hanno, lo misura js */
+.pp-note { position: absolute; top: calc(100% + .4em); display: grid; gap: .3em; width: max-content; max-width: min(var(--nw, 20em), 26em); font-size: clamp(1.0625rem, 1.5vw, 1.625rem); line-height: 1.04; letter-spacing: 0; white-space: normal; text-wrap: balance; -webkit-text-stroke-width: calc(var(--tr) * .65); }
+.pp-note i { font-style: normal; }
+.pp-cerchio[data-lato="dx"] .pp-note { left: 0; text-align: left; }
+.pp-cerchio[data-lato="sx"] .pp-note { right: 0; text-align: right; justify-items: end; }
+.pp-cerchio[data-lato="su"] .pp-note, .pp-cerchio[data-lato="giu"] .pp-note { left: 50%; translate: -50% 0; text-align: center; justify-items: center; }
+.pf-attesa .pp-cerchio { --su: 0; transition: --su .8s cubic-bezier(.3, .7, .3, 1); }
+.pf-attesa .pp-cerchio.is-su { --su: 1; }
+
+/* ---- prove della sezione foto (18 nov: "farei anche alternative nella sezione foto, magari anche foto fullwidth se si può"): ?foto=piena|sipario, una sola si vede.
+   Sul computer le foto larghe 3:2 dagli originali (tools/pop_foto_larghe.py), sul telefono i tagli 4:5 ---- */
+body:not([data-foto="piena"]) .pl, body:not([data-foto="sipario"]) .pw, body[data-foto] .pf { display: none; }
+/* Piena: le foto a tutta larghezza una sotto l'altra, i pezzi della frase giganti fra una e l'altra; entrando si aprono da riquadro a schermo intero */
+.pl { padding: 6vh 0 12vh; overflow: clip; }
+.pl-parola { margin: 0; padding: 7vh var(--pad-x) 5vh; font-size: min(30svh, 17vw); font-weight: 700; font-stretch: 75%; line-height: .84; letter-spacing: -.04em; white-space: nowrap; }
+.pl-parola--dx { text-align: right; }
+.pl-parola--centro { text-align: center; }
+.pl-foto { margin: 0 0 5vh; }
+.pl-foto picture { display: block; height: 88svh; overflow: hidden; }
+.pl-foto img { display: block; width: 100%; height: 118%; object-fit: cover; } /* più alta della cornice: dentro scorre un poco più piano */
+.pl-foto figcaption, .pw-box { display: flex; align-items: baseline; gap: .6em; font-size: 1rem; line-height: 1.3; white-space: nowrap; }
+.pl-foto figcaption { padding: 12px var(--pad-x) 0; }
+.pl-foto b, .pw-box b { font-weight: 600; }
+/* Sipario: palco fermo, le foto a tutto schermo si coprono dal basso una dopo l'altra; il pezzo di frase e il nome in un riquadro bianco pieno (si legge su qualsiasi foto) */
+.pw { position: relative; height: 420lvh; }
+.pw-st { position: sticky; top: 0; height: 100lvh; overflow: hidden; }
+.pw-foto { position: absolute; inset: 0; margin: 0; }
+.pw-foto picture, .pw-foto img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.pw-box { position: absolute; left: var(--pad-x); bottom: 6svh; flex-wrap: wrap; column-gap: .6em; row-gap: 4px; max-width: calc(100% - 2 * var(--pad-x)); padding: 18px 22px 20px; border-radius: var(--r); background: #fff; color: var(--ink); }
+.pw-frase { flex-basis: 100%; margin-bottom: 6px; font-size: clamp(2.4rem, 5.4vw, 5rem); font-weight: 700; font-stretch: 75%; line-height: .88; letter-spacing: -.03em; }
+@media (max-width: 860px) {
+  .pl-parola { font-size: 19vw; }
+  .pl-foto picture { height: 72svh; }
+  .pl-foto figcaption { flex-direction: column; gap: 2px; }
+  .pw-box { bottom: 5svh; padding: 14px 16px 16px; font-size: .9375rem; }
+}
+
+/* ---- altre prove della sezione foto (18 nov: "foto dammi altre alternative, wow"): ?foto=lettere|tunnel|mosaico. Movimenti in js/pop-frase.js ---- */
+body:not([data-foto="lettere"]) .pk, body:not([data-foto="tunnel"]) .pn, body:not([data-foto="mosaico"]) .pm { display: none; }
+/* Lettere: sopra la foto a tutto schermo un velo bianco con le parole vuote; il nome nel riquadro bianco quando la foto è intera */
+.pk { position: relative; height: 760lvh; } /* era 600: scorrendo ancora, a foto intera, escono le righe sul vino */
+.pk-st { position: sticky; top: 0; height: 100lvh; overflow: hidden; }
+.pk-passo { position: absolute; inset: 0; margin: 0; }
+.pk-passo picture, .pk-passo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.pk-velo { position: absolute; inset: 0; width: 100%; height: 100%; }
+.pk-velo text { fill: #000; text-anchor: middle; font-weight: 700; font-stretch: 75%; letter-spacing: -.04em; }
+.pk-metro { position: absolute; left: 0; top: 0; visibility: hidden; pointer-events: none; white-space: pre; font-size: 100px; font-weight: 700; font-stretch: 75%; letter-spacing: -.04em; } /* js misura qui le parole del velo */
+/* a foto intera il giro di pennarello attorno alla bottiglia col nome accanto (.pp-cerchio, più su): js/pop-frase.js lo mette sulla bottiglia e lo disegna (--su).
+   La didascalia resta per lo schermo parlante; con le animazioni ridotte si vede lei e non il giro (lì la foto sta solo dentro le lettere) */
+.pk-passo { isolation: isolate; } /* il giro di pennarello resta nella sua foto: senza, quello della prima stava sopra le foto dopo */
+.pk-passo .pp-cerchio { --tr: clamp(4px, .42vw, 7px); }
+.pk-passo .pp-cerchio b { font-size: clamp(1.75rem, 3.4vw, 3.75rem); }
+.pk-passo .pw-box { flex-direction: column; align-items: flex-start; } /* nome, denominazione e le altre righe una sotto l'altra */
+.pk-passo .pw-box span { white-space: normal; }
+@media (prefers-reduced-motion: no-preference) { .pk-passo .pw-box { width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); } }
+/* Tunnel: ogni cosa parte dal centro del palco, js la porta in profondità. Alta 560lvh: js divide la corsa in 100 entrando e 460 sul palco */
+.pn { position: relative; height: 560lvh; }
+.pn-st { position: sticky; top: 0; height: 100lvh; overflow: hidden; }
+.pn-cosa { position: absolute; left: 50%; top: 50%; margin: 0; transform: translate(-50%, -50%); }
+.pn-foto { display: block; height: 58svh; aspect-ratio: 4 / 5; color: var(--ink); }
+.pn-foto img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: var(--r); }
+.pn-parola { font-size: min(26svh, 13vw); font-weight: 700; font-stretch: 75%; line-height: .84; letter-spacing: -.04em; white-space: nowrap; }
+.pn-fine { width: 100%; height: 100%; }
+.pn-fine picture, .pn-fine img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* Mosaico: la griglia sotto l'header, il mappamondo al centro, intorno le altre foto e la frase in due caselle; ogni foto col nome del vino */
+.pm { position: relative; height: 340lvh; }
+.pm-st { position: sticky; top: 0; height: 100lvh; overflow: hidden; }
+.pm-griglia { position: absolute; inset: calc(var(--header-h) + 8px) var(--pad-x) 16px; display: grid; gap: 10px; grid-template-columns: 1fr 1fr 2fr 1fr 1fr; grid-template-rows: 1fr 1.35fr 1fr; /* la casella al centro larga come lo schermo: a tutto schermo si vede quasi tutta la foto */ grid-template-areas: "a w1 w1 w1 b" "a c x d b" "e w2 w2 w2 f"; }
+.pm-pezzo { position: relative; min-width: 0; min-height: 0; margin: 0; }
+.pm-pezzo picture, .pm-pezzo img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: var(--r); }
+.pm-a { grid-area: a; } .pm-b { grid-area: b; } .pm-c { grid-area: c; } .pm-centro { grid-area: x; } .pm-d { grid-area: d; } .pm-e { grid-area: e; } .pm-f { grid-area: f; }
+.pm-w1 { grid-area: w1; } .pm-w2 { grid-area: w2; }
+.pm-parola { display: flex; align-items: center; justify-content: center; }
+.pm-parola span { transition: none; /* js le misura subito dopo averle ingrandite: con le animazioni ridotte base.css dà a tutto una transizione breve e si leggeva la grandezza vecchia */ display: inline-block; font-weight: 700; font-stretch: 75%; line-height: .84; letter-spacing: -.04em; white-space: nowrap; text-align: center; }
+.pm-nome { position: absolute; left: 8px; bottom: 8px; padding: 3px 8px; border-radius: var(--r); background: #fff; color: var(--ink); font-size: .8125rem; font-weight: 600; line-height: 1.3; white-space: nowrap; }
+.pm-st > .pw-box { margin: 0; visibility: hidden; opacity: 0; }
+@media (max-width: 860px) {
+  .pn-foto { height: 36svh; }
+  .pn-parola { font-size: 15vw; }
+  .pm-griglia { bottom: 7svh; grid-template-columns: 1fr 1.7fr 1fr; grid-template-rows: .62fr 1fr 1fr .62fr; grid-template-areas: "w1 w1 w1" "a x b" "c x d" "w2 w2 w2"; gap: 8px; }
+  .pm-e, .pm-f { display: none; }
+  .pm-nome { left: 6px; bottom: 6px; font-size: .75rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pk, .pn, .pm { height: auto; }
+  .pk-st, .pn-st, .pm-st { position: relative; }
+  .pk-st { height: auto; }
+  .pk-passo { position: relative; height: 100svh; } /* le parole con la foto dentro, una sotto l'altra */
+  .pn-st { height: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr)); gap: 4rem 16px; padding: 12vh var(--pad-x) 16vh; }
+  .pn-cosa { position: relative; left: auto; top: auto; transform: none; }
+  .pn-parola { grid-column: 1 / -1; font-size: 15vw; white-space: normal; }
+  .pn-foto { width: 100%; height: auto; }
+  .pn-fine { grid-column: 1 / -1; height: 100svh; }
+}
+
+/* con le animazioni ridotte la frase va a capo e si legge ferma, con le foto grandi */
+@media (prefers-reduced-motion: reduce) {
+  .pf { height: auto !important; }
+  .pf-st { position: static; height: auto; padding: 12vh var(--pad-x) 16vh; }
+  .pf-rullo { flex-wrap: wrap; width: auto; row-gap: .5em; padding: 0; font-size: 15vw; white-space: normal; }
+  .pf-foto { height: min(62vw, 70svh); margin-bottom: 3.5rem; }
+  .pw { height: auto; }
+  .pw-st { position: static; height: auto; }
+  .pw-foto { position: relative; height: 100svh; } /* il sipario non scorre: le foto una sotto l'altra */
+  .pp-nuvola { transition: none; }
+  .pk-passo .pp-cerchio { display: none; }
+}
+/* mentre un palco è fermo (collezioni) l'header non ha il vetro: il fondo sotto è pieno e la riga in alto, sotto il vetro, usciva grigia e sfocata */
+.nav.pp-palco::before { opacity: 0; }
+@media (max-width: 860px) {
+  .pf-rullo { font-size: 26svh; }
+  .pf-foto { height: 52svh; }
+  .pf-nome { flex-direction: column; gap: 2px; font-size: .9375rem; }
+}
+
+/* ---- le collezioni (18 nov: "raccontare le collezioni a sezione usando il 3D, col clip-path passiamo all'altra collezione e la bottiglia mentre gira cambia"; poi "non il cerchio
+   ma una scheda fissa che col clip-path verso il lato mostra l'altra collezione", e unite all'apertura in pop-b.html). Palco fermo; una scheda per collezione, una sopra l'altra:
+   la successiva si scopre da destra verso sinistra. Fondo bianco e pietra alternati (due neutri, niente colori per sezione). Movimenti in js/pop-collezioni.js ---- */
+.pc { position: relative; }
+/* subito dopo l'apertura ("la parte delle collezioni la passerei come seconda"): la sezione parte 200lvh prima della fine dell'apertura, così il suo palco si ferma mentre quello
+   dell'apertura è ancora fermo; le altre bottiglie rotolano via a destra e subito dietro di loro la prima scheda entra da sinistra, la Collezione 53 resta e va al centro
+   (js/pop-collezioni.js e js/pop-prove.js). Le schede partono coperte: le scopre js. Il palco non prende il mouse, le schede sì (finché sono coperte no: lì sotto si trascinano ancora le bottiglie) */
+.pc { margin-top: -200lvh; }
+.pc-ancora { position: absolute; top: 100lvh; } /* "Vai alle collezioni" arriva a scheda scoperta */
+.pc-st { position: sticky; top: 0; height: 100lvh; overflow: hidden; pointer-events: none; }
+.pc-pan { clip-path: inset(0 0 0 100%); pointer-events: auto; }
+.pc-pan { position: absolute; inset: 0; isolation: isolate; display: grid; /* isolate: i testi di una schermata restano sotto quella dopo */ grid-template-columns: minmax(0, 24rem) minmax(0, 1fr) minmax(0, 24rem); grid-template-rows: auto 1fr; padding: calc(var(--header-h) + 1svh) var(--pad-x) 8svh; background: #fff; color: var(--ink); }
+.pc-pan:nth-child(even) { background: var(--stone); }
+.pc-cima { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 12px; border-bottom: 1px solid currentColor; font-size: .9375rem; }
+.pc-nome { position: absolute; z-index: 0; left: 0; right: 0; top: 50%; margin: 0; transform: translateY(-50%); text-align: center; font-size: min(30svh, 15vw); font-weight: 700; font-stretch: 75%; line-height: .84; letter-spacing: -.04em; white-space: nowrap; pointer-events: none; }
+.pc-sx, .pc-dx { position: relative; z-index: 1; align-self: end; }
+.pc-sx { grid-column: 1; }
+.pc-dx { grid-column: 3; justify-self: end; text-align: right; }
+.pc-frase { margin: 0 0 12px; font-size: clamp(1.5rem, 2.2vw, 2.25rem); font-weight: 600; line-height: 1.05; letter-spacing: -.02em; }
+.pc-d { margin: 0; font-size: 1.0625rem; line-height: 1.45; }
+.pc-n { margin: 0 0 10px; font-size: 1rem; }
+.pc-tela { position: absolute; z-index: 5; left: 0; top: 0; width: 100%; height: 100svh; pointer-events: none; }
+@media (max-width: 860px) {
+  .pc-pan { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr auto auto; gap: 10px; padding-bottom: 5svh; }
+  .pc-nome { top: calc(var(--header-h) + 13svh); transform: none; font-size: 16vw; }
+  .pc-sx, .pc-dx { grid-column: 1; justify-self: stretch; text-align: left; }
+  .pc-sx { grid-row: 3; }
+  .pc-dx { grid-row: 4; }
+  .pc-frase { font-size: 1.375rem; }
+  .pc-d { font-size: 1rem; }
+  .pc-frase + .pc-d { display: none; } /* sul telefono basta la frase; il racconto resta dove la frase non c'è (Collezione 53) */
+}
+/* gli altri vini della collezione, come foto del catalogo (i bottoni delle carte di foto.html, più piccoli) */
+.pc-vini { display: flex; justify-content: flex-end; gap: 12px; margin-bottom: 8px; } /* 12 px: fra due nomi lunghi, se no si leggono come uno; quelli che non ci stanno li toglie js/pop-collezioni.js */
+.pc-vini .fo-bt { width: auto; min-width: clamp(64px, 7svh, 88px); } /* largo quanto il nome: "i nomi non devono andare a capo" */
+.pc-vini .fo-bt img { height: clamp(120px, 22svh, 210px); }
+.pc-vini .fo-bt span { font-size: .8125rem; white-space: nowrap; }
+@media (max-width: 860px) {
+  .pc-vini { justify-content: flex-start; }
+  .pc-vini .fo-bt:nth-child(n + 4) { display: none; }
+  .pc-vini .fo-bt img { height: 13svh; }
+}
+@media (prefers-reduced-motion: reduce) { .pp-apre { height: 100lvh; } .pc { margin-top: 0; } .pc-ancora { top: 0; } .pc-pan:first-child { clip-path: none; } } /* senza movimento le collezioni vengono dopo l'apertura, ferme, senza passaggio */
+
+/* ---- I CARATTERI di pop-b.html (19 nov). Titoli: "proviamo unbounded per i titoli", poi "proviamo londrina", poi "vale anche per questi titoli" (la frase della
+   collezione) e "anche qui fallo, su quello ufficiale" (il nome accanto al giro). Testi: "per i testi, paragrafi ecc. mettiamo un font lineare, non usiamo grotesk, ma sempre
+   pop". La pagina nasce con body[data-titoli="londrina"][data-testi="dm"]; ?titoli= e ?testi= (js/pop-prove.js, pannello delle prove) cambiano carattere o tornano a Bricolage.
+   Titoli sono le scritte giganti, la frase della collezione e il nome accanto al giro; tutto il resto è testo e segue --font (anche le righe sul vino sotto il nome).
+   Ogni carattere dei titoli dice le sue misure: --tk quanto va rimpicciolito per avere la stessa larghezza di riga di Bricolage stretto (dove la scritta deve stare nello
+   schermo), --ta la frase dell'apertura (ai lati c'è posto), --to la frase che scorre di lato, --ti l'interlinea, --tl la spaziatura, --tn il nome accanto al giro sulle foto piccole (lì è stretto),
+   --tg lo stesso nome sulle foto grandi di Lettere (lì c'è posto, e sotto ha le righe: deve restare il più grande), --tm i titoli medi. Le parole di Lettere e del Mosaico le misura js ---- */
+body[data-titoli="londrina"] { --tf: 'Londrina Solid'; --tk: .715; --tl: -.01em; --ti: .9; --ta: 13vw; --to: 28svh; --tn: .85; --tg: 1.1; --tm: 1.08; } /* largo una volta e mezza Bricolage stretto */
+body[data-titoli="unbounded"] { --tf: 'Unbounded'; --tk: .44; --tl: -.03em; --ti: .95; --ta: 8vw; --to: 21svh; --tn: .5; --tg: .62; --tm: .62; } /* largo più del doppio */
+@media (max-width: 860px) {
+  body[data-titoli="londrina"] { --ta: 16vw; --to: 22svh; }
+  body[data-titoli="unbounded"] { --ta: 10.5vw; --to: 16svh; } /* la riga lunga quasi da bordo a bordo */
+}
+body[data-titoli] :is(.pp-titolo span, .pc-nome, .pf-parola, .pl-parola, .pw-frase, .pk-velo text, .pk-metro, .pn-parola, .pm-parola span, .pc-frase, .pp-cerchio b) { font-family: var(--tf), sans-serif; font-weight: 900; font-stretch: 100%; letter-spacing: var(--tl); }
+body[data-titoli] .pp-titolo span { font-size: min(27svh, var(--ta)); line-height: var(--ti); }
+body[data-titoli] .pc-nome { font-size: min(30svh, calc(15vw * var(--tk))); }
+body[data-titoli] .pf-rullo { font-size: var(--to); }
+body[data-titoli] .pl-parola { font-size: min(30svh, calc(17vw * var(--tk))); }
+body[data-titoli] .pw-frase { font-size: calc(clamp(2.4rem, 5.4vw, 5rem) * var(--tk)); }
+body[data-titoli] .pn-parola { font-size: min(26svh, calc(13vw * var(--tk))); }
+body[data-titoli] .pc-frase { font-size: calc(clamp(1.5rem, 2.2vw, 2.25rem) * var(--tm)); line-height: 1; }
+body[data-titoli] .pp-cerchio b { font-size: calc(clamp(1.5rem, 9cqw, 2.25rem) * var(--tn)); -webkit-text-stroke-width: calc(var(--tr) * 1.25 * var(--tn)); } /* il bordo cala col nome, sennò mangia le lettere */
+body[data-titoli] .pk-passo .pp-cerchio b { font-size: calc(clamp(1.75rem, 3.4vw, 3.75rem) * var(--tg)); -webkit-text-stroke-width: calc(var(--tr) * 1.25 * min(1, var(--tg))); }
+@media (max-width: 860px) {
+  body[data-titoli] .pc-nome { font-size: calc(16vw * var(--tk)); }
+  body[data-titoli] .pl-parola { font-size: calc(19vw * var(--tk)); }
+  body[data-titoli] .pn-parola { font-size: calc(15vw * var(--tk)); }
+  body[data-titoli] .pc-frase { font-size: calc(1.375rem * var(--tm)); }
+}
+@media (prefers-reduced-motion: reduce) { body[data-titoli] :is(.pf-rullo, .pn-parola) { font-size: calc(15vw * var(--tk)); } }
+
+/* i testi: un lineare al posto del grotesk. DM Sans è quello messo, gli altri si provano dal pannello */
+body[data-testi="dm"] { --font: 'DM Sans', system-ui, sans-serif; }
+body[data-testi="outfit"] { --font: 'Outfit', system-ui, sans-serif; }
+body[data-testi="figtree"] { --font: 'Figtree', system-ui, sans-serif; }
+body[data-testi="nunito"] { --font: 'Nunito', system-ui, sans-serif; }
+body[data-testi] .pp-note { font-family: var(--font); font-size: clamp(1rem, 1.3vw, 1.4375rem); font-weight: 700; font-stretch: 100%; -webkit-text-stroke-width: calc(var(--tr) * .65); } /* le righe sul vino sono testo, non titolo; il lineare è più largo, quindi un poco più piccole */
+/* titoli lasciati in Bricolage coi testi cambiati (?titoli=bricolage): ereditavano il carattere della pagina, qui lo tengono */
+body[data-testi]:not([data-titoli]) :is(.pp-titolo span, .pc-nome, .pf-parola, .pl-parola, .pw-frase, .pk-velo text, .pk-metro, .pn-parola, .pm-parola span, .pp-cerchio b) { font-family: 'Bricolage Grotesque', system-ui, sans-serif; }
+
+/* ---- LE SEZIONI SOTTO le foto (19 nov: "ora bisogna aggiungere le altre sezioni, quelle dell'azienda, i premi, le news, in stile pop, come stiamo andando").
+   Stesso linguaggio del resto: titoli grandi nel carattere dei titoli, testi nel lineare, le foto come stampe appena storte, e il pennarello come segno. Fondi alternati
+   (pietra, bianco, notte; poi il piede, pietra) perché due sezioni dello stesso fondo di fila si leggono come una sola. Markup in pop-b.template.html, premi e news e
+   movimenti in js/pop-sotto.js. --tx: quanto vanno rimpiccioliti i titoli con un carattere più largo di Londrina ---- */
+body[data-titoli="unbounded"] { --tx: .62; }
+/* il pennarello tirato in orizzontale. La riga è quasi dritta, quindi allargarla quanto la sezione non ne cambia lo spessore; si disegna con --su come il giro,
+   e finché --su è zero è spenta (sennò la punta tonda lascia un punto) */
+.pp-riga { display: block; width: 100%; height: 12px; overflow: visible; fill: none; stroke: currentColor; stroke-width: 4.5; stroke-linecap: round; opacity: clamp(0, calc(var(--su, 1) * 100), 1); }
+.pp-riga path { stroke-dasharray: 1px 2px; stroke-dashoffset: calc((1 - var(--su, 1)) * 1px); }
+.pp-attesa :is(.pa-riga, .pq-riga) { --su: 0; transition: --su 1.1s cubic-bezier(.3, .7, .3, 1); } /* js mette pp-attesa sul body e is-su sulla riga che entra */
+.pp-attesa :is(.pa-riga, .pq-riga).is-su { --su: 1; }
+:is(.pa-t, .pa-h, .pa-n b, .pd-t, .pd-conta dd, .pq-t, .pq-h) { margin: 0; font-weight: 700; font-stretch: 75%; line-height: .9; letter-spacing: -.03em; text-wrap: balance; }
+body[data-titoli] :is(.pa-t, .pa-h, .pa-n b, .pd-t, .pd-conta dd, .pq-t, .pq-h, .tv__t) { font-family: var(--tf), sans-serif; font-weight: 900; font-stretch: 100%; letter-spacing: var(--tl); }
+body[data-testi]:not([data-titoli]) :is(.pa-t, .pa-h, .pa-n b, .pd-t, .pd-conta dd, .pq-t, .pq-h, .tv__t) { font-family: 'Bricolage Grotesque', system-ui, sans-serif; }
+
+/* l'azienda: il titolo gigante e dove siamo, poi quattro capitoli a tutta larghezza (numero, titolo e testo, foto) */
+.pa { padding: clamp(88px, 16vh, 180px) var(--pad-x) clamp(40px, 7vh, 80px); background: var(--stone); color: var(--ink); }
+.pa-testa { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 30%); align-items: end; gap: 24px 4vw; margin-bottom: clamp(48px, 9vh, 110px); } /* a destra la masseria e dove siamo, sulla colonna delle foto dei capitoli */
+.pa-dove .pa-f { --g: 1.6deg; margin-bottom: 22px; }
+.pa-t, .pq-t { font-size: calc(clamp(3rem, 9.4vw, 11rem) * var(--tx, 1)); line-height: .88; }
+.pa-t { max-width: 9.6em; }
+.pa-lead, .pd-lead { margin: 0; font-size: var(--fs-lead); line-height: 1.45; color: var(--ink-2); text-wrap: pretty; }
+.pa-righe { list-style: none; margin: 0; padding: 0; }
+.pa-riga { display: grid; grid-template-columns: minmax(0, 13rem) minmax(0, 1fr) minmax(0, 30%); column-gap: 4vw; padding-bottom: clamp(48px, 9vh, 110px); }
+.pa-riga > .pp-riga { grid-column: 1 / -1; margin-bottom: clamp(28px, 5vh, 56px); }
+.pa-n { display: grid; gap: 10px; margin: 0; font-size: .9375rem; line-height: 1.3; }
+.pa-n b { font-size: calc(clamp(2.6rem, 5vw, 5.5rem) * var(--tx, 1)); line-height: .8; }
+.pa-h { font-size: calc(clamp(2.2rem, 4.6vw, 5.25rem) * var(--tx, 1)); }
+.pa-n, .pa-f { align-self: start; }
+.pa-c { display: flex; flex-direction: column; align-items: flex-start; } /* il titolo in alto, il testo in fondo all'altezza del piede della foto: lo spazio in mezzo è voluto, non un buco sotto */
+.pa-c p { margin: auto 0 0; padding-top: 20px; max-width: 34rem; font-size: 1.125rem; line-height: 1.5; color: var(--ink-2); text-wrap: pretty; }
+.pa-f { margin: 0; rotate: var(--g, -2deg); }
+.pa-riga:nth-child(even) .pa-f { --g: 1.6deg; }
+.pa-f img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r); }
+.pa-f figcaption { margin-top: 10px; font-size: .875rem; line-height: 1.3; color: var(--ink-2); }
+/* la foto si scopre dall'alto e si storce quando la riga entra */
+.pp-attesa .pa-f { clip-path: inset(0 0 100% 0); rotate: 0deg; transition: clip-path .9s cubic-bezier(.2, .7, .2, 1) .15s, rotate .9s cubic-bezier(.2, .7, .2, 1) .15s; }
+.pp-attesa .is-su .pa-f { clip-path: inset(0 0 0 0); rotate: var(--g, -2deg); }
+
+/* i premi: il numero enorme e la parola sulla stessa riga, sotto quante medaglie per concorso (le fasce di medaglie sono state tolte: _archivio-prove/pop-fasce-medaglie-19nov) */
+.pd { padding: clamp(88px, 16vh, 180px) 0 clamp(72px, 12vh, 140px); overflow: hidden; background: #fff; color: var(--ink); }
+.pd-testa { display: grid; padding: 0 var(--pad-x); }
+.pd-t, .pd-lead { grid-area: 1 / 1; }
+.pd-lead { justify-self: end; align-self: start; max-width: 22rem; margin-top: .4em; } /* nel vuoto in alto a destra, sopra la parola */
+.pd-t { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: .12em; font-size: calc(clamp(2.6rem, 7.4vw, 8.5rem) * var(--tx, 1)); line-height: .86; }
+.pd-t b { font-size: 3.5em; font-weight: inherit; line-height: .78; }
+.pd-conta { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 28px 2.4vw; margin: clamp(36px, 6vh, 64px) 0 0; padding: 0 var(--pad-x); }
+.pd-conta div { display: grid; align-content: start; gap: 8px; padding-top: 14px; border-top: 1px solid var(--ink); }
+.pd-conta dd { order: -1; display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: calc(clamp(2.2rem, 3.6vw, 4rem) * var(--tx, 1)); line-height: .8; }
+.pd-conta img { display: block; flex: none; width: auto; height: clamp(44px, 4.2vw, 68px); } /* il loghetto del concorso, uno solo, accanto al suo numero */
+.pd-conta dt { font-size: .9375rem; line-height: 1.3; color: var(--ink-2); }
+
+/* le news: su notte, una riga per notizia (quando, titolo, foto); tutta la riga porta alla notizia sul sito di adesso */
+.pq { padding: clamp(88px, 16vh, 180px) var(--pad-x) clamp(48px, 8vh, 100px); background: var(--night); color: var(--paper); }
+.pq-t { margin-bottom: clamp(40px, 8vh, 96px); }
+/* cosa c'è in tavola nel Pop (20 nov, la stessa sezione di Botanica e Fotografia: js/tavola.js): titolo come gli altri del Pop, minuscolo e nel carattere dei titoli, accanto
+   ai piatti. I piatti nello stile del Pop ("queste icone stile di dove si trovano ora, questi sono disegni lineari presi dai vecchi stili"): gli stessi disegni senza il piatto,
+   tirati a pennarello d'inchiostro; il piatto scelto lo prende il giro di pennarello delle foto (.pp-cerchio, lo disegna js/pop-frase.js alla sua misura) */
+body[data-titoli] .tv__t { max-width: 6em; font-size: clamp(2.4rem, 4.4vw, 5rem); line-height: .9; text-transform: none; }
+body[data-piatti="pop"] .tv-p { position: relative; }
+body[data-piatti="pop"] .tv-p > svg path { stroke: var(--ink); stroke-width: 2.2px; stroke-linecap: round; stroke-linejoin: round; } /* > : non il giro, che ha i suoi tratti */
+body[data-piatti="pop"] .tv-p[aria-pressed="true"] svg { background: none; } /* in css/moderna-f.css il piatto scelto si riempie d'oro */
+.tv-giro { --tr: 3px; --su: 0; left: 50%; top: calc(var(--ico) / 2); width: calc(var(--ico) * 1.36); height: calc(var(--ico) * 1.2); translate: -50% -50%; transition: --su .7s cubic-bezier(.3, .7, .3, 1); }
+.tv-p[aria-pressed="true"] .tv-giro { --su: 1; }
+.pq-lista { list-style: none; margin: 0; padding: 0; }
+.pq-n { display: grid; grid-template-columns: minmax(0, 13rem) minmax(0, 1fr) minmax(0, 22%); column-gap: 4vw; align-items: start; padding: clamp(24px, 4.5vh, 48px) 0 clamp(40px, 7vh, 80px); color: inherit; text-decoration: none; }
+.pq-d { padding-top: .45em; font-size: .9375rem; line-height: 1.3; color: var(--paper-2); }
+.pq-h { max-width: 22em; font-size: calc(clamp(1.7rem, 3.3vw, 3.5rem) * var(--tx, 1)); line-height: .96; }
+.pq-n img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; border-radius: var(--r); rotate: var(--g, 1.5deg); transition: rotate .5s var(--ease), scale .5s var(--ease); }
+.pq-riga:nth-child(even) img { --g: -1.5deg; }
+.pq-n:hover img { rotate: 0deg; scale: 1.04; }
+.pq-n:hover .pq-h { text-decoration: underline; text-decoration-thickness: .06em; text-underline-offset: .12em; }
+.pq-n:focus-visible { outline: 2px solid var(--paper); outline-offset: 6px; border-radius: var(--r); }
+
+@media (max-width: 860px) {
+  .pa-testa { grid-template-columns: minmax(0, 1fr); }
+  .pd-lead { grid-area: auto; justify-self: start; max-width: none; margin-top: 20px; }
+  .pa-riga, .pq-n { grid-template-columns: minmax(0, 1fr); row-gap: 16px; }
+  .pa-n { display: flex; align-items: baseline; gap: 12px; }
+  .pa-c p { margin-top: 14px; font-size: 1.0625rem; }
+  .pa-f { --g: -1.2deg; margin-top: 6px; }
+  .pa-riga:nth-child(even) .pa-f { --g: 1.2deg; }
+  .pd-t b { font-size: 4.4em; }
+  .pd-conta { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 16px; }
+  .pq-d { padding-top: 0; }
+  .pq-n img { margin-top: 6px; }
+}
+@media (min-width: 861px) and (max-width: 1180px) { .pd-conta { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* ============ L'AZIENDA DINAMICA (19 nov 2026: "rifarei la sezione sulla famiglia Varvaglione come una cosa dinamica") ============
+   js/pop-sotto.js mette .is-pila sulla sezione e sposta le foto dei capitoli in .pa-pila: una pila di stampe ferma accanto al testo, ogni capitolo ci butta la sua.
+   Senza .is-pila (animazioni ridotte) vale la versione ferma scritta sopra, con le foto nelle righe. */
+.pa-pila:empty { display: none; }
+/* comune alle tre versioni (.is-viva): le foto le muove js, la didascalia sta dentro la stampa su un'etichetta piena (sotto la foto finiva sopra la stampa di prima) */
+.pa.is-viva { overflow: clip; } /* le stampe arrivano da fuori schermo: non devono allargare la pagina (clip non rompe lo sticky) */
+.pa.is-viva .pa-giro .pa-f { position: relative; rotate: none; clip-path: none; transition: none; will-change: transform; }
+.pa.is-viva .pa-giro figcaption { position: absolute; left: 12px; bottom: 12px; margin: 0; padding: 6px 12px; border-radius: 999px; background: var(--paper); color: var(--ink); }
+.pa.is-viva .pa-n { display: flex; align-items: baseline; gap: 14px; }
+.pa.is-pila .pa-giro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: clamp(32px, 6vw, 110px); }
+.pa.is-pila .pa-riga { grid-template-columns: minmax(0, 1fr); align-content: center; row-gap: clamp(14px, 2.4vh, 24px); min-height: 78lvh; padding-bottom: 0; }
+.pa.is-pila .pa-riga > .pp-riga { margin-bottom: clamp(6px, 1.6vh, 16px); }
+.pa.is-pila .pa-c p { margin-top: 0; }
+.pa.is-pila .pa-pila { position: sticky; top: 0; display: grid; place-items: center; height: 100lvh; padding-top: var(--header-h); }
+.pa.is-pila .pa-pila .pa-f { grid-area: 1 / 1; align-self: center; width: min(100%, calc((100lvh - 250px) * 4 / 3)); }
+@media (max-width: 860px) {
+  /* sul telefono la pila sta ferma in alto e il testo le scorre sotto */
+  .pa.is-pila .pa-giro { grid-template-columns: minmax(0, 1fr); }
+  .pa.is-pila .pa-pila { order: -1; z-index: 2; height: calc(var(--header-h) + 40svh); margin-inline: calc(var(--pad-x) * -1); background: var(--stone); }
+  .pa.is-pila .pa-pila::after { content: ''; position: absolute; inset: 100% 0 auto; height: 28px; background: linear-gradient(var(--stone), transparent); pointer-events: none; }
+  .pa.is-pila .pa-pila .pa-f { width: min(78%, calc((40svh - 84px) * 4 / 3)); margin-top: 0; }
+  .pa.is-pila .pa-riga { align-content: start; min-height: 58svh; padding-top: 34px; }
+}
+
+/* PALCO (la versione scelta, "mettiamo palco"; pila e striscia si vedono con ?azienda=): uno schermo fermo per capitolo, i quattro capitoli uno sopra l'altro nello stesso posto; chi entra e chi esce lo decide il timeline in js/pop-sotto.js */
+.pa.is-palco .pa-giro { height: 400lvh; }
+.pa.is-palco .pa-righe { position: sticky; top: 0; display: grid; height: 100lvh; }
+.pa.is-palco .pa-riga { grid-area: 1 / 1; padding: calc(var(--header-h) + 12px) 0 clamp(28px, 6vh, 64px); }
+.pa.is-palco .pa-riga:not(:first-child) { transition: none; } /* la loro riga a pennarello la disegna lo scorrimento, non l'ingresso */
+@media (min-width: 861px) {
+  .pa.is-palco .pa-riga { grid-template-columns: minmax(0, 1fr) minmax(0, 34%); grid-template-rows: auto auto minmax(0, 1fr); }
+  .pa.is-palco .pa-n { grid-area: 1 / 1 / 2 / -1; }
+  .pa.is-palco .pa-riga > .pp-riga { grid-row: 2; margin: 14px 0 clamp(16px, 3.4vh, 36px); }
+  .pa.is-palco .pa-c { grid-area: 3 / 1; }
+  .pa.is-palco .pa-h { font-size: min(19svh, calc(10.6vw * var(--tk, 1))); line-height: .86; }
+  .pa.is-palco .pa-f { grid-area: 3 / 2; align-self: center; justify-self: end; width: min(100%, calc((100lvh - 330px) * 4 / 3)); }
+}
+@media (max-width: 860px) {
+  .pa.is-palco .pa-giro { height: 400svh; }
+  .pa.is-palco .pa-righe { height: 100svh; }
+  .pa.is-palco .pa-riga { align-content: start; row-gap: 0; padding-bottom: 0; }
+  .pa.is-palco .pa-c { display: contents; } /* titolo, foto, testo in fila: la foto va fra il titolo e il testo */
+  .pa.is-palco .pa-n { order: 1; }
+  .pa.is-palco .pa-riga > .pp-riga { order: 2; margin: 10px 0 18px; }
+  .pa.is-palco .pa-h { order: 3; font-size: calc(15.5vw * var(--tk, 1)); }
+  .pa.is-palco .pa-f { order: 4; justify-self: center; width: min(84%, calc(27svh * 4 / 3)); margin: 18px 0; }
+  .pa.is-palco .pa-c p { order: 5; margin: 0; padding: 0; font-size: 1rem; }
+  .pa.is-palco .pa-c a { order: 6; justify-self: start; }
+}
+
+/* STRISCIA (?azienda=striscia): i capitoli in fila, la fila scorre di lato mentre la pagina scende; la riga a pennarello di ognuno arriva fino al capitolo dopo */
+.pa.is-striscia .pa-giro { height: calc(100lvh + 150vw); }
+.pa.is-striscia .pa-righe { position: sticky; top: 0; display: flex; align-items: center; gap: 0 8vw; width: max-content; height: 100lvh; padding-top: var(--header-h); will-change: transform; }
+.pa.is-striscia .pa-riga { flex: none; width: 72vw; padding-bottom: 0; }
+.pa.is-striscia .pa-riga > .pp-riga { width: calc(100% + 8vw); }
+.pa.is-striscia .pa-riga:last-child > .pp-riga { width: 100%; }
+@media (min-width: 861px) {
+  .pa.is-striscia .pa-riga { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr); column-gap: 5vw; }
+  .pa.is-striscia .pa-n { grid-area: 2 / 1; }
+  .pa.is-striscia .pa-c { grid-area: 3 / 1; padding-top: clamp(10px, 2vh, 20px); }
+  .pa.is-striscia .pa-f { grid-area: 2 / 2 / 4 / 3; align-self: center; width: min(100%, calc((100lvh - 290px) * 4 / 3)); }
+}
+@media (max-width: 860px) {
+  .pa.is-striscia .pa-giro { height: calc(100svh + 230vw); }
+  .pa.is-striscia .pa-righe { align-items: start; gap: 0 7vw; height: 100svh; padding-top: calc(var(--header-h) + 34px); } /* sotto il velo dell'header, che ingrigiva la riga */
+  .pa.is-striscia .pa-riga { width: 84vw; }
+  .pa.is-striscia .pa-riga > .pp-riga { width: calc(100% + 7vw); margin-bottom: 4px; }
+  .pa.is-striscia .pa-f { grid-area: 2 / 1; width: min(100%, calc(30svh * 4 / 3)); margin: 0; }
+  .pa.is-striscia .pa-n { grid-area: 3 / 1; }
+  .pa.is-striscia .pa-c { grid-area: 4 / 1; }
+}
+
+/* ============ MEGA MENU E PIEDE nello stile pop (19 nov 2026: "va cambiato il mega menu e il footer in base a questo stile") ============
+   Sono i pezzi comuni del sito (sections/header.html e footer.html, css/nav.css): qui cambiano solo su questa pagina, il markup resta quello.
+   Menu: collezioni, nome del vino e voci del menu del telefono nel carattere dei titoli; il nome gigante dietro le bottiglie nero pieno, come nell'apertura; bottone nero.
+   Piede: le tre colonne coi titoli nel carattere dei titoli e, in fondo, il logo a tutta larghezza con le bottiglie (più sotto; prima c'era il telefono gigante). */
+:is(.cstage__set-name, .cstage__bg, .cstage__name, .nav-menu__item, .cantina__title, .cantina__shelf-name, .foot__h) { font-weight: 700; font-stretch: 75%; }
+body[data-titoli] :is(.cstage__set-name, .cstage__bg, .cstage__name, .nav-menu__item, .cantina__title, .cantina__shelf-name, .foot__h) { font-family: var(--tf), sans-serif; font-weight: 900; font-stretch: 100%; letter-spacing: var(--tl); }
+body[data-testi]:not([data-titoli]) :is(.cstage__set-name, .cstage__bg, .cstage__name, .nav-menu__item, .cantina__title, .cantina__shelf-name, .foot__h) { font-family: 'Bricolage Grotesque', system-ui, sans-serif; }
+
+/* il menu dei vini a schermo largo: i nomi non più grandi di prima, e legati anche all'altezza (a 1750x702 la colonna scorreva e "Tutti i vini" restava sotto il bordo) */
+.cstage__set { font-size: calc(clamp(1.5rem, min(2vw, 4.4vh), 2.3rem) * min(1, var(--tm, 1))); }
+.cstage__tipi .cstage__set { font-size: calc(clamp(1.3rem, min(1.6vw, 3.4vh), 1.7rem) * min(1, var(--tm, 1))); }
+.cstage__set[aria-pressed="true"]::before { background: var(--ink); }
+.cstage__bg { line-height: .9; color: var(--ink); }
+/* il nome gigante passa dietro a tutte le bottiglie, come nell'apertura: via il rettangolo dietro quella accesa (tagliava le lettere), la dice la sua etichetta */
+.page-fo .cstage__stain { display: none; }
+.cstage__wine.is-on .cstage__label { border-top-color: var(--ink); box-shadow: inset 0 3px 0 var(--ink); font-weight: 700; }
+.cstage__info { border-top-color: var(--ink); }
+.cstage__name { font-size: calc(clamp(1.8rem, 2.5vw, 2.6rem) * var(--tm, 1)); }
+.cstage__go.btn { background: var(--ink); color: var(--paper); }
+.cstage__go.btn:hover { background: var(--stone); color: var(--ink); }
+
+/* il menu del telefono e l'elenco dei vini sotto i 1080 px */
+.nav-menu__item { border-bottom-color: var(--ink); }
+/* 19 nov: "dal menu togli come nasce e premi". L'header è comune a tutti i siti (sections/header.html): qui, nel Pop, le due voci non si vedono, nella barra e nel menu del telefono */
+.nav__link:is([data-nav-for^="p-nasce"], [data-nav-for^="p-premi"]), .nav-menu__list li:has(> a:is([href^="come-nasce"], [href$="#premi"])) { display: none; }
+.nav-menu__count { font-family: var(--font); font-weight: 400; font-stretch: 100%; }
+.cantina__filter[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.cantina__filter[aria-pressed="true"] span { color: var(--paper); }
+@media (max-width: 860px) {
+  .nav-menu__item { font-size: calc(clamp(2.4rem, 11vw, 3.4rem) * min(1, var(--tm, 1))); line-height: 1; }
+  .cantina__title { font-size: calc(clamp(2.4rem, 11vw, 3.4rem) * min(1, var(--tm, 1))); }
+  .cantina__shelf-name { font-size: calc(1.75rem * min(1, var(--tm, 1))); line-height: 1; }
+}
+
+/* il piede. 20 nov: "nel footer togli il numero in grande e metti il logo in grande da parte a parte" (il numero resta nella colonna dei contatti, riga Tel).
+   In cima il logo a tutta larghezza con le bottiglie 3D ai lati del castello, in piedi sulla scritta (la tela .foot__tela e il movimento: js/pop-piede.js); sotto le
+   tre colonne e la riga legale. Al primo giro il logo stava in fondo: "la parte del footer la sposterei sopra alle info contatti cantina ecc".
+   Il logo è il vettoriale assets/logo/feudi-logo.svg (marchio di feudi-marchio.svg, scritta dai tracciati del catalogo del cliente): il PNG da 396 px a questa misura
+   era sfocato. Dove lo schermo è basso e largo il logo è largo quanto basta a starci tutto in altezza */
+.foot__tel { display: none; }
+.foot__top { display: block; position: relative; margin-top: var(--foot-su); --foot-su: 2vw; } /* --foot-su: quanto la tela sale sopra il logo, per le bottiglie più alte di lui */
+.foot__legal { border-top-color: var(--ink); }
+.foot__logo { width: min(100%, calc((100svh - 36px) * 396 / 164)); margin-inline: auto; }
+.foot__logo .logo { -webkit-mask-image: url(../assets/logo/feudi-logo.svg); mask-image: url(../assets/logo/feudi-logo.svg); pointer-events: none; } /* pointer-events: il logo è un fondo nero ritagliato e, passando sotto l'header, js/nav.js lo prendeva per una sezione scura e faceva l'header scuro: "la sticky header resta sempre sul bianco come fondo blurred". Il link resta: è il suo contenitore */
+.foot__tela { position: absolute; inset: calc(var(--foot-su) * -1) calc(var(--pad-x) * -1) 0; width: calc(100% + 2 * var(--pad-x)); max-width: none; height: calc(100% + var(--foot-su)); pointer-events: none; } /* max-width: none, se no il limite delle immagini (css/base.css) la tiene dentro i margini */
+.foot__h { margin-bottom: 14px; font-size: calc(1.75rem * var(--tm, 1)); line-height: 1; color: var(--ink); }
+.foot__contatti p:not(.foot__tbd) { margin-top: 0; }
+.foot__fax { display: none; } /* 19 nov: "qui togli fax metti tel": nella colonna dei contatti il telefono al posto del fax (sections/footer.html lo tiene nascosto negli altri siti) */
+.foot__telriga[hidden] { display: block; }
+.foot__telriga a:hover { text-decoration: underline; }
+@media (max-width: 860px) { .foot__top { --foot-su: 56vw; } } /* sul telefono le bottiglie sono più alte del logo */

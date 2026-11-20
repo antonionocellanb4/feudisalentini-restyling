@@ -1,0 +1,191 @@
+/* PAGINA CHI SIAMO nello stile Pop (19 nov 2026), pop-azienda.html: "passiamo alla pagina chi siamo". Contenuto dai dati e movimenti in js/pop-azienda.js.
+   Si carica dopo css/foto.css, css/pop-prove.css e css/pop-vino.css: da lì caratteri (--tf, --tx, --font), riga a pennarello (.pp-riga), titoli e stampe dell'azienda in
+   home (.pa-testa, .pa-t, .pa-lead, .pa-f), occhielli (.sv-k) e la fila di bottiglie sulla riga (.sv-banco, .sv-coll, .sv-fila, .sv-piano).
+   Fondi alternati come in home: foto, pietra, bianco, notte, bianco, poi il piede (pietra).
+   Il Salento ha due forme: quella di base è ferma (telefono, animazioni ridotte), le foto in griglia col nome sotto; con .is-viva (la mette lo script sul computer) è un
+   palco fermo dove i luoghi si danno il cambio. */
+.page-pu { background: #fff; }
+.page-pu main section { position: relative; z-index: 1; } /* qui le sezioni non sono figlie dirette di main (css/moderna-kit.css): stanno nel riquadro che dice all'header dove si è */
+
+/* ---- i titoli: lo stesso sistema di pop-b (Londrina; senza data-titoli Bricolage stretto) ---- */
+:is(.pu-tit, .pu-vn, .pu-velo text, .pu-metro, .pu-nomi, .pu-num dd, .pu-sal__t, .pu-luoghi span, .pu-fatto b, .pu-fatto h3, .pu-fine h3) { margin: 0; font-weight: 700; font-stretch: 75%; letter-spacing: -.03em; }
+body[data-titoli] :is(.pu-tit, .pu-vn, .pu-velo text, .pu-metro, .pu-nomi, .pu-num dd, .pu-sal__t, .pu-luoghi span, .pu-fatto b, .pu-fatto h3, .pu-fine h3) { font-family: var(--tf), sans-serif; font-weight: 900; font-stretch: 100%; letter-spacing: var(--tl); }
+body[data-testi]:not([data-titoli]) :is(.pu-tit, .pu-vn, .pu-velo text, .pu-metro, .pu-nomi, .pu-num dd, .pu-sal__t, .pu-luoghi span, .pu-fatto b, .pu-fatto h3, .pu-fine h3) { font-family: 'Bricolage Grotesque', system-ui, sans-serif; }
+
+/* la riga a pennarello che apre ogni parte: si disegna quando entra (js mette pp-attesa sul body e is-su sulla riga) */
+.pu-riga > .pp-riga { margin-bottom: clamp(18px, 3vh, 32px); }
+.pp-attesa .pu-riga { --su: 0; transition: --su 1.1s cubic-bezier(.3, .7, .3, 1); }
+.pp-attesa .pu-riga.is-su { --su: 1; }
+.page-pu .pa-testa > :is(.pp-riga, .sv-k) { grid-column: 1 / -1; }
+.page-pu .sv-k { margin-bottom: clamp(18px, 3.6vh, 40px); }
+
+/* ---- 1. l'apertura: un velo bianco con "Chi siamo." vuoto, dentro si vede la masseria; scorrendo si entra in una lettera finché la foto è intera ---- */
+.pu-apre { height: 220lvh; background: #fff; color: var(--ink); }
+.pu-apre:is(.is-lettere, .is-dentro) { height: 300lvh; }
+.pu-apre.is-rullo { height: 240lvh; }
+.pu-apre__st { position: sticky; top: 0; height: 100lvh; overflow: hidden; }
+/* Bottiglie 3D (19 nov: "la hero dammi alternative... voglio 3d"): la scritta al centro, grande quanto lo schermo (la misura la dà lo script), e al posto delle due i due
+   bottiglie sulla tela che sta sopra. Ogni i ha un posto largo fisso, quanto una bottiglia; con .is-3d (il 3D è partito) la lettera non si vede più */
+.pu-tit { position: absolute; inset: 0; display: grid; place-content: center; margin: 0; padding-top: var(--header-h); font-size: 20vw; line-height: .84; white-space: nowrap; text-align: center; }
+.pu-tit, .pu-tit * { transition-property: none !important; } /* lo script cambia il corpo e misura subito: con le animazioni ridotte css/base.css dà a tutto una transizione di .01ms, e la misura usciva col corpo vecchio */
+.pu-tit.is-due { line-height: .98; }
+.pu-w { display: inline-block; }
+.pu-tit.is-due .pu-w { display: block; }
+.pu-i { display: inline-block; width: .27em; text-align: center; }
+.pu-i > i { display: inline-block; width: 0; height: 0; }
+.pu-tela { position: absolute; inset: 0; width: 100%; height: 100%; visibility: hidden; touch-action: pan-y; cursor: grab; }
+.pu-tela:active, .pu-tela3:active { cursor: grabbing; }
+/* .is-b3 (lo script, quando prova il 3D): la scritta poggia sul piano in fondo allo schermo (lo spazio sotto lo dà lo script), le i non si vedono e il loro posto è largo
+   quanto una bottiglia alta come lo schermo; la frase sale in alto a destra, dove le lettere non arrivano. Sul telefono due righe: la prima a destra, la seconda a sinistra */
+.pu-apre.is-b3 .pu-tela { visibility: visible; }
+.pu-apre.is-b3 .pu-i { color: transparent; }
+.pu-apre.is-b3 .pu-tit { place-content: end center; padding-top: 0; }
+.pu-apre.is-b3 .pu-tit.is-due { place-content: end stretch; padding-inline: 4%; line-height: 1; text-align: left; }
+.pu-apre.is-bott .pu-tit.is-due .pu-w:first-child { text-align: right; }
+.pu-base { display: inline-block; width: 0; height: 0; }
+/* Rullo: sotto la foto con la scritta bianca, sopra il foglio bianco con la stessa scritta nera, tagliato dallo script sull'asse della bottiglia (la didascalia tolta il 20 nov: "togli fra i filari della vigna") */
+.pu-tit--chiara { color: #fff; }
+.pu-carta { position: absolute; inset: 0; background: #fff; }
+/* le voci dell'header sopra la foto: bianche, una alla volta quando la bottiglia le ha passate (js/pop-azienda.js, apreRullo) */
+.pu-apre.is-rullo .pu-foto::after { content: ''; position: absolute; inset: 0 0 auto; height: calc(var(--header-h) + 96px); background: linear-gradient(rgb(0 0 0 / .4), transparent); pointer-events: none; } /* un velo scuro in cima alla foto: il bianco dell'header si legge anche sulla terra al sole */
+html:not(.nav-lock) .nav .pu-sufoto { --nav-fg: #fff; --nav-mute: rgb(255 255 255 / .72); --nav-bg: var(--ink); --nav-logo: #fff; color: var(--nav-fg); } /* non con menu o cantina aperti: lì l'header è sul foglio crema */
+/* la voce che il taglio attraversa: bianca fin dove sotto c'è la foto, nera dopo (--t, in px dal suo bordo sinistro). Il testo col fondo ritagliato sulle lettere; sottolineatura,
+   marchio e bordo delle pillole con lo stesso fondo. "EN" cambia intero: è troppo piccolo per dividerlo */
+html:not(.nav-lock) .nav .pu-ataglio { --due: linear-gradient(90deg, #fff var(--t), var(--ink) var(--t)); background: var(--due) border-box; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+html:not(.nav-lock) .nav .pu-ataglio.nav__link::after, html:not(.nav-lock) .nav .pu-ataglio .logo { background: var(--due); }
+html:not(.nav-lock) .nav .pu-ataglio .nav__lang-off { -webkit-text-fill-color: var(--nav-mute); }
+html:not(.nav-lock) .nav .pu-ataglio.nav__burger { position: relative; border-color: transparent; }
+html:not(.nav-lock) .nav .pu-ataglio.nav__burger::before { content: ''; position: absolute; inset: -1px; padding: 1px; border-radius: inherit; background: var(--due); pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+.pu-apre.is-rullo .pu-tit:not(.is-due) { place-content: end end; padding-right: 4%; }
+.pu-apre.is-rullo .pu-tit.is-due { text-align: right; } /* sul computer la scritta sta a destra: a sinistra resta il posto dove la bottiglia si ferma all'apertura */
+.pu-apre.is-b3 .pu-apre__s { top: calc(var(--header-h) + 4svh); bottom: auto; max-width: 21rem; font-size: var(--fs-lead); }
+/* Lettere: un velo bianco con "Chi siamo." vuoto, dentro si vede la foto */
+.pu-foto { position: absolute; inset: 0; margin: 0; }
+.pu-foto img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.pu-velo { position: absolute; inset: 0; width: 100%; height: 100%; }
+.pu-velo text { fill: #000; text-anchor: middle; }
+.pu-metro { position: absolute; left: 0; top: 0; visibility: hidden; pointer-events: none; white-space: pre; font-size: 100px; } /* js misura qui le parole del velo */
+.pu-dida { position: absolute; left: var(--pad-x); bottom: 5svh; margin: 0; padding: 8px 16px; border-radius: 999px; background: var(--paper); color: var(--ink); font-size: .9375rem; line-height: 1.3; }
+.pu-apre__s { position: absolute; right: var(--pad-x); bottom: clamp(24px, 5svh, 48px); max-width: 15rem; margin: 0; font-size: 1.0625rem; line-height: 1.4; text-align: right; }
+@media (prefers-reduced-motion: no-preference) { /* finché le parole non hanno la loro misura la foto non si vede: senza, per un attimo comparivano minuscole */
+  .pu-apre:not(.is-pronta) :is(.pu-foto img, .pu-tit) { visibility: hidden; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pu-apre, .pu-apre:is(.is-lettere, .is-dentro, .is-rullo) { height: auto; }
+  .pu-apre__st { position: relative; height: 100svh; }
+}
+
+/* ---- 2. la famiglia: i nomi giganti, di lato la stampa e la frase che restano ferme; sotto, l'azienda in quattro numeri ---- */
+.pu-fam { padding: clamp(72px, 13vh, 150px) var(--pad-x) clamp(64px, 11vh, 130px); background: var(--stone); color: var(--ink); }
+.pu-fam__in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 30%); column-gap: 4vw; align-items: start; }
+.pu-nomi { font-size: min(10vw, 30svh); line-height: .86; }
+.pu-nomi > span { display: block; white-space: nowrap; }
+.pu-fam__lato { position: sticky; top: calc(var(--header-h) + 5vh); display: grid; gap: 22px; }
+.pu-fam__lato .pa-f { --g: 1.6deg; }
+.pu-num { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px 2.4vw; margin: clamp(56px, 10vh, 120px) 0 0; }
+.pu-num div { display: grid; align-content: start; gap: 12px; padding-top: 14px; border-top: 1px solid var(--ink); }
+.pu-num dd { order: -1; font-size: calc(clamp(4rem, 10vw, 11.5rem) * var(--tx, 1)); line-height: .8; }
+.pu-num dt { max-width: 15rem; font-size: 1rem; line-height: 1.3; color: var(--ink-2); }
+
+/* ---- 3. la nostra filosofia: un blocco per vitigno, il nome gigante e le sue bottiglie in fila sulla riga (le regole della fila sono in css/pop-vino.css) ---- */
+.pu-vit { padding: clamp(72px, 13vh, 150px) 0 clamp(24px, 5vh, 56px); background: #fff; color: var(--ink); overflow: clip; } /* clip: le bottiglie entrano da fuori senza allargare la pagina */
+.pu-vit > .pa-testa { margin: 0 var(--pad-x) clamp(24px, 5vh, 56px); }
+.pu-uva { --sotto: calc(1.3rem + 24px); padding: clamp(28px, 5vh, 56px) var(--pad-x) clamp(36px, 7vh, 84px); }
+.pu-uva .sv-k { margin: 0; }
+.pu-uva .sv-coll { font-size: min(27svh, 13.5vw); }
+.pu-uva .sv-coll span { display: inline-block; } /* le lettere che salgono (data-chars): in css/pop-vino.css ogni span del nome va a capo */
+@media (min-width: 861px) { /* da quattro bottiglie il nome sta sopra: più bassi lui e loro, così nome, fila e nomi dei vini stanno in uno schermo */
+  .pu-uva .sv-banco.is-tanti { --h: min(48svh, 27vw); }
+  .pu-uva .sv-banco.is-tanti .sv-coll { font-size: min(19svh, 13.5vw); }
+}
+.pu-uva--due .sv-coll { width: min-content; white-space: normal; } /* due parole, una per riga */
+/* Palco 3D (19 nov: "voglio 3d e fare qualcosa di consistente"): un nastro fermo sullo schermo. Dal fondo: i nomi giganti e la riga del piano, la tela con le bottiglie,
+   l'elenco dei vini (sopra la tela, sennò i link non si toccano). Nomi ed elenchi li sposta lo script col nastro; --piano è dove poggiano le bottiglie */
+.pu-vit:has(.is-palco) { padding-bottom: 0; }
+.pu-uve.is-palco { height: 430lvh; }
+.pu-nastro { --piano: 92%; position: sticky; top: 0; height: 100lvh; overflow: hidden; }
+.pu-vn { position: absolute; z-index: 1; left: var(--pad-x); top: calc(var(--header-h) + 1svh); font-size: min(27svh, 12vw); line-height: .86; white-space: nowrap; will-change: transform; }
+.pu-piano { position: absolute; z-index: 1; left: 0; top: calc(var(--piano) - 4px); width: 100%; pointer-events: none; --su: 0; transition: --su 1.1s cubic-bezier(.3, .7, .3, 1); }
+.pu-nastro.is-su .pu-piano { --su: 1; }
+.pu-tela3 { position: absolute; z-index: 2; inset: 0; width: 100%; height: 100%; touch-action: pan-y; cursor: grab; }
+.pu-vl { position: absolute; z-index: 3; left: var(--pad-x); bottom: calc(100% - var(--piano) + 16px); width: min(19rem, 24vw); will-change: transform; }
+.pu-vl .sv-k { margin: 0 0 10px; }
+.pu-vl ul { margin: 0; padding: 0; list-style: none; font-size: .9375rem; line-height: 1.45; }
+.pu-vl a { text-decoration: none; }
+.pu-vl a:hover { text-decoration: underline; text-underline-offset: .16em; }
+
+/* ---- 4. il Salento: di base le foto in griglia col nome sotto ---- */
+.pu-sal { background: var(--night); color: var(--paper); }
+.pu-sal__st { display: flex; flex-direction: column; padding: clamp(72px, 13vh, 150px) var(--pad-x) clamp(64px, 11vh, 130px); }
+.pu-sal__st > .pu-luoghi { order: 1; } /* da ferma il testo viene prima delle foto; nel palco ogni pezzo ha la sua casella */
+.pu-sal__t { font-size: calc(clamp(2.6rem, 9.4vw, 11rem) * var(--tx, 1)); line-height: .88; text-wrap: balance; }
+.pu-luoghi { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 44px 2.4vw; margin: clamp(36px, 7vh, 80px) 0 0; padding: 0; list-style: none; }
+.pu-luoghi li { display: flex; flex-direction: column; gap: 12px; } /* il nome sopra la sua foto: sotto, sul telefono, sembrava il titolo di quella dopo */
+.pu-luoghi img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--r); }
+.pu-luoghi span { font-size: calc(clamp(1.9rem, 3.4vw, 3.6rem) * var(--tx, 1)); line-height: .92; }
+.pu-sal__p { max-width: 46rem; margin: clamp(36px, 7vh, 80px) 0 0; font-size: 1.125rem; line-height: 1.5; color: var(--paper-2); text-wrap: pretty; }
+/* il palco: titolo in alto su tutta la larghezza; a sinistra i cinque nomi, pieno quello di adesso e gli altri solo contorno; a destra la foto, una sull'altra nella stessa casella */
+.pu-sal.is-viva { height: 440lvh; }
+.pu-sal.is-viva .pu-sal__st { position: sticky; top: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 44vw); grid-template-rows: auto auto repeat(5, auto) minmax(0, 1fr) auto; column-gap: 4vw; height: 100lvh; padding: calc(var(--header-h) + 2svh) var(--pad-x) 5svh; overflow: hidden; }
+.pu-sal.is-viva :is(.sv-k, .pu-sal__t) { grid-column: 1 / -1; }
+.pu-sal.is-viva .sv-k { margin-bottom: 1.6svh; }
+.pu-sal.is-viva .pu-sal__t { margin-bottom: 3svh; font-size: min(18.5svh, 7.3vw); white-space: nowrap; } /* largo quanto il palco: il doppio dei nomi, sennò sembrava il primo della lista */
+.pu-sal.is-viva :is(.pu-luoghi, .pu-luoghi li) { display: contents; }
+.pu-sal.is-viva .pu-luoghi span { grid-column: 1; font-size: min(9.4svh, 4.6vw); line-height: .92; white-space: nowrap; color: transparent; -webkit-text-stroke: 1.5px var(--paper); }
+.pu-sal.is-viva .pu-luoghi .is-ora span { color: var(--paper); -webkit-text-stroke-width: 0; }
+.pu-sal.is-viva .pu-luoghi img { grid-area: 3 / 2 / 10 / 3; contain: size; width: 100%; height: 100%; aspect-ratio: auto; rotate: 1.2deg; } /* contain: la foto non decide l'altezza delle righe, prende quella che c'è */
+.pu-sal.is-viva .pu-sal__p { grid-area: 9 / 1; margin: 2svh 0 0; font-size: 1.0625rem; }
+
+/* ---- 5. sostenibilità: sei fatti in riga (la cifra o la sigla, il titolo, il testo), poi gli obiettivi e il bilancio ---- */
+.pu-sos { padding: clamp(88px, 16vh, 180px) var(--pad-x) clamp(56px, 10vh, 120px); background: #fff; color: var(--ink); }
+:is(.pu-vit, .pu-sos) .pa-testa { grid-template-columns: minmax(0, 1fr) minmax(0, 34%); }
+.pu-fatti { margin: 0; padding: 0; list-style: none; }
+:is(.pu-fatto, .pu-fine) { display: grid; grid-template-columns: minmax(0, 24%) minmax(0, 1fr) minmax(0, 34%); column-gap: 4vw; align-items: start; padding-bottom: clamp(32px, 6vh, 64px); }
+:is(.pu-fatto, .pu-fine) > .pp-riga { grid-column: 1 / -1; margin-bottom: clamp(20px, 4vh, 40px); }
+.pu-fatto b { font-size: calc(clamp(2.6rem, 6vw, 6.6rem) * var(--tx, 1)); line-height: .8; white-space: nowrap; }
+.pu-fatto h3 { font-size: calc(clamp(1.7rem, 3.3vw, 3.5rem) * var(--tx, 1)); line-height: .96; text-wrap: balance; }
+:is(.pu-fatto, .pu-fine) :is(p, li) { margin: 0; font-size: 1.0625rem; line-height: 1.5; color: var(--ink-2); text-wrap: pretty; }
+.pu-fine { padding-bottom: 0; }
+.pu-fine h3 { grid-column: 1 / 3; font-size: calc(clamp(2.2rem, 4.6vw, 5.25rem) * var(--tx, 1)); line-height: .9; }
+.pu-fine ul { display: grid; gap: 12px; margin: 0; padding: 0 0 0 1.1em; list-style: disc; }
+.pu-fine .btn { grid-column: 3; justify-self: start; margin-top: 28px; }
+/* Palco (19 nov: "fare un'alternativa anche alla sostenibilità"): un fatto per schermo. L'elenco resta fermo, i fatti stanno tutti nello stesso posto su fondi alternati e
+   il successivo copre il precedente da destra (lo script); la cifra gigante in basso a sinistra, titolo e testo a destra, in alto la riga e quale fatto è dei sei */
+.pu-sos.is-palco .pu-giro { height: 500lvh; margin: 0 calc(var(--pad-x) * -1); }
+.pu-sos.is-palco .pu-fatti { position: sticky; top: 0; display: grid; height: 100lvh; overflow: hidden; counter-reset: fatto; }
+.pu-sos.is-palco .pu-fatto { grid-area: 1 / 1; grid-template-columns: minmax(0, 1fr) minmax(0, 32%); grid-template-rows: auto auto minmax(0, 1fr) auto; padding: calc(var(--header-h) + 2svh) var(--pad-x) 7svh; background: #fff; counter-increment: fatto; }
+.pu-sos.is-palco .pu-fatto:nth-child(even) { background: var(--stone); }
+.pu-sos.is-palco .pu-fatto > .pp-riga { grid-row: 1; margin-bottom: 14px; }
+.pu-sos.is-palco .pu-fatto::before { content: counter(fatto, decimal-leading-zero) ' / 06'; grid-area: 2 / 1 / 3 / -1; font-size: .9375rem; font-weight: 500; letter-spacing: .08em; }
+.pu-sos.is-palco .pu-fatto h3 { grid-area: 3 / 1 / 4 / -1; align-self: start; margin-top: 2svh; font-size: calc(clamp(2.2rem, 4.6vw, 5.25rem) * var(--tx, 1)); } /* il titolo in alto, sotto il conto: in basso a destra lasciava vuota mezza schermata */
+.pu-sos.is-palco .pu-fatto b { grid-area: 4 / 1; align-self: end; font-size: min(52svh, 17vw); line-height: .76; }
+.pu-sos.is-palco .pu-fatto p { grid-area: 4 / 2; align-self: end; font-size: 1.125rem; }
+.pu-sos.is-palco .pu-fine { padding-top: clamp(56px, 10vh, 120px); }
+
+@media (max-width: 860px) {
+  .pu-apre__s { left: var(--pad-x); right: auto; bottom: 9svh; max-width: 17rem; text-align: left; }
+  .pu-apre.is-b3 .pu-apre__s { top: calc(var(--header-h) + 3svh); max-width: 19rem; font-size: 1.0625rem; }
+  .pu-fam__in { grid-template-columns: minmax(0, 1fr); row-gap: 36px; }
+  .pu-nomi { font-size: 14.4vw; }
+  .pu-fam__lato { position: static; }
+  .pu-num { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 16px; }
+  .pu-num dd { font-size: 27vw; }
+  .pu-uva .sv-coll, .pu-uva .sv-banco.is-tanti .sv-coll { font-size: 17.5vw; }
+  .pu-uva .fo-bt span { height: auto; min-height: 2.6em; white-space: normal; text-wrap: balance; } /* qui i nomi sono interi (i vini sono di collezioni diverse): su tre colonne vanno su due righe */
+  .pu-sal__t { font-size: 13.5vw; }
+  .pu-luoghi { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  .pu-luoghi span { font-size: 9.6vw; }
+  :is(.pu-vit, .pu-sos) .pa-testa, :is(.pu-fatto, .pu-fine) { grid-template-columns: minmax(0, 1fr); row-gap: 14px; }
+  .pu-fatto b { font-size: 19vw; }
+  .pu-fine h3, .pu-fine .btn { grid-column: auto; }
+  .pu-nastro { --piano: 60%; }
+  .pu-vn { max-width: calc(100% - 2 * var(--pad-x)); font-size: 17.5vw; white-space: normal; } /* Malvasia Bianca su due righe */
+  .pu-vl { top: calc(var(--piano) + 22px); bottom: auto; width: calc(100% - 2 * var(--pad-x)); }
+  .pu-vl li { display: inline; }
+  .pu-vl li:not(:last-child)::after { content: ' · '; }
+  .pu-sos.is-palco .pu-fatto { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto auto auto; align-content: start; row-gap: 0; }
+  .pu-sos.is-palco .pu-fatto b { grid-area: 3 / 1; align-self: start; margin: 5svh 0 3svh; font-size: 30vw; }
+  .pu-sos.is-palco .pu-fatto h3 { grid-area: 4 / 1; margin-top: 0; }
+  .pu-sos.is-palco .pu-fatto p { grid-area: 5 / 1; align-self: start; margin-top: 14px; }
+}

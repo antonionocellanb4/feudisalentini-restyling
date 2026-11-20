@@ -1,32 +1,55 @@
 /* FOTOGRAFIA (13 nov 2026), la quinta versione: "come moncalisse.com/en con le foto di Instagram". Fondo crema, titoli in maiuscolo con le grazie (Marcellus) a misura contenuta, testi piccoli e larghi,
    fotografie grandi coi bordi vivi, molto bianco attorno. Markup in sections/foto.html, movimenti in js/foto.js. Le sezioni comuni (cantina, più venduti, premi, news, in tavola) prendono qui solo caratteri e colori. */
-.page-fo { --font-display: 'Marcellus', Georgia, serif; --title-weight: 400; --title-track: .02em; --night: #2b1a12; --night-2: #3a2519; }
+.page-fo { --font: 'Bricolage Grotesque', system-ui, sans-serif; --font-display: var(--font); --title-weight: 400; --title-track: .02em; --night: #2b1a12; --night-2: #3a2519; } /* 17 nov: verso Pop, "un font più giovanile": Bricolage Grotesque per tutto (prima Marcellus nei titoli) */
 .fo-h2 { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.6rem, 3.2vw, 3.3rem); line-height: 1.08; letter-spacing: .02em; text-transform: uppercase; text-wrap: balance; }
 .fo-p { max-width: 34rem; font-size: 1.0625rem; line-height: 1.5; color: var(--ink-2); text-wrap: pretty; }
 .fo-link { display: inline-block; margin-top: 18px; padding: 6px 0; font-size: .9375rem; letter-spacing: .08em; text-transform: uppercase; text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; transition: color .25s var(--ease); }
 .fo-link:hover { color: var(--gold-ink); }
 
-/* ---- apertura: tre fotografie verticali affiancate (il formato dei post), ognuna cambia a turno; il titolo in basso sopra una fascia scura sfumata ---- */
-.fo-apre { position: relative; height: 100lvh; overflow: hidden; background: var(--night); color: #fff; }
-.fo-apre__foto { position: absolute; inset: 0; display: flex; gap: 3px; }
-.fo-col { position: relative; flex: 1 1 0; min-width: 0; overflow: hidden; }
-.fo-col img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; scale: 1.06; transition: opacity 1.6s var(--ease), scale 7s linear; }
-.fo-col img.is-su { opacity: 1; scale: 1; }
-.fo-apre::after { content: ''; position: absolute; inset: 45% 0 0; background: linear-gradient(to top, rgb(27 21 18 / .78), rgb(27 21 18 / 0)); pointer-events: none; }
-.fo-apre__testo { position: absolute; z-index: 1; left: var(--pad-x); right: var(--pad-x); bottom: calc(100lvh - 100svh + clamp(28px, 6svh, 64px)); display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 40px; }
-.fo-apre__t { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.8rem, 3.6vw, 3.7rem); line-height: 1.06; letter-spacing: .03em; text-transform: uppercase; }
-.fo-apre__s { font-size: .9375rem; letter-spacing: .1em; text-transform: uppercase; }
-.fo-apre__dx { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; }
-
-/* ---- presentazione: titolo, poi testo e marchio su tre colonne (la prima vuota) ---- */
-.fo-intro { padding: var(--sec-y) var(--pad-x) clamp(48px, 7vw, 110px); }
-.fo-intro__t { max-width: 20ch; margin-left: 12%; }
-.fo-intro__c { display: grid; grid-template-columns: 12% minmax(0, 34rem) minmax(0, 1fr); align-items: start; gap: 0 clamp(24px, 4vw, 72px); margin-top: clamp(28px, 4vw, 56px); }
-.fo-intro__c .fo-p { grid-column: 2; }
-.fo-num { grid-column: 3; display: flex; gap: clamp(24px, 4vw, 64px); margin: 0; }
-.fo-num dt { font-size: .9375rem; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); }
-.fo-num dd { margin: 0; font-family: var(--font-display); font-size: clamp(2rem, 3.4vw, 3.4rem); line-height: 1; }
+/* ---- APERTURA POP (17 nov 2026). Le richieste, in ordine: "la hero fotografica va cambiata, più pop, più giovanile: il 3D della bottiglia mosso come klimtwine.com/en"; "non tutti quei colori,
+   niente ombra finta, non uguale a klimt: inventa"; "le foto dello shooting nella navigation motion, magari webgl"; "il fondo bianco"; "le foto senza un contesto, senza una storia, a caso";
+   "un ramo, qualcosa della vigna in 3D"; l'esempio sweet-tape.com; "una scena come se il vino rotolasse sulla superficie, facesse apparire il testo, uscisse e riapparisse dall'altra parte".
+   Palco fermo su fondo bianco, e bianca tutta la pagina (un fondo solo). a) la frase del profilo in lettere giganti scorre di lato come le parole di sweet-tape, con la bottiglia 3D davanti
+   (18 nov: tolti le foto dietro il vetro rigato e il grappolo 3D, "non era così che lo volevo": versione con loro in _archivio-prove/pop-17nov-grappolo-foto-vetro);
+   b) la bottiglia rotola sul piano e scopre la presentazione, esce a destra e rientra da sinistra; c) si ferma al centro sul suo capitolo.
+   Bottiglia in js/foto-3d.js; movimenti in js/foto.js. Con le animazioni ridotte si salta da un momento all'altro ---- */
+.page-fo { --cream: #fff; }
+.fo-apre { position: relative; height: 680lvh; }
+.fo-apre__st { position: sticky; top: 0; height: 100lvh; overflow: hidden; background: var(--cream); color: var(--ink); }
+.fo-apre__st > div { position: absolute; z-index: 3; inset: 0 var(--pad-x) auto; height: 100svh; pointer-events: none; }
+.fo-apre__st :is(a, button) { pointer-events: auto; }
+.fo-apre__foto, .fo-apre__tela { position: absolute; z-index: 2; left: 0; top: 0; pointer-events: none; }
+.fo-apre__foto { width: auto; max-width: none; height: 95svh; clip-path: inset(0 0 9% 0); } /* finché il 3D non è pronto, o se non parte: js/foto.js la mette dove sta la bottiglia; sotto il vetro (riga 932 su 1024) c'è il riflesso del catalogo, che non è vetro */
+.fo-apre__tela { width: 100%; height: 100svh; visibility: hidden; }
+.fo-apre__st.is-3d .fo-apre__tela { visibility: visible; }
+.fo-apre__st.is-3d .fo-apre__foto { visibility: hidden; }
+/* a) la pista: parole giganti in fila, che scorre di lato; in basso il luogo e il bottone */
+.fo-apre__a { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-content: end; align-items: end; gap: 16px 40px; padding-bottom: clamp(24px, 5svh, 48px); }
+.fo-pista { position: absolute; left: 0; top: calc(var(--header-h) + 1svh); bottom: calc(clamp(24px, 5svh, 48px) + 64px); display: flex; align-items: center; gap: clamp(28px, 3vw, 56px); width: max-content; will-change: transform; }
+.fo-pista__p { flex: none; font-size: min(36svh, 24vw); font-weight: 700; font-stretch: 75%; line-height: .8; letter-spacing: -.04em; white-space: nowrap; }
+.fo-pista__posto { flex: none; width: 22svh; height: 1px; } /* il posto della bottiglia all'apertura (js/foto.js ci mette il suo centro) */
+.fo-apre__st > .fo-apre__a { z-index: 1; } /* le parole dietro la bottiglia (la tela sta a 2), come il titolo dietro la bottiglia di klimtwine */
+.fo-apre__s { max-width: 20rem; margin: 0; font-size: 1.0625rem; line-height: 1.4; }
+.fo-apre__btn { background: var(--ink); color: var(--paper); }
+.fo-apre__btn:hover { background: var(--stone); color: var(--ink); }
+/* b) la presentazione, larga e al centro: la scopre la bottiglia rotolando (js/foto.js le taglia il lato destro dove la bottiglia non è ancora passata) */
+.fo-apre__st > .fo-apre__b { display: grid; align-content: center; justify-items: center; text-align: center; }
+.fo-apre__h { max-width: 15em; margin: 0; font-size: clamp(2.4rem, min(6vw, 11svh), 6.4rem); font-weight: 700; font-stretch: 75%; line-height: .92; letter-spacing: -.035em; text-wrap: balance; }
+.fo-apre__p { max-width: 36em; margin: clamp(18px, 3svh, 32px) 0 0; font-size: clamp(1.125rem, 1.5vw, 1.5rem); line-height: 1.35; text-wrap: pretty; }
+.fo-num { display: flex; justify-content: center; gap: clamp(24px, 4vw, 64px); margin: clamp(20px, 3.5svh, 40px) 0 0; }
+.fo-num dt { font-size: .9375rem; letter-spacing: .1em; text-transform: uppercase; }
+.fo-num dd { margin: 0; font-size: clamp(2rem, 3.4vw, 3.4rem); font-weight: 600; line-height: 1; letter-spacing: -.03em; }
 .fo-num div { display: flex; flex-direction: column-reverse; gap: 6px; }
+/* il vino: il nome grande in alto, dietro la bottiglia (come i capitoli di klimtwine), un filetto; ai lati naso e gusto, la storia e i link */
+.fo-apre__st > .fo-apre__c { z-index: 1; display: grid; grid-template-columns: minmax(0, 27rem) minmax(0, 1fr) minmax(0, 24rem); grid-template-rows: auto 1fr; padding: calc(var(--header-h) + 1svh) 0 8svh; }
+.fo-apre__cima { grid-column: 1 / -1; }
+.fo-apre__vino { margin: 0; overflow: hidden; font-size: clamp(2.6rem, min(7.2vw, 13svh), 8.6rem); font-weight: 600; line-height: 1.04; letter-spacing: -.045em; white-space: nowrap; }
+.fo-apre__vino span { display: block; }
+.fo-apre__riga { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 24px; margin: 8px 0 0; padding-top: 12px; border-top: 1px solid currentColor; font-size: .9375rem; }
+.fo-apre__note { grid-column: 1; align-self: center; margin: 0; font-size: clamp(1.125rem, 1.5vw, 1.5rem); line-height: 1.3; }
+.fo-apre__dati { grid-column: 3; align-self: center; display: grid; justify-items: start; }
+.fo-apre__dati p { margin: 0 0 6px; font-size: 1rem; line-height: 1.45; }
+.fo-apre__dati .fo-link { margin-top: 10px; }
 
 /* ---- riga editoriale: titolo, testo, fotografie sfalsate; --inv la rovescia ---- */
 .fo-riga { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1fr) minmax(0, 1.25fr); align-items: start; gap: 0 clamp(24px, 4vw, 72px); padding: clamp(48px, 7vw, 110px) var(--pad-x); }
@@ -66,6 +89,10 @@
 .fo-giro__st::after { content: ''; position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; height: 24%; background: linear-gradient(to top, rgb(27 21 18 / .72), rgb(27 21 18 / 0)); pointer-events: none; } /* i nomi in basso si leggono anche sulle foto chiare (la tovaglia bianca) */
 
 /* ---- le sezioni delle altre versioni: titoli in maiuscolo e ridotti, niente macchie ad acquerello dietro le bottiglie ---- */
+/* 17 nov, "eviterei in genere di usare 200 colori diversi per sezione, anche quelli sotto": sotto l'apertura un fondo solo, il crema; cantina e news erano marrone scuro.
+   Restano scure solo le parti sopra le foto (la fine della cantina, i nomi in fondo alle collezioni) */
+.page-fo :is(.ca, .pv-notte, .pv-ti__st) { background: var(--cream); color: var(--ink); --pv-2: var(--ink-2); --pv-oro: var(--gold-ink); }
+.page-fo :is(.ca-lead, .ca-f figcaption) { color: var(--ink-2); }
 .page-fo :is(.ca-t, .pv-h2, .pv-dg__h, .pv-ti__t, .ca-fine__t) { text-transform: uppercase; }
 .page-fo .ca-t { font-size: clamp(1.6rem, 3.3vw, 3.6rem); line-height: 1.08; }
 .page-fo .pv-h2, .page-fo .pv-ti__t, .page-fo .ca-fine__t { font-size: clamp(1.5rem, 2.9vw, 3.1rem); line-height: 1.1; }
@@ -78,12 +105,19 @@
 .page-fo .ca-f--fine::after { background: linear-gradient(to top, rgb(43 26 18 / .84), rgb(43 26 18 / .3) 55%, rgb(43 26 18 / 0) 80%); }
 .page-fo :is(.fb-zoom__t, .cstage__set, .cstage__name) { letter-spacing: .01em; }
 
-/* ---- telefono: una fotografia sola nell'apertura, righe in colonna, carta quasi a tutta larghezza ---- */
+/* ---- telefono: apertura col testo sopra e la bottiglia sotto (mai sopra il testo; nel vino la bottiglia a sinistra e i dati a destra), righe in colonna, carta quasi a tutta larghezza ---- */
 @media (max-width: 860px) {
-  .fo-col:not(:nth-child(2)) { display: none; }
-  .fo-intro__t { margin-left: 0; }
-  .fo-intro__c { grid-template-columns: minmax(0, 1fr); gap: 24px; }
-  .fo-intro__c .fo-p, .fo-num { grid-column: 1; }
+  .fo-apre__a { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .fo-pista { bottom: calc(clamp(24px, 5svh, 48px) + 124px); gap: 22px; align-items: flex-start; } /* le parole in alto: sotto, già all'apertura, c'è la bottiglia */
+  .fo-pista__p { font-size: 26svh; }
+  .fo-apre__btn { justify-self: start; }
+  .fo-apre__h { font-size: clamp(2.2rem, 11vw, 3.4rem); }
+  .fo-apre__p { margin-top: 14px; font-size: 1.0625rem; }
+  .fo-apre__st > .fo-apre__c { grid-template-columns: 46% minmax(0, 1fr); grid-template-rows: auto 1fr auto auto 1fr; padding-bottom: 4svh; }
+  .fo-apre__vino { font-size: clamp(2.2rem, 11vw, 3.4rem); white-space: normal; }
+  .fo-apre__note { grid-column: 2; grid-row: 3; font-size: 1rem; }
+  .fo-apre__dati { grid-column: 2; grid-row: 4; margin-top: 6px; }
+  .fo-apre__dati p { display: none; }
   .fo-riga, .fo-riga--inv { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .fo-riga .fo-h2, .fo-riga__t { padding-top: 0; }
   .fo-riga__t { margin-top: 14px; }
@@ -98,7 +132,6 @@
 }
 @media (max-width: 860px) and (max-height: 700px) { .fo-carta__d { display: none; } }
 .page-fo .m-pill.in-storia { opacity: 0; translate: -50% 24px; pointer-events: none; } /* sull'apertura la pillola dei vini non c'è (la regola delle altre home sta in css/moderna-e.css, che qui non è caricato) */
-.fo-apre::before { content: ''; position: absolute; z-index: 1; inset: 0 0 74%; background: linear-gradient(to bottom, rgb(27 21 18 / .55), rgb(27 21 18 / 0)); pointer-events: none; } /* sopra le foto chiare (il cielo) le voci bianche dell'header non si leggevano */
 /* menu dei vini: in questa versione niente macchia ad acquerello dietro la bottiglia (13 nov: "non va bene la macchia in questo stile"): un pannello chiaro pieno, alto, come nella pagina del vino; nell'elenco del telefono niente */
 .page-fo .cstage__stain { top: 50%; width: calc(var(--bh) * .42); height: 96%; aspect-ratio: auto; background: var(--stone); -webkit-mask: none; mask: none; rotate: none; scale: 1; transition: opacity .35s var(--ease); }
 .page-fo .cstage__wine.is-on .cstage__stain { scale: 1; }

@@ -1,23 +1,44 @@
 <!-- FOTOGRAFIA (13 nov 2026), la quinta versione: struttura di moncalisse.com/en, fotografie del profilo Instagram del cliente (assets/foto-ig, 1080 px: le più grandi che il profilo dà senza accesso, solo gli ultimi post).
-     Apertura con tre fotografie che cambiano, presentazione, due righe editoriali con le foto sfalsate, una foto larga, poi le collezioni: si cammina in orizzontale, una fotografia a tutto schermo e una carta per collezione.
+     Apertura (dal 17 nov quella POP con la bottiglia 3D, sotto), due righe editoriali con le foto sfalsate, una foto larga, poi le collezioni: si cammina in orizzontale, una fotografia a tutto schermo e una carta per collezione.
      Sotto, le sezioni delle altre versioni. Testi: quelli già usati nelle altre home; le due frasi in inglese sono del cliente (biografia di Instagram e copertine delle collezioni). Script js/foto.js, stile css/foto.css -->
-<section class="fo-apre hero--dark" id="hero" aria-labelledby="fo-t" data-nav-trasparente>
-  <div class="fo-apre__foto" aria-hidden="true">
-    <div class="fo-col"><img src="assets/foto-ig/salotto.webp" alt="" decoding="async"><img src="assets/foto-ig/piscina.webp" alt="" decoding="async" loading="lazy"><img src="assets/foto-ig/roccia.webp" alt="" decoding="async" loading="lazy"></div>
-    <div class="fo-col"><img src="assets/foto-ig/tavola.webp" alt="" decoding="async"><img src="assets/foto-ig/calice.webp" alt="" decoding="async" loading="lazy"><img src="assets/foto-ig/pizza.webp" alt="" decoding="async" loading="lazy"></div>
-    <div class="fo-col"><img src="assets/foto-ig/scacchi.webp" alt="" decoding="async"><img src="assets/foto-ig/giardino.webp" alt="" decoding="async" loading="lazy"><img src="assets/foto-ig/intonaco.webp" alt="" decoding="async" loading="lazy"></div>
-  </div>
-  <div class="fo-apre__testo" data-subito>
-    <h1 class="fo-apre__t" id="fo-t" data-chars data-ritardo="0.4">Wines that set the mood.</h1>
-    <div class="fo-apre__dx"><p class="fo-apre__s">Leporano, sul mar Ionio, a sud di Taranto</p><a class="btn btn--gold" href="#collezioni">Vai alle collezioni</a></div>
-  </div>
-</section>
-
-<section class="fo-intro" aria-labelledby="fo-i">
-  <h2 class="fo-h2 fo-intro__t" id="fo-i" data-chars>Born in Salento, experienced worldwide.</h2>
-  <div class="fo-intro__c">
-    <p class="fo-p">Feudi Salentini è a Leporano, in provincia di Taranto, sul mar Ionio. Produce vini dai vitigni autoctoni pugliesi per eccellenza: Primitivo, Negroamaro, Verdeca e Malvasia Bianca.</p>
-    <dl class="fo-num"><div><dt>vini</dt><dd data-cantina-total>33</dd></div><div><dt>collezioni</dt><dd>6</dd></div></dl>
+<!-- Apertura POP (17 nov 2026, "la hero fotografica va cambiata, più pop, più giovanile: il 3D della bottiglia mosso come klimtwine.com/en"; poi "non tutti quei colori, non uguale a klimt: inventa",
+     "il fondo bianco", "le foto senza un contesto, senza una storia", "un ramo, qualcosa della vigna in 3D", e l'esempio sweet-tape.com): palco fermo su fondo bianco, la bottiglia 3D (js/foto-3d.js) davanti.
+     a) la frase del profilo in lettere giganti scorre di lato (18 nov: tolti il grappolo 3D e le foto dello shooting dietro il vetro rigato, "non era così che lo volevo"; la versione con loro
+     è in _archivio-prove/pop-17nov-grappolo-foto-vetro); b) la presentazione (la bottiglia gira
+     come nel gioco della bottiglia e si ferma puntata sul testo); c) il vino (una capriola e atterra in piedi, col suo nome grande dietro).
+     La presentazione prima stava in una sezione a sé qui sotto. I testi del vino sono frasi del catalogo (js/data.js, c53-primitivo). Movimenti in js/foto.js, stile in css/foto.css -->
+<section class="fo-apre" id="hero" aria-labelledby="fo-t" data-nav-trasparente>
+  <div class="fo-apre__st">
+    <div class="fo-apre__a" data-subito>
+      <h1 class="pv-vh" id="fo-t" lang="en">Wines that set the mood.</h1>
+      <div class="fo-pista">
+        <span class="fo-pista__p" lang="en" aria-hidden="true" data-chars data-ritardo="0.3">Wines</span>
+        <i class="fo-pista__posto" aria-hidden="true"></i>
+        <span class="fo-pista__p" lang="en" aria-hidden="true">that set</span>
+        <span class="fo-pista__p" lang="en" aria-hidden="true">the mood.</span>
+      </div>
+      <p class="fo-apre__s">Leporano, sul mar Ionio, a sud di Taranto</p>
+      <a class="btn fo-apre__btn" href="#collezioni">Vai alle collezioni</a>
+    </div>
+    <div class="fo-apre__b">
+      <h2 class="fo-apre__h" lang="en">Born in Salento, experienced worldwide.</h2>
+      <p class="fo-apre__p">Feudi Salentini è a Leporano, in provincia di Taranto, sul mar Ionio. Produce vini dai vitigni autoctoni pugliesi per eccellenza: Primitivo, Negroamaro, Verdeca e Malvasia Bianca.</p>
+      <dl class="fo-num"><div><dt>vini</dt><dd data-cantina-total>33</dd></div><div><dt>collezioni</dt><dd>6</dd></div></dl>
+    </div>
+    <div class="fo-apre__c">
+      <div class="fo-apre__cima">
+        <h2 class="fo-apre__vino"><span>Collezione 53 Primitivo</span></h2>
+        <p class="fo-apre__riga"><span>Primitivo di Manduria DOP</span><span>Primitivo · 15% vol.</span></p>
+      </div>
+      <p class="fo-apre__note">Al naso, profumi intensi di confettura ai frutti di bosco maturi. Gusto morbido ed elegante che racchiude le caratteristiche del suo territorio.</p>
+      <div class="fo-apre__dati">
+        <p>Da vecchie vigne coltivate ad alberello seguendo l’antica tradizione familiare, un’attenta selezione manuale dei singoli grappoli di Primitivo di Manduria dà vita a questo vino, dal colore rosso intenso con carichi riflessi violacei.</p>
+        <a class="fo-link" href="vino-f.html?id=c53-primitivo">Scheda del vino</a>
+        <button class="fo-link" type="button" data-col="luxury">I vini Collezione 53</button>
+      </div>
+    </div>
+    <img class="fo-apre__foto" src="assets/bottles/primitivo53.webp" alt="" width="653" height="1024" decoding="async" fetchpriority="high">
+    <canvas class="fo-apre__tela" aria-hidden="true"></canvas>
   </div>
 </section>
 

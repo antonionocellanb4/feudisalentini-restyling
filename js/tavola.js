@@ -53,7 +53,13 @@
   const tv = $('#tavola');
   if (tv) {
     const menu = $('.tv__menu', tv), fila = $('.tv__tavola', tv), scelto = $('.tv__scelto', tv);
-    const dipinti = document.body.classList.contains('page-mh'), icona = (id) => (dipinti ? `<img src="assets/quadri/piatti/${id}.webp" alt="" loading="lazy" decoding="async" draggable="false">` : FS.incisi(id)); // in H i piatti dipinti (tools/dipingi_piatti.py), in F e G incisi come in E
+    /* in H i piatti dipinti (tools/dipingi_piatti.py), in F e G incisi come in E. Nel Pop e in Botanica nello stile della pagina (20 nov: "queste icone stile di dove si trovano ora,
+       questi sono disegni lineari presi dai vecchi stili che abbiamo accantonato"), body data-piatti: Botanica sagome a retino come le piante (tools/piatti_botanica.py, css/botanica-pop.css),
+       il Pop gli stessi disegni senza piatto tirati a pennarello, col giro di pennarello sul piatto scelto (lo disegna js/pop-frase.js; css/pop-prove.css). Sono <i>: sul telefono gli span dei piatti si nascondono */
+    const dipinti = document.body.classList.contains('page-mh'), stile = document.body.dataset.piatti;
+    const icona = (id) => (dipinti ? `<img src="assets/quadri/piatti/${id}.webp" alt="" loading="lazy" decoding="async" draggable="false">`
+      : stile === 'botanica' ? `<i class="tv-ico" aria-hidden="true"><i style="-webkit-mask-image:url(assets/botanica/piatti/${id}.webp);mask-image:url(assets/botanica/piatti/${id}.webp)"></i></i>`
+      : stile === 'pop' ? `${FS.incisi(id, true)}<i class="pp-cerchio tv-giro" aria-hidden="true"></i>` : FS.incisi(id));
     menu.innerHTML = D.foods.map((f) => `<li><button class="tv-p" type="button" aria-pressed="false" data-f="${f.id}">${icona(f.id)}<span>${f.label}</span></button></li>`).join('');
     let piatto = null, giro = null;
     const scegli = (id, subito) => {

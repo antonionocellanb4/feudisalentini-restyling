@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="it">
+<head>
+<!-- @include sections/_head.html -->
+<!-- PROVA (17 nov 2026): una bottiglia in 3D, "riesci a fare una di queste bottiglie in 3d e me la fai vedere?". Collezione 53 Primitivo sul colore della sua collezione, con la sua pianta dietro.
+     Pagina a sé, non collegata dal sito. I pezzi vengono dalla foto del catalogo (tools/bottiglia_3d.py → assets/3d), i movimenti in js/bottiglia-3d.js. Se il 3D non parte resta la foto. -->
+<title>Feudi Salentini · Collezione 53 Primitivo in 3D (prova)</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&family=Alex+Brush&display=swap">
+<style>
+  .page-b3 { background: #600028; }
+  .b3 { position: relative; height: 100svh; min-height: 520px; overflow: hidden; background: #600028; color: #fff; font-family: 'Montserrat', sans-serif; }
+  .b3-pianta { position: absolute; inset: 3% 0; background: #3d0117; -webkit-mask: url(assets/botanica/ginepro.webp) center / contain no-repeat; mask: url(assets/botanica/ginepro.webp) center / contain no-repeat; }
+  .b3-tela { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: pan-y; cursor: grab; visibility: hidden; }
+  .b3-tela:active { cursor: grabbing; }
+  .b3-tela:focus-visible { outline: 2px solid #fff; outline-offset: -6px; }
+  .b3-foto { position: absolute; left: 50%; top: 5%; width: auto; height: 96%; translate: -50% 0; } /* finché il 3D non è pronto, e se non parte */
+  .b3.is-3d .b3-tela { visibility: visible; }
+  .b3.is-3d .b3-foto { display: none; }
+  .b3-testo { position: absolute; left: var(--pad-x); bottom: 40px; display: grid; justify-items: start; gap: 10px; max-width: 24rem; }
+  .b3-col { display: flex; align-items: baseline; gap: .4em; margin: 0; font-size: 1.125rem; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; }
+  .b3-col i { font-family: 'Alex Brush', cursive; font-style: normal; font-weight: 400; font-size: 1.45em; letter-spacing: 0; text-transform: none; }
+  .b3-t { margin: 0; font-size: clamp(1.6rem, 2.4vw, 2.5rem); font-weight: 500; line-height: 1.08; letter-spacing: .02em; text-transform: uppercase; text-wrap: balance; }
+  .b3-testo p { margin: 0; font-size: 1rem; line-height: 1.5; }
+  .b3-testo .btn { margin-top: 8px; border-color: #fff; color: #fff; }
+  .b3-testo .btn:hover { background: #fff; color: var(--ink); }
+  @media (max-width: 860px) { /* telefono: la bottiglia nei due terzi alti, il testo sotto, mai sopra */
+    .b3-tela { inset: 0 0 auto; height: 68%; }
+    .b3-pianta { inset: 2% 0 33%; }
+    .b3-foto { top: 3%; height: 63%; }
+    .b3-testo { left: 16px; right: 16px; bottom: 20px; gap: 6px; }
+    .b3-t { font-size: 1.4rem; }
+    .b3-testo p { font-size: .9375rem; }
+  }
+</style>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.min.js"}}</script>
+</head>
+<body class="page-b3">
+<main id="main" class="b3">
+  <i class="b3-pianta" aria-hidden="true"></i>
+  <canvas class="b3-tela" role="img" aria-label="La bottiglia di Collezione 53 Primitivo in tre dimensioni. Si gira trascinando o con le frecce destra e sinistra."></canvas>
+  <img class="b3-foto" src="assets/bottles/primitivo53.webp" alt="La bottiglia di Collezione 53 Primitivo" width="653" height="1024" decoding="async">
+  <div class="b3-testo">
+    <p class="b3-col"><i>Collezione</i> <b>53</b></p>
+    <h1 class="b3-t">Collezione 53 Primitivo</h1>
+    <p>Primitivo di Manduria DOP · Primitivo · 15% vol.</p>
+    <p class="b3-nota">Trascina la bottiglia per girarla.</p>
+    <a class="btn btn--line" href="botanica.html">Torna a Botanica</a>
+  </div>
+</main>
+<script type="module" src="js/bottiglia-3d.js"></script>
+</body>
+</html>

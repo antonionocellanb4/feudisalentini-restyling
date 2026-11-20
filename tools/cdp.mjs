@@ -15,7 +15,7 @@ const ws = new WebSocket(list.find((t) => t.type === "page").webSocketDebuggerUr
 await new Promise((r) => ws.addEventListener("open", r));
 let id = 0; const pend = {}; const logs = [];
 ws.addEventListener("message", (m) => { const d = JSON.parse(m.data); if (d.id && pend[d.id]) { pend[d.id](d); delete pend[d.id]; } if (d.method === "Runtime.exceptionThrown") logs.push(d.params.exceptionDetails.exception?.description); if (d.method === "Runtime.consoleAPICalled" && d.params.type === "error") logs.push(JSON.stringify(d.params.args.map(a=>a.value))); });
-const send = (method, params = {}) => new Promise((r) => { pend[++id] = r; ws.send(JSON.stringify({ id, method, params })); });
+const send = (method, params = {}) => Promise.race([new Promise((r) => { pend[++id] = r; ws.send(JSON.stringify({ id, method, params })); }), sleep(8000).then(() => ({}))]); // 8 s e si va avanti: una cattura chiesta proprio mentre la pagina cambia non torna mai
 await send("Runtime.enable");
 await send("Emulation.setDeviceMetricsOverride", { width: +w, height: +h, deviceScaleFactor: 1, mobile: +w < 600 });
 if (process.env.TOUCH) {
@@ -34,7 +34,7 @@ for (const s of steps) {
   if (s.click) await (async () => { for (const t of ["mousePressed", "mouseReleased"]) await send("Input.dispatchMouseEvent", { type: t, x: s.click[0], y: s.click[1], button: "left", clickCount: 1 }); })();
   if (s.drag) { const P = s.drag; await send("Input.dispatchMouseEvent", { type: "mousePressed", x: P[0][0], y: P[0][1], button: "left", buttons: 1, clickCount: 1 }); for (const [x, y] of P.slice(1)) { await send("Input.dispatchMouseEvent", { type: "mouseMoved", x, y, button: "left", buttons: 1 }); await sleep(s.gap ?? 16); } const [x, y] = P[P.length - 1]; await send("Input.dispatchMouseEvent", { type: "mouseReleased", x, y, button: "left", buttons: 0, clickCount: 1 }); }
   if (s.wait) await sleep(s.wait);
-  if (s.shot) { const r = await send("Page.captureScreenshot", { format: "jpeg", quality: 70 }); writeFileSync(`${out}-${s.shot}.jpg`, Buffer.from(r.result.data, "base64")); }
+  if (s.shot) { const r = await send("Page.captureScreenshot", { format: "jpeg", quality: 70 }); if (r.result?.data) writeFileSync(`${out}-${s.shot}.jpg`, Buffer.from(r.result.data, "base64")); else console.log("cattura saltata:", s.shot); }
 }
 console.log("errors:", logs.length ? logs : "none");
 ws.close(); chrome.kill(); process.exit(0);

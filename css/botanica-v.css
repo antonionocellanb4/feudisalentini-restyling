@@ -1,0 +1,115 @@
+/* BOTANICA IN VERTICALE, "DISCESA" (17 nov 2026, scelta fra tre prove; le altre due in _archivio-prove/botanica-17nov-tre-prove): markup in sections/botanica.html, movimenti in js/botanica.js.
+   Sopra css/botanica.css (caratteri, sezioni sotto) e css/fiaba.css (scheda del vino, pillola). Prefisso erb: "bt" è già in css/base.css.
+   Le piante come nelle pagine del cliente: grandi, tono su tono (--c3 sul --c della collezione), intere; il testo ci sta sopra come nelle sue pagine di testo.
+   Per collezione da js: --c fondo, --c2 e --c3 i due toni più scuri, --m la pianta vera (assets/botanica), --ar le sue proporzioni. Il fondo della sezione lo scrive js mentre si scorre. */
+
+/* ---------- in comune ---------- */
+.erb { position: relative; background: #600027; color: #fff; --ink-2: #fff; }
+.erb .fb-zoom { position: fixed; z-index: 40; color: var(--ink); --ink-2: #3a312b; } /* la scheda del vino è su crema */
+.erb-pianta { position: absolute; background: var(--c3); -webkit-mask: var(--m) center / contain no-repeat; mask: var(--m) center / contain no-repeat; pointer-events: none;
+  clip-path: inset(calc((1 - var(--g, 1)) * 100%) 0 0 0); } /* --g da 0 a 1: cresce dal piede */
+.erb-zp { position: absolute; inset: 0; background: var(--c); -webkit-mask: var(--m) center / contain no-repeat; mask: var(--m) center / contain no-repeat;
+  clip-path: inset(calc((1 - var(--g, 1)) * 100%) 0 0 0); } /* nella scheda: la pianta intera dietro la bottiglia, nel colore della collezione sul crema, senza targa */
+
+/* ---------- i testi: la copertina ("The" nel corsivo del cliente fra due righe, il nome in maiuscolo), il titolo e il nome come nelle sue pagine di testo ---------- */
+.erb-cover, .erb-titolo { display: grid; justify-items: center; gap: .04em; margin: 0; text-align: center; font-size: clamp(1.6rem, 2.6vw, 3.1rem); font-weight: 500; line-height: 1.08; letter-spacing: .03em; text-transform: uppercase; }
+.erb-cover i, .erb-titolo i { display: flex; align-items: center; gap: .35em; font-family: 'Alex Brush', cursive; font-style: normal; font-weight: 400; font-size: 1.05em; line-height: 1.15; letter-spacing: 0; text-transform: none; white-space: nowrap; }
+.erb-cover i::before, .erb-cover i::after, .erb-titolo i::before, .erb-titolo i::after { content: ''; width: 1.2em; height: 1px; background: currentColor; }
+.erb-cover b, .erb-titolo b { max-width: 13.5ch; font-weight: inherit; text-wrap: balance; }
+.erb-titolo { font-size: clamp(1.9rem, 3.2vw, 3.5rem); }
+.erb-titolo b { max-width: none; }
+.erb-h { margin: 0; font-size: clamp(1.7rem, 2.7vw, 3.25rem); font-weight: 500; line-height: 1.05; letter-spacing: .02em; text-transform: uppercase; text-wrap: balance; }
+.erb-h .ch { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .1em; margin-bottom: -.1em; }
+.erb-h .ch > span { display: inline-block; }
+.erb-nome { margin: .75em 0 0; font-size: .9375rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
+.erb-rac p { margin: 0; font-size: var(--fp, 1rem); line-height: 1.6; text-wrap: pretty; }
+.erb-rac p + p { margin-top: .7em; }
+.erb-rac em { font-style: italic; font-weight: 600; }
+.erb-vini { text-align: center; }
+.erb-vini .btn { height: 40px; padding: 0 1.1rem; border-color: #fff; color: #fff; font-size: .9375rem; }
+.erb-vini .btn:hover { background: #fff; color: var(--ink); }
+.erb-riga > img { display: block; justify-self: start; width: 100%; max-width: calc(84vh * .8); height: auto; aspect-ratio: 4 / 5; object-fit: cover; } /* intera sotto l'header: i post hanno la scritta in alto e il logo in basso, non si tagliano */
+/* la bottiglia in piedi, senza ripiano né targa: la foto del catalogo com'è (col suo riflesso), sotto nome e denominazione */
+.erb-bott { justify-self: center; display: grid; justify-items: center; gap: 10px; text-align: center; }
+.erb-bott img { display: block; width: auto; height: min(56vh, 36vw); transition: translate .6s var(--ease); }
+.erb-bott:hover img { translate: 0 -6px; }
+.erb-bott span { display: grid; gap: 3px; max-width: 30ch; font-size: .875rem; line-height: 1.35; }
+.erb-bott b { font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
+
+/* ---------- l'apertura: "Wines that set the mood." sui sei mood del cliente a toni invertiti (pianta chiara sul fondo scuro), che si danno il cambio da soli; in basso sfuma nel fondo della sezione ---------- */
+.erb-apre { position: relative; height: 100svh; min-height: 520px; overflow: hidden; }
+.erb-umori { position: absolute; inset: 0; -webkit-mask: linear-gradient(#000 62%, transparent); mask: linear-gradient(#000 62%, transparent); }
+.erb-umore { position: absolute; inset: 0; background: var(--c3); opacity: 0; transition: opacity 1.2s var(--ease); }
+.erb-umore .erb-pianta { inset: calc(var(--header-h) * .6) 4% 2%; background: var(--c); }
+.erb-umore.is-su { z-index: 1; opacity: 1; }
+.erb-umore.is-sotto { opacity: 1; transition: none; } /* quello di prima resta pieno sotto il nuovo che entra */
+.erb-apre__in { position: absolute; z-index: 2; inset: 0; display: grid; place-content: center; justify-items: center; gap: 22px; padding: var(--header-h) 16px 48px; text-align: center; }
+.erb-apre__d { margin: 0; max-width: 36ch; font-size: 1.0625rem; line-height: 1.5; }
+.erb-scegli { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 760px; margin: 4px 0 0; padding: 0; list-style: none; }
+.erb-scegli button { height: 40px; padding: 0 15px; border: 1px solid #fff; border-radius: 999px; color: #fff; font-size: .9375rem; white-space: nowrap; transition: background-color .25s var(--ease), color .25s var(--ease); }
+.erb-scegli button:hover, .erb-scegli button[aria-pressed="true"] { background: #fff; color: var(--ink); }
+
+/* la pillola delle collezioni (css/fiaba.css), fissa in basso dentro il racconto */
+.erb-tappe { position: fixed; z-index: 30; visibility: hidden; opacity: 0; transition: opacity .35s var(--ease), visibility 0s .35s; }
+.erb.is-capi .erb-tappe { visibility: visible; opacity: 1; transition: opacity .35s var(--ease); }
+
+/* ---------- le collezioni: una pagina lunga ciascuna, con la sua pianta larga quasi quanto lo schermo, intera (js la fa scorrere più piano). Sotto la copertina il racconto è foto e bottiglia
+   (17 nov): righe alterne fatte da js (.erb-storia), foto grande da una parte e la sua bottiglia dall'altra; data-tipo dice cosa c'è nella riga (f foto, b bottiglia), is-dx la gira.
+   Titolo e testo del cliente dopo le prime due righe. La griglia è di dodici colonne; .erb-pag non fa scatola, i suoi pezzi stanno nella griglia dell'articolo ---------- */
+.erb-col { position: relative; overflow: clip; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: clamp(16px, 2vw, 32px); align-content: start;
+  min-height: calc(92vw / var(--ar) + 22vh); padding: 12vh var(--pad-x) 20vh; }
+.erb-pag { display: contents; }
+.erb-col .erb-pianta { z-index: 0; left: 50%; top: 9vh; width: 92vw; aspect-ratio: var(--ar); translate: -50% 0; }
+.erb-cover { position: relative; z-index: 1; order: 1; grid-column: 1 / -1; justify-self: center; margin-top: 6vh; }
+.erb-storia { position: relative; z-index: 1; order: 2; grid-column: 1 / -1; column-gap: inherit; margin-top: 36vh; }
+.erb-storia > * + * { margin-top: 16vh; }
+.erb-testo { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: inherit; }
+.erb-h { grid-column: 1 / 7; grid-row: 1; }
+.erb-nome { grid-column: 1 / 7; grid-row: 2; }
+.erb-rac { grid-column: 8 / 13; grid-row: 1 / span 3; padding-top: 14vh; }
+.erb-riga { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: inherit; align-items: center; } /* bottiglia a metà altezza della foto: col nome in fondo finiva dietro la pillola */
+.erb-riga > * { grid-row: 1; }
+.erb-riga[data-tipo="fb"] > img { grid-column: 1 / 6; }
+.erb-riga[data-tipo="fb"] > .erb-bott { grid-column: 8 / 12; } /* lontana dal centro: il nome sotto non finisce dietro la pillola fissa in basso */
+.erb-riga.is-dx[data-tipo="fb"] > img { grid-column: 8 / 13; justify-self: end; }
+.erb-riga.is-dx[data-tipo="fb"] > .erb-bott { grid-column: 2 / 6; }
+.erb-riga[data-tipo="ff"] { align-items: start; }
+.erb-riga[data-tipo="ff"] > :first-child { grid-column: 1 / 6; }
+.erb-riga[data-tipo="ff"] > :last-child { grid-column: 8 / 13; justify-self: end; margin-top: 24vh; }
+.erb-riga[data-tipo="bb"] { align-items: start; }
+.erb-riga[data-tipo="bb"] > :first-child { grid-column: 1 / 5; }
+.erb-riga[data-tipo="bb"] > :last-child { grid-column: 9 / 13; margin-top: 12vh; }
+.erb-riga[data-tipo="f"] > img { grid-column: 4 / 10; justify-self: center; }
+.erb-riga[data-tipo="b"] > .erb-bott { grid-column: 5 / 9; }
+.erb-vini { position: relative; z-index: 1; order: 3; grid-column: 1 / -1; margin-top: 18vh; }
+
+@media (max-width: 860px) {
+  .erb-titolo { font-size: 1.75rem; }
+  .erb-cover { font-size: 1.6rem; }
+  .erb-h { font-size: clamp(1.5rem, 7vw, 2rem); }
+  .erb-scegli button { height: 36px; padding: 0 12px; font-size: .875rem; }
+  .erb-col { display: block; min-height: 0; padding: 10vh 16px 14vh; }
+  .erb-col .erb-pianta { top: 4vh; width: 100vw; }
+  .erb-cover { margin-top: 2vh; }
+  .erb-storia { margin-top: 30vh; }
+  .erb-storia > * + * { margin-top: 10vh; }
+  .erb-testo { display: block; }
+  .erb-rac { padding-top: 24px; }
+  /* in tre colonne: la foto ne prende due, la bottiglia una (allargata: ai lati la sua foto è vuota) */
+  .erb-riga { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 10px; }
+  .erb-riga[data-tipo="fb"] > img { grid-column: 1 / 3; }
+  .erb-riga[data-tipo="fb"] > .erb-bott { grid-column: 3 / 4; }
+  .erb-riga.is-dx[data-tipo="fb"] > img { grid-column: 2 / 4; }
+  .erb-riga.is-dx[data-tipo="fb"] > .erb-bott { grid-column: 1 / 2; }
+  .erb-riga[data-tipo="ff"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .erb-riga[data-tipo="ff"] > :first-child { grid-column: 1; }
+  .erb-riga[data-tipo="ff"] > :last-child { grid-column: 2; margin-top: 14vh; }
+  .erb-riga[data-tipo="bb"] > :first-child { grid-column: 1 / 2; }
+  .erb-riga[data-tipo="bb"] > :last-child { grid-column: 3 / 4; margin-top: 8vh; }
+  .erb-riga[data-tipo="f"] > img { grid-column: 1 / -1; }
+  .erb-riga[data-tipo="b"] > .erb-bott { grid-column: 2 / 3; }
+  .erb-bott { justify-self: stretch; margin-inline: -30%; }
+  .erb-bott img { width: 100%; height: auto; }
+  .erb-bott span { max-width: 62.5%; font-size: .75rem; } /* larga quanto la colonna, non quanto il bottone allargato: se no il nome esce dallo schermo */
+  .erb-vini { margin-top: 12vh; }
+}

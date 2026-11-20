@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="it">
+<head>
+<!-- @include sections/_head.html -->
+<!-- PROVA (18 nov 2026): le altre bottiglie in 3D, "partiamo dal fare gli altri 3d delle bottiglie, prendi un bianco, un rosa e un vino speciale": Marpiccolo, Tre Cuori e Philia
+     (Dolce Naturale DOCG) accanto a Collezione 53 Primitivo, sul bianco dell'apertura Pop di Fotografia, dove andranno appoggiate e da muovere col mouse (tools/PIANO-giro3.md, voce 46).
+     Pagina a sé, non collegata dal sito. I pezzi vengono dalle foto del catalogo (tools/bottiglia_3d.py → assets/3d), i movimenti in js/bottiglie-3d.js. -->
+<title>Feudi Salentini · Le bottiglie in 3D (prova)</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&display=swap">
+<style>
+  .page-b3s { background: #fff; }
+  .b3s { position: relative; height: 100svh; min-height: 560px; overflow: hidden; background: #fff; color: #111; font-family: 'Bricolage Grotesque', sans-serif; }
+  .b3s-t { position: absolute; left: var(--pad-x); top: 28px; margin: 0; font-family: inherit; font-size: clamp(1.75rem, 3vw, 2.75rem); font-weight: 700; font-stretch: 75%; line-height: 1; letter-spacing: -.01em; }
+  .b3s-nota { position: absolute; right: var(--pad-x); top: 34px; margin: 0; font-size: 1rem; color: #444; }
+  .b3s-tela { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: pan-y; cursor: grab; }
+  .b3s-tela:active { cursor: grabbing; }
+  .b3s-tela:focus-visible { outline: 2px solid #111; outline-offset: -6px; }
+  .b3s-nome { position: absolute; left: 0; top: 0; margin: 0; translate: -50% 0; font-size: 1rem; font-weight: 600; text-align: center; white-space: nowrap; visibility: hidden; }
+  .b3s-nome small { display: block; font-size: .875rem; font-weight: 400; color: #444; }
+  .b3s.is-3d .b3s-nome { visibility: visible; }
+  @media (max-width: 860px) {
+    .b3s-t { left: 16px; top: 20px; font-size: 1.5rem; }
+    .b3s-nota { left: 16px; right: auto; top: 56px; font-size: .9375rem; }
+    .b3s-tela { top: 88px; height: calc(100% - 88px); } /* sotto titolo e nota */
+    .b3s-nome { width: 42vw; font-size: .875rem; white-space: normal; text-wrap: balance; }
+    .b3s-nome small { font-size: .8125rem; }
+  }
+</style>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.min.js"}}</script>
+</head>
+<body class="page-b3s">
+<main id="main" class="b3s">
+  <h1 class="b3s-t">Le bottiglie in 3D</h1>
+  <p class="b3s-nota">Trascina una bottiglia per girarla.</p>
+  <canvas class="b3s-tela" role="img" aria-label="Collezione 53 Primitivo, Marpiccolo, Tre Cuori e Philia in tre dimensioni. Si girano trascinandole o con le frecce destra e sinistra."></canvas>
+  <p class="b3s-nome">Collezione 53 Primitivo<small>Primitivo di Manduria DOP</small></p>
+  <p class="b3s-nome">Marpiccolo<small>Fiano Salento IGP</small></p>
+  <p class="b3s-nome">Tre Cuori<small>Rosa di Primitivo Puglia IGP</small></p>
+  <p class="b3s-nome">Philia<small>Primitivo di Manduria Dolce Naturale DOCG</small></p>
+</main>
+<script type="module" src="js/bottiglie-3d.js"></script>
+</body>
+</html>

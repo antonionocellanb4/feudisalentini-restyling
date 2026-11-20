@@ -1,0 +1,66 @@
+/* BOTANICA COL LAYOUT DEL POP (20 nov 2026, prova: botanica-pop.html). Sopra css/foto.css e css/pop-prove.css, che fanno l'impaginazione del Pop; qui quello che fa Botanica.
+   20 nov: "attenzione, non deve essere Botanica Pop: mantenere stesso schema ma mood Botanica, quindi anche va via ste cose": niente pennarello (giro e nome sulle foto,
+   righe dei capitoli e delle news), i piatti di Cosa c'è in tavola a retino come le piante. Il carattere non è più Montserrat ("Montserrat no, scegliamo altro") né il corsivo
+   Alex Brush ("su Botanica non voglio sto font"): si sceglie nel pannello Prove (?carattere=, js/pop-prove.js); di base Libre Caslon, il serif delle tavole botaniche d'epoca
+   da cui vengono le piante. Un colore pieno di sala per sezione (js/dati-bf.js), la targa delle copertine con dentro la pianta vera del cliente, intera e tono su tono
+   ("farei anche un buon uso delle forme della Botanica"), testi chiari, bottoni a pillola vuoti. Le sezioni prendono i colori ridefinendo i colori di base dove sta la sala
+   (--c muro, --c2 pianta, --c3 il più scuro): il Pop li usa quasi ovunque. Header, menu e cantina restano quelli di sempre (non stanno in main). */
+.bp { --font: 'Libre Caslon Text', Georgia, serif; --font-display: 'Libre Caslon Display', Georgia, serif; --bw: 400; --bk: 1; --tk: var(--bk); --tx: var(--bk); --title-weight: 400; --title-track: 0; background: #38221a; }
+/* i caratteri in prova: --bk quanto vengono le scritte giganti rispetto al Caslon (a parità di larghezza), --bw il peso dei titoli; --tk e --tx sono le stesse misure per i titoli
+   delle sezioni sotto (css/pop-prove.css) */
+.bp[data-carattere="instrument"] { --font-display: 'Instrument Serif', Georgia, serif; --bk: 1.08; }
+.bp[data-carattere="young"] { --font-display: 'Young Serif', Georgia, serif; --bk: .82; }
+.bp[data-carattere="poppins"] { --font: 'Poppins', system-ui, sans-serif; --font-display: var(--font); --bw: 500; --bk: .78; }
+/* le sale: Luxury l'apertura, Terra le foto, Lounge l'azienda, Organic i premi, Internazionali la tavola, Classica news e piede; le schede delle collezioni la loro (js/pop-collezioni.js) */
+.bp .pp-apre { --c: #600028; --c2: #52001f; --c3: #3d0117; }
+.bp :is(.pf, .pl, .pw, .pk, .pn, .pm) { --c: #bf5138; --c2: #9e422d; --c3: #732e1e; }
+.bp .pa { --c: #023e25; --c2: #03351f; --c3: #022517; }
+.bp .pd { --c: #717b57; --c2: #67704f; --c3: #4c5637; }
+.bp .tv { --c: #905e3b; --c2: #9a6a48; --c3: #7a4630; } /* cosa c'è in tavola: la sala degli Internazionali */
+.bp :is(.pq, .foot) { --c: #503323; --c2: #482d1e; --c3: #38221a; }
+.bp :is(.pp-apre, .pc-pan, .pf, .pl, .pw, .pk, .pn, .pm, .pa, .pd, .tv, .pq, .foot) {
+  --cream: var(--c); --stone: var(--c); --night: var(--c); --night-2: var(--c2);
+  --ink: #f3efea; --ink-2: rgb(243 239 234 / .86); --mute: rgb(243 239 234 / .72); --paper: #f3efea; --paper-2: rgb(243 239 234 / .82); --line: rgb(243 239 234 / .3); --gold-ink: #f3efea;
+  background: var(--c); color: var(--ink); }
+.bp .pc-pan:nth-child(even) { background: var(--c); }
+
+/* la targa delle copertine di Botanica (la sagoma è --sagoma, css/nav.css; come .bo-targa di css/botanica.css): piena del colore --c2 e dentro la pianta intera in --c3,
+   appoggiata in basso. Dietro la frase dell'apertura e dietro la bottiglia di ogni scheda; alta quasi quanto lo schermo, mai più larga di lui. L'indirizzo della pianta sta
+   nello stile dell'elemento (in una variabile Chrome lo cercherebbe dalla cartella del css) */
+.bp-targa { position: absolute; z-index: 0; left: 50%; top: calc(var(--header-h) + 2svh); height: min(calc(100% - var(--header-h) - 7svh), 106vw); aspect-ratio: 5 / 6; translate: -50% 0; background: var(--c2); pointer-events: none;
+  -webkit-mask: var(--sagoma) center / 100% 100% no-repeat; mask: var(--sagoma) center / 100% 100% no-repeat; }
+.bp-pianta { position: absolute; inset: 8% 8% 5%; background: var(--c3);
+  -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: 50% 100%; mask-position: 50% 100%; }
+.pc-pan > .bp-targa { z-index: -1; }
+
+/* i caratteri (> span: dentro ogni riga le lettere sono altri span, js/moderna-kit.js): scritte giganti e titoli nel carattere dei titoli, un peso solo, in minuscolo */
+.bp :is(.pp-titolo > span, .pc-nome, .pf-rullo, .pl-parola, .pn-parola, .pm-parola span, .pk-velo text, .pk-metro, .fo-pista__p, .pp-cerchio b, .pd-t, .pq-t, .pa-t, .pa-h, .pa-n b, .pd-conta dd, .pq-h, .tv__t, .pp-cifra) { font-family: var(--font-display); font-weight: var(--bw); font-stretch: 100%; letter-spacing: -.01em; text-transform: none; }
+.bp .pp-titolo span { font-size: calc(min(17.5svh, 9.4vw) * var(--bk)); font-weight: var(--bw); font-stretch: 100%; line-height: .95; letter-spacing: -.01em; } /* tutte: il Pop dà misura, peso e spaziatura anche agli span delle lettere */
+.bp .pc-nome { font-size: calc(min(22svh, 11vw) * var(--bk)); }
+@media (max-width: 860px) { .bp .pp-titolo span { font-size: calc(13vw * var(--bk)); } } /* sul telefono la frase sta sopra le bottiglie: più grande, fino ai margini */
+.bp .pc-frase { font-family: var(--font); font-size: clamp(1.25rem, 1.7vw, 1.75rem); font-weight: 400; font-style: italic; line-height: 1.25; letter-spacing: 0; text-transform: none; } /* la frase della copertina, nel suo inglese: il corsivo del carattere, non un carattere corsivo */
+.bp[data-carattere="poppins"] .pc-frase { font-style: normal; }
+.bp :is(.pf-rullo, .pl-parola, .pn-parola) { font-size: calc(min(24svh, 12vw) * var(--bk)); }
+.bp .tv__t { max-width: 6em; font-size: clamp(2.4rem, 4.4vw, 5rem); line-height: .95; }
+
+/* niente pennarello, è il segno del Pop: via il giro e il nome adesivo dalle foto (nella frase non ci sono più; in Lettere, prova del pannello, il nome resta come testo)
+   e la riga a pennarello di capitoli e news diventa un filo dritto che si allunga quando la riga entra */
+.bp .pp-cerchio svg { display: none; }
+.bp .pp-cerchio b, .bp .pp-note { -webkit-text-stroke: 0; rotate: none; color: #f3efea; text-shadow: 0 1px 14px rgb(0 0 0 / .4); }
+.bp .pp-riga { height: 1px; background: currentColor; opacity: .45; scale: var(--su, 1) 1; transform-origin: 0 50%; }
+.bp .pp-riga path { display: none; }
+
+/* in tavola i piatti come le piante: sagome a retino (tools/piatti_botanica.py, dagli stessi disegni), color carta; quello scelto sta nella targa delle copertine piena di carta
+   e prende il colore della sala */
+.bp .tv-ico { position: relative; display: block; width: var(--ico); aspect-ratio: 1; transition: translate .5s var(--ease); }
+.bp .tv-ico::before { content: ''; position: absolute; left: 50%; top: 50%; height: 114%; aspect-ratio: 5 / 6; translate: -50% -50%; background: #f3efea; opacity: 0; scale: .8; transition: opacity .3s, scale .5s var(--ease);
+  -webkit-mask: var(--sagoma) center / 100% 100% no-repeat; mask: var(--sagoma) center / 100% 100% no-repeat; }
+.bp .tv-ico i { position: absolute; inset: 4%; background: #f3efea; transition: background-color .3s, inset .5s var(--ease);
+  -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center; }
+.bp .tv-p:hover .tv-ico { translate: 0 -4px; }
+.bp .tv-p[aria-pressed="true"] .tv-ico::before { opacity: 1; scale: 1; }
+.bp .tv-p[aria-pressed="true"] .tv-ico i { inset: 17%; background: var(--c3); }
+
+/* bottoni a pillola vuoti, come in Botanica; pieni col mouse sopra */
+.bp main .btn, .bp .foot .btn, .bp .fo-apre__btn { background: transparent; color: #f3efea; box-shadow: inset 0 0 0 1px #f3efea; }
+.bp main .btn:hover, .bp .foot .btn:hover, .bp .fo-apre__btn:hover { background: #f3efea; color: var(--c3); }

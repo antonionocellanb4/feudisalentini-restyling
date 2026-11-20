@@ -7,21 +7,26 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script>/* prova font: ?font=bricolage|funnel|archivo|newsreader, resta per la sessione */(function(){var F={klimt:"Fraunces:opsz,wght,SOFT,WONK@9..144,100..400,0..100,0..1&family=Instrument+Sans:wdth,wght@75..100,400..600",bricolage:"Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800",funnel:"Funnel+Display:wght@300..800&family=Funnel+Sans:wght@300..800",archivo:"Archivo:wdth,wght@62..125,100..900",newsreader:"Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800"};var f;try{f=new URLSearchParams(location.search).get("font")||sessionStorage.getItem("fs-font")}catch(e){}if(!F[f])f="klimt";try{sessionStorage.setItem("fs-font",f)}catch(e){}document.documentElement.dataset.font=f;document.write('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family='+F[f]+'&display=swap">')})()</script>
+<style>@media (prefers-reduced-motion: no-preference){@view-transition{navigation:auto}}</style>
+<script>/* cambio di mood (17 nov): la pagina nuova si apre da dove si è scelto (css/nav.css, mood-apre). Al clic si annota la forma di partenza, "da|a|opacità" (due clip-path, e se la pagina nuova parte trasparente): il riquadro del link, oppure quella scritta nel link (data-mood-da) o da js/mood.js. All'arrivo, prima del primo disegno, la si passa al css. Senza appunto il passaggio non parte: gli altri link cambiano pagina come sempre. A passaggio finito si avvisa la barra (un evento scroll): durante il passaggio js/nav.js non vede cosa c'è sotto e sbaglia il tono */addEventListener("click",function(e){var p=e.target.closest&&e.target.closest("a[data-mood],a[data-mood-da]");if(!p||e.defaultPrevented)return;var da=p.getAttribute("data-mood-da");if(!da){var r=p.getBoundingClientRect(),w=innerWidth,h=innerHeight;da="inset("+[r.top/h,1-r.right/w,1-r.bottom/h,r.left/w].map(function(n){return(Math.max(0,n)*100).toFixed(2)+"%"}).join(" ")+")"}try{sessionStorage.setItem("fs-mood-da",da)}catch(x){}});addEventListener("pagereveal",function(e){var da;try{da=sessionStorage.getItem("fs-mood-da");sessionStorage.removeItem("fs-mood-da")}catch(x){}if(!e.viewTransition)return;e.viewTransition.finished.then(function(){dispatchEvent(new Event("scroll"))},function(){});if(da){da=da.split("|");var s=document.documentElement.style;s.setProperty("--mood-da",da[0]);s.setProperty("--mood-a",da[1]||"inset(0% 0% 0% 0%)");s.setProperty("--mood-o",da[2]||"1")}else{e.viewTransition.ready.catch(function(){});e.viewTransition.skipTransition()}});</script>
 <link rel="stylesheet" href="css/base.css?v=3c076e8f">
-<link rel="stylesheet" href="css/nav.css?v=fe2ff5d5">
-<!-- HOME "BOTANICA" (13 nov 2026): la quarta versione, dal profilo Instagram del cliente (@feudi_salentini): la passeggiata delle altre home dentro sei sale colorate, ognuna con la pianta a retino della sua collezione;
-     sotto, le stesse sezioni (cantina, più venduti, premi, news, cosa c'è in tavola). page-me: prende l'impaginazione del cammino e delle sezioni di moderna-e, css/botanica.css cambia caratteri e colori.
-     Le altre: index.html (Acquerello), moderna-e.html (Incisione), moderna-h.html (Pittura) -->
+<link rel="stylesheet" href="css/nav.css?v=5e36c683">
+<!-- HOME "BOTANICA" (13 nov 2026, racconto VERTICALE dal 17 nov): dal profilo Instagram del cliente (@feudi_salentini). Sei capitoli, uno per collezione, con le sue fotografie, la sua pagina (colore, pianta vera dal file all.ai, copertina e testo) e i suoi vini;
+     sotto, le stesse sezioni (cantina, più venduti, premi, news, cosa c'è in tavola). page-me: prende l'impaginazione delle sezioni di moderna-e, css/botanica.css cambia caratteri e colori, css/botanica-v.css è il racconto.
+     Il racconto è "Discesa", scelta il 17 nov fra tre prove (le altre due in _archivio-prove/botanica-17nov-tre-prove).
+     Da parte: il racconto orizzontale (botanica-oriz.html) e il verticale col set, targa e ripiano (_archivio-prove/botanica-17nov-set-verticale).
+     Dal 17 nov è uno dei mood del sito (l'altro è foto.html): la scelta sta in index.html e nella barra. Da parte: acquerello.html, moderna-e.html (Incisione), moderna-h.html (Pittura) -->
 <title>Feudi Salentini · Botanica</title>
 <meta name="description" content="Feudi Salentini: Primitivo di Manduria, Negroamaro e i vini del Salento della famiglia Varvaglione, a Leporano (TA).">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Pinyon+Script&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Alex+Brush&display=swap">
 <link rel="stylesheet" href="css/moderna-kit.css?v=d9e8b4c9">
-<link rel="stylesheet" href="css/fiaba.css?v=bc12d618">
+<link rel="stylesheet" href="css/fiaba.css?v=5d09cd42">
 <link rel="stylesheet" href="css/home.css?v=d5c3b761">
 <link rel="stylesheet" href="css/moderna-e.css?v=35d9a9cb">
 <link rel="stylesheet" href="css/moderna-e-sotto.css?v=e0f153ab">
 <link rel="stylesheet" href="css/moderna-f.css?v=af28db1d">
-<link rel="stylesheet" href="css/botanica.css?v=449a70fd">
+<link rel="stylesheet" href="css/botanica.css?v=d0aa9db4">
+<link rel="stylesheet" href="css/botanica-v.css?v=31cfcdf5">
 </head>
 <body class="page-moderna page-me page-bo" data-sito="b">
 <!-- NAVIGAZIONE: header fisso, menu telefono, cantina (mega menu dei vini), copertura della transizione versata.
@@ -92,28 +97,150 @@ try { var fsPour = JSON.parse(sessionStorage.getItem('fs-pour') || 'null'); sess
 
 <div class="pour" aria-hidden="true"><canvas></canvas></div>
 <main id="main">
-<!-- BOTANICA (13 nov 2026), la quarta versione: dal profilo Instagram del cliente. La stessa passeggiata delle altre home (si cammina in orizzontale, una tappa per collezione, pillola delle tappe, scheda del vino),
-     qui dentro sei sale colorate: ogni collezione ha il suo colore e la sua pianta a retino, grande, che cresce e si muove mentre si passa. Le sale le scrive js/botanica.js dai dati; stile in css/botanica.css
-     (l'impaginazione del cammino è quella di css/moderna-e.css). Sotto, le sezioni delle altre versioni: cantina, più venduti, premi, news, cosa c'è in tavola.
-     Frasi in inglese: sono quelle del cliente su Instagram (biografia e copertine delle collezioni), non tradotte. -->
-<section class="e-st" id="hero" aria-labelledby="e-t" data-nav-trasparente>
-  <div class="e-stage">
-    <i class="e-alto"></i>
+<!-- BOTANICA IN VERTICALE, "DISCESA" (17 nov 2026): scelta fra tre prove ("scelgo discesa come modello"; le altre due in _archivio-prove/botanica-17nov-tre-prove, il verticale col set in _archivio-prove/botanica-17nov-set-verticale).
+     Le piante come fa il cliente nelle sue pagine: grandi, tono su tono, intere. Si scorre e basta: ogni collezione è una pagina lunga con la sua pianta, il fondo cambia colore fra una e l'altra (js/botanica.js, css/botanica-v.css).
+     Per collezione: la pagina del cliente (pianta, copertina "The ... Collection", titolo e testo delle sue schede di testo nel file all.ai, parola per parola), le sue fotografie (assets/botanica/post, dall'Archivio; Terra non c'è, due foto di Instagram) e le bottiglie dei suoi vini.
+     Dal 17 nov "il racconto è foto e bottiglia": js mette accanto a ogni foto la bottiglia che ci si vede (data-vino), poi le altre bottiglie, e il racconto del cliente dopo le prime due righe.
+     Ordine delle collezioni: quello delle copertine nel file. Sotto, le sezioni comuni e le foto del profilo. -->
+<section class="erb hero--dark" id="hero" aria-labelledby="erb-t">
 
-    <div class="e-track">
-      <div class="e-tappa e-tappa--via bo-via">
-        <div class="bo-umori" aria-hidden="true"></div>
-        <h1 class="bo-titolo" id="e-t"><i>Wines that</i> <b>set the mood.</b></h1>
-        <div class="e-testo">
-          <p class="e-d">Leporano, sul mar Ionio, a sud di Taranto. Scorri o trascina: ogni tappa è una collezione, con il suo colore e la sua pianta.</p>
-          <ul class="bo-scegli" aria-label="Le collezioni"></ul>
-          <div class="e-cta"><button class="btn btn--gold" type="button" data-vai="1">Comincia dalla Collezione 53</button></div>
-        </div>
+    <header class="erb-apre">
+      <div class="erb-umori" aria-hidden="true"></div>
+      <div class="erb-apre__in">
+        <h1 class="erb-titolo" id="erb-t"><i>Wines that</i> <b>set the mood.</b></h1>
+        <p class="erb-apre__d">Leporano, sul mar Ionio, a sud di Taranto. Sei collezioni, ognuna col suo colore e la sua pianta.</p>
+        <ul class="erb-scegli" aria-label="Le collezioni"></ul>
       </div>
-    </div>
+    </header>
 
-    <nav class="fb-tappe" aria-label="Le collezioni, tappa per tappa"></nav>
+    <article class="erb-col" data-col="luxury" aria-labelledby="erb-h1">
+      <div class="erb-pag">
+        <i class="erb-pianta" aria-hidden="true"></i>
+        <p class="erb-cover"><i>The</i> <b>Luxury Collection</b></p>
+        <div class="erb-testo">
+          <h2 class="erb-h" id="erb-h1">L’ora esatta del Primitivo</h2>
+          <p class="erb-nome">Luxury Collection</p>
+          <div class="erb-rac">
+            <p>In Salento arriva sempre un momento dell’estate in cui il caldo smette di essere una stagione e diventa una forza. Entra nelle vigne, si posa sulle bucce, rallenta l’acqua, stringe il frutto e lo porta verso una forma più esatta. È un passaggio che il Primitivo di Manduria conosce da sempre, come se ogni anno aspettasse proprio quell’ora per decidere fino in fondo chi essere. La <em>Collezione Luxury</em> nasce lì, dentro questa concentrazione severa e luminosa, quando il grappolo trattiene il superfluo e lascia emergere soltanto la parte più piena, più matura, più necessaria di sé. Ne viene fuori un vino che ha la calma delle cose riuscite, la compattezza di ciò che non ha bisogno di alzare la voce per essere riconosciuto.</p>
+          </div>
+        </div>
+        <div class="erb-vini"></div>
+      </div>
+      <div class="erb-foto" role="group" aria-label="Luxury Collection, le fotografie">
+        <img data-vino="c53-primitivo" src="assets/botanica/post/luxury-1.webp" alt="Una mano regge una bottiglia di Collezione 53 Primitivo di Manduria davanti a una tenda arancione" width="800" height="1000" loading="lazy" decoding="async">
+        <img src="assets/botanica/post/luxury-2.webp" alt="Un calice di rosso e una bottiglia di Collezione 53 Primitivo su un pavimento a scacchi, con fichi e more" width="800" height="1000" loading="lazy" decoding="async">
+        <img data-vino="c53-negroamaro" src="assets/botanica/post/luxury-3.webp" alt="Una bottiglia di Collezione 53 Negroamaro su un marmo chiaro" width="800" height="1000" loading="lazy" decoding="async">
+        <img src="assets/botanica/post/luxury-4.webp" alt="Due ragazzi sotto il cielo azzurro, lei con un calice di rosso, lui con una bottiglia della Collezione 53" width="800" height="1000" loading="lazy" decoding="async">
+      </div>
+    </article>
 
+    <article class="erb-col" data-col="lounge" aria-labelledby="erb-h2">
+      <div class="erb-pag">
+        <i class="erb-pianta" aria-hidden="true"></i>
+        <p class="erb-cover"><i>The</i> <b>Lounge Bar Collection</b></p>
+        <div class="erb-testo">
+          <h2 class="erb-h" id="erb-h2">Dove le parole trovano il loro ritmo</h2>
+          <p class="erb-nome">Lounge Bar Collection</p>
+          <div class="erb-rac">
+            <p>Ci sono vini che sembrano fatti per l’attesa e altri che appartengono al presente, a quel punto preciso della giornata in cui le parole trovano un ritmo, la sera prende corpo e tutto comincia a stare bene al proprio posto. I vini della Collezione Lounge Bar abitano questo tempo, quello in cui il gusto accompagna la conversazione e la conversazione a sua volta dà al vino una misura ancora più viva. Uno | Due | Cinque ha dentro questa idea del tempo. Malvasia Nera, Negroamaro, Primitivo e Rosato portano ciascuno una voce distinta ma condividono la stessa eleganza che sa stare in compagnia senza pesare mai, vini che entrano nel momento giusto e, con discrezione, danno al momento la sua forma migliore.</p>
+          </div>
+        </div>
+        <div class="erb-vini"></div>
+      </div>
+      <div class="erb-foto" role="group" aria-label="Lounge Bar Collection, le fotografie">
+        <img data-vino="125-malvasia-nera" src="assets/botanica/post/lounge-1.webp" alt="Una ragazza distesa a bordo piscina con un calice di rosso e una bottiglia di 125 Malvasia Nera" width="800" height="1000" loading="lazy" decoding="async">
+        <img data-vino="125-primitivo" src="assets/botanica/post/lounge-2.webp" alt="Una bottiglia di 125 Primitivo Salento su una pietra chiara" width="800" height="1000" loading="lazy" decoding="async">
+        <img src="assets/botanica/post/lounge-3.webp" alt="Un calice di rosso e uno di rosato su un vassoio d’oro, su un tavolino di marmo verde" width="800" height="1000" loading="lazy" decoding="async">
+        <img data-vino="125-rosato" src="assets/botanica/post/lounge-4.webp" alt="Una mano versa il rosato 125 in un calice, davanti a un drappo verde" width="800" height="1000" loading="lazy" decoding="async">
+      </div>
+    </article>
+
+    <article class="erb-col" data-col="classica" aria-labelledby="erb-h3">
+      <div class="erb-pag">
+        <i class="erb-pianta" aria-hidden="true"></i>
+        <p class="erb-cover"><i>The</i> <b>Classic Collection</b></p>
+        <div class="erb-testo">
+          <h2 class="erb-h" id="erb-h3">Il respiro antico della terra.</h2>
+          <p class="erb-nome">Classic Collection</p>
+          <div class="erb-rac">
+            <p>Ogni terra custodisce alcuni nomi che col tempo diventano più di un nome. Diventano un gesto, un’abitudine profonda, un modo di stare al mondo. Salice Salentino, Susumaniello, Verdeca, Appassimento hanno la naturalezza di ciò che attraversa le generazioni e continua a restare saldo perché è radicato in una sapienza antica, concreta, quotidiana. La Collezione Classica di Feudi Salentini viene da una fedeltà che non ha bisogno di effetti, da una compostezza che assomiglia a certe case del Sud tenute bene da sempre. In questi vini c’è il territorio nella sua forma più riconoscibile, più stabile, più sincera. C’è una bellezza che non cerca di sorprendere ma finisce per lasciare un segno proprio perché non ha mai avuto bisogno di forzare nulla.</p>
+          </div>
+        </div>
+        <div class="erb-vini"></div>
+      </div>
+      <div class="erb-foto" role="group" aria-label="Classic Collection, le fotografie">
+        <img data-vino="tre-cuori" src="assets/botanica/post/classica-1.webp" alt="Due mani stappano una bottiglia di Tre Cuori, rosa di Primitivo" width="800" height="1000" loading="lazy" decoding="async">
+        <img src="assets/botanica/post/classica-2.webp" alt="Un calice di vino chiaro su un telo a righe a bordo piscina, accanto a un kiwi tagliato" width="800" height="1000" loading="lazy" decoding="async">
+        <img data-vino="appassimento" src="assets/botanica/post/classica-3.webp" alt="Una bottiglia di Appassimento su un fondo di pietra" width="800" height="1000" loading="lazy" decoding="async">
+        <img data-vino="cala" src="assets/botanica/post/classica-4.webp" alt="Due ragazzi con due calici di bianco, lui tiene una bottiglia di Càla" width="800" height="1000" loading="lazy" decoding="async">
+      </div>
+    </article>
+
+    <article class="erb-col" data-col="terra" aria-labelledby="erb-h4">
+      <div class="erb-pag">
+        <i class="erb-pianta" aria-hidden="true"></i>
+        <p class="erb-cover"><i>The</i> <b>Terra Collection</b></p>
+        <div class="erb-testo">
+          <h2 class="erb-h" id="erb-h4">La gravità gentile della terra.</h2>
+          <p class="erb-nome">Terra Collection</p>
+          <div class="erb-rac">
+            <p>In certi punti del Salento la terra sembra avere una voce che sale dalle radici e arriva fino al bicchiere. La si sente nel colore, nella trama del vino, in quella sensazione che alcune cose possiedono quando appartengono davvero a un luogo e non potrebbero nascere altrove. È una presenza profonda, concreta, fatta di argilla, pietra, sole e pazienza. La Collezione Terra nasce da questa appartenenza. Platinum, Gold, Primitivo, Negroamaro, Malvasia Bianca, Malvasia Nera e Rosato raccontano ciascuno una sfumatura diversa dello stesso legame originario. Cambiano i toni, cambiano i profumi, cambia la luce che portano al palato, ma resta intatto quel nucleo essenziale che tiene tutto insieme e che alla fine ha un solo nome possibile, origine.</p>
+          </div>
+        </div>
+        <div class="erb-vini"></div>
+      </div>
+      <!-- Terra: nell'Archivio non c'è; due fotografie di Instagram con le sue bottiglie (le stesse della versione Fotografia) -->
+      <div class="erb-foto" role="group" aria-label="Terra Collection, le fotografie">
+        <img data-vino="terra-malvasia-bianca" src="assets/foto-ig/tavola.webp" alt="Una bottiglia di Terra Malvasia Bianca, due calici e una ciotola di pomodorini su una tovaglia bianca al sole" width="1080" height="1350" loading="lazy" decoding="async">
+        <img data-vino="terra-rosato" src="assets/foto-ig/rosato.webp" alt="Una bottiglia di rosato e due calici su un tavolo all’aperto" width="1080" height="1350" loading="lazy" decoding="async">
+      </div>
+    </article>
+
+    <article class="erb-col" data-col="internazionali" aria-labelledby="erb-h5">
+      <div class="erb-pag">
+        <i class="erb-pianta" aria-hidden="true"></i>
+        <p class="erb-cover"><i>The</i> <b>International Collection</b></p>
+        <div class="erb-testo">
+          <h2 class="erb-h" id="erb-h5">Dove il mondo trova casa.</h2>
+          <p class="erb-nome">International Collection</p>
+          <div class="erb-rac">
+            <p>Il Salento ha sempre saputo accogliere. La sua costa, i muretti a secco, il paesaggio intero raccontano di arrivi diventati parte della sua identità.</p>
+            <p>La Collezione International celebra questa tradizione: i vini Primaura nascono da vitigni che hanno attraversato confini, trovando in questa terra la loro voce, espressa con l’accento del Salento.</p>
+            <p>In questi blend, un’eredità lontana e radici locali si riconoscono. Primitivo e Nero di Troia custodiscono la memoria più antica di questa terra, mentre Cabernet e Syrah portano con sé l’eco di paesi lontani. Due tradizioni, una sola voce. Nata dal mondo. Salentino per scelta.</p>
+          </div>
+        </div>
+        <div class="erb-vini"></div>
+      </div>
+      <div class="erb-foto" role="group" aria-label="International Collection, le fotografie">
+        <img data-vino="primaura" src="assets/botanica/post/internazionali-1.webp" alt="Una bottiglia di Primaura con l’etichetta bianca su un fondo di pietra chiara" width="800" height="1000" loading="lazy" decoding="async">
+        <img data-vino="primaura-nero-di-troia" src="assets/botanica/post/internazionali-2.webp" alt="Una mano regge una bottiglia di Primaura con l’etichetta nera, accanto a una tenda di lino" width="800" height="1000" loading="lazy" decoding="async">
+        <img src="assets/botanica/post/internazionali-3.webp" alt="Una ragazza con gli occhiali da sole guarda in controluce un calice di rosso" width="800" height="1000" loading="lazy" decoding="async">
+        <img src="assets/botanica/post/internazionali-4.webp" alt="Le due bottiglie di Primaura su una roccia, all’ombra degli alberi" width="800" height="1000" loading="lazy" decoding="async">
+      </div>
+    </article>
+
+    <article class="erb-col" data-col="organic" aria-labelledby="erb-h6">
+      <div class="erb-pag">
+        <i class="erb-pianta" aria-hidden="true"></i>
+        <p class="erb-cover"><i>The</i> <b>Organic Collection</b></p>
+        <div class="erb-testo">
+          <h2 class="erb-h" id="erb-h6">Custodire ogni giorno.</h2>
+          <p class="erb-nome">Organic Collection</p>
+          <div class="erb-rac">
+            <p>Ci vuole una certa idea del mondo per scegliere di accompagnare la natura senza volerla dominare. Ci vuole pazienza, misura, continuità, una forma di rispetto che non si annuncia ma si pratica ogni giorno tra i filari, nelle stagioni buone e in quelle più difficili, nel lavoro silenzioso che tiene insieme attenzione umana e ritmo della terra. La <em>Collezione Organic</em> cresce dentro questa fedeltà quotidiana. Il Primitivo e il Bianco di Puglia prendono forma così, dentro una relazione che non forza ma segue, che non impone ma custodisce. E alla fine il vino trattiene questa coerenza e la trasforma in materia, in sentori, in chiarezza. È qualcosa che si percepisce subito, come accade con tutto ciò che è stato fatto bene, con etica e responsabilità.</p>
+          </div>
+        </div>
+        <div class="erb-vini"></div>
+      </div>
+      <div class="erb-foto" role="group" aria-label="Organic Collection, le fotografie">
+        <img data-vino="organic-bianco" src="assets/botanica/post/organic-1.webp" alt="Una bottiglia di 125 Organic bianco in equilibrio su un cappello, tenuta con due mani" width="800" height="1000" loading="lazy" decoding="async">
+        <img src="assets/botanica/post/organic-2.webp" alt="Una ragazza sorride sotto le palme e alza un calice di rosso" width="800" height="1000" loading="lazy" decoding="async">
+        <img data-vino="organic-primitivo" src="assets/botanica/post/organic-3.webp" alt="Una bottiglia di 125 Organic Primitivo su un tessuto di lino" width="800" height="1000" loading="lazy" decoding="async">
+        <img src="assets/botanica/post/organic-4.webp" alt="Un pic nic sull’erba con le due bottiglie 125 Organic, due calici, formaggi e uva" width="800" height="1000" loading="lazy" decoding="async">
+      </div>
+    </article>
+
+    <nav class="fb-tappe erb-tappe" aria-label="Le collezioni"></nav>
 <!-- bottiglia al centro: si apre col clic su una bottiglia (js/scheda.js), uguale in fiaba, moderna-d e moderna-e -->
 <div class="fb-zoom" role="dialog" aria-modal="true" aria-labelledby="fb-zoom-t" tabindex="-1" hidden>
   <canvas class="fb-zoom__cv" aria-hidden="true"></canvas>
@@ -128,7 +255,6 @@ try { var fsPour = JSON.parse(sessionStorage.getItem('fs-pour') || 'null'); sess
   </div>
   <button class="btn btn--line fb-zoom__x" type="button">Chiudi</button>
 </div>
-  </div>
 </section>
 
 <!-- Cantina sotto il cammino di E, F, G e H (prima era in moderna-e-sotto.html: separata il 6 nov 2026 perché in F, G e H dopo la cantina vengono i più venduti). Stile in css/home.css, movimenti in js/moderna-e-sotto.js -->
@@ -243,7 +369,8 @@ try { var fsPour = JSON.parse(sessionStorage.getItem('fs-pour') || 'null'); sess
       <div class="foot__col foot__contatti">
         <h2 class="foot__h">Contatti</h2>
         <a class="foot__tel" href="tel:+390995315370">+39 099 5315370</a>
-        <p>Fax +39 099 5315739</p>
+        <p class="foot__fax">Fax +39 099 5315739</p>
+        <p class="foot__telriga" hidden>Tel <a href="tel:+390995315370">+39 099 5315370</a></p><!-- solo nel piede Pop (css/pop-prove.css), dove il numero grande sta in cima e qui sotto restava il solo fax: "qui togli fax metti tel" (19 nov) -->
         <address>Feudi Salentini srl<br><a href="https://www.google.com/maps/search/?api=1&amp;query=Feudi+Salentini+Via+Esterna+Talsano+36+Leporano" target="_blank" rel="noopener">Via Esterna Talsano, 36, 74020 Leporano (TA)</a></address>
         <p class="foot__tbd"><span class="tbd">Indirizzo da confermare: il sito attuale riporta anche Via Amendola 36</span></p>
       </div>
@@ -260,14 +387,15 @@ try { var fsPour = JSON.parse(sessionStorage.getItem('fs-pour') || 'null'); sess
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 <script src="js/data.js?v=a0547593"></script>
-<script src="js/main.js?v=0a3531b8"></script>
+<script src="js/main.js?v=7c14ab57"></script>
+<script defer src="js/cambio-mood.js?v=c98fb4f4"></script>
 <script defer src="js/nav.js?v=fd4bc750"></script>
-<script src="js/moderna-kit.js?v=e5730034"></script>
+<script src="js/moderna-kit.js?v=1614b95a"></script>
 <script src="js/scheda.js?v=e374d8c2"></script>
-<script src="js/dati-bf.js?v=965a27f8"></script>
-<script src="js/botanica.js?v=9e06a020"></script>
+<script src="js/dati-bf.js?v=fea6b049"></script>
+<script src="js/botanica.js?v=2dd78c9e"></script>
 <script src="js/moderna-e-sotto.js?v=7e496b3d"></script>
-<script src="js/piatti-incisi.js?v=402b00f7"></script>
-<script src="js/tavola.js?v=c1cdcb69"></script>
+<script src="js/piatti-incisi.js?v=247fc1bc"></script>
+<script src="js/tavola.js?v=18c2c0cb"></script>
 </body>
 </html>

@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#15100d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script>/* prova font: ?font=bricolage|funnel|archivo|newsreader, resta per la sessione */(function(){var F={klimt:"Fraunces:opsz,wght,SOFT,WONK@9..144,100..400,0..100,0..1&family=Instrument+Sans:wdth,wght@75..100,400..600",bricolage:"Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800",funnel:"Funnel+Display:wght@300..800&family=Funnel+Sans:wght@300..800",archivo:"Archivo:wdth,wght@62..125,100..900",newsreader:"Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800"};var f;try{f=new URLSearchParams(location.search).get("font")||sessionStorage.getItem("fs-font")}catch(e){}if(!F[f])f="klimt";try{sessionStorage.setItem("fs-font",f)}catch(e){}document.documentElement.dataset.font=f;document.write('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family='+F[f]+'&display=swap">')})()</script>
+<style>@media (prefers-reduced-motion: no-preference){@view-transition{navigation:auto}}</style>
+<script>/* cambio di mood (17 nov): la pagina nuova si apre da dove si è scelto (css/nav.css, mood-apre). Al clic si annota la forma di partenza, "da|a|opacità" (due clip-path, e se la pagina nuova parte trasparente): il riquadro del link, oppure quella scritta nel link (data-mood-da) o da js/mood.js. All'arrivo, prima del primo disegno, la si passa al css. Senza appunto il passaggio non parte: gli altri link cambiano pagina come sempre. A passaggio finito si avvisa la barra (un evento scroll): durante il passaggio js/nav.js non vede cosa c'è sotto e sbaglia il tono */addEventListener("click",function(e){var p=e.target.closest&&e.target.closest("a[data-mood],a[data-mood-da]");if(!p||e.defaultPrevented)return;var da=p.getAttribute("data-mood-da");if(!da){var r=p.getBoundingClientRect(),w=innerWidth,h=innerHeight;da="inset("+[r.top/h,1-r.right/w,1-r.bottom/h,r.left/w].map(function(n){return(Math.max(0,n)*100).toFixed(2)+"%"}).join(" ")+")"}try{sessionStorage.setItem("fs-mood-da",da)}catch(x){}});addEventListener("pagereveal",function(e){var da;try{da=sessionStorage.getItem("fs-mood-da");sessionStorage.removeItem("fs-mood-da")}catch(x){}if(!e.viewTransition)return;e.viewTransition.finished.then(function(){dispatchEvent(new Event("scroll"))},function(){});if(da){da=da.split("|");var s=document.documentElement.style;s.setProperty("--mood-da",da[0]);s.setProperty("--mood-a",da[1]||"inset(0% 0% 0% 0%)");s.setProperty("--mood-o",da[2]||"1")}else{e.viewTransition.ready.catch(function(){});e.viewTransition.skipTransition()}});</script>
+<link rel="stylesheet" href="css/base.css?v=3c076e8f">
+<link rel="stylesheet" href="css/nav.css?v=5e36c683">
+<!-- PROVA del terzo mood, stile azienda (20 nov 2026): "ora mi serve una versione che sarebbe il terzo mood ma stile company, dove le bottiglie sono l'ultima cosa di cui parlare".
+     Terza forma, stesso giorno: "praticamente hai rifatto la company uguale agli altri mood anche nella forma di ogni sezione, deve essere una cosa nuova" (la prima e la seconda
+     sono in _archivio-prove/company-v1-20nov e company-v2-chi-siamo-20nov). Contenuti veri, forme che non stanno né nel Pop né in Botanica né nel Chi siamo:
+     la pagina si legge come una pubblicazione aziendale, con un indice dei capitoli che in copertina è grande e scorrendo diventa la guida a lato (sul computer);
+     la sintesi in una frase coi numeri; la famiglia come elenco; il Salento su una mappa vera che si avvicina a Leporano, poi i luoghi; i vitigni a pannelli che si aprono;
+     la sostenibilità a riquadri col bilancio da scaricare; i riconoscimenti come medagliere per anno; le notizie; per ultimi i vini, un catalogo a righe con la bottiglia accanto.
+     Stile in css/company.css, movimenti e dati in js/company.js, la costa in js/company-mappa.js (tools/mappa_salento.py). Pagina a sé: non è ancora nel cambio di mood. -->
+<title>Feudi Salentini · Prova, il terzo mood (azienda)</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="Feudi Salentini, la cantina della famiglia Varvaglione a Leporano (TA): la famiglia, il Salento, la vigna, la sostenibilità, i riconoscimenti e i vini.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="css/company.css?v=5e1e4fe4">
+</head>
+<body class="page-co" data-pagine="company.html,company.html,pop-vino.html">
+<!-- NAVIGAZIONE: header fisso, menu telefono, cantina (mega menu dei vini), copertura della transizione versata.
+     Script: js/nav.js · Stile: css/nav.css · Altri agenti aprono la cantina con
+     document.dispatchEvent(new CustomEvent('fs:open-cantina', {detail:{tipo:'rosso'}})) -->
+<script>
+/* transizione versata: arrivando da un vino, la pagina parte coperta del suo colore già al primo disegno (poi nav.js la scopre) */
+try { var fsPour = JSON.parse(sessionStorage.getItem('fs-pour') || 'null'); sessionStorage.removeItem('fs-pour');
+  if (fsPour && Date.now() - fsPour.t < 10000 && new URLSearchParams(location.search).get('id') === fsPour.id && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('fs-poured'); document.documentElement.style.setProperty('--pour', fsPour.color); }
+} catch (e) {}
+</script>
+<a class="nav-skip" href="#main">Vai al contenuto</a>
+
+<header class="nav" data-nav data-tone="light">
+  <div class="nav__bar">
+    <nav class="nav__links" aria-label="Principale">
+      <button class="nav__link" type="button" data-cantina-toggle aria-expanded="false" aria-controls="cantina" data-nav-for="p-vini collezioni tavola vino">Vini</button>
+      <a class="nav__link" href="come-nasce.html" data-nav-for="p-nasce nasce">Come nasce</a>
+      <a class="nav__link" href="azienda.html" data-nav-for="p-azienda azienda">Azienda</a>
+      <a class="nav__link" href="index.html#premi" data-nav-for="p-premi premi">Premi</a>
+    </nav>
+    <a class="nav__logo" href="index.html" aria-label="Feudi Salentini, torna alla home"><span class="logo"></span></a>
+    <div class="nav__end">
+      <a class="nav__link nav__link--end" href="index.html#contatti" data-nav-for="contatti">Contatti</a>
+      <p class="nav__lang"><span class="sr-only">Lingua: </span><span class="nav__lang-on" aria-current="true">IT</span><span class="nav__lang-off" aria-disabled="true" title="In preparazione">EN<span class="sr-only"> (in preparazione)</span></span></p>
+      <button class="nav__burger" type="button" aria-expanded="false" aria-controls="nav-menu">Menu</button>
+    </div>
+  </div>
+</header>
+
+<div class="nav-menu" id="nav-menu" data-lenis-prevent>
+  <div class="nav-menu__in">
+    <nav aria-label="Menu">
+      <ul class="nav-menu__list">
+        <li><button class="nav-menu__item" type="button" data-cantina-toggle aria-expanded="false" aria-controls="cantina">Vini <span class="nav-menu__count" data-cantina-total>28</span><svg class="nav-menu__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button></li>
+        <li><a class="nav-menu__item" href="come-nasce.html">Come nasce il vino</a></li>
+        <li><a class="nav-menu__item" href="azienda.html">Azienda</a></li>
+        <li><a class="nav-menu__item" href="index.html#premi">Premi</a></li>
+        <li><a class="nav-menu__item" href="index.html#contatti">Contatti</a></li>
+      </ul>
+    </nav>
+    <div class="nav-menu__foot">
+      <p class="nav__lang"><span class="sr-only">Lingua: </span><span class="nav__lang-on" aria-current="true">IT</span><span class="nav__lang-off" aria-disabled="true" title="In preparazione">EN <small>in preparazione</small></span></p>
+      <a href="tel:+390995315370">+39 099 5315370</a>
+    </div>
+  </div>
+</div>
+
+<div class="cantina" id="cantina" role="dialog" aria-modal="true" aria-labelledby="cantina-title" data-lenis-prevent>
+  <div class="cantina__in">
+    <div class="cantina__top">
+      <button class="cantina__back" type="button" data-cantina-back><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Menu</button>
+      <h2 class="cantina__title" id="cantina-title">I vini</h2>
+      <div class="cantina__filters" role="group" aria-label="Filtra per tipo">
+        <button class="cantina__filter" type="button" data-tipo="tutti" aria-pressed="true">Tutti <span></span></button>
+        <button class="cantina__filter" type="button" data-tipo="rosso" aria-pressed="false">Rossi <span></span></button>
+        <button class="cantina__filter" type="button" data-tipo="rosato" aria-pressed="false">Rosati <span></span></button>
+        <button class="cantina__filter" type="button" data-tipo="bianco" aria-pressed="false">Bianchi <span></span></button>
+        <button class="cantina__filter" type="button" data-tipo="dolce" aria-pressed="false">Dolce <span></span></button>
+      </div>
+      <p class="cantina__vista"></p>
+      <button class="cantina__close" type="button" data-cantina-close>Chiudi</button>
+    </div>
+    <div class="cantina__shelves" data-cantina-shelves></div>
+  </div>
+</div>
+
+<div class="pour" aria-hidden="true"><canvas></canvas></div>
+
+<!-- l'indice dei capitoli: in copertina grande a sinistra, scorrendo si rimpicciolisce e resta a lato come guida col capitolo in cui si è (js/company.js). Sul telefono è un elenco in copertina -->
+<nav class="co-indice" aria-label="Capitoli">
+  <ol>
+    <li><a href="#famiglia"><b>01</b><span>La famiglia</span></a></li>
+    <li><a href="#salento"><b>02</b><span>Il Salento</span></a></li>
+    <li><a href="#vigna"><b>03</b><span>La vigna</span></a></li>
+    <li><a href="#sostenibilita"><b>04</b><span>Sostenibilità</span></a></li>
+    <li><a href="#riconoscimenti"><b>05</b><span>Riconoscimenti</span></a></li>
+    <li><a href="#notizie"><b>06</b><span>Notizie</span></a></li>
+    <li><a href="#vini"><b>07</b><span>I vini</span></a></li>
+  </ol>
+  <i class="co-indice__filo" aria-hidden="true"></i>
+</nav>
+
+<main id="main">
+
+<section class="co-cop" aria-labelledby="co-t">
+  <h1 class="co-cop__t" id="co-t" data-righe>La cantina della famiglia Varvaglione.</h1>
+  <p class="co-cop__s" lang="en">Born in Salento, experienced worldwide.</p>
+  <figure class="co-cop__f"><img src="assets/photo/catalogo-vigna.webp" alt="I filari della vigna sotto un cielo di nuvole" width="1134" height="913" fetchpriority="high" decoding="async"><figcaption>i filari della vigna</figcaption></figure>
+</section>
+
+<!-- la sintesi: una frase coi numeri dentro (vini, collezioni e riconoscimenti li ricontrolla js/company.js sui dati). I numeri in <b> senza attributi: FS.righe divide l'html agli spazi -->
+<section class="co-sintesi" aria-label="Feudi Salentini in sintesi">
+  <p class="co-sintesi__p" data-righe>Feudi Salentini è la cantina della famiglia Varvaglione, giunta alla <b>4ª</b> generazione: <b>33</b> vini in <b>6</b> collezioni, <b>65</b> riconoscimenti dai concorsi internazionali, certificata Equalitas dal <b>2022</b>.</p>
+</section>
+
+<section class="co-fam" id="famiglia" aria-labelledby="co-fam-t">
+  <p class="co-cap"><b>01</b>La famiglia</p>
+  <figure class="co-fam__f"><img src="assets/photo/catalogo-mani.webp" alt="Le mani che tagliano un grappolo alla vendemmia" width="797" height="797" loading="lazy" decoding="async"><figcaption>la vendemmia, a mano</figcaption></figure>
+  <div class="co-fam__testo">
+    <h2 class="co-h" id="co-fam-t" data-righe>La famiglia Varvaglione.</h2>
+    <ul class="co-nomi" aria-label="I Varvaglione che portano avanti l'azienda">
+      <li>Cosimo</li>
+      <li>Maria Teresa</li>
+      <li>Marzia</li>
+      <li>Angelo</li>
+      <li>Francesca</li>
+    </ul>
+    <p class="co-p">Portano avanti l'azienda, giunta alla quarta generazione. La cantina è a Leporano, in provincia di Taranto.</p>
+    <figure class="co-fam__m"><img src="assets/photo/masseria-cortile.webp" alt="Il cortile della masseria di famiglia" width="1920" height="1081" loading="lazy" decoding="async"><figcaption>la masseria di famiglia</figcaption></figure>
+  </div>
+</section>
+
+<!-- il Salento: la mappa vera (js/company-mappa.js) che scorrendo passa dal sud Italia al Salento e si ferma su Leporano; poi i luoghi -->
+<section class="co-sal" id="salento" aria-labelledby="co-sal-t">
+  <div class="co-sal__giro"><!-- il tratto di scorrimento della mappa: il palco resta fermo mentre la mappa si avvicina -->
+  <div class="co-sal__st">
+    <div class="co-sal__testo">
+      <p class="co-cap"><b>02</b>Il Salento</p>
+      <h2 class="co-h" id="co-sal-t" data-righe>Il Salento, una terra divina.</h2>
+      <p class="co-p">Il Salento è ricco di castelli, di storia e di tradizioni. Feudi Salentini nasce qui, in una terra rinomata per la produzione del Primitivo di Manduria. I muretti a secco, gli uliveti con alberi secolari e il mare turchese fanno parte di uno scenario che dà vita a vino e olio.</p>
+    </div>
+    <figure class="co-mappa" role="img" aria-label="Mappa del sud Italia che si avvicina al Salento: Leporano, dove sta la cantina, è sul golfo di Taranto, sul mar Ionio">
+      <svg class="co-mappa__svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path class="co-mappa__terra"/></svg>
+      <div class="co-mappa__nomi" aria-hidden="true"></div>
+      <figcaption class="co-mappa__fonte">Costa: Natural Earth</figcaption>
+    </figure>
+  </div>
+  </div>
+  <ul class="co-luoghi">
+    <li><figure><img src="assets/photo/torre-mare.webp" alt="Una torre costiera sul mare del Salento" width="1790" height="1366" loading="lazy" decoding="async"><figcaption>Le torri sul mare</figcaption></figure></li>
+    <li><figure><img src="assets/photo/pajara.webp" alt="Una pajara, la capanna di pietra a secco della campagna salentina" width="563" height="563" loading="lazy" decoding="async"><figcaption>Le pajare di pietra</figcaption></figure></li>
+    <li><figure><img src="assets/photo/muretto-secco.webp" alt="Un muretto a secco tra le vigne" width="1920" height="1280" loading="lazy" decoding="async"><figcaption>I muretti a secco</figcaption></figure></li>
+    <li><figure><img src="assets/photo/ulivo-trulli.webp" alt="Rami di ulivo con le olive davanti a un trullo" width="1920" height="1280" loading="lazy" decoding="async"><figcaption>Gli ulivi secolari</figcaption></figure></li>
+    <li><figure><img src="assets/photo/mare-salento.webp" alt="La costa del Salento, sabbia e mare turchese" width="1920" height="1080" loading="lazy" decoding="async"><figcaption>Il mare turchese</figcaption></figure></li>
+  </ul>
+</section>
+
+<section class="co-vigna" id="vigna" aria-labelledby="co-vigna-t">
+  <div class="co-testa">
+    <p class="co-cap"><b>03</b>La vigna</p>
+    <h2 class="co-h" id="co-vigna-t" data-righe>La nostra filosofia.</h2>
+    <p class="co-p">Feudi Salentini produce vini dai vitigni autoctoni pugliesi per eccellenza, usando tecniche di vinificazione moderne, con un occhio all'ambiente per salvaguardare la terra.</p>
+  </div>
+  <div class="co-uve"></div><!-- i quattro vitigni a pannelli: nome e quanti vini sempre in vista, aperto la foto e i vini (js/company.js, dai dati) -->
+</section>
+
+<section class="co-sos" id="sostenibilita" aria-labelledby="co-sos-t">
+  <div class="co-testa">
+    <p class="co-cap"><b>04</b>Sostenibilità</p>
+    <h2 class="co-h" id="co-sos-t" data-righe>Sostenibilità.</h2>
+    <p class="co-p">Dal 2022 Feudi Salentini è certificata Equalitas, lo standard che valuta la sostenibilità ambientale, sociale ed economica delle aziende del vino. I fatti dal Bilancio di sostenibilità 2025.</p>
+  </div>
+  <ul class="co-bento">
+    <li class="co-bento__foto"><figure><img src="assets/photo/papaveri.webp" alt="Papaveri fra i filari della vigna" width="1280" height="1920" loading="lazy" decoding="async"><figcaption>papaveri fra i filari</figcaption></figure></li>
+    <li class="co-bento__largo"><b>100%</b><p>dei fornitori di vino è certificato Equalitas e sostenibile. La certificazione guarda anche alle persone: condizioni di lavoro eque e progetti sociali e culturali sul territorio.</p></li>
+    <li><b>2025</b><p>Impronta di carbonio e impronta idrica calcolate per la prima volta, sui dati del 2024, secondo le norme UNI EN ISO 14064:2018 e ISO 14046:2014.</p></li>
+    <li><b>100%</b><p>delle bottiglie è chiuso con tappi Nomacorc; i Nomacorc Green sono fatti con polimeri vegetali ricavati dalla canna da zucchero.</p></li>
+    <li><b>0</b><p>turnover nel 2025, con i contratti a tempo indeterminato saliti del 75%. Dal 2025 c'è il Piano Welfare 3 Cuori.</p></li>
+    <li><b>WWF</b><p>Nel 2025 Feudi Salentini ha fornito attrezzature al WWF di Taranto per la tutela dell'ambiente.</p></li>
+    <li><b>GRI</b><p>Ogni fase della produzione è documentata; la rendicontazione si sta allineando agli standard del Global Reporting Initiative.</p></li>
+    <li class="co-bento__pdf"><p class="co-bento__titolo">Bilancio di sostenibilità 2025</p><a class="co-btn" href="https://feudisalentini.com/wp-content/uploads/2026/08/Feudi_bilancio-di-sostenibilita_2025.pdf" target="_blank" rel="noopener">Scarica il PDF (2,9 MB)</a></li>
+  </ul>
+</section>
+
+<!-- i riconoscimenti: un medagliere per anno, le medaglie vere impilate (dai dati); il dettaglio di ogni medaglia al passaggio, tutti in tabella qui sotto -->
+<section class="co-premi" id="riconoscimenti" aria-labelledby="co-premi-t">
+  <div class="co-testa">
+    <p class="co-cap"><b>05</b>Riconoscimenti</p>
+    <h2 class="co-h" id="co-premi-t"><span data-premi-n>65</span> riconoscimenti.</h2>
+    <p class="co-p" data-premi-metalli></p>
+  </div>
+  <ol class="co-anni" aria-label="Riconoscimenti per anno"></ol>
+  <details class="co-tutti"><summary>Tutti i riconoscimenti, vino per vino</summary><div class="co-tutti__in"><table><thead><tr><th scope="col">Anno</th><th scope="col">Vino</th><th scope="col">Concorso</th><th scope="col">Medaglia</th></tr></thead><tbody></tbody></table></div></details>
+  <div class="co-tip" role="tooltip" hidden></div>
+</section>
+
+<section class="co-news" id="notizie" aria-labelledby="co-news-t">
+  <div class="co-testa">
+    <p class="co-cap"><b>06</b>Notizie</p>
+    <h2 class="co-h" id="co-news-t" data-righe>Dalla cantina.</h2>
+  </div>
+  <div class="co-news__in"></div>
+</section>
+
+<!-- per ultimi i vini: un catalogo a righe per collezione, il filtro per colore, sul computer la bottiglia della riga accanto (le foto del catalogo, mai toccate) -->
+<section class="co-vini" id="vini" aria-labelledby="co-vini-t">
+  <div class="co-testa">
+    <p class="co-cap"><b>07</b>I vini</p>
+    <h2 class="co-h" id="co-vini-t" data-righe>I vini.</h2>
+    <p class="co-p" data-vini-n></p>
+  </div>
+  <div class="co-filtri" role="group" aria-label="Filtra per colore"></div>
+  <div class="co-cat">
+    <div class="co-cat__righe"></div>
+    <figure class="co-cat__bott" aria-hidden="true"><img alt="" width="653" height="1024" decoding="async"><figcaption></figcaption></figure>
+  </div>
+</section>
+
+</main>
+<!-- NAVIGAZIONE: footer (30 ott, come il footer di klimtwine): chiaro, alto uno schermo; logo in alto (newsletter tolta il 6 nov 2026, su sua richiesta), collezioni / cantina /
+     contatti al centro, note legali in fondo. Il blocco scuro "Vieni a trovarci" è stato tolto. Dall'11 nov niente esperienze né degustazioni: non le fanno più.
+     Stile: css/nav.css · Script: js/nav.js (collezioni che aprono il menu dei vini) -->
+<footer id="contatti" class="foot sec">
+  <div class="foot__in">
+    <div class="foot__top">
+      <a class="foot__logo" href="#hero" aria-label="Feudi Salentini, torna all'inizio"><span class="logo"></span></a>
+    </div>
+
+    <div class="foot__mid">
+      <nav class="foot__col" aria-labelledby="foot-vini">
+        <h2 class="foot__h" id="foot-vini">I vini</h2>
+        <ul>
+          <li><button type="button" data-col="luxury">Collezione 53</button></li>
+          <li><button type="button" data-col="terra">Terra</button></li>
+          <li><button type="button" data-col="organic">125 Organic</button></li>
+          <li><button type="button" data-col="classica">Classica</button></li>
+          <li><button type="button" data-col="lounge">125 Uno Due Cinque</button></li>
+        </ul>
+      </nav>
+      <nav class="foot__col" aria-labelledby="foot-cantina">
+        <h2 class="foot__h" id="foot-cantina">La cantina</h2>
+        <ul>
+          <li><a href="azienda.html">La famiglia Varvaglione</a></li>
+          <li><a href="azienda.html#sostenibilita">Sostenibilità</a></li>
+          <li><a href="#premi">Premi</a></li>
+          <li><a href="#news">News</a></li>
+          <li><a href="https://feudisalentini.com/wp-content/uploads/2026/08/Feudi_bilancio-di-sostenibilita_2025.pdf" target="_blank" rel="noopener">Bilancio di sostenibilità 2025 (PDF)</a></li>
+        </ul>
+      </nav>
+      <div class="foot__col foot__contatti">
+        <h2 class="foot__h">Contatti</h2>
+        <a class="foot__tel" href="tel:+390995315370">+39 099 5315370</a>
+        <p class="foot__fax">Fax +39 099 5315739</p>
+        <p class="foot__telriga" hidden>Tel <a href="tel:+390995315370">+39 099 5315370</a></p><!-- solo nel piede Pop (css/pop-prove.css), dove il numero grande sta in cima e qui sotto restava il solo fax: "qui togli fax metti tel" (19 nov) -->
+        <address>Feudi Salentini srl<br><a href="https://www.google.com/maps/search/?api=1&amp;query=Feudi+Salentini+Via+Esterna+Talsano+36+Leporano" target="_blank" rel="noopener">Via Esterna Talsano, 36, 74020 Leporano (TA)</a></address>
+        <p class="foot__tbd"><span class="tbd">Indirizzo da confermare: il sito attuale riporta anche Via Amendola 36</span></p>
+      </div>
+    </div>
+
+    <div class="foot__legal">
+      <span>© 2026 Feudi Salentini srl</span>
+      <span>P.IVA 02592180737</span>
+      <a href="https://feudisalentini.com/privacy-policy/" target="_blank" rel="noopener">Privacy policy</a>
+    </div>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="js/data.js?v=a0547593"></script>
+<script src="js/main.js?v=7c14ab57"></script>
+<script defer src="js/cambio-mood.js?v=c98fb4f4"></script>
+<script defer src="js/nav.js?v=fd4bc750"></script>
+<script src="js/company-mappa.js?v=becfc31b"></script>
+<script src="js/company.js?v=30b7d576"></script>
+</body>
+</html>

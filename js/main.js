@@ -15,21 +15,28 @@
   }
 
   const D = window.FS_DATA;
-  // ogni stile è un sito a sé (body data-sito): home, azienda e scheda del vino sue, e l'header comune porta lì. Senza data-sito restano quelle di H
-  const SITI = { i: ['index.html', 'azienda-i.html', 'vino-i.html'], d: ['moderna-d.html', 'azienda-d.html', 'vino.html'], e: ['moderna-e.html', 'azienda-e.html', 'vino-e.html'], h: ['moderna-h.html', 'azienda.html', 'vino.html'], b: ['botanica.html', 'azienda.html', 'vino-b.html'], f: ['foto.html', 'azienda.html', 'vino-f.html'] /* Botanica e Fotografia (13 nov): home e pagina del vino loro; l'azienda è ancora quella di Pittura */ }, SITO = SITI[document.body.dataset.sito];
-  const [home, azienda, vino] = SITO || ['index.html', 'azienda.html', 'vino.html'];
+  // ogni stile è un sito a sé (body data-sito): home, azienda e scheda del vino sue, e l'header comune porta lì. Senza data-sito restano quelle di H.
+  // 17 nov: il sito è uno, visto in più mood (MOOD: Botanica e Fotografia, che diventerà Pop). Acquerello (i), Incisione (e) e Pittura (h) sono da parte: restano ai loro indirizzi, niente porta più lì
+  const SITI = { i: ['acquerello.html', 'azienda-i.html', 'vino-i.html'], d: ['moderna-d.html', 'azienda-d.html', 'vino.html'], e: ['moderna-e.html', 'azienda-e.html', 'vino-e.html'], h: ['moderna-h.html', 'azienda.html', 'vino.html'], b: ['botanica-pop.html', 'azienda.html', 'vino-b.html'] /* 20 nov: "cambia la pagina di Botanica nello switch": la home di Botanica è la prova col layout del Pop; la vecchia, botanica.html, resta al suo indirizzo */, f: ['pop-b.html', 'pop-azienda.html', 'pop-vino.html'] /* Botanica e Pop: home e pagina del vino loro; Botanica ha ancora l'azienda di Pittura. 20 nov: "è Pop, non più Fotografia": f sono le pagine Pop (foto.html e vino-f.html restano ai loro indirizzi) */ }, MOOD = { b: 'Botanica', f: 'Pop' }, qui = location.pathname.split('/').pop() || 'index.html';
+  if (window.top === window) try { const m = sessionStorage.getItem('fs-mood'); if (qui !== 'azienda.html') sessionStorage.setItem('fs-mood', document.body.dataset.sito || ''); else if (MOOD[m]) document.body.dataset.sito = m; } catch (e) {} // l'azienda è una pagina sola per tutti: prende il mood da cui si arriva, così la barra riporta lì. Nella finestra dell'angolo del mood (sotto) no: la pagina lì è un'anteprima
+  const SITO = SITI[document.body.dataset.sito];
+  const [home, azienda, vino] = document.body.dataset.pagine?.split(',') || SITO || ['index.html', 'azienda.html', 'vino.html']; /* data-pagine (19 nov, Pop): home, azienda e vino di una prova che usa il mood di un altro sito (pop-b.html e pop-vino.html stanno in Fotografia) */
   if (SITO) {
-    const qui = location.pathname.split('/').pop() || 'index.html';
     document.querySelectorAll(qui === home ? 'a[href="index.html"]' : 'a[href^="index.html"]').forEach((a) => a.setAttribute('href', home + a.getAttribute('href').slice(10))); // sulla home stessa solo il logo: le ancore le sistema moderna-kit
     document.querySelectorAll('a[href^="azienda.html"]').forEach((a) => a.setAttribute('href', azienda + a.getAttribute('href').slice(12)));
   }
-  if (SITO && 'iehbf'.includes(document.body.dataset.sito)) { // PROVA (11 nov): le tre versioni da confrontare, index, E e H, con un selettore fisso. Porta alla stessa pagina dell'altra versione: home, azienda, scheda dello stesso vino. Stile in css/nav.css (.sito-alt). A scelta fatta si toglie
-    const ruolo = Math.max(0, SITO.indexOf(location.pathname.split('/').pop() || 'index.html')), id = new URLSearchParams(location.search).get('id');
-    document.body.insertAdjacentHTML('beforeend', `<nav class="sito-alt" aria-label="Versioni del sito da confrontare">${[['i', 'Acquerello'], ['e', 'Incisione'], ['h', 'Pittura'], ['b', 'Botanica'], ['f', 'Fotografia']].filter(([k]) => !'bf'.includes(k) || ruolo !== 1).map(([k, n], j) => `<a href="${SITI[k][ruolo]}${ruolo === 2 && id ? `?id=${encodeURIComponent(id)}` : ''}" aria-label="Versione ${j + 1}, ${n}" aria-current="${k === document.body.dataset.sito}"><b>${j + 1}</b><span>${n}</span></a>`).join('')}</nav>`);
-  }
+  /* IL CAMBIO DI MOOD (20 nov): lo disegna js/cambio-mood.js; qui dove porta. La stessa pagina (home, azienda o vino: con data-pagine anche nelle prove del Pop) nel mood
+     successivo; niente fuori dai mood, dove l'altro mood ha la stessa pagina (azienda.html) e nella finestra che mostra l'altra pagina */
+  const sito = document.body.dataset.sito, ruolo = Math.max(0, [home, azienda, vino].indexOf(qui)), chiavi = Object.keys(MOOD);
+  const dopo = chiavi[(chiavi.indexOf(sito) + 1) % chiavi.length], meta = MOOD[sito] ? SITI[dopo][ruolo] + (ruolo === 2 ? location.search : '') : '';
+  const cambio = meta && meta.split('?')[0] !== qui && window.top === window ? { meta, dopo, nome: MOOD[dopo] } : null;
+  /* arrivati dal cambio di mood (js/cambio-mood.js): la pagina era già nell'onda con l'apertura fatta, qui le aperture partono finite (20 nov: "il cambio del mood non deve far
+     ristartare l'ingresso delle bottiglie"). Vale qualche secondo e una volta sola; nella finestra dell'onda non si legge, se no la consumerebbe lei */
+  let arrivo = false;
+  if (window.top === window) try { const t = +sessionStorage.getItem('fs-arrivo'); sessionStorage.setItem('fs-arrivo', ''); arrivo = t > 0 && Date.now() - t < 10000; } catch (e) {}
   window.FS = {
     data: D,
-    lenis, reduce, touch, home,
+    lenis, reduce, touch, home, cambio, arrivo,
     isMobile: () => innerWidth < 768,
     wine: (id) => D.byId[id],
     wineUrl: (id) => `${vino}?id=${encodeURIComponent(id)}`,

@@ -1,0 +1,232 @@
+/* IL TERZO MOOD, STILE AZIENDA (20 nov 2026, prova: company.html, js/company.js). Terza forma: "deve essere una cosa nuova", anche nella forma di ogni sezione.
+   La pagina si legge come una pubblicazione aziendale: un carattere, Inter Tight, un peso (500) nei titoli con la spaziatura stretta; inchiostro su carta calda e pietra;
+   l'oro del marchio come solo accento, con un significato: in oro scuro i numeri veri (sintesi, sostenibilità), in oro pieno il bottone e il capitolo in cui si è.
+   Sul computer (da 1100px) l'indice dei capitoli sta a sinistra: in copertina grande, poi guida (--k, js); tutte le sezioni lasciano a sinistra il suo posto (--guida).
+   Foto vere coi bordi arrotondati (--r, l'unico radius del sito), didascalie piccole. Le prime due forme: _archivio-prove/company-v1-20nov e company-v2-chi-siamo-20nov */
+.page-co { --font: 'Inter Tight', system-ui, sans-serif; --font-display: var(--font); --title-weight: 500; --title-track: -.04em; --cream: #f6f3ee; --stone: #ece6dc;
+  --gold-ink: #7a6330; --filo: #cfc5b6; --guida: 0px; --cop-sx: 0px; background: var(--cream); color: var(--ink); }
+@media (min-width: 1100px) { .page-co { --guida: 15.5rem; --cop-sx: calc(20rem + 3vw); } }
+.page-co main > section { padding-left: calc(var(--pad-x) + var(--guida)); padding-right: var(--pad-x); }
+.page-co :is(h1, h2, h3) { margin: 0; font-weight: 500; letter-spacing: -.04em; line-height: .98; text-wrap: balance; }
+.co-h { font-size: clamp(2.4rem, 5vw, 5.4rem); }
+.co-p { max-width: 36em; margin: 0; color: var(--ink-2); font-size: clamp(1.0625rem, 1.2vw, 1.25rem); line-height: 1.5; text-wrap: pretty; }
+.co-testa { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 34%); align-items: end; gap: 20px 4vw; }
+.co-testa .co-cap { grid-column: 1 / -1; }
+.co-cap { display: none; margin: 0 0 18px; font-size: .9375rem; font-weight: 500; } /* sul telefono, dove la guida non c'è: il capitolo in testa alla sezione */
+.co-cap b { margin-right: 10px; color: var(--gold-ink); font-weight: 500; }
+/* le foto, di base (:where: peso zero, così la foto ferma della famiglia e la bottiglia del catalogo restano sticky) */
+:where(.page-co) figure { position: relative; margin: 0; }
+:where(.page-co) figure img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: var(--r); }
+:where(.page-co) figcaption { margin-top: 10px; color: var(--mute); font-size: .875rem; line-height: 1.3; }
+.co-btn { display: inline-flex; align-items: center; justify-self: start; align-self: start; height: 48px; padding: 0 22px; border-radius: 999px; background: var(--gold); color: var(--ink); font-size: 1rem; font-weight: 500; white-space: nowrap; text-decoration: none; transition: background-color .25s var(--ease), color .25s var(--ease); }
+.co-btn:hover { background: var(--cream); }
+/* entrano salendo quando arrivano in vista (js mette .co-attesa sul body e .is-su sull'elemento; con le animazioni ridotte niente) */
+.co-attesa .co-sale { opacity: 0; translate: 0 36px; transition: opacity .9s var(--ease), translate 1s var(--ease); transition-delay: calc(var(--i, 0) * 70ms); }
+.co-attesa .co-sale.is-su { opacity: 1; translate: none; }
+
+/* ---- l'indice dei capitoli: in copertina grande a sinistra, scorrendo si rimpicciolisce (--k) e resta lì come guida; il capitolo in cui si è in inchiostro col numero
+   d'oro, gli altri più chiari; il filo a sinistra si riempie con la lettura. Via quando arriva il piede ---- */
+.co-indice { position: fixed; z-index: 30; left: var(--pad-x); top: 50%; width: 20rem; translate: 0 -50%; scale: var(--k, 1); transform-origin: 0 50%; transition: opacity .35s, visibility 0s; }
+.co-indice ol { margin: 0; padding: 0; list-style: none; }
+.co-indice a { display: grid; grid-template-columns: 2.6em minmax(0, 1fr); align-items: baseline; padding: .26em 0; color: var(--ink); font-size: 1.625rem; font-weight: 500; letter-spacing: -.025em; line-height: 1.1; text-decoration: none; transition: color .3s; }
+.co-indice a b { color: var(--gold-ink); font-size: .58em; font-weight: 500; letter-spacing: 0; font-variant-numeric: tabular-nums; }
+.co-indice a:hover span { text-decoration: underline; text-decoration-thickness: .06em; text-underline-offset: .16em; }
+.co-indice.is-guida a { color: var(--mute); }
+.co-indice.is-guida a b { color: var(--mute); }
+.co-indice.is-guida a.is-ora { color: var(--ink); }
+.co-indice.is-guida a.is-ora b { color: var(--gold-ink); }
+.co-indice__filo { position: absolute; left: -18px; top: .5em; bottom: .5em; width: 1.5px; background: var(--filo); opacity: 0; transition: opacity .35s; }
+.co-indice__filo::after { content: ''; position: absolute; inset: 0; background: var(--gold); transform-origin: 50% 0; scale: 1 var(--p, 0); }
+.co-indice.is-guida .co-indice__filo { opacity: 1; }
+.co-indice.is-via { opacity: 0; visibility: hidden; transition: opacity .35s, visibility 0s .35s; }
+
+/* ---- copertina: dopo l'indice il titolo su due righe, la frase del marchio, la foto a fascia fino in fondo allo schermo ---- */
+.page-co main > .co-cop { display: grid; grid-template-rows: auto auto minmax(0, 1fr); row-gap: 2.6svh; height: 100svh; min-height: 620px;
+  padding: calc(var(--header-h) + 4svh) var(--pad-x) 5svh calc(var(--pad-x) + var(--cop-sx)); }
+.co-cop__t { font-size: min(5.4vw, 10.5svh); line-height: .94; letter-spacing: -.05em; }
+.co-cop__s { margin: 0; color: var(--ink-2); font-size: clamp(1.125rem, 1.4vw, 1.5rem); line-height: 1.35; }
+.co-cop__f { min-height: 0; margin-top: 1svh; }
+.co-cop__f img { height: 100%; }
+.co-cop__f figcaption { position: absolute; left: 12px; bottom: 12px; margin: 0; padding: 5px 12px; border-radius: 999px; background: var(--cream); color: var(--ink); }
+
+/* ---- la sintesi: una frase sola, grande, coi numeri veri in oro scuro ---- */
+.page-co main > .co-sintesi { padding-top: clamp(96px, 17vh, 190px); padding-bottom: clamp(96px, 17vh, 190px); }
+.co-sintesi__p { max-width: 23em; margin: 0; font-size: clamp(1.75rem, 3.4vw, 3.6rem); font-weight: 500; line-height: 1.1; letter-spacing: -.035em; text-wrap: pretty; }
+.co-sintesi__p b { color: var(--gold-ink); font-weight: 500; }
+
+/* ---- 01 la famiglia: la foto della vendemmia ferma a sinistra; a destra il titolo, i nomi come elenco, la masseria ---- */
+.page-co main > .co-fam { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: 4vw; padding-top: clamp(80px, 14vh, 160px); padding-bottom: clamp(80px, 14vh, 160px); background: var(--stone); }
+.co-fam .co-cap { grid-column: 1 / -1; }
+.co-fam__f { position: sticky; top: calc(var(--header-h) + 4vh); align-self: start; }
+.co-fam__f img { aspect-ratio: 4 / 5; height: auto; }
+.co-fam__testo { display: grid; align-content: start; gap: clamp(28px, 5vh, 48px); }
+.co-nomi { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--ink); }
+.co-nomi li { padding: .2em 0 .24em; border-bottom: 1px solid var(--filo); font-size: clamp(2rem, 4.2vw, 4.6rem); font-weight: 500; letter-spacing: -.045em; line-height: 1.02; }
+.co-fam__m img { aspect-ratio: 16 / 9; height: auto; }
+
+/* ---- 02 il Salento: palco fermo, a sinistra il testo, a destra la mappa che si avvicina (js); poi i luoghi in fila ---- */
+.page-co main > .co-sal { padding-top: clamp(40px, 6vh, 72px); padding-bottom: clamp(80px, 14vh, 160px); }
+.co-sal__giro { height: 210lvh; }
+.co-sal__st { position: sticky; top: 0; display: grid; grid-template-columns: minmax(0, 34%) minmax(0, 1fr); align-items: center; gap: 4vw; height: 100lvh; padding: calc(var(--header-h) + 3svh) 0 4svh; }
+.co-sal__testo { display: grid; gap: 28px; }
+.co-mappa { align-self: stretch; overflow: hidden; border-radius: var(--r); background: #e7dfd2; } /* il mare: la pietra un poco più scura; la terra è la carta */
+.co-mappa__svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.co-mappa__terra { fill: var(--cream); stroke: var(--ink); stroke-width: 1px; stroke-opacity: .55; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.co-mappa__nomi { position: absolute; inset: 0; pointer-events: none; }
+.co-luogo { position: absolute; left: 0; top: 0; display: flex; align-items: center; gap: 8px; color: var(--ink); font-size: .9375rem; line-height: 1.2; white-space: nowrap; transition: opacity .3s; }
+.co-luogo::before { content: ''; flex: none; width: 7px; height: 7px; margin-left: -3.5px; border-radius: 50%; background: var(--ink); }
+.co-luogo--mare { color: var(--mute); font-style: italic; letter-spacing: .02em; }
+.co-luogo--mare::before { display: none; }
+.co-luogo--casa { display: block; padding: 4px 0 0 14px; font-size: 1.125rem; font-weight: 500; line-height: 1.1; } /* il punto sul posto, il nome sotto a destra: a destra c'è Manduria, sopra Taranto */
+.co-luogo--casa::before { position: absolute; left: -8px; top: -8px; width: 16px; height: 16px; margin: 0; background: var(--gold); box-shadow: 0 0 0 2px var(--ink); }
+.co-luogo--casa small { display: block; color: var(--ink-2); font-size: .8125rem; font-weight: 400; }
+.co-mappa__fonte { position: absolute; right: 12px; bottom: 10px; margin: 0; color: var(--mute); font-size: .75rem; }
+.co-luoghi { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; margin: clamp(24px, 4vh, 48px) 0 0; padding: 0; list-style: none; }
+.co-luoghi img { aspect-ratio: 3 / 4; height: auto; }
+.co-luoghi figcaption { color: var(--ink); font-size: 1rem; font-weight: 500; }
+
+/* ---- 03 la vigna: i quattro vitigni a pannelli. Chiuso: il nome in piedi e quanti vini; aperto: la foto e i suoi vini. Col mouse si apre quello sotto ---- */
+.page-co main > .co-vigna { padding-top: clamp(80px, 14vh, 160px); padding-bottom: clamp(80px, 14vh, 160px); background: var(--stone); }
+.co-uve { display: flex; gap: 10px; height: min(76svh, 48vw); margin-top: clamp(32px, 6vh, 64px); }
+.co-uva { display: flex; flex: 0 0 5.75rem; min-width: 0; overflow: hidden; border-radius: var(--r); background: var(--cream); transition: flex-grow .7s var(--ease); }
+.co-uva.is-aperta { flex-grow: 1; }
+.co-uva__testa { flex: none; display: flex; flex-direction: column; justify-content: space-between; align-items: center; width: 5.75rem; padding: 22px 0 20px; border: 0; background: none; color: var(--ink); font: inherit; cursor: pointer; }
+.co-uva__nome { writing-mode: vertical-rl; rotate: 180deg; font-size: clamp(1.75rem, 2.4vw, 2.6rem); font-weight: 500; letter-spacing: -.035em; line-height: 1; white-space: nowrap; }
+.co-uva__n { font-size: .9375rem; line-height: 1.2; text-align: center; }
+.co-uva__n b { display: block; color: var(--gold-ink); font-size: 1.75rem; font-weight: 500; letter-spacing: -.03em; }
+.co-uva__corpo { flex: 1; min-width: 0; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 16px; padding: 14px 14px 18px 0; opacity: 0; visibility: hidden; transition: opacity .3s, visibility 0s .3s; } /* la foto sopra, i vini sotto in colonne: con due vini o con quindici il pannello resta pieno */
+.co-uva.is-aperta .co-uva__corpo { opacity: 1; visibility: visible; transition: opacity .5s .3s; }
+.co-uva__corpo figure { min-height: 0; }
+.co-uva__corpo figcaption { position: absolute; left: 12px; bottom: 12px; margin: 0; padding: 5px 12px; border-radius: 999px; background: var(--cream); color: var(--ink); }
+.co-uva__vini { margin: 0; padding: 0; list-style: none; columns: 3 12rem; column-gap: 2vw; font-size: 1rem; line-height: 1.45; }
+.co-uva__vini a { color: var(--ink); text-decoration: none; }
+.co-uva__vini a:hover { text-decoration: underline; text-underline-offset: .16em; }
+.co-uva__vini li { padding: 6px 0; border-top: 1px solid var(--filo); break-inside: avoid; }
+
+/* ---- 04 sostenibilità: i fatti a riquadri (la cifra in oro scuro, il testo sotto), la foto, il bilancio da scaricare ---- */
+.page-co main > .co-sos { padding-top: clamp(80px, 14vh, 160px); padding-bottom: clamp(80px, 14vh, 160px); }
+.co-bento { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(14rem, auto); grid-auto-flow: dense; gap: 12px; margin: clamp(32px, 6vh, 64px) 0 0; padding: 0; list-style: none; }
+.co-bento > li { display: flex; flex-direction: column; justify-content: space-between; gap: 22px; padding: clamp(20px, 1.8vw, 28px); border-radius: var(--r); background: var(--stone); }
+.co-bento b { color: var(--gold-ink); font-size: clamp(2.6rem, 4vw, 4.4rem); font-weight: 500; letter-spacing: -.045em; line-height: .9; }
+.co-bento p { margin: 0; max-width: 30em; color: var(--ink-2); font-size: 1rem; line-height: 1.45; text-wrap: pretty; }
+.co-bento .co-bento__largo, .co-bento > li:nth-child(7) { grid-column: span 2; }
+.co-bento .co-bento__foto { grid-row: span 2; padding: 0; overflow: hidden; background: none; }
+.co-bento__foto figure { height: 100%; }
+.co-bento__foto figcaption { position: absolute; left: 12px; bottom: 12px; margin: 0; padding: 5px 12px; border-radius: 999px; background: var(--cream); color: var(--ink); }
+.co-bento .co-bento__pdf { grid-column: span 2; background: var(--ink); color: var(--cream); }
+.co-bento .co-bento__titolo { color: var(--cream); font-size: clamp(1.75rem, 2.6vw, 2.75rem); font-weight: 500; letter-spacing: -.035em; line-height: 1; }
+
+/* ---- 05 riconoscimenti: il medagliere, una colonna per anno di medaglie vere impilate dal basso, il totale sopra e l'anno sotto la linea di base ---- */
+.page-co main > .co-premi { padding-top: clamp(80px, 14vh, 160px); padding-bottom: clamp(80px, 14vh, 160px); background: var(--stone); }
+.co-anni { --m: 40px; position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: end; gap: 0 2vw; margin: clamp(40px, 7vh, 80px) 0 0; padding: 0; list-style: none; }
+.co-anni::after { content: ''; position: absolute; left: 0; right: 0; bottom: 2.6rem; height: 1px; background: var(--ink); } /* la linea di base, sopra gli anni */
+.co-anno { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.co-anno__n { font-size: clamp(1.75rem, 2.6vw, 2.75rem); font-weight: 500; letter-spacing: -.03em; line-height: 1; }
+.co-anno__pila { display: flex; flex-wrap: wrap-reverse; gap: 6px; width: calc(var(--m) * 3 + 12px); padding-bottom: 14px; }
+.co-medaglia { flex: none; width: var(--m); height: var(--m); padding: 0; border: 0; border-radius: 50%; background: none; cursor: default; }
+.co-medaglia img { display: block; width: 100%; height: 100%; object-fit: contain; border-radius: 50%; transition: scale .25s var(--ease); }
+.co-medaglia:hover img, .co-medaglia:focus-visible img { scale: 1.18; }
+.co-attesa .co-medaglia { opacity: 0; translate: 0 -28px; transition: opacity .5s var(--ease), translate .7s var(--ease); transition-delay: calc(var(--j) * 24ms); } /* le medaglie cadono nella colonna quando arriva in vista */
+.co-attesa .co-anno.is-su .co-medaglia { opacity: 1; translate: none; }
+.co-anno__a { height: 2.6rem; padding-top: 12px; color: var(--ink); font-size: 1rem; font-weight: 500; line-height: 1.2; }
+.co-tip { position: fixed; z-index: 60; left: 0; top: 0; max-width: 19rem; padding: 10px 14px; border-radius: var(--r); background: var(--ink); color: var(--cream); font-size: .875rem; line-height: 1.35; pointer-events: none; }
+.co-tip b { display: block; font-size: 1rem; font-weight: 500; }
+.co-tip span { color: var(--paper-2); }
+.co-tutti { margin-top: clamp(28px, 5vh, 48px); }
+.co-tutti summary { display: inline-flex; align-items: center; gap: 10px; height: 44px; color: var(--ink); font-size: 1rem; font-weight: 500; cursor: pointer; list-style: none; }
+.co-tutti summary::-webkit-details-marker { display: none; }
+.co-tutti summary::after { content: ''; width: 8px; height: 8px; margin-top: -4px; border-right: 1.5px solid; border-bottom: 1.5px solid; rotate: 45deg; transition: rotate .3s; }
+.co-tutti[open] summary::after { margin-top: 4px; rotate: 225deg; }
+.co-tutti summary:hover { text-decoration: underline; text-underline-offset: .16em; }
+.co-tutti__in { max-height: 60vh; overflow: auto; margin-top: 12px; }
+.co-tutti table { width: 100%; border-collapse: collapse; font-size: .9375rem; }
+.co-tutti :is(th, td) { padding: 9px 16px 9px 0; border-bottom: 1px solid var(--filo); text-align: left; vertical-align: top; }
+.co-tutti th { position: sticky; top: 0; background: var(--stone); color: var(--mute); font-weight: 500; }
+
+/* ---- 06 notizie: la più recente grande, le altre in colonna ---- */
+.page-co main > .co-news { padding-top: clamp(80px, 14vh, 160px); padding-bottom: clamp(80px, 14vh, 160px); }
+.co-news__in { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 4vw; margin-top: clamp(32px, 6vh, 64px); }
+.co-news a { color: var(--ink); text-decoration: none; }
+.co-news__big { display: grid; gap: 18px; align-content: start; }
+.co-news__big img { aspect-ratio: 16 / 9; height: auto; border-radius: var(--r); }
+.co-news__d { color: var(--mute); font-size: .9375rem; }
+.co-news__big h3 { font-size: clamp(1.75rem, 2.8vw, 3rem); }
+.co-news__lista { display: grid; align-content: start; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--ink); }
+.co-news__lista a { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 38%); gap: 6px 22px; padding: 22px 0; border-bottom: 1px solid var(--filo); }
+.co-news__lista .co-news__d { grid-column: 1; }
+.co-news__lista h3 { grid-column: 1; font-size: clamp(1.25rem, 1.7vw, 1.75rem); line-height: 1.08; }
+.co-news__lista img { grid-area: 1 / 2 / 3 / 3; aspect-ratio: 4 / 3; height: auto; border-radius: var(--r); }
+.co-news a:hover h3 { text-decoration: underline; text-decoration-thickness: .05em; text-underline-offset: .12em; }
+.co-news img.is-logo { padding: 8%; background: var(--stone); object-fit: contain; } /* il loghetto del concorso, non una foto: intero, sulla pietra */
+
+/* ---- 07 i vini: il filtro per colore, il catalogo a righe per collezione, a destra la bottiglia della riga sotto il mouse ---- */
+.page-co main > .co-vini { padding-top: clamp(80px, 14vh, 160px); padding-bottom: clamp(80px, 14vh, 160px); background: var(--stone); }
+.co-filtri { display: flex; flex-wrap: wrap; gap: 8px; margin-top: clamp(28px, 5vh, 48px); }
+.co-filtro { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border: 1px solid var(--ink); border-radius: 999px; background: none; color: var(--ink); font: 500 1rem/1 var(--font); cursor: pointer; transition: background-color .25s, color .25s; }
+.co-filtro span { color: var(--mute); font-variant-numeric: tabular-nums; }
+.co-filtro[aria-pressed="true"] { background: var(--ink); color: var(--cream); }
+.co-filtro[aria-pressed="true"] span { color: var(--paper-2); }
+.co-cat { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 28%); gap: 4vw; align-items: start; margin-top: clamp(24px, 4vh, 40px); }
+.co-coll { margin-bottom: clamp(28px, 4vh, 44px); }
+.co-coll[hidden] { display: none; }
+.co-coll__t { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--ink); }
+.co-coll__t h3 { font-size: clamp(1.5rem, 2.2vw, 2.25rem); }
+.co-coll__t span { color: var(--mute); font-size: .9375rem; }
+.co-vino { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr) minmax(0, 1fr); gap: 4px 2vw; align-items: baseline; padding: 13px 0; border-bottom: 1px solid var(--filo); color: var(--ink); text-decoration: none; }
+.co-vino[hidden] { display: none; }
+.co-vino__nome { font-size: 1.1875rem; font-weight: 500; letter-spacing: -.015em; line-height: 1.2; }
+.co-vino__d, .co-vino__u { color: var(--ink-2); font-size: .9375rem; line-height: 1.35; }
+.co-vino:is(:hover, :focus-visible) .co-vino__nome, .co-vino.is-vista .co-vino__nome { text-decoration: underline; text-decoration-thickness: .06em; text-underline-offset: .16em; }
+.co-cat__bott { position: sticky; top: calc(var(--header-h) + 4vh); display: grid; grid-template-rows: minmax(0, 1fr) auto; height: min(74svh, 48vw); padding: 24px 20px 20px; border-radius: var(--r); background: var(--cream); }
+.co-cat__bott img { justify-self: center; width: auto; height: 100%; min-height: 0; object-fit: contain; border-radius: 0; clip-path: inset(0 0 calc((1 - var(--b, .91)) * 100%) 0); transition: opacity .25s; }
+.co-cat__bott figcaption { margin-top: 14px; color: var(--ink); font-size: 1rem; font-weight: 500; text-align: center; }
+.co-cat__bott figcaption span { display: block; color: var(--ink-2); font-size: .875rem; font-weight: 400; }
+
+/* il piede: quello di sempre, sulla carta */
+.page-co .foot { background: var(--cream); }
+
+@media (max-width: 1099px) {
+  .co-indice { display: none; }
+  .co-cap { display: block; }
+}
+@media (max-width: 860px) {
+  .co-testa { grid-template-columns: minmax(0, 1fr); }
+  .page-co main > .co-cop { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr); row-gap: 18px; height: auto; min-height: 100svh; padding-top: calc(var(--header-h) + 3svh); }
+  .co-cop__t { font-size: 12.5vw; }
+  .co-cop__s { grid-area: 2 / 1; }
+  .co-cop__f { grid-area: 3 / 1; min-height: 46svh; }
+  .page-co main > .co-fam { grid-template-columns: minmax(0, 1fr); row-gap: 32px; }
+  .co-fam__f { position: static; }
+  .co-nomi li { font-size: 10vw; }
+  .co-sal__giro { height: auto; }
+  .co-sal__st { position: static; grid-template-columns: minmax(0, 1fr); height: auto; padding: 0; }
+  .co-mappa { aspect-ratio: 4 / 5; }
+  .co-luoghi { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .co-luoghi li:last-child { grid-column: 1 / -1; }
+  .co-luoghi li:last-child img { aspect-ratio: 16 / 10; }
+  .co-uve { flex-direction: column; height: auto; }
+  .co-uva { flex-direction: column; flex: none; }
+  .co-uva__testa { flex-direction: row; width: auto; padding: 18px 18px 10px; cursor: default; }
+  .co-uva__nome { writing-mode: horizontal-tb; rotate: none; font-size: 2rem; }
+  .co-uva__n { text-align: right; }
+  .co-uva__corpo { grid-template-columns: minmax(0, 1fr); gap: 14px; padding: 0 14px 14px; opacity: 1; visibility: visible; }
+  .co-uva__corpo figure { aspect-ratio: 16 / 10; }
+  .co-uva__vini { columns: 2; column-gap: 16px; font-size: .9375rem; }
+  .co-bento { grid-template-columns: minmax(0, 1fr); grid-auto-rows: auto; }
+  .co-bento .co-bento__largo, .co-bento > li:nth-child(7), .co-bento .co-bento__pdf { grid-column: auto; }
+  .co-bento .co-bento__foto { grid-row: auto; aspect-ratio: 4 / 5; }
+  .co-anni { --m: 22px; grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .co-anni::after { display: none; }
+  .co-anno { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: baseline; gap: 4px 14px; padding-top: 14px; border-top: 1px solid var(--ink); }
+  .co-anno__n { grid-area: 1 / 2; font-size: 1.75rem; text-align: right; }
+  .co-anno__a { grid-area: 1 / 1; height: auto; padding: 0; font-size: 1.25rem; }
+  .co-anno__pila { grid-area: 2 / 1 / 3 / 3; flex-wrap: wrap; width: auto; padding: 4px 0 0; gap: 4px; }
+  .co-news__in { grid-template-columns: minmax(0, 1fr); }
+  .co-cat { grid-template-columns: minmax(0, 1fr); }
+  .co-cat__bott { display: none; }
+  .co-vino { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .co-sal__giro { height: auto; }
+  .co-sal__st { position: relative; height: auto; min-height: 100lvh; }
+}

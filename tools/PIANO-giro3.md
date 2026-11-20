@@ -517,3 +517,663 @@ Scartati senza provarli: le bottiglie dipinte (scure sul blu notte, non si vedon
   a) Palco di Fotografia: "quando il testo va sul chiaro deve diventare nero alla fine dello scroll del palco". A "In vigna e in cantina" il testo era bianco fisso: se la scena era l'ultima (vino senza premi, es. Càla) la foto se ne andava e restava bianco su crema. Ora il colore segue la foto con la variabile --f (1 sulla foto, 0 senza), mossa da gsap a metà della dissolvenza; css con color-mix.
   b) Scheda Botanica, "Gli altri vini della collezione": "troppo pesante, ripensiamola" (dodici targhe scure su due righe). Ora, per Botanica e Fotografia: una riga sola, sei alla volta (tre e l'inizio della quarta sul telefono), frecce oltre i sei (.vp-fr, come .tv__fr), scorrimento nativo con scatto. Botanica: bottiglie in piedi su una linea sola, niente dietro; la targa col disegno cresce solo dietro quella indicata dal mouse. Fotografia: restano i pannelli chiari, bottiglie tutte alla stessa quota.
   c) la targa nella fila degli altri vini: fondo schiarito del 12% (.vp-altro__t, color-mix di --c2 col bianco) perché il disegno dentro non si vedeva. Solo lì: mega menu e scheda a comparsa tengono il tono di prima.
+
+- 17 nov (32), cambio di progetto: "la parte dei disegni sta cambiando: acquerello, linea e dipinto non ci servono più, ma non li cancelliamo, teniamoli da parte. Restano Botanica e Fotografico; il Fotografico lo convertiremo in Pop, con un font più giovanile. Lo switch diventa il fulcro del progetto: un sito dinamico visibile in più mood, che si adattano ai linguaggi social del cliente. Va ripensato come una vera scelta di navigazione, qualcosa di interessante. Prima questo, poi il Pop".
+  a) Da parte, non cancellate e non più collegate: Acquerello (acquerello.html, era index.html, con azienda-i e vino-i), Incisione (moderna-e.html, azienda-e, vino-e), Pittura (moderna-h.html, azienda.html, vino.html). Restano ai loro indirizzi.
+  b) index.html è la scelta del mood: "Set the mood." (dalla frase del cliente "Wines that set the mood.") e una porta per mood, con la stessa bottiglia (Terra Malvasia Bianca) disegnata nella sua sala e fotografata a tavola. Sotto ogni immagine una fascia piena col nome nel carattere del mood. Markup in sections/mood.html, stile in css/nav.css (.mood).
+  c) Le stesse porte si aprono dalla barra di ogni pagina: bottone "Mood Botanica" (.nav__mood, sul telefono solo il nome) che apre un dialog a tutto schermo (#mood-ov, <dialog> del browser). Ogni porta va alla stessa pagina dell'altro mood (home, o lo stesso vino). Ha preso il posto della pillola di prova .sito-alt, tolta.
+  d) Passaggio: la porta scelta si apre fino a diventare la pagina nuova (passaggio fra documenti del browser, clip-path da dove stava la porta). Trappola trovata: il consenso @view-transition scritto in un file css viene annullato da Chrome se nel body c'è uno script ("opt-in disabled"); deve stare in uno <style> nella pagina (sections/_head.html). Parte solo dopo il clic su una porta: gli altri link cambiano pagina come prima. Firefox e Safari vecchi: cambio pagina semplice.
+  e) Il mood resta in sessionStorage (fs-mood): azienda.html, una pagina sola per tutti e ancora di Pittura, prende il mood da cui si arriva e la barra riporta lì. Lì il bottone del mood non c'è.
+  Un mood nuovo (o il Pop al posto di Fotografia) = una porta in sections/mood.html, una voce in SITI e MOOD di js/main.js.
+  Da fare: Fotografia diventa Pop; l'azienda dei due mood (oggi è quella dipinta di Pittura); il 404 è ancora in stile Pittura.
+
+- 17 nov (33), la scelta del mood rifatta: "avrei fatto qualcosa di differente di questa selezione, dai, impegnati" (le due porte affiancate del punto 32 b e c). Cosa cambia rispetto al 32:
+  a) La scelta è una pagina sola, index.html (css/mood.css, js/mood.js): niente più dialog in ogni pagina e niente sections/mood.html. Il comando "Mood" della barra è un link che porta lì con ?ora=<mood>&b=<pagina>&f=<pagina> (js/main.js): la scelta riporta alla stessa pagina nell'altro mood, "Chiudi" torna indietro dov'eri.
+  b) PROVA con tre versioni, nella fascia scura in alto (?s=sipario|lente|porte, resta per la sessione). In Sipario e Lente la bottiglia (Terra Primitivo) sta ferma al centro e i due mondi (sections/mondi.html) le stanno dietro: Botanica = sala Terra con la targa, Fotografia = quattro foto di Instagram col pannello chiaro. Stessa ossatura: immagini sopra la linea, fascia piena sotto con le scritte, bottiglia sulla linea.
+     Sipario (quella che propongo): i due mondi affiancati, la linea passa dietro la bottiglia; si sposta col pomello (input range), trascinando ovunque o con la rotella; un clic su un lato, o la linea portata in fondo (oltre 90), fa entrare. Lente: un mood a tutto schermo, l'altro in un cerchio che segue il mouse; un clic lo allarga e i due si scambiano; pillola coi due nomi e un solo "Entra in ...". Porte: la versione del punto 32, per confronto.
+  c) Il passaggio alla pagina scelta parte dalla forma scelta: il lato (Sipario), un cerchio dalla bottiglia (Lente), il riquadro (Porte), dall'alto quando si apre la scelta dalla barra. L'appunto in sessionStorage fs-mood-da ora è "da|a", due clip-path interi.
+  d) Scartate prima di costruirle, con il motivo: la bottiglia a metà fra scontornato e foto (le due immagini non combaciano: nella foto di Terra Malvasia Bianca il collo è più lungo e l'etichetta più piccola, il Primaura fotografato ha la capsula bianca); la porta del marchio come finestra (è larga un quinto della torre: troppo stretta per far vedere un mood); una manopola (i comandi travestiti da oggetti li ha già bocciati).
+  A scelta fatta: togliere la fascia .mood-prova, le due sezioni scartate in index.template.html e i loro pezzi in css/mood.css e js/mood.js.
+
+- 17 nov (34), la scelta del mood rifatta ancora: "non mi piace, è un mappazzone di tutto; va bene la suddivisione in colonne che prendono tutto lo schermo, ma con effetti speciali" (le tre prove del punto 33, ora in _archivio-prove/mood-17nov-sipario-lente-porte, fuori da git).
+  a) index.html: colonne a tutto schermo, una per mood, e nient'altro (via barra chiara, titolo, bottiglia, targa, pannello, pomello). Marchio nudo in alto al centro, in basso il nome nel carattere del mood, una riga e "Entra"; il titolo "Scegli il mood" c'è solo per i lettori di schermo. Ogni metà dello schermo è un link intero.
+     Botanica = la "sala" delle sue pagine (muro, ripiano, pianta: da js/dati-bf.js, la scrive js/mood.js); Fotografia = le foto di Instagram con la sfumatura scura sotto il testo, come la sua apertura.
+  b) PROVA con due effetti, fascia scura in alto (?s=onda|cambio). Onda: due colonne, il confine è elastico (due molle: gli estremi e il punto all'altezza del puntatore), la colonna su cui si passa si allarga, la foto si avvicina e la pianta cresce; le due colonne cambiano a turno (una sala per collezione, tre foto); al clic l'onda copre lo schermo e la pagina compare in dissolvenza (terzo campo dell'appunto fs-mood-da: "da|a|opacità").
+     Cambio: quattro colonne, due per mood (sul telefono le due di mezzo); il mood su cui si passa si prende una colonna dell'altro, il foglio colorato scorre sulla foto o se ne va; al clic se le prende tutte e la pagina sale da sotto. A scelta fatta: togliere l'altra sezione, la fascia e i suoi pezzi in css/mood.css e js/mood.js.
+  c) Corretto strada facendo: arrivando col passaggio animato la barra di Botanica restava chiara (js/nav.js guarda cosa c'è sotto la barra, e durante il passaggio non vede niente): a passaggio finito sections/_head.html manda un evento scroll. tools/cdp.mjs: una cattura chiesta mentre la pagina cambia non tornava più (ora 8 secondi e va avanti).
+- 17 nov (35), le piante VERE di Botanica: "qui trovi le grafiche vere per Botanica, C:\Users\Utente\Downloads\all.ai; non le metterei tagliate così come le stai mostrando".
+  Il file (pdf compatibile, 12 fogli 1080 x 1350: copertina e testo delle sei collezioni) ha le piante in vettoriale, intere: due rami specchiati che si incrociano alla base; il fico d'India è un'immagine a retino a 1 bit.
+  tools/botanica_vere.py <all.ai> le riscrive in assets/botanica con gli stessi nomi (quelle di tools/botanica.py, da tavole di pubblico dominio, restano nella storia di git) e stampa le proporzioni, riportate in js/dati-bf.js (ar).
+  Così cambiano in tutte le pagine di Botanica (home, pagina del vino, menu dei vini). Nella scelta del mood si vedono intere: il riquadro della pianta è lo spazio libero fra il marchio e il ripiano. Nella home di Botanica le piante grandi ai lati restano tagliate dal bordo come prima: da chiedere.
+  Non toccati, ma il file li dice: i caratteri veri (Alex Brush per "The", Kaio per i titoli, Poppins per i testi; oggi Botanica usa Pinyon Script e Montserrat), i colori esatti (muro e sagoma: quasi uguali a quelli campionati), la sagoma vera della targa (25 curve, 941 x 1035) e l'opacità delle piante (moltiplica, dal 30 al 50%).
+  In attesa: l'utente spiegherà le modifiche da fare ai due mood ("ora finisci e ti spiego le modifiche da fare poi per entrambi i mood").
+
+- 17 nov (36), Botanica in VERTICALE: "non deve esserci più un racconto orizzontale ma verticale, usando le grafiche di Botanica e queste (C:\Users\Utente\Downloads\transfer-01a1e8e7\Archivio), le immagini generate per ogni sezione; in una maniera figa senza precedenti, qualcosa di fresco, o che come racconto si avvicina a klimtwine.com/en". In sospeso, detto nello stesso messaggio: "ci vanno messi i vini comunque nella prev di Botanica" (la colonna di Botanica nella scelta del mood), "ce ne occuperemo dopo".
+  Materiali: Archivio = 20 post di Instagram, quattro per collezione (luxury, lounge, classic, international, organic; Terra non c'è: per Terra tavola.webp e rosato.webp di assets/foto-ig). tools/botanica_post.py li porta a 4:5, 800 x 1000, in assets/botanica/post (i reel tagliati al centro; marchio e castello stampati nelle foto restano, sono i post del cliente). Testi: le sei schede di testo di all.ai, parola per parola. La forma vera della targa (il ritaglio di 25 curve delle copertine, 941 x 1034) ora è --sagoma in css/nav.css.
+  Pagina (sections/botanica.html, css/botanica-v.css, js/botanica.js; prefisso rv: "bv" era già la sezione dei più venduti, che js/tavola.js cerca): apertura = copertina del sito (targa vuota col titolo, la pianta intera ai lati, cambia colore da sola), poi sei capitoli nell'ordine del file del cliente (Luxury, Lounge Bar, Classic, Terra, International, Organic).
+  Schermi larghi (almeno 1100 x 560, .rv--desk): palco fermo come i capitoli di klimtwine. Per ogni collezione sale una fascia nel colore della sua pianta con le sue fotografie; dietro la fascia c'è già il capitolo nuovo (il confine sta a metà della fascia), così la targa resta al centro e cambia colore da sotto in su. Poi la pianta cresce nella targa, il titolo della scheda di testo sale lettera per lettera, le bottiglie salgono sul ripiano (quante ne stanno col nome sotto, al più sei; "Altri N vini"), il racconto si accende parola per parola. Colonne: a sinistra numero, "The" + nome della copertina, titolo, nome del catalogo; a destra il racconto (il carattere scende fino a 13,5 px se non ci sta); sul ripiano nomi dei vini e bottoni. Pillola delle collezioni in basso. Unità: 0,4 schermi di apertura, poi per collezione 1 di cambio e 0,8 di lettura (11,25 schermi in tutto).
+  Telefono, tablet, finestre basse, animazioni ridotte: niente palco, i capitoli uno sotto l'altro (fotografie in griglia, copertina coi vini, racconto sul ripiano), stessi ingressi quando entrano in vista; header pieno (senza palco il racconto è lungo e il testo ci passerebbe sotto).
+  Insieme: Botanica usa il corsivo vero del cliente (Alex Brush, al posto del Pinyon Script) anche nella pagina del vino; nella targa (scheda, più venduti, menu, pagina del vino) una pianta sola intera al centro, perché quelle vere sono già due rami specchiati. Il racconto orizzontale è da parte in botanica-oriz.html (+ sections/botanica-oriz.html, js/botanica-oriz.js), non collegato.
+  Provato senza errori: 1100x700, 1366x650, 1536x730, 1920x1080, 390x844 e 360x640 al tocco, movimento ridotto, scheda del vino, "Altri vini", pagina del vino, menu, scelta del mood, foto.html. Non visto su telefono vero né Safari; i passaggi giudicati su fotogrammi fermi.
+  Nello stesso trasferimento c'è anche swisstransfer_8d349188-...: 91 foto originali dello shooting (_DSC*.jpg, 14-25 MB): non usate, utili per Fotografia/Pop.
+
+- 17 nov (37), Botanica verticale bocciata come impostazione: "fammi alternative, tu hai fatto altro che prendere la versione orizzontale, impostarla in verticale e metterci le foto in mezzo in riferimento al set, usando sempre i vini appoggiati lì per ogni collezione: dobbiamo uscire da questo setting"; e, mentre lavoravo: "anche dall'utilizzo stesso delle grafiche: guarda quanto sono belle, le mettiamo a destra o a sinistra o al centro in una forma".
+  Guardate le pagine del cliente in all.ai (ai-vista nel blocco degli appunti): le piante sono enormi, tono su tono (più scure del fondo), a tutta pagina, a volte specchiate ai bordi; il testo bianco ci sta sopra, centrato. Nessuna targa attorno al testo.
+  Il verticale col set (targa al centro, ripiano, bottiglie, fascia di foto fra i capitoli) è in _archivio-prove/botanica-17nov-set-verticale (+ LEGGIMI.txt).
+  Ora tre prove sullo stesso markup (sections/botanica.html, prefisso erb: "bt" è già in css/base.css), scelte dalla pillola "Prova" in basso a sinistra (?s=):
+  * Mezzatinta (palco fermo): pagine a tutto schermo come i post di testo del cliente; si entra in una collezione attraverso la sua pianta, che compare intera al centro e cresce, e nei suoi puntini c'è già la pagina nuova; le foto compaiono dentro la sagoma della pianta della pagina e poi la sagoma cresce fino a scoprirle, due alla volta (poi le altre due salgono).
+  * Specchio (palco fermo): una rivista aperta; a sinistra apertura, poi per collezione copertina, testo, la pianta da sola (toni invertiti), i vini a carta (uno per riga, oltre nove in due colonne); a destra l'indice delle sei collezioni a fasce colorate, poi le foto. Scorrendo la sinistra sale e la destra scende, e a ogni passo tornano affiancate. Terra (due foto): copertina e testo coi vini.
+  * Discesa (niente palco): ogni collezione è una pagina lunga con la sua pianta larga quasi quanto lo schermo, intera, che scorre più piano; il fondo della sezione passa da un colore all'altro a cavallo dei confini (in oklab: in rgb fra bordeaux e verde veniva un viola fangoso); titolo a sinistra, racconto a destra, foto sfalsate come in una rivista, vini in fondo.
+  In comune: apertura coi sei mood a toni invertiti (fondo scuro, pianta chiara) che si danno il cambio; i vini per nome (clic: la scheda, la bottiglia esce dal nome; "Tutti i N vini" apre la cantina); pillola delle collezioni. Telefono e movimento ridotto: le stesse pagine una sotto l'altra (Mezzatinta conserva l'ingresso dalla pianta mentre la pagina sale).
+  Provato senza errori: 1440x810, 1920x1080, 1100x600 (carattere del racconto 15-18 px, i vini mai sotto la pillola), 390x844 al tocco (niente scorrimento orizzontale), movimento ridotto, scheda dal nome, vino-b, index. Lunghezza sul palco: Mezzatinta 11,8 schermi, Specchio circa 13.
+  Restano: la scheda del vino ha ancora la targa dietro la bottiglia (in comune con vino-b); i vini nell'anteprima di Botanica della scelta del mood ("dopo").
+
+- 17 nov (38), "scelgo discesa come modello". Botanica è Discesa e basta: via la pillola "Prova", Mezzatinta e Specchio (in _archivio-prove/botanica-17nov-tre-prove, + LEGGIMI.txt), via il palco e il contenitore erb-palco; js/botanica.js e css/botanica-v.css riscritti per la sola Discesa (selettori senza erb--ds).
+  Promesso nel giro prima ("la cambio in base alla prova che scegli"): la scheda del vino della home non ha più la targa, dietro la bottiglia c'è la pianta intera nel colore della collezione sul crema (.erb-zp); nella pagina del vino (vino-b) la targa dietro la bottiglia grande perde forma e fondo e resta la pianta tono su tono sul colore della collezione (css/pagine-bf.css, .page-vb .vp-targa).
+  Lasciate com'erano le targhe piccole: menu dei vini e più venduti (avevano preso il posto delle macchie il 13 nov) e la fila "Gli altri vini della collezione" della pagina del vino (compare al passaggio del mouse).
+  Provato senza errori: 1440x810 (apertura, copertina, titolo, foto, confine, Terra, scheda dal nome), 390x844 al tocco (niente scorrimento orizzontale), movimento ridotto, vino-b su desktop e telefono.
+  "Come modello": forse vale anche per l'altro mood (Fotografia → Pop); non toccato, in attesa delle sue modifiche. Sempre in sospeso: i vini nell'anteprima di Botanica della scelta del mood.
+
+- 17 nov (39), prova 3D: "riesci a fare una di queste bottiglie in 3d e me la fai vedere?". Fatta la Collezione 53 Primitivo su bottiglia-3d.html (pagina a sé, non collegata; bottiglia-3d.template.html, js/bottiglia-3d.js).
+  I pezzi dalla foto del catalogo, che non si tocca: tools/bottiglia_3d.py <foto> <uscita> <riga inizio etichetta> <riga fine etichetta> <riga fine capsula> → assets/3d (profilo .json, etichetta srotolata, maschera del rame).
+  Il profilo (dalla trasparenza della foto, senza il riflesso semitrasparente sotto) gira attorno all'asse e fa vetro e capsula; l'etichetta è la foto srotolata da -70° a +70°, poi nero fino a 220° di giro, dietro vetro: il retro non c'è in nessuna foto.
+  I disegni in rame sono metallo (maschera: pixel chiari e caldi), le scritte no. Il castello sulla capsula è assets/logo/feudi-marchio.svg messo dove sta in foto (quota e altezza in js, misurate).
+  Luci: RoomEnvironment di three più due pannelli alti ai lati (le due strisce lunghe sul vetro, come nelle foto). three@0.160.0 da unpkg con importmap, come le altre librerie del sito.
+  Movimento: dondola di circa 30° per lato attorno al fronte; trascinando gira tutta (col dito in orizzontale; frecce da tastiera), lasciata resta 2,5 s e torna di fronte. Animazioni ridotte: ferma, resta dove la si lascia. Se il 3D non parte resta la foto.
+  Provato senza errori: 1440x810 (anche trascinata), 390x844 al tocco (bottiglia nei due terzi alti, testo sotto), movimento ridotto. Non visto su telefono vero né Safari; la nitidezza dell'etichetta è quella della foto da 653 px.
+  Per un'altra bottiglia: tre righe da misurare sulla foto e la posizione del castello; capsule o etichette di forma diversa possono chiedere ritocchi.
+
+- 17 nov (40), tre correzioni alla bottiglia 3D: "le etichette finiscono qui, il pezzo in più non serve" (su un ritaglio del pannello nero che avevo aggiunto ai lati), "hdr è una merda e l'obiettivo 200mm".
+  Etichetta: finisce dove finisce la foto (77° per lato, 154° in tutto), niente carta inventata; oltre e dietro solo vetro. Per srotolarla dritta fino al bordo lo strumento ora tiene conto della prospettiva della foto:
+  i bordi dell'etichetta in foto curvano (quello alto scende di 18 righe ai fianchi, quello basso sale di 8), da cui macchina a 1512 px dall'asse (1,75 altezze di bottiglia) e occhio alla riga 685. Nuovi argomenti:
+  python -I tools/bottiglia_3d.py assets/bottles/primitivo53.webp assets/3d/primitivo53 --etichetta 457 792 --curva 18 8 --capsula 228 --castello 171 198 (quote vere di etichetta, capsula e castello nel .json).
+  Luci: via RoomEnvironment (riflessi a scatole). Lo studio è dipinto in HDR dentro js/bottiglia-3d.js (mappa equirettangolare di numeri, nessun file), ed è il set della foto del catalogo letto dai suoi riflessi angolo per angolo:
+  fascia chiara e netta da -50° a -28° (bank grande a sinistra, azimut da -100° a -56°, forza 8), fascia grigia da +15° a +45° (pannello debole a destra, forza 0,7), bordi accesi oltre 72° (fondale bianco dietro, forza 0,8).
+  Su un cilindro una luce all'azimut A si riflette all'angolo A/2. Carta e capsula hanno una mappa a parte con in più la luce larga davanti (il vetro non la riflette) e specularIntensity basso, se no il nero diventa grigio.
+  Misurato sul fotogramma: la fascia chiara viene 178-187 di luminosità, in foto 181-186.
+  Macchina: camera.setFocalLength(200) (pellicola da 35 mm di three), 3° sopra l'orizzonte perché si veda l'ombra a terra. Col 200 mm i bordi dell'etichetta sono dritti; in foto curvano perché è scattata da vicino.
+  Provato senza errori: 1440x810 di fronte, girata di lato e di spalle, 390x844 al tocco, movimento ridotto. Restano sfocati gli ultimi gradi dell'etichetta (pixel schiacciati in foto).
+
+- 17 nov (41), Botanica Discesa: "ti ho detto che qui avrei voluto vedere le bottiglie di vino" (sul blocco "I vini" coi nomi), "lo scroll mi piace, diamo priorità alle foto, il racconto è foto e bottiglia".
+  Ogni collezione ora: copertina sulla pianta, poi righe alterne foto + bottiglia (foto a 5 colonne, intera sotto l'header: i post hanno scritta e logo, non si tagliano; bottiglia a metà altezza
+  dall'altra parte, con nome e denominazione sotto; clic = scheda), il racconto del cliente dopo le prime due righe, poi le altre righe. Accanto a ogni foto la bottiglia che ci si vede
+  (data-vino sulle foto, controllato guardandole); alle foto senza bottiglia riconoscibile i vini che restano; i vini senza foto a coppie di sole bottiglie; al massimo sei bottiglie,
+  "Tutti i N vini" solo dove sono di più (Classica 13, Terra 7). Le due Primaura hanno nome e denominazione uguali: sotto le uve. Righe fatte da js/botanica.js (.erb-storia, .erb-riga data-tipo fb/ff/bb/f, is-dx).
+  Le bottiglie stanno lontane dal centro perché la pillola fissa in basso non copra i nomi: misurato riga per riga (riga centrata, animazioni ferme) a 1280x720, 1366x768, 1440x810, 1920x1080, 390x844, 360x740 nessun nome coperto;
+  a 1100x600 il nome su tre righe della seconda Primaura tocca la pillola di 2 px. Collezioni più lunghe: 4,6-6,7 schermi l'una (prima circa 4,5).
+- 17 nov (42), scheda del vino: "quando apro una bottiglia c'è sto rettangolo". Il fondo crema del riquadro dei testi arrivava col velo ma stava sopra il velo, quindi a metà apertura e chiusura faceva un riquadro più chiaro. Ora c'è solo a velo pieno (css/fiaba.css, .fb-zoom--pulita: vale anche per le altre pagine con la scheda pulita). Provato a 200 e 450 ms dall'apertura e a 420 e 720 ms dalla chiusura, 1920x1080 e 390x844: niente riquadro.
+- 17 nov (43), header: "allo scroll togliamo il fondo colorato, usiamo un glass verso il trasparente". css/nav.css: niente più fondo pieno con .is-solid; un ::before con backdrop-filter blur(18px) e una velatura neutra (nera .46 sulle sezioni scure, bianca .5 sulle chiare) che continua 36 px sotto la barra e sfuma (mask). Il nero a .46 e non meno: con .28 il bianco dei link non si leggeva quando sotto passava una foto chiara (marmo, piscina, scacchiera). Con menu o cantina aperti (html.nav-lock) il fondo resta pieno, la barra fa un foglio solo col pannello. In Botanica la fascia crema dell'header con la scheda aperta resta solo dove non c'è il vetro (orizzontale). Provato 1440x810 (Botanica, Fotografia, vino-b) e 390x844 col menu: nessun errore.
+- 17 nov (44), header: "magari non facendo vedere la linea della sfumatura verso il trasparente". La sfumatura del vetro era lineare su 36 px: si vedeva dove cominciava a calare. Ora è morbida all'inizio e alla fine (smoothstep, --nav-sfuma in css/nav.css) e più lunga (64 px sotto la barra). Confrontato ingrandito sopra la foto arancione, la pianta e la sezione chiara, e sul telefono: nessuna linea, nessun errore.
+- 17 nov (45), Fotografia verso Pop, l'apertura. Richieste in fila (stessa sera): "la hero fotografica va cambiata, va resa più pop, più giovanile: userei il 3D del vino in una navigation motion,
+  muovendolo un po' come klimtwine.com/en" (studiato dal vivo: bottiglia sul tralcio, si inclina e gira attraversando un testo, poi in piedi per ogni vino col nome grande dietro, fondo del colore del vino);
+  bocciata la prima prova a tre fondi (rosso, azzurro, rosa) con ombra a terra: "non userei tutti quei colori, non metterei l'ombra finta, eviterei 200 colori per sezione anche quelli sotto; sì questo tipo
+  di animazione ma non uguale a Klimt: inventa"; poi "le foto dello shooting nella navigation motion, magari effetto webgl"; bocciata anche la seconda (rosso, foto che saltano fuori dalla bottiglia e si
+  sparpagliano): "il fondo deve essere bianco, e le foto messe così senza un contesto, senza una storia, allo scroll a caso"; poi "un ramo, qualcosa della vigna in 3D", l'esempio sweet-tape.com (parole
+  giganti che scorrono di lato, accanto a ognuna la foto del prodotto in uso, i rotoli 3D che si muovono con loro), "una scena come se il vino rotolasse sulla superficie, facesse apparire il testo, uscisse
+  e riapparisse dall'altra parte", "una versione pop con questi effetti" (immagini di glass refraction: vetro rigato).
+  Ora (sections/foto.html .fo-apre, css/foto.css, js/foto.js, js/foto-3d.js; la bottiglia in js/bottiglia-3d-kit.js, senza ombra anche in bottiglia-3d.html): palco fermo di 5,8 schermi su fondo bianco,
+  e bianca tutta la pagina di Fotografia (--cream: #fff; cantina e news non più marroni). a) la frase del profilo "Wines that set the mood." in Bricolage strettissimo alto un terzo di schermo scorre di lato
+  (.fo-pista); fra le parole un grappolo 3D (acini fatti nel modulo, al posto di .fo-pista__uva) e cinque foto dello shooting, ognuna col vino che ci si vede in didascalia (da js/data.js, link alla
+  pagina del vino): Marpiccolo, 125 Bianco Organic, Appassimento, Gocce, Collezione 53 Primitivo (la bottiglia del 3D, nel mappamondo bar). Le foto le disegna WebGL negli stessi riquadri delle immagini,
+  dietro un vetro rigato che le copre entrando da destra e scivola via quando il loro centro passa il 45% dello schermo (più si va veloci, più rifrange). La bottiglia davanti, parole e didascalie dietro;
+  col mouse guarda il puntatore, con la velocità della pista si piega all'indietro. b) sdraiata sul piano rotola via a destra, rientra da sinistra e scopre la presentazione dove passa (taglio del testo
+  legato al suo centro), esce; c) rientra e si ferma sul suo capitolo scoprendone il nome. Rotolando gira di quanto si sposta diviso il raggio (0,105 dell'altezza), etichetta di fronte all'arrivo.
+  Telefono: parole in alto, bottiglia sotto già all'apertura. Animazioni ridotte: cinque momenti fermi (a, metà pista, fine pista, b, c). Foto: tools/pop_foto.py <cartella originali> → assets/pop
+  (880 x 1100, 51-92 KB, solo taglio); le tre provate e tolte (tuffo, raso, smoking) in _archivio-prove/pop-foto-17nov. Il gioco della bottiglia e la capriola della seconda prova non ci sono più.
+  Provato senza errori: 1440x810, 1920x1080, 1100x600, 390x844 e 360x740 al tocco, movimento ridotto, sezioni sotto, bottiglia-3d.html. Non visto su telefono vero né Safari.
+- 17 nov (46), DA FARE, annotato dall'utente: "fare altre bottiglie 3D e metterle nell'hero come se fossero appoggiate sulla superficie, possibilità di muoverle con il mouse, e allo scroll scorrono tutte
+  verso destra uscendo dallo schermo". Non ancora fatto. Per farlo: ogni bottiglia nuova esce da tools/bottiglia_3d.py <foto del catalogo> <uscita> --etichetta <riga inizio> <riga fine> --curva <su> <giù>
+  --capsula <riga> --castello <quota> <altezza> (righe da misurare sulla foto, come per primitivo53); js/bottiglia-3d-kit.js prende già il percorso (creaBottiglia(renderer, base)), ma il vetro oggi è sempre
+  scuro pieno di rosso (0x0b0706): per i bianchi e i rosati serve il colore del vetro e del vino nel .json. Bottiglie di forma diversa (Marpiccolo, le 125) e capsule o etichette sagomate possono chiedere
+  ritocchi allo strumento. Nell'apertura di oggi (45) la Collezione 53 è sola: le altre andrebbero sdraiate o in piedi sul piano bianco accanto a lei, trascinabili col mouse (sul telefono da decidere:
+  col dito si scorre la pagina), e con lo scorrimento scivolano tutte a destra fuori dallo schermo.
+  Riferimento, detto da lui: sweet-tape.com ("aggiungi vedere sweet-tape.com come riferimento"). Lì i rotoli di nastro sono modelli 3D (glb): uno appoggiato in fondo all'apertura, una fila che rotola
+  insieme alle parole giganti, e in fondo alla pagina un mucchio di rotoli che si assestano come oggetti veri. Da guardare dal vivo prima di cominciare: se si trascinano e come reagiscono (non l'ho verificato).
+- 18 nov (47), le altre bottiglie in 3D, primo passo della (46): "partiamo dal fare gli altri 3d delle bottiglie, prendi un bianco, un rosa e un vino speciale". Fatte Marpiccolo (Fiano, bianco),
+  Tre Cuori (Rosa di Primitivo) e Philia (Primitivo di Manduria Dolce Naturale DOCG, l'unico dolce del catalogo), dalle foto del catalogo in assets/bottles (non toccate) → assets/3d/marpiccolo, tre-cuori,
+  philia (comandi in testa a tools/bottiglia_3d.py). Prova da sola: bottiglie-3d.html (non collegata, fondo bianco come Pop): le quattro in fila con le altezze vere (il collo sotto il tappo è uguale per
+  tutte), ognuna si gira trascinandola, sul telefono due per riga. Ancora NON nell'apertura di Fotografia: è il passo dopo (appoggiate sul piano, trascinabili, via a destra allo scorrimento).
+  Strumento: --lati (etichette frontali che non girano tutto il fronte), --metallo rame|oro|no (oro: le X di Tre Cuori, anche quella pallida), carta chiara o scura riconosciuta da sola,
+  --vetro/--vuoto/--livello (vetro chiaro), --capsula-metallo (stagnola di Philia), --fascetta (DOCG, srotolata e chiusa tutto attorno). Rifatta la Primitivo col nuovo strumento: texture e profilo
+  identici al byte (il suo json resta quello del 17, senza i campi nuovi). Vetro chiaro: il colore della foto per ogni distanza dall'asse, vista dalla macchina, diventa un velo (colore + trasparenza che sul
+  bianco ridanno la foto: reso 251,245,205 contro 251,245,204 in foto); sopra il livello il collo vuoto; si vede il retro dell'etichetta quando gira. Carta bianca: con lo studio della Primitivo usciva
+  grigia e sbiadita, e bruciava a sinistra: luce sua (luceBianca, tanta diffusa + una larga davanti a sinistra), niente tone mapping; il profilo di luce dell'etichetta ora segue la foto (252→232 contro
+  252→236). Capsula bianca: il colore della foto (reso 232 contro 233). Castello: la lamina resta l'oro del marchio, l'inchiostro prende il colore della foto (Marpiccolo azzurro). Le luci si dipingono una
+  volta per renderer (più bottiglie nella stessa scena). Provato senza errori: 1440x810, 2600x1460, 390x844 al tocco, movimento ridotto, bottiglia girata di spalle; foto.html e bottiglia-3d.html
+  invariate. Non visto su telefono vero né Safari. shortcut: oltre le etichette e sul retro solo vetro (una foto sola); il velo è giusto sul bianco, sopra le parole nere le schiarisce un po' invece di
+  lasciarle nere come farebbe il vetro vero.
+- 18 nov (48), bottiglia vera in Blender: "per un risultato ottimale e realistico? Blender?", poi "lascia stare le etichette, mi interessa la bottiglia in sé". tools/bottiglia_blender.py
+  (Blender 4.5 portatile di Downloads/chicco-uva-3d, Cycles sulla RTX 4080, 8 s a immagine) costruisce dal profilo di assets/3d/<nome>.json una bottiglia fisica: vetro con spessore (3 mm,
+  5 nel collo, 6 sul fondo, stimati), fondo rientrante 13 mm, vino come liquido fino al livello col menisco (colore dal velo del json), capsula con le pieghe in fondo, castello del marchio;
+  l'etichetta resta quella srotolata dalla foto. Studio come il catalogo: fondale bianco largo, strisce solo per i riflessi, luce davanti che non si specchia; attraverso il vetro si vede
+  bianco tutto attorno (tipi di raggio di Cycles). Trappole trovate: il colore base 0,8 di Blender tinge il vetro trasparente a ogni superficie (va bianco); le strisce laterali bruciavano
+  la capsula bianca; la luce davanti rimbalzava dentro il vetro (rettangolo bianco). Fatte Tre Cuori e Marpiccolo: tools/blender/tre-cuori.png, marpiccolo.png, confronto con foto e
+  3D della pagina in tools/blender/confronto-tre-cuori.jpg. Philia (vetro scuro, fascetta) non provata in Blender. Da decidere con lui: nell'apertura fotogrammi resi in Blender
+  (fotografici, si spostano come immagini, il giro è una sequenza) o lo stesso modello nella pagina con vetro in tempo reale (tutti i movimenti, meno fotografico).
+  18 nov, giro: "voglio vederla online che gira, quella di Blender è molto più realistica, quanto pesa?". bottiglia_blender.py --giro 72 (una vista ogni 5°, piatto girevole: luci e
+  macchina ferme; 72 viste in circa 15 minuti) → tools/giro_web.py → assets/giro/tre-cuori/g (316x1100, 658 KB in tutto) e p (178x620, 313 KB, telefono). Pagina di prova
+  bottiglia-giro.html (js/bottiglia-giro.js): gira da sola (un giro ogni 12 s, due viste vicine sfumate fra loro), si trascina, frecce; animazioni ridotte = ferma. Locale, non pubblicata:
+  il sito su GitHub Pages ha 74 file locali non pubblicati di altri lavori; per metterla online va chiesto (si può pubblicare solo questa pagina).
+  18 nov, spessori: "metti uno spessore al vetro 0.2, un piccolo spessore sul collo dell'etichetta e un po' di spessore sull'etichetta". Letto così: vetro 2 mm (0,2 come
+  in Blender, in cm; prima 3 mm e 5 nel collo; il fondo resta 6 mm), la capsula ("l'etichetta del collo") 0,4 mm sopra il vetro con lo scalino del bordo in fondo, l'etichetta un foglio
+  di 0,4 mm (fronte con la grafica, retro e quattro bordi di carta: foglio() in tools/bottiglia_blender.py). Rifatte le 72 viste del giro.
+- 18 nov (49), DECISO per il sito: "le dobbiamo usare sul sito, fargli fare movimenti: vedi tu", poi "la miglior resa per il web al minimo peso, senza che si blocchi la pagina".
+  Le 72 immagini di Blender sanno solo girare (e pesano 691 KB a bottiglia, a scatti): restano una prova. Sul sito il 3D della pagina con la PELLE DI BLENDER: bottiglia_blender.py --velo
+  fa vetro, vino e capsula senza etichetta né castello, di fronte in proiezione parallela, sul bianco e sul nero (attraverso il vetro nero); tools/velo_blender.py ne fa una tabella colore +
+  trasparenza per altezza e distanza dall'asse (assets/3d/<nome>-velo.webp, 256 x 1024, webp 92 con trasparenza esatta: 75 KB Tre Cuori, 67 Marpiccolo; "velo2d": true nel json) che
+  il kit stende sul vetro (PELLE_F); etichetta e castello restano 3D. Provato su bottiglia-giro.html (a sinistra le immagini, a destra il 3D, stesso angolo): corpo uguale al pixel
+  (255,212,203), etichetta allo stesso punto a 90/180/270°, retro dell'etichetta tinto del vino e a poca luce (207,138,122 contro 199,134,122 di Blender). Il vino non fa da lente nel 3D
+  (il retro dell'etichetta in Blender è un filo più largo). Peso: luci dello studio a 512 x 256 e dipinte solo quando servono: prima bottiglia 87 → 23 ms, le altre 7-10 ms (su questo
+  computer; un telefono 4-5 volte di più). Fatte Tre Cuori e Marpiccolo; da fare: Philia e Collezione 53 (vetro scuro in Blender mai provato, fascetta DOCG da aggiungere allo script),
+  poi metterle nell'apertura Pop coi movimenti (appoggiate, trascinabili, via a destra), un solo renderer, shader compilati senza bloccare (compileAsync).
+  18 nov, tutte e quattro con la pelle di Blender ("qui adesso sono tutte fatte in Blender?"): vetro scuro anche lui trasparente, foglia morta letta sul collo vuoto di Philia in foto
+  (65,50,0 attraverso due pareti), vino rosso quasi nero dentro, livello 1,3 cm sotto la capsula come in foto; stagnola di Philia argento lucido (ruvidezza 0,1: strisce nette come in foto);
+  la capsula non si specchia più (sulla spalla scura il suo riflesso faceva un pallino nero, come un buco). Pelli: Collezione 53 20 KB, Philia 21, Marpiccolo 67, Tre Cuori 74. La pelle vale
+  anche nell'apertura di Fotografia (la Collezione 53 gira scorrendo) e in bottiglia-3d.html (bordeaux): provate senza errori. Etichette e fascetta di Philia restano 3D del kit.
+  18 nov, correzioni sue dopo le quattro pelli: "vanno aggiustati i riflessi sulle bottiglie nere come il WebGL" → Collezione 53 e Philia SENZA pelle ("velo2d" tolto dai json),
+  col vetro scuro del kit (studio SET letto sulla foto: fascia chiara a sinistra, corpo rosso scuro); pelli scure in _archivio-prove/pelle-scure-18nov. "I colli troppo realistici,
+  rendiamoli lisci perfetti" → capsula senza pieghe, spigolo in fondo netto (set_sharp_from_angle) e vetro che non si stringe più sotto la capsula (la fessura faceva una riga scura).
+  "La bottiglia col vino bianco è in sovraesposizione" → in tools/bottiglia_blender.py: luci invisibili attraverso il vetro (le strisce viste nel vino facevano i bordi bianchi),
+  tenda grigia ai lati (TENDA 0.5: i bordi scuriscono come in foto), strisce 6 e 3 invece di 220 e 45 (bruciavano in righe bianche), vino tarato sul misurato (FONDALE 0.944 invece
+  di 0,9 stimato), luce da sinistra solo per la capsula (chiara a sinistra come in foto). Alla quota del velo: Marpiccolo 248,245,206 contro 250,245,206 della foto, bordo 189 contro
+  193; Tre Cuori 247,195,183 contro 246,194,182. Pelli: Marpiccolo 60 KB, Tre Cuori 59 (quelle con le pieghe in _archivio-prove/pelle-con-pieghe-18nov). Le 72 viste del giro e le
+  immagini ferme in tools/blender/ sono ancora quelle di prima (pieghe, luci forti): non rifatte.
+- 18 nov (50), apertura Pop: "innanzitutto togliamo sto grappolo, togli le foto con le glass refracted, non era così che lo volevo". Tolti dalla pista il grappolo 3D e le cinque foto dello
+  shooting dietro il vetro rigato (markup in sections/foto.html, codice in js/foto-3d.js, stili in css/foto.css, didascalie in js/foto.js); restano le parole giganti e la bottiglia.
+  Versione di prima in _archivio-prove/pop-17nov-grappolo-foto-vetro; le foto in assets/pop restano lì. Errore di lettura: il vetro rigato (esempi "Glass Refraction" mandati il 17 alle 18:46)
+  era per "poi fare una versione pop usando sti effetti", una versione a parte, non per le foto dell'apertura.
+  DA FARE, annotato da lui (18 nov): 1) le bottiglie scorrono su un piano e scoprono i testi, spariscono dal bordo destro dello schermo e riappaiono da sinistra nella seconda sezione;
+  2) magari una scena con una delle bottiglie che versa il vino: con l'AI (Higgsfield, ma prima il conto di quanto si consuma su Comfy) oppure rendendo vive le bottiglie delle foto col 3D
+  (la bottiglia si sposta, esce, versa). Conto dato il 18 nov coi prezzi Comfy letti il 27-28 ott (lib/studio.ts di ManyTask): Kling 4.0 1,13 $ per 5 s, Veo 3.1 Fast 0,80 $ per 8 s,
+  Veo 3.1 3,20 $ per 8 s, Higgsfield Genjutsu (rigira un video che serve già) 4,87 $ per 5 s a 720p e 11,67 $ a 1080p; il 3D nella pagina non costa niente.
+- 18 nov (51), PROVE dell'apertura Pop: "il sito deve essere un mix di entrambi [sweet-tape e klimtwine] dove useremo le foto ... versioni differenti: la bottiglia che esce dalla foto
+  ed è il 3D; una versione con tutte le bottiglie 3D che escono da sotto, rotolano insieme nella hero verso destra, escono e poi parte la seconda scena che faremo da 0; non usare Higgsfield,
+  vedi tu (magari Veo/Omni); tutto in motion design; fammi delle prove". pop-a.html e pop-b.html (template, js/pop-prove.js, css/pop-prove.css; base css/foto.css), non collegate.
+  A) foto di Philia dello shooting (_DSC8100, l'unica con una delle quattro bottiglie 3D in piedi e di fronte) fra le parole giganti; il 3D le sta incollato sopra invisibile, dal 6% al 30%
+  della pista salta fuori con un giro e si allunga (in foto la bottiglia è più larga: 0,32 contro 0,25 di larghezza su altezza, schiaccia e allunga), nella foto resta il posto vuoto
+  (assets/pop/philia-vuota.webp: tools/pop_senza.py, Nano Banana Pro su Comfy Cloud, UNA generazione, circa 0,17 $, poi pixel veri fuori dalla maschera). Poi come foto.html con Philia.
+  Differenza: nello shooting Philia ha capsula nera e scritta a sinistra, il 3D (foto del catalogo) capsula argento e scritta a destra; al salto si nota poco perché gira.
+  B) le quattro salgono dal basso all'apertura (in fila a sinistra), scorrendo rotolano a destra e dove passano dipingono il quadro (Wines [Tre Cuori, _DSC8072] that set / [Philia] the mood.),
+  escono, il quadro scorre via, rientrano da sinistra in fila coi nomi (sul telefono due per riga): segnaposto della seconda scena. Niente video AI: tutto 3D nella pagina.
+  Provate a 1440 e 390 e con animazioni ridotte, senza errori. Non visto su telefono vero.
+- 18 nov (52), dopo le prime prove ("non mi piace nessuno dei due: le bottiglie grandi quanto lo schermo, la A puoi toglierla, insieme come appoggiate sul fondo della hero, le foto
+  in un'altra sezione"; A e vecchia B in _archivio-prove/pop-a-18nov). pop-b.html ora: le quattro bottiglie alte quanto lo schermo, in fila sul piano (poco sopra il bordo basso),
+  ENTRANO ROTOLANDO DA SINISTRA ("magari le farei partire da sinistra"), ombra di contatto sotto ognuna ("le ombre per far capire che sono appoggiati"), nelle chiare la scritta
+  dietro passa dalla LENTE DEL VINO ("ci sono i liquidi dentro, tu che sei esperto in 3D dovresti sapere cosa succede": raggio seguito nel cilindro di vino, indice 1,34, muro a 3
+  raggi; la scritta disegnata anche in una texture col suo carattere; sopra il livello niente lente), trascinandole girano, scorrendo rotolano via a destra e la frase si apre;
+  poi la sezione con le foto dello shooting dei quattro vini. Kit: bott.userData.vetro e .livello (per la lente).
+  pop-collezioni.html (js/pop-collezioni.js): "raccontare le collezioni a sezione col 3D, clip-path per passare all'altra, la bottiglia che gira cambia": una schermata per collezione
+  (Collezione 53, 125 Uno Due Cinque col 125 Primitivo, Classica con Tre Cuori, Terra col Terra Primitivo: questi due 3D nuovi, tools/bottiglia_3d.py), nome gigante dietro, frase della
+  copertina e racconto da js/dati-bf.js, a destra gli altri vini della collezione come foto del catalogo; fra una e l'altra un giro intero: quando la bottiglia dà le spalle diventa
+  quella dopo ("ruota in maniera talmente perfetta che mostra l'altra"), e la schermata dopo si apre in un cerchio dalla bottiglia. Fondi bianco e pietra.
+  DA FARE annotato da lui: impostazione di sweet-tape.com (riguardato il 18: frase divisa in parole giganti per sezione, prodotti 3D sopra le parole, foto in riquadri tondi,
+  passi numerati, frecce a mano, mucchio di prodotti nel piè di pagina); ordine della pagina: apertura, foto, le bottiglie rientrano correndo, una scena fatta con Comfy (da decidere
+  quale, e il suo costo), le collezioni. Organic e Internazionali mancano: le loro bottiglie non sono in 3D.
+- 18 nov (53), collezioni corrette e unite: "la bottiglia stessa altezza; quando cambia si deve vedere e non a scatto, fluido; non il cerchio ma scheda fissa che col clip-path verso
+  il lato mostra l'altra collezione, e il vino al centro man mano cambia mentre passa, anche quando ruota; unisci le due versioni". Ora in pop-b.html dopo le foto (pop-collezioni.html
+  in _archivio-prove/pop-collezioni-18nov): la bottiglia rientra rotolando da sinistra, schede ferme una sopra l'altra, la successiva si scopre da destra a sinistra (clip-path inset) a
+  velocità costante; la stessa linea taglia la bottiglia: la scena si disegna due volte col taglio (setScissor), a sinistra la vecchia, a destra la nuova; due giri per passaggio, così
+  quando la linea è sulla bottiglia è di fronte e si vedono le due etichette divise. Tutte alte uguale.
+  VERSIONE VETRO, pop-vetro.html ("una versione nuova, inventa tu, con effetto refract glass per ogni sezione, anche nei colori, guarda sempre questa": gli esempi di glass refraction):
+  stessa storia a colori pieni (apertura corallo in sfumatura, foto su rosso, collezioni rosso, lilla, corallo, arancio); js/vetro-rigato.js copia l'immagine finale della tela
+  (copyFramebufferToTexture, così i colori restano quelli di sempre) e la ripiega in una fascia a scanalature (fetta rovesciata e stretta, rosso e blu sfasati, luce e ombra);
+  apertura: la fascia segue il mouse e ripiega anche fondo e scritta; foto: copie rigate fatte da tools/pop_vetro.py (assets/pop/*-vetro.webp) che scivolano via scorrendo;
+  collezioni: la linea è una lastra rigata (vetro sulla bottiglia + .pc-lastra sulla scheda). Body data-vetro; colori del fondo in --vetro-a/b come tre numeri.
+  Provate a 1440 senza errori; telefono della versione Vetro non visto.
+  18 nov, "ricordati che qui dentro c'è liquido" (Tre Cuori davanti a "Classica" nelle collezioni lasciava passare il nome dritto): la lente del vino e il disegno delle scritte in
+  texture stanno ora in js/lente-vino.js (scritta, lenteVino, colore), usato dall'apertura (js/pop-prove.js) e dalle collezioni (js/pop-collezioni.js: la bottiglia chiara legge il
+  nome gigante della sua scheda col colore di fondo della scheda). Provata in pop-b.html e pop-vetro.html senza errori.
+  18 nov: VERSIONE VETRO TOLTA ("togliamo pop-vetro, continuiamo sul pop-b"): pagina, js/vetro-rigato.js, tools/pop_vetro.py, le foto -vetro e le copie dei moduli e dello stile col
+  Vetro in _archivio-prove/pop-vetro-18nov; il suo codice tolto da js/pop-prove.js, js/pop-collezioni.js e css/pop-prove.css. Si continua su pop-b.html.
+  18 nov, "quando ruota la bottiglia la parte dell'etichetta vista da dietro sparisce" (detto già prima): la lente esce piena (alfa 1) e copriva il retro dell'etichetta del kit.
+  Ora lo disegna la lente (js/lente-vino.js): il raggio che esce dal vino dove c'è l'etichetta vede la carta, ingrandita e dritta (più vicina del fuoco), col colore del retro del kit
+  (la sua luce misurata, x1,56: a 180 gradi Tre Cuori 203,130,114 contro 203,131,116 di prima, Marpiccolo uguale). Il kit passa il retro in userData.retro; con la lente si nasconde.
+  Provato nell'apertura (Tre Cuori girato a mano), nelle collezioni a 1440 e 390, senza errori.
+- 18 nov (54), la fila dei vini stile sweet-tape in pop-b.html ("qualcosa di sweet-tape come impostazione possiamo prenderla", poi "vai procedi e vediamo"): al posto della griglia di foto
+  una sezione col palco fermo (js/pop-nastro.js, .pn-* in css/pop-prove.css). Una scheda per vino (Collezione 53, Marpiccolo, Tre Cuori, Philia) che passa come un nastro da sinistra a destra:
+  le bottiglie uscite a destra dall'apertura rientrano da sinistra. Nome gigante maiuscolo in basso, che riempie la larghezza (sul telefono i corti crescono, massimo 28% del palco); la
+  bottiglia 3D in piedi sulle cime delle maiuscole, rotola con la parola a giri interi e si ferma di fronte; foto dello shooting in un riquadro arrotondato con la didascalia; a destra una
+  frase vera della sua scheda (js/data.js, controllata). Riga in alto con la frase "Born in Salento, experienced worldwide." e il numero 01/04. Sul telefono i nomi stanno a destra e la
+  bottiglia nella colonna libera accanto alla foto. Con le animazioni ridotte salta da una scheda all'altra.
+  Insieme: l'ombra di contatto ora è nel kit (ombraContatto); la pillola si nasconde con un solo trigger dall'apertura alla fine delle collezioni; sui palchi fermi (fila e collezioni)
+  l'header perde il vetro (la riga in alto sotto il vetro usciva grigia); il bottone dell'apertura "Vai alle collezioni" porta davvero a #collezioni.
+  Provata a 1440, 390 e con animazioni ridotte, senza errori. ATTENZIONE: tre catture lanciate insieme facevano perdere il CSS al server locale: una alla volta.
+  Mancano: frecce a mano, mucchio di bottiglie nel piè di pagina, la scena Comfy fra fila e collezioni (idea e spesa da far scegliere a lui).
+- 18 nov (55), dopo la fila: "mi piace più la seconda [le collezioni]... non ha senso avere due sezioni quasi uguali", "i nomi non devono andare a capo", "manca la generazione della
+  scena collegata allo scroll, da fare con Veo omni", "quando parlo di sweet tape parlo di queste cose ma non l'hai navigato forse" (sue foto: carta da pacchi col nastro, la fascia
+  ondulata, i prodotti sopra le parole giganti). Navigato davvero sweet-tape.com (catture e DOM): apertura con frase gigante e rotolo appoggiato; collage su carta stropicciata (carta da
+  pacchi con frase gigante e nastro, post-it, pinza); wave-band = SVG con tracciato, testo lungo il tracciato che scorre e il prodotto come bollo; slider prodotti con usi; giant-pinning
+  di 8800 px (TO CREATE / TO FIX / TO PROTECT con prodotti e foto attaccati sulle lettere, numeri cerchiati e frecce a mano); "let's make it stick"; mucchio di rotoli nel piè di pagina.
+  FATTO in pop-b.html (fondo sempre bianco, dal riferimento i materiali):
+  * fila tolta: _archivio-prove/pop-fila-18nov (js/pop-nastro.js e copie dei file com'erano);
+  * fascia ondulata .pt-onda: nastro di carta color pietra con grana, "Born in Salento, experienced worldwide." che scorre, bolli col castello negli spazi (js/pop-carta.js);
+  * collage .pk: carta da pacchi (texture da tools/pop_carta.py, fatte da zero) con "Primitivo, Negroamaro, Verdeca, Malvasia Bianca. Born in Salento, experienced worldwide."
+    (vitigni dalla descrizione dell'azienda + sua frase), le quattro foto attaccate col nastro e un cartellino col nome che porta al vino; salgono a velocità diverse;
+  * scena .ps: Collezione 53 che si alza, si inclina e versa nel calice, avanti e indietro con lo scorrimento. Generata con Google Gemini Omni (Video), Omni Flash 1.2, 1080p, 8 s,
+    primo fotogramma la foto vera del catalogo su bianco (tools/pop_scena.py, prova versa1, circa 1,19 $); fondo grigio da studio portato a bianco dividendo per il fondo pulito
+    (tools/pop_scena_web.py → assets/pop/scena.mp4 1,9 MB, fotogramma chiave ogni 4). Il video si scarica intero e si usa dalla memoria (il server locale non dà i pezzi: senza, non si
+    poteva cercare un punto);
+  * collezioni: i nomi dei vini non vanno più a capo.
+  Provato a 1440, 390 e con animazioni ridotte, senza errori. Mancano: frecce e appunti a mano, mucchio di bottiglie nel piè di pagina.
+- 18 nov (56): "togliamo il video generato, non serve, poi ci pensiamo" → scena tolta da pop-b (video, copertina e grezzi in _archivio-prove/pop-scena-18nov; tools/pop_scena.py e
+  pop_scena_web.py restano per rifarla). Poi "non dovevi copiare o mettere gli scotch ecc, va fatto in base allo stile che stiamo adottando, hai copiato letteralmente il nastro" →
+  carta da pacchi, nastri e cartellini tolti (_archivio-prove/pop-carta-nastro-18nov, con le texture e tools/pop_carta.py). Da sweet-tape restano solo struttura e movimento, nel
+  nostro stile (bianco, Bricolage stretto nero in maiuscole e minuscole come l'apertura, foto col raggio del progetto, didascalie sottolineate):
+  * la curva .pt-onda: i quattro vitigni dell'azienda in nero lungo un tracciato che scorrono con lo scorrimento, il castello oro fra un giro e l'altro (niente fascia di nastro);
+  * la frase .pf: "Born in [Philia, la pietra al sole] Salento, / experienced [Marpiccolo, piscina] [Tre Cuori, pizza] / [Collezione 53, mappamondo] worldwide." gigante con le foto
+    fra le parole, ognuna col nome sotto (centrato, mai a capo) che porta al vino; le righe entrano di lato alternate, le foto si aprono (js/pop-frase.js).
+  Provato a 1440 e 390, senza errori.
+- 18 nov (57), "puoi farle meglio queste sezioni, le foto devono essere grandiiii, o un po' di design": la frase con le foto piccole fra le parole (archivio pop-frase-piccola-18nov)
+  diventa un palco fermo che scorre di lato (la struttura delle parole giganti di sweet-tape, nel nostro carattere): "Born in [Philia] Salento, experienced [Marpiccolo] [Tre Cuori]
+  worldwide. [Collezione 53]" con lettere alte un terzo dello schermo e foto alte due terzi, ognuna un po' più su o più giù della riga e appena sopra le lettere vicine; sotto ogni
+  foto nome (link) e denominazione, mai a capo. Le foto passano un poco più veloci delle parole (stanno davanti) e si piegano appena con la velocità, poi tornano dritte. La sezione è
+  alta quanto la corsa (misurata dal layout: scrollWidth contava gli spostamenti delle foto e la corsa finiva troppo avanti). Finisce sul mappamondo della Collezione 53, poi le
+  collezioni partono dalla Collezione 53. Con le animazioni ridotte la frase va a capo, foto fino al 70% dello schermo. Provato a 1440, 390 e ridotte, senza errori.
+- 18 nov (58), "io ci metterei un po' di colore, farei delle prove con verde acido (Verde Acido 0660)" e "fare diverse hero sempre con le bottiglie 3D, fammi delle varianti".
+  Prove in pop-b.html, scelte da una linguetta "Prove" in basso a sinistra (si toglie con le prove), con ?apertura= e ?colore= (js/pop-prove.js, css/pop-prove.css):
+  * apertura: Fila (quella di prima), Una (la Collezione 53 grande a destra, la frase a sinistra), Giostra (le quattro in giro attorno al centro, quella davanti grande, gira piano
+    da sola e un giro scorrendo), In volo (sospese e inclinate attorno alla frase, ondeggiano, salgono dal basso, scorrendo volano via);
+  * colore: Bianco, Verde apertura, Verde frase. --acido #c6ff2d: il codice 0660 non l'ho trovato (ricerca senza risultati), da cambiare in una riga.
+  La lente del vino trova l'asse da sola a ogni quota (vertex shader): regge le bottiglie inclinate. Provato a 1440 e 390, senza errori.
+- 18 nov (59), "farei anche alternative nella sezione foto, magari anche foto fullwidth se si può": terza riga della linguetta "Prove", ?foto= (js/pop-prove.js e js/pop-frase.js):
+  Frase (quella che scorre di lato), Piena (foto a tutta larghezza una sotto l'altra, i pezzi della frase giganti fra una e l'altra, entrando si aprono da riquadro a schermo
+  intero e dentro scorrono più piano), Sipario (palco fermo, foto a tutto schermo che si coprono dal basso; pezzo di frase, nome e denominazione in un riquadro bianco pieno).
+  Foto larghe 3:2 1920x1280 ritagliate dagli originali dello shooting (tools/pop_foto_larghe.py, transfer-01a1e8e7/swisstransfer_8d349188-...), centrate sulla bottiglia
+  (il 16:9 tagliava Philia); sul telefono restano i tagli 4:5 (<picture>). Provate a 1440 e 390, senza errori.
+- 18 nov (60), "teniamo la fila e in volo, colore lasciamo bianco al momento, foto dammi altre alternative wow"; poi, sulla curva coi vitigni, "togliamo anche questa, non mi piace".
+  Tolte Una e Giostra e il verde acido (copia in _archivio-prove/pop-hero-varianti-18nov): la linguetta "Prove" ha Apertura (Fila, In volo) e Foto. Tolta la curva dei vitigni
+  col castello (copia in _archivio-prove/pop-curva-vitigni-18nov): dopo l'apertura viene subito la sezione foto. Tre prove nuove della sezione foto, ?foto= (js/pop-frase.js):
+  * Lettere: sopra la foto a tutto schermo un velo bianco con le parole vuote (maschera SVG), dentro si vede la foto; scorrendo si entra nell'asta di una lettera (la l di
+    Salento, la i di experienced, la l di worldwide) finché la foto è intera, col nome nel riquadro bianco; la parola dopo sale dal basso. Philia, Marpiccolo, Collezione 53.
+    Lo zoom cresce in proporzione (S^p). Le parole si misurano su un testo nascosto: dentro la maschera il browser dava zero per quelle fuori schermo.
+  * Tunnel: si attraversa la frase in profondità (prospettiva a mano, 1/(1+d)); le parole passano al centro e fanno da sipario a quello che sta dietro, le foto ai lati (sul
+    telefono sopra e sotto la riga), tutte e sette le foto dello shooting col nome e la denominazione; in fondo il mappamondo diventa la schermata.
+  * Mosaico: le sette foto e la frase in una griglia sotto l'header che sale entrando; poi esplode (ogni pezzo vola via con la sua velocità e un poco girato) e il mappamondo
+    al centro diventa la schermata col nome. Sul telefono quattro foto intorno.
+  Con le animazioni ridotte: base.css dà a tutto una transizione di 0,01 ms, quindi un testo ingrandito e misurato subito dava la misura vecchia (transition: none dove si misura).
+  Provate a 1440, 390 e ridotte, senza errori.
+- 18 nov (61), tre richieste. (a) "c'è un bug nella parte lettere: fa lo zoom per l'immagine poi glitcha tutto": oltre circa 30.000 pixel dal punto dello zoom il browser
+  disegna male le lettere della maschera (spicchi bianchi, poi un fotogramma tutto bianco, visto scorrendo con la rotella a zoom 43 e 63). Ora lo zoom si ferma dove la lettera più
+  lontana resta sotto 20.000 pixel veri (densità dello schermo compresa; sul computer circa 27 invece di 89) e nell'ultimo 40% il velo bianco si scioglie.
+  (b) "alle foto non voglio i link, ci saranno sotto le collezioni": in tutte le prove di foto le foto non sono più link e i nomi sono in grassetto senza sottolineatura
+  (i vini si aprono dalle collezioni). (c) "la parte delle collezioni la passerei come seconda, per far apparire la prima collezione facendo rotolare le bottiglie e lasciando
+  solo quella che serve alla prima collezione": ordine apertura > collezioni > foto (l'ordine di prima in _archivio-prove/pop-foto-prima-delle-collezioni-18nov).
+  Le collezioni partono 200lvh prima della fine dell'apertura (margin-top), così il loro palco si ferma mentre quello dell'apertura è ancora fermo (apertura alta 240lvh:
+  40 per luogo e bottone, 100 per il passaggio). Nel passaggio (window.ppPassaggio.v da 0 a 1, primi 100lvh del palco delle collezioni) le altre tre rotolano via a destra
+  (In volo: volano via in alto), dopo un quarto la scheda della Collezione 53 si scopre da destra come fra una collezione e l'altra, e la Collezione 53 va al centro girando
+  una volta: la calcola l'apertura (ppPassaggio.posa) e la disegna la tela delle collezioni, che sta sopra la scheda; alla fine posizione, altezza e rotazione sono quelle della
+  prima collezione, che da lì continua da sola. "Vai alle collezioni" porta a scheda scoperta (#collezioni è un segnaposto a 100lvh). La pillola "I nostri vini" resta nascosta
+  fino alla fine delle foto. Con le animazioni ridotte niente sovrapposizione, collezioni dopo l'apertura; corretto anche un difetto vecchio: entrando nelle collezioni si vedeva
+  l'ultima scheda (onUpdate), ora la scheda si calcola dallo scorrimento di adesso. Provato a 1440 e 390, Fila e In volo, ridotte, senza errori.
+- 18 nov (62), il passaggio rifatto in tre correzioni di fila. "devono scorrere verso destra tutte, riapparire a sinistra lasciando poi la prima bottiglia della
+  collezione": provato un nastro (chi esce a destra rientra da sinistra, la Collezione 53 rientrava e si fermava al centro, passaggio di 150lvh). "deve passare già alla
+  seconda sezione": la scheda della Collezione 53 entra da sinistra subito dietro le bottiglie che vanno a destra, non dopo. "la bottiglia deve rimanere, non deve rientrare":
+  la 53 non esce più. Ora le altre tre rotolano via a destra sempre più veloci (fuori a v 0,45); la scheda entra da sinistra (finita a v 0,5) e non le copre mai:
+  ppPassaggio.tetto è dove comincia, ombra compresa, la prima bottiglia da sinistra disegnata dall'apertura, e la linea si ferma lì. La 53 va al centro girando di giri
+  interi (ferma a v 0,6), disegnata dalla tela delle collezioni sopra la scheda; ppPassaggio.sopra: l'apertura la nasconde solo dopo che l'altra tela l'ha disegnata, così
+  non sparisce per un fotogramma. La linea della scheda la scrive un gsap.ticker in js/pop-collezioni.js (non più una tween). Passaggio di nuovo 100lvh. Con le animazioni
+  ridotte niente passaggio: apertura alta 100lvh e collezioni subito dopo (prima c'erano 140 + 100lvh fermi). La versione di prima (scheda da destra) è in
+  _archivio-prove/pop-passaggio-rotolano-via-18nov. Provato a 1440 e 390, Fila e In volo, ridotte, senza errori.
+- 19 nov (63), pop-b.html, quattro richieste. 1) "quando vado avanti e torno indietro si glitcha la bottiglia": tornando su lo scrub del passaggio arriva dopo lo
+  scorrimento, e la tela delle collezioni, che non è più ferma, disegnava la 53 280 px più in basso. Ora sposta la bottiglia di quanto è scesa e la passa all'apertura
+  (ppPassaggio.sopra) solo a tela ferma. 2) "da questo vino togliamo questa etichetta": tolta la fascetta DOCG dal collo di Philia 3D ("fascetta" fuori da
+  assets/3d/philia.json; json e texture di prima in _archivio-prove/philia-con-fascetta-19nov; nota in tools/bottiglia_3d.py). 3) nomi accavallati nelle schede (Terra, e
+  anche 125 Uno Due Cinque): spazio fra le bottiglie 12 px e stanno() in js/pop-collezioni.js toglie da destra le bottiglie finché fra due nomi restano 8 px; Terra e 125
+  ne mostrano 3, le altre sono in "Tutti i N vini". 4) "le foto che hai usato poi sono le stesse ... scegline altre, e dove mostriamo il vino una nuvoletta, qualcosa di pop,
+  così se vado in hover alla bottiglia 3D": nella Frase quattro foto nuove dagli originali, dal giorno alla notte, con vini che in pagina non c'erano (pallone _DSC7239
+  125 Bianco Organic, rosato _DSC7636 Terra Rosato, carte _DSC7450-Modifica Terra Negroamaro, notte _DSC8388-Modifica 125 Negroamaro; tools/pop_foto.py). Su ogni foto
+  .pp-nuvola (css/pop-prove.css): fondo bianco, bordo e ombra netta d'inchiostro, coda che punta la bottiglia (--bx --by la punta, --cx dove sta la coda, --coda in cqh,
+  data-sotto per il corpo sotto); prende il posto della didascalia e salta fuori quando la foto entra (ScrollTrigger con containerAnimation, js/pop-frase.js). Sulle
+  bottiglie 3D dell'apertura la stessa nuvoletta col mouse sopra (al tocco mentre la si gira), punta il collo dalla parte del centro, nascosta nel passaggio. Le altre
+  cinque prove di foto non sono toccate. Provato a 1280 e 390, animazioni ridotte, senza errori.
+- 19 nov (64), pop-b.html, dopo aver visto le nuvolette. 1) "io la voglio qui in foto lettere, nuvolette": in Lettere, a foto intera, la nuvoletta punta la spalla della
+  bottiglia (Philia, Marpiccolo, Collezione 53 Primitivo). La foto riempie lo schermo e il taglio cambia (3:2 sul computer, 4:5 sul telefono): data-pl e data-p dicono dove
+  sta la bottiglia in ogni taglio (x, y, coda, in centesimi), adatta() in js/pop-frase.js fa il conto, tiene la nuvoletta sotto l'header e dentro i lati, e la fa saltare
+  fuori con --su nella timeline. .pk-passo isolato (la nuvoletta della prima foto stava sopra le altre). La didascalia resta per lo schermo parlante e con le animazioni
+  ridotte. 2) "nella hero quelle nuvolette così non mi piacciono": tolta la nuvoletta al passaggio del mouse sulle bottiglie dell'apertura (js/pop-prove.js di prima in
+  _archivio-prove/pop-nuvoletta-apertura-19nov). 3) "il logo oro di Feudi qui, bottiglia Philia": castello {quota 0.85, alto 0.031} aggiunto a mano in assets/3d/philia.json.
+  4) "se c'è da fare altre bottiglie in 3D falle, se dobbiamo usare altre immagini comunque probabilmente serviranno": le quattro dei vini delle foto nuove. Scure con le
+  misure della loro linea: terra-negroamaro, 125-negroamaro. Chiare con la pelle di Blender (bottiglia_blender.py --spp 512 --velo, 30 s l'una, poi velo_blender.py):
+  terra-rosato e organic-bianco. Nuovo --lamina F in tools/bottiglia_3d.py (sulla carta chiara della Terra Rosato l'ombra calda sembrava rame); nel kit la capsula di
+  stagnola si disegna anche sopra la pelle (in Blender usciva grigia e piatta). Si guardano con bottiglie-3d.html?quali=terra-rosato,organic-bianco,terra-negroamaro,125-negroamaro.
+  Non sono ancora usate in pop-b.html: da chiedere dove. 5) "fammi una lista di stili pop, un html per capire cosa potremmo usare e/o sostituire": pop-stili.html
+  (pop-stili.template.html, stile e script dentro la pagina), dieci modi numerati di indicare il vino sulla foto del pallone (fumetto, fumetto pieno, bollino, punto e riga,
+  scritta a mano, cerchio a pennarello, cartellino, scoppio, nome gigante, pillola che segue) e sei sulla fila di bottiglie del catalogo (3, 4, 5, 7, 11 nome sul piano, 12 la
+  frase gigante diventa il nome). Solo inchiostro e bianco. Pagina di lavoro: scelti gli stili si toglie. Provato a 1280, 1750x702 e 390, senza errori.
+- 19 nov (65), pop-b.html, le scelte dal campionario. 1) Apertura, stile 12: "la frase diventa il nome, potresti spostarla un po' più alta così si legge la frase".
+  In js/pop-prove.js dici(i): col mouse sopra una bottiglia (sopra(), la stessa prova di prima), o col dito mentre la si gira, FS.mk.spezza riscrive le due righe giganti col
+  nome del vino (i nomi lunghi su due righe, i corti su una e la seconda vuota) e le lettere salgono come all'apertura; la lente del vino rilegge il testo (disegnaRighe) e si
+  riaccende a lettere arrivate; via il puntatore, dopo 280 ms, torna la frase; nel passaggio alle collezioni niente nomi. La frase sta più in alto sul computer
+  (.pp-titolo: align-content start, padding-top 5svh): la prima riga dietro i colli. 2) Foto, stile 6: "scelgo al momento cerchio pennarello ma lo farei anche sulle foto
+  grandi". .pp-cerchio in css/pop-prove.css: il riquadro è la bottiglia, dentro un svg con due tracciati uguali (inchiostro sotto, bianco sopra) che js/pop-frase.js scrive
+  alla misura vera (GIRO, ResizeObserver) e il nome accanto in bianco col bordo d'inchiostro (data-lato dx, sx, su, giu). --su (registrata con @property) da 0 a 1 disegna il
+  giro: nella frase con una transizione quando la foto è entrata, in Lettere nella timeline. In Lettere il riquadro viene dal taglio della foto (data-pl e data-p: x0, y0,
+  x1, y1, lato) e si ferma sotto l'header e sopra il bordo basso quando la bottiglia è più alta dello schermo. Il fumetto di prima è in
+  _archivio-prove/pop-fumetto-foto-19nov; .pp-nuvola resta nel css solo per il campionario. 3) "bianco puglia organic sostituiscilo nella hero al posto di marpiccolo,
+  philia metti negroamaro salento ... le teniamo, andranno usate altrove, specialmente nelle schede di prodotto": nell'apertura ora primitivo53, organic-bianco, tre-cuori,
+  terra-negroamaro (ho preso il Terra, etichetta blu: da confermare). 4) pop-stili.html aggiornato: frase più in alto, bottiglie di adesso, segnati il 6 e il 12.
+  Trappola: con le animazioni ridotte ppPassaggio.v vale sempre 1, quindi "nel passaggio" va chiesto con !fermo. Provato a 1280, 1750x702, 390 al tocco, ridotte, senza errori.
+- 19 nov (66). 1) "il punto nella foto lettere esce fuori": prima che il giro di pennarello partisse (--su a zero) si vedeva un punto bianco col bordo nero sopra il velo
+  delle lettere. Col tratteggio "1px" in fondo al tracciato ricominciava un tratto lungo zero e la punta tonda ne faceva un punto (nel Chrome dell'utente; in quello senza
+  finestra delle prove non si vede, quindi la prova è sui valori). In css/pop-prove.css: stroke-dasharray 1px 2px (il vuoto più lungo del tracciato) e l'svg con opacity
+  legata a --su, spento finché è zero. Vale anche per i giri della frase. 2) "negli stili mi dai dei font pop, google font ovviamente, così magari ne testiamo altre":
+  pop-stili.html, in fondo, "I caratteri": tredici per le scritte grandi con le lettere A-M (A è Bricolage, quello di adesso; poi Anton, Big Shoulders, Bowlby One,
+  Dela Gothic One, Rubik, Unbounded, Climate Crisis, Bagel Fat One, Titan One, Londrina Solid, Caprasimo, Shrikhand) e sei a mano N-S per il nome accanto al cerchio
+  (Caveat Brush, Permanent Marker, Knewave, Sedgwick Ave Display, Just Another Hand, Gochi Hand). Lo script li misura a caratteri arrivati e li porta alla larghezza di
+  riga di Bricolage (--ps-k): un carattere largo viene più basso, come succederebbe nella pagina. I bottoni con le lettere sopra le bottiglie ne mettono uno nella frase
+  (e nel nome del 6). Nessuno è ancora nella pagina vera: scelta la lettera si prova su pop-b.html (la lente del vino ridisegna il testo, va controllata).
+  3) Dal giro prima, non ancora scritto: con le animazioni ridotte la timeline dell'apertura partiva da sola e nascondeva la scritta del luogo e "Vai alle collezioni";
+  ora gsap.timeline({ ..., paused: fermo }) in js/pop-prove.js.
+- 19 nov (67), pop-b.html?foto=lettere: "far uscire anche altre info sul vino che possono interessare chi scrolla, ovviamente mentre scrollo escono, vale per tutti".
+  Sulle tre foto grandi, dopo il giro e il nome, continuando a scorrere escono una alla volta sotto il nome: denominazione e gradi, "Note di ..." (i primi tre aromi),
+  "Con ..." (gli abbinamenti). js/pop-frase.js le prende da js/data.js (data-vino sul .pp-cerchio), niente scritto a mano: Marpiccolo non ha abbinamenti e ha due righe.
+  .pp-note in css/pop-prove.css: stessa scritta bianca col bordo d'inchiostro, più piccola, appesa sotto il nome (che resta dov'era); --nw è il posto che ha, lo misura
+  adatta(). Ogni foto dura 4,5 invece di 3,2 e .pk è alta 760lvh invece di 600. Le stesse righe vanno nella didascalia .pw-box (schermo parlante, animazioni ridotte: lì
+  in colonna). Sul telefono il nome di Philia è passato da destra a sotto il giro (data-p ... giu): di lato per le righe non c'era posto.
+  Non fatto: le foto piccole della frase (da chiedere, lì c'è posto per una riga sola), i premi (C53 ne ha cinque, sono in FS.wine().premi).
+  Detto nello stesso giro: "sulla bottiglia di apertura invece non farei nulla al momento, poi decido cosa mettere": l'apertura non si tocca finché non lo dice lui.
+- 19 nov (68), pop-b.html?titoli=unbounded: "proviamo unbounded per i titoli" (il G del campionario). Prova che si accende e si spegne: voce "Titoli" nel pannello delle
+  prove (js/pop-prove.js mette body[data-titoli] e chiede subito il carattere, poi fa rimisurare tutto), regole in un blocco solo in fondo a css/pop-prove.css, Unbounded 900
+  aggiunto al link dei caratteri della pagina. In Unbounded solo le scritte giganti: frase dell'apertura (e il nome che ne prende il posto), nomi delle collezioni, frase
+  con le foto, parole di Lettere e delle altre prove foto. I nomi accanto al giro, le righe sul vino e i testi restano in Bricolage (nella frase il nome lo ereditava dal
+  rullo: per questo il carattere va su .pf-parola e non su .pf-rullo). Misure: Unbounded è largo più del doppio (--tk .44 = stessa larghezza di riga); apertura 8vw sul
+  computer e 10,5vw sul telefono (ai lati c'è posto), collezioni alla stessa larghezza di prima (comanda "125 Uno Due Cinque"), frase che scorre 21svh (16 sul telefono),
+  Lettere e Mosaico le misura js. Provato a 1750x702 e 390x844: apertura, nome al passaggio e al tocco, collezioni, frase, Lettere. Piena, Sipario, Tunnel e Mosaico con
+  Unbounded non guardati. Per toglierla: il blocco nel css, TITOLI in js/pop-prove.js, "&family=Unbounded:wght@900" nel link.
+- 19 nov (69), pop-b.html?titoli=londrina: "proviamo londrina" (Londrina Solid 900, il K del campionario). Il blocco della prova in fondo a css/pop-prove.css ora vale
+  per più caratteri: ognuno dice le sue misure con le variabili (--tf famiglia, --tk larghezza rispetto a Bricolage, --ta frase dell'apertura, --to frase che scorre,
+  --ti interlinea, --tl spaziatura) e le regole sono una volta sola su body[data-titoli]. Per aggiungerne un altro: una riga di variabili, la voce in TITOLI
+  (js/pop-prove.js, il valore è la famiglia) e la famiglia nel link della pagina. Londrina è largo una volta e mezza Bricolage (--tk .715): apertura 13vw (16vw sul
+  telefono), frase che scorre 28svh (22). Sul telefono viene molto più grande di Unbounded. Provato a 1750x702 e 390x844: apertura, nome al passaggio e al tocco,
+  collezioni, frase, Lettere. Nessuno dei due è scelto.
+- 19 nov (70), pop-b.html, i caratteri diventano quelli della pagina. Tre messaggi: "vale anche per questi titoli" (foto della frase della collezione, "The enduring
+  spirit of the land."), "per i testi, paragrafi ecc. mettiamo un font lineare, non usiamo grotesk ecc. ma sempre pop", e sulla foto del nome accanto al giro "anche qui
+  fallo su quello ufficiale i testi eliminali tutti". Letto così: Londrina (l'ultimo provato) non è più una prova accesa dall'indirizzo ma il carattere dei titoli della
+  pagina; titoli sono le scritte giganti, la frase della collezione (.pc-frase) e il nome accanto al giro (.pp-cerchio b); tutto il resto è testo e passa a un lineare,
+  DM Sans (scelto da me: geometrico, amichevole, si legge bene piccolo), comprese le righe sul vino sotto il nome. Bricolage Grotesque non è più usato dalla pagina.
+  DA CHIARIRE: "i testi eliminali tutti" potrebbe voler dire togliere le righe sul vino sotto il nome; le ho lasciate e l'ho chiesto.
+  Come: <body data-titoli="londrina" data-testi="dm"> nell'html (così vale dal primo disegno, senza aspettare js); blocco "I CARATTERI" in fondo a css/pop-prove.css
+  (variabili per carattere: --tf --tk --tl --ti --ta --to --tn --tg --tm; i testi cambiano --font); js/pop-prove.js legge ?titoli= (londrina, unbounded, bricolage) e
+  ?testi= (dm, outfit, figtree, nunito, bricolage), "bricolage" toglie l'attributo e torna a com'era; il pannello delle prove ha le voci Titoli e Testi.
+  Misure: il nome accanto al giro in Londrina è all'85% sulle foto piccole della frase (stretto) e al 110% sulle foto grandi di Lettere (sul telefono le righe sotto lo
+  sovrastavano); le righe sul vino in DM Sans 700 un poco più piccole (il lineare è più largo). Intestazioni di menu e piede restano testo.
+  Provato a 1750x702, 1280x800 e 390x844: apertura, collezioni, frase, Lettere; ritorno a Bricolage e Unbounded con Outfit dal pannello. Non guardati: Piena, Sipario,
+  Tunnel, Mosaico; le altre pagine del sito non sono toccate (il carattere di .page-fo in css/foto.css è ancora Bricolage).
+- 19 nov (71), pop-b.html. 1) "ho detto che nella hero non cambiamo il titolo all'hover delle bottiglie, pensiamo ad altro": via "la frase diventa il nome" (al
+  passaggio e al tocco non succede più niente; trascinando le bottiglie girano come prima). Avevo letto male "sulla bottiglia di apertura non farei nulla al momento"
+  come "non aggiungere altro": voleva dire togliere. La versione di prima è in _archivio-prove/pop-frase-diventa-nome-19nov; il campionario dice "provato e tolto".
+  2) "ora bisogna aggiungere le altre sezioni, quelle dell'azienda, i premi, le news, in stile pop, come stiamo andando": tre sezioni dopo le foto, prima del piede.
+  AZIENDA (.pa, fondo pietra): titolo gigante "La cantina della famiglia Varvaglione.", a destra la foto della masseria e dove siamo; poi quattro capitoli a tutta
+  larghezza (01-04: numero e occhiello, titolo, testo, foto storta come una stampa), ognuno aperto da una riga tirata a pennarello che si disegna quando entra (.pp-riga).
+  Testi, foto e didascalie sono quelli di azienda-i.html e della home, non riscritti. PREMI (.pd, bianco): "65" enorme e "riconoscimenti." sulla stessa riga, il numero è
+  la somma delle medaglie dei vini; sotto quante per concorso (28 AWC, 26 Berliner, 6 Bruxelles, 2 CWSA, 2 Decanter, 1 Asia); poi le 65 medaglie vere in tre fasce che
+  scorrono di lato con la pagina, quella di mezzo al contrario (alt e title: vino, medaglia, concorso, anno). NEWS (.pq, fondo notte): "Dalla cantina.", una riga per
+  notizia (quando, titolo, immagine), tutta la riga porta alla notizia sul sito di adesso. js/pop-sotto.js scrive premi e news da js/data.js e mette le classi; i
+  movimenti sono css (IntersectionObserver per is-su, ScrollTrigger solo per le tre fasce). Con le animazioni ridotte: righe già disegnate, foto ferme, medaglie a capo.
+  Trappola: width e height sull'img fissano l'altezza se il css non dice height: auto (la prima foto veniva alta 797 px).
+  Provato a 1750x702 e 390x844, ridotte, con Unbounded e con Bricolage: nessuna uscita dai bordi, nessun errore. Non fatto: "Come nasce" (è una pagina a sé), contatti
+  (sono nel piede), link a una pagina news (il sito ha solo queste tre nei dati).
+- 19 nov (72), pop-b.html, Premi. Schermata delle tre fasce di medaglie + "possiamo evitare tutto questo": tolte le fasce (html, css .pd-fasce/.pd-fascia, il pezzo
+  gsap in js/pop-sotto.js). Restano "65 riconoscimenti.", la riga di testo e i sei conteggi per concorso: a 1750x702 la sezione è uno schermo esatto (705 px), a 390x844
+  861 px. Le fasce sono in _archivio-prove/pop-fasce-medaglie-19nov con le istruzioni per rimetterle. Non deciso: se al posto delle medaglie va altro o niente.
+- 19 nov (73), pop-b.html. 1) "mettili i loghetti ma non ripetuti come erano": nei Premi ogni conteggio ha accanto il loghetto del suo concorso, uno solo (6 in tutto,
+  non 65): la medaglia più alta e, a pari grado, la più recente (js/pop-sotto.js, `logo`). Letto come "uno per concorso"; l'altra lettura (una per medaglia diversa, 25)
+  non fatta. 2) "va cambiato il mega menu e il footer in base a questo stile": solo css in fondo a css/pop-prove.css ("MEGA MENU E PIEDE"), il markup comune
+  (sections/header.html, footer.html) non è toccato e le altre pagine restano com'erano. MENU a schermo largo: collezioni e nome del vino nel carattere dei titoli, il nome
+  gigante dietro le bottiglie nero pieno come nell'apertura, via il rettangolo dietro la bottiglia accesa (tagliava le lettere: la dice l'etichetta, in grassetto con la
+  barra nera), bottone "Apri la scheda" nero, pallino nero. I nomi della colonna ora dipendono anche dall'altezza: a 1750x702 la colonna scorreva (615 su 578) e "Tutti i
+  vini" restava sotto il bordo, ora ci sta (578 su 578). MENU del telefono: voci grandi nel carattere dei titoli, righe nere, filtro acceso nero. PIEDE: il telefono
+  gigante a tutta larghezza sottolineato a pennarello (la riga si disegna quando entra), sotto le tre colonne coi titoli nel carattere dei titoli; .foot__contatti è
+  display: contents per far uscire il telefono dalla terza colonna. Trappola: `.foot__contatti > *` prendeva anche il telefono e lo rimetteva in colonna 3 (pagina larga
+  2614): serve :not(.foot__tel). Provato a 1750x702, 390x844, con Unbounded, con Bricolage a 1280 e sul telefono, con le animazioni ridotte a 1366x650: niente fuori dai
+  bordi, nessun errore. Non toccati: la barra in alto, la pillola "I nostri vini", il fondo del piede (resta pietra).
+- 19 nov (74), pop-b.html, Azienda. "rifarei la sezione sulla famiglia Varvaglione come una cosa dinamica": LA PILA DI STAMPE. Il titolo gigante e la masseria in alto
+  restano; sotto, i quattro capitoli scorrono a sinistra e le loro foto escono dalle righe e diventano una pila ferma a destra (sticky, alta uno schermo): ogni capitolo che
+  sale butta la sua stampa sulla pila, storta, legata allo scorrimento (scrub; tornando su, torna giù). Didascalia dentro la stampa, su un'etichetta piena; quella della
+  stampa che finisce sotto se ne va. Sul telefono la pila sta ferma in alto e il testo le scorre sotto; lì le stampe entrano di lato (da sotto passavano sopra il testo).
+  Come: template con .pa-giro (ol + .pa-pila vuota); js/pop-sotto.js mette .is-pila sulla sezione, sposta le figure e fa un timeline per riga; css "L'AZIENDA DINAMICA".
+  Con le animazioni ridotte niente .is-pila: resta la versione ferma di prima (foto nelle righe), che è anche in _archivio-prove/pop-azienda-righe-19nov.
+  Trappola: .pa-f aveva align-self: start (regola delle righe) e nella pila le stampe stavano in alto invece che al centro. Scelte mie, non sue: il meccanismo (pila di
+  stampe) fra altri possibili (palco fermo coi titoli giganti dietro, striscia orizzontale); testi e foto sono gli stessi.
+  Provato a 1750x702, 900x1100, 390x844, con Unbounded a 1280 e ridotte a 1366x650: pagina mai più larga dello schermo, nessun errore.
+- 19 nov (75), pop-b.html, Azienda. Alla pila ha risposto "no mi servono altre alternative": letto come "no, mi servono altre alternative" (l'altra lettura, "non mi
+  servono", vorrebbe dire che la pila basta: per questo la pila resta quella che si vede senza niente nell'indirizzo). Tre versioni nel pannello Prove, riga "Azienda"
+  (?azienda=, js/pop-prove.js AZIENDA; le fa js/pop-sotto.js), stesso html e stessi testi: PILA (com'era); PALCO (?azienda=palco): uno schermo fermo per capitolo, alto
+  400lvh, i quattro capitoli nello stesso posto, titolo grande su due righe, la foto vola dentro da sotto e fuori da sopra, la riga a pennarello si disegna con lo
+  scorrimento (un timeline solo); STRISCIA (?azienda=striscia): i capitoli in fila scorrono di lato (100lvh + 150vw), la riga a pennarello continua da un capitolo
+  all'altro, le foto scivolano un po' dentro il loro capitolo (containerAnimation). css: .is-viva (comune) + .is-pila / .is-palco / .is-striscia in "L'AZIENDA DINAMICA".
+  Trappole: nella striscia la corsa va misurata con offsetWidth (scrollWidth cambia con le foto che scivolano); misurare subito dopo scrollTo dà la posizione vecchia
+  (lo scrub arriva dopo 0,6 s). Provate tutte e tre a 1750x702 e 390x844, palco e striscia con Unbounded a 1280, ridotte: resta la versione ferma. Nessun errore.
+- 19 nov (76), pop-b.html, Azienda. "mettiamo palco": il palco è la versione che si vede senza niente nell'indirizzo (js/pop-sotto.js `quale`, js/pop-prove.js AZIENDA).
+  Pila e striscia restano nel pannello Prove (?azienda=pila, ?azienda=striscia): non ha detto di toglierle. Il "16 px oltre il fondo" dell'ultimo capitolo era una misura
+  presa a foto ancora in volo: a fermo il contenuto finisce a 660 su 702 e a 590 su 844.
+- 19 nov (77), pagina del vino Pop: pop-vino.html?id= ("passiamo alla pagina del singolo vino", "voglio qualcosa di wow con il 3d"). pop-vino.template.html, js/pop-vino.js, css/pop-vino.css.
+  La bottiglia 3D fa da rullo: all'apertura attraversa lo schermo e stampa il nome gigante; scorrendo torna indietro e dove passa cancella un capitolo e stampa il successivo
+  (clip-path dei due capitoli sulla stessa riga, che sta sull'asse della bottiglia). Computer: in piedi, da destra a sinistra e ritorno, si gira trascinandola. Telefono: sdraiata,
+  vista dall'alto, dal fondo a sotto l'header e ritorno. Capitoli da js/data.js: nome, descrizione, vista in grande con profumi e abbinamenti, zona resa gradazione e tecnica,
+  riconoscimenti (se ci sono). Sotto: gli altri vini della collezione, sei alla volta. Bottiglie chiare: il nome attraverso il vino (js/lente-vino.js, uniform nuova "taglio",
+  che di base non cambia niente a pop-b). 3D per dieci vini (TRE_D in js/pop-vino.js); gli altri 23 usano la foto del catalogo su un piano, che scivola senza girare.
+  Animazioni ridotte o niente WebGL: foto e capitoli uno sotto l'altro. Il meccanismo l'ho scelto io: in attesa del suo giudizio.
+  Collegamenti: body data-pagine="home,azienda,vino" (js/main.js) dice a una prova quali pagine usare restando nel mood Fotografia; pop-b.html ora apre pop-vino.html da
+  collezioni e menu, e il suo logo porta a pop-b.html (prima a foto.html). L'Azienda del menu: da pop-vino va a pop-b.html#azienda, da pop-b resta azienda.html (non chiesto).
+  Provato a 1750x702, 1280x720, 390x844, 360x640, rotella vera su e giù, animazioni ridotte. Non provato su telefono vero né Safari.
+- 19 nov (78), piede Pop: "qui togli fax metti tel". Nella colonna Contatti "Tel +39 099 5315370" al posto del fax, solo nel piede Pop (sections/footer.html ha le due righe,
+  css/pop-prove.css sceglie); negli altri siti resta il fax. Il numero grande in cima al piede non è stato toccato: ora il telefono c'è due volte, da chiedere.
+- 19 nov (79), pop-vino.html, "Gli altri vini della collezione": "questa non mi piace" (schermata di Collezione 53: due foto piccole lontane fra loro su una fascia vuota).
+  Rifatta solo quella sezione; com'era in _archivio-prove/pop-vino-altri-griglia-19nov. Ora Fila: bottiglie grandi (60svh) e vicine in piedi su una riga a pennarello;
+  fino a tre stanno accanto al nome gigante della collezione, che poggia sulla stessa riga; da quattro il nome sopra e la fila su tutta la larghezza. Entrano scivolando da
+  destra quando la sezione arriva. Seconda prova dal pannello (?altri=righe): una riga per vino, nome gigante, denominazione e bottiglia sdraiata. Sempre sei alla volta.
+  La pillola "I nostri vini" ora resta nascosta fino alla fine di questa sezione (copriva i nomi delle bottiglie). Meccanismi scelti da me: aspetta il suo giudizio.
+  Provato a 1750x702, 1280x720, 390x844 con 1, 2 e 6 bottiglie.
+- 19 nov (80), colore nel Pop: ha chiesto "dici che si potrebbero essere elementi colorati" (vale anche per la home) e poi "mi fai un file negli stili per vedere?".
+  Parere dato: sì, come elementi e mai come fondi, un solo accento (il verde acido che aveva proposto lui) usato da evidenziatore, più il colore del vino una volta sola
+  nella pagina del vino; i colori delle collezioni (copertine del cliente) sono scuri e terrosi, adatti a Botanica. In fondo a pop-stili.html la sezione "Il colore"
+  (pop-stili.html#colore): nove esempi da C1 a C9 (evidenziatore nei titoli, parola colorata, bottoni, riga a pennarello, giro sulle foto, numeri, colore del vino,
+  ombra netta dietro le foto, bollo e targhetta) e dieci bottoni di tinta (verde acido #c6ff2d a occhio, tre vini da js/data.js, sei collezioni da js/dati-bf.js).
+  Niente applicato a pop-b.html né a pop-vino.html: aspetta i numeri che sceglie e l'esadecimale vero del verde.
+- 19 nov (81), pop-b.html, verde acido: "proviamo con il verde acido solo in home". Prova accesa di base (body[data-colore="acido"], lo mette js/pop-prove.js; ?colore=no
+  o la riga Colore del pannello la spegne). Non ha detto i numeri del campionario: ho messo quelli del mio parere, solo elementi e mai fondi: passata dietro "mood."
+  nell'apertura (.pp-evid, si tira da sinistra dopo le lettere; la lente del vino la mostra anche attraverso le bottiglie chiare: uniform evid ed evidC in js/lente-vino.js,
+  che a zero non cambiano niente altrove), "Salento," nella frase delle foto, il 65 dei premi, giri e nomi sulle foto, bottoni al passaggio. Regole in fondo a
+  css/pop-prove.css. pop-vino.html non lo prende (non carica pop-prove.js). #c6ff2d è ancora a occhio. Da chiedere: quali togliere o aggiungere (C3 bottone pieno, C4 riga,
+  C8 ombra, C9 bollo non ci sono), e l'esadecimale. Provato a 1750x702, 390x844, animazioni ridotte, spento.
+- 19 nov (82), pop-b.html, verde acido nell'apertura: "il verde nella scritta della hero si vede dopo, deve esserci già". La passata dietro "mood." non la mette più lo
+  script (arrivava quando partiva lui, e si tirava dopo un secondo e mezzo): è un ::before della seconda riga in css/pop-prove.css, largo --ev-w (quanto è larga "mood." rispetto
+  alla riga: 43,11% Londrina, 45,88% Unbounded, 46,33% Bricolage; js/pop-prove.js lo rimisura) e pop-b.template.html nasce con data-colore="acido" sul body. C'è dal primo
+  fotogramma, prima delle lettere; anche nella lente del vino (evid senza "acceso"). Ha chiesto anche "l'hai fatto anche nella scheda del vino?": no, solo home come aveva detto.
+- 19 nov (83), verde acido TOLTO dalla home: "lasciamo come era, togliamo l'accento, lasciamo i colori nella pagina stili". pop-b.html è tornata inchiostro, bianco e pietra:
+  via il blocco in fondo a css/pop-prove.css, COLORE/tinta/evidR da js/pop-prove.js (e la riga Colore del pannello), evid/evidC da js/lente-vino.js (resta "taglio", che serve
+  alla pagina del vino), data-colore dal body. La prova intera è in _archivio-prove/pop-verde-acido-home-19nov. Gli esempi C1-C9 restano in pop-stili.html#colore.
+- 19 nov (84), pagina CHI SIAMO nel Pop e menu: "passiamo alla pagina chi siamo e dal menu togli come nasce e premi".
+  pop-azienda.template.html + css/pop-azienda.css + js/pop-azienda.js (classi .pu-). Cinque parti: apertura "Chi siamo." con le lettere finestra sulla masseria (si entra
+  nella i finché la foto è intera; stesso calcolo delle Lettere di js/pop-frase.js, ripetuto perché quello script parte da solo; una riga o due secondo lo schermo);
+  la famiglia coi cinque nomi giganti e i quattro numeri (vitigni, vini, collezioni e premi contati da js/data.js); la nostra filosofia coi quattro vitigni e le loro
+  bottiglie in fila (stesse classi .sv-banco/.sv-fila di css/pop-vino.css, sei alla volta, portano alla scheda); il Salento a palco fermo sul computer (cinque luoghi,
+  nome pieno e foto che copre la precedente; sul telefono e con le animazioni ridotte foto in colonna col nome sopra); sostenibilità in sei righe, obiettivi e bilancio.
+  Testi tutti da azienda.template.html. Lasciati fuori: premi anno per anno (stanno in home) e "Dove trovarci" (c'è il piede). Niente WebGL in questa pagina.
+  Menu: in css/pop-prove.css le voci "Come nasce" e "Premi" sono nascoste solo nel Pop (sections/header.html è comune: negli altri siti ci sono ancora, e
+  come-nasce.html non esiste). data-pagine di pop-b e pop-vino ora punta a pop-azienda.html. Provata a 1750x702, 1280x720, 390x844 touch e con animazioni ridotte.
+  Restano come prima su pop-vino: nel piede #premi e #news non portano da nessuna parte, "Contatti" dell'header torna in home.
+- 19 nov (85), Chi siamo, secondo giro: sullo screenshot della fila di Primitivo "la hero dammi alternative non mi piace quell'immagine / voglio 3d e fare qualcosa di
+  nsist [letto: consistente] / fare un'alternativa anche alla sostenibilità". Tre prove nuove, che ora sono la forma senza niente nell'indirizzo; le altre nel pannello Prove:
+  apertura (?apre=): Bottiglie 3D = le due i di "Chi siamo." sono Collezione 53 Primitivo e Tre Cuori, arrivano rotolando dai lati, si trascinano, scorrendo rotolano via;
+  Lettere con vigna (vigna-passeggiata), mare, vite. La foto della masseria tolta dall'apertura. Vitigni (?vitigni=): Palco 3D = nastro fermo, un vitigno alla volta, nome
+  gigante dietro i colli, bottiglie 3D sulla riga, elenco di tutti i suoi vini coi link; Fila = quella di prima. Sostenibilità (?sos=): Palco = un fatto per schermo su fondi
+  alternati, cifra gigante, taglio da destra; Righe = quella di prima. Bottiglie 3D nuove con tools/bottiglia_3d.py: assets/3d/cala (--etichetta 447 796 --curva 4 4 --metallo no
+  --capsula 242 --vetro 350 430 --vuoto 250 284 --livello 293) e assets/3d/terra-malvasia-bianca (misure di Terra Rosato, --castello 194 216, --vuoto 242 266 --livello 273),
+  senza la pelle di Blender (Blender non trovato sul computer: hanno il velo semplice). Claria (etichetta tonda) e 125 Malvasia Bianca (foto sgranata) non fatte.
+  Nel 3D di questa pagina niente lente del vino: dietro le chiare il nome si vede per trasparenza. js/pop-azienda.js carica three e il kit solo quando servono; le dodici
+  bottiglie dei vitigni partono quando il palco è a uno schermo e mezzo (sul telefono sette). Trappola trovata: con le animazioni ridotte css/base.css dà a tutto una
+  transizione di .01ms, quindi cambiare il corpo e misurare subito legge il valore vecchio (.pu-tit ha transition-property: none).
+  Provato a 1750x702, 1280x720, 390x844 touch, animazioni ridotte, e le varianti del pannello. Non provato su telefono vero.
+- 19 nov (86), Chi siamo, apertura Bottiglie 3D rifatta: "apertura bottiglie 3d puoi fare meglio daiii e poi le bottiglie grandi". Prima le due bottiglie erano alte
+  poco più delle lettere. Ora sono alte quanto lo schermo (dal piano fin sotto l'header) e la scritta poggia sul piano con loro, in fondo: le i sono alte il doppio delle
+  lettere, il loro posto è in pixel (largo quanto la bottiglia) e il corpo della scritta si ricava da quello che resta. La Collezione 53 arriva dalla macchina: parte a tre
+  volte e mezza con l'etichetta al centro dello schermo e si allontana facendo un giro; Tre Cuori entra rotolando da destra. Le bottiglie seguono appena il puntatore, come
+  in home. La frase è salita in alto a destra. Telefono: due righe, "Ch" a destra e "s amo." a sinistra, bottiglie alte il 36% dello schermo. Classe .is-b3 sull'apertura
+  quando si prova il 3D; se non parte si torna alla scritta al centro con le sue i. Provato a 1750x702, 1280x720, 390x844 touch, animazioni ridotte.
+- 19 nov (87), Chi siamo, altre due aperture: "voglio alternative oltre al testo che fa aprire l'immagine". Nel pannello Prove ora Apertura ha quattro voci
+  (?apre=bottiglie|dentro|rullo|lettere) e c'è la riga Foto (?foto=mare|vigna|vite, per le tre con la foto; prima la foto stava dentro la voce delle Lettere).
+  Dentro la bottiglia: la Collezione 53 gigante sta fra "Chi" e "siamo." (sul telefono sopra la scritta, sotto la frase); scorrendo si scioglie in una finestra della sua
+  stessa forma (sagoma dal "profilo" di assets/3d/primitivo53.json, messa in una maschera svg) e ci si entra finché la foto è a tutto schermo.
+  Rullo: sotto la foto con la scritta bianca, sopra un foglio bianco con la stessa scritta nera (.pu-carta) tagliato sull'asse della bottiglia, che entra da sinistra, si
+  ferma al margine e scorrendo attraversa lo schermo stendendo la foto. La scritta sta a destra (84% sul computer, 78% sul telefono) per lasciare il posto alla bottiglia ferma.
+  Pezzi in comune in js/pop-azienda.js: misuraParole, aPiano (.pu-base = segnaposto sulla linea di base), sale, dalVicino. Con le animazioni ridotte: finestra a bottiglia
+  già aperta e ferma; foglio a metà. Provato a 1750x702 e 390x844 touch, con le tre foto a campione, e con le animazioni ridotte. Bottiglie 3D resta quella senza niente nell'indirizzo.
+- 20 nov (88), il piede del Pop (pop-b, pop-vino, pop-azienda): "nel footer togli il numero in grande e metti il logo in grande da parte a parte e nel footer io metterei
+  comunque le bottiglie che scorrendo riappaiono e fanno magari un altro movimento mentre rotolano sul piano e l'ombra non sotto la bottiglia ma dietro, devo dare il senso
+  di essere appoggiate". Il telefono gigante è tolto (resta la riga Tel nei contatti). Ordine: tre colonne, riga legale, e in fondo il logo a tutta larghezza
+  (css/pop-prove.css; sections/footer.html non cambia). Il logo è nuovo in vettoriale, assets/logo/feudi-logo.svg: marchio di feudi-marchio.svg, scritta dai tracciati della
+  copertina del catalogo del cliente (Downloads/Catalogo Feudi Salentini_.pdf, pagina 0), messi sulle proporzioni del PNG del sito (confrontati: uguali). Il PNG resta per gli altri.
+  Bottiglie: js/pop-piede.js (nuovo, nelle tre pagine). Le quattro dell'apertura della home tornano rotolando dai due lati e si fermano ai fianchi del castello, in piedi sulla
+  scritta (PIANO = 137.2/164 dell'altezza del logo); correndo pendono all'indietro e fermandosi dondolano sullo spigolo della base (molla; metti() ha ora tz). Entrano a tempo
+  quando la scritta è sullo schermo, tornando su escono. Telefono: due, alte 2,4 volte il piano. Animazioni ridotte: solo il logo. Su schermi bassi e larghi (1750x702) il logo
+  riempie lo schermo: l'header si toglie quando il logo gli arriva sotto (.nav.pp-via) e il pannello Prove chiuso sparisce sopra la scritta (.pp-varianti.is-via).
+  Il palco 3D è uscito da js/pop-azienda.js: js/pop-palco3d.js (palco3d, altezze), usato da Chi siamo e dal piede.
+  Ombra: ombraContatto() in js/bottiglia-3d-kit.js ora dipinge l'ombra portata (luce da davanti a sinistra, cade dietro verso destra, filo scuro dove tocca) e posaOmbra()
+  la mette; usata in tutte le bottiglie 3D del Pop (home, pagina del vino, Chi siamo, piede). Prima era un'ellisse sotto il piede.
+  Provato: pop-azienda a 1750x702, 1280x720, 390x844 touch, animazioni ridotte a 1366x650; pop-b e pop-vino a 1750x702; foto.html (piede degli altri mood) invariato.
+- 20 nov (89), piede del Pop, ordine: "la parte del footer la sposterei sopra alle info contatti cantina ecc". Il logo con le bottiglie ora sta in cima al piede,
+  sotto le tre colonne e la riga legale (tolti gli order in css/pop-prove.css: è l'ordine dell'html). L'header si toglie solo dove il logo non sta tutto sotto di lui e solo
+  mentre il castello gli passa sotto, poi torna (js/pop-piede.js); il pannello Prove chiuso sparisce finché la scritta è sullo schermo.
+  Provato: pop-azienda a 1750x702, pop-b a 1280x720, pop-vino a 390x844 touch.
+- 20 nov (90), header sul piede del Pop: "la sticky header resta sempre sul bianco come fondo blurred". Il logo gigante è un fondo nero ritagliato (.logo, maschera):
+  passando sotto l'header js/nav.js (underIsDark) lo prendeva per una sezione scura e faceva l'header scuro (vetro nero, testo bianco). Ora .foot__logo .logo ha
+  pointer-events: none (css/pop-prove.css), così non viene letto e l'header resta chiaro; il link è il contenitore e funziona. Tolta anche la sparizione dell'header
+  (.pp-via) messa al giro (88): resta sempre. Non toccati: l'header scuro sopra le sezioni davvero scure (news della home) e senza vetro nei palchi fermi (.pp-palco):
+  chiesto a lui. Provato: pop-azienda a 1750x702, col castello sotto l'header in tre posizioni.
+- 20 nov (91), Chi siamo, le scelte: "pagina about scelgo Rullo nella hero, foto vigna, sostenibilità palco, vitigni palco 3d". Rullo e vigna ora sono le prime
+  degli elenchi in PROVE (js/pop-azienda.js), quindi la pagina senza niente nell'indirizzo è: Rullo con la vigna, vitigni a palco 3D, sostenibilità a palco. Le altre
+  (Bottiglie 3D, Dentro la bottiglia, Lettere; mare, vite; Fila; Righe) restano nel pannello Prove: non ha detto di toglierle. Provato a 1750x702 e 390x844 touch.
+- 20 nov (92), check su tutti i 3D e le ombre ("fammi un check generico su tutti i 3d e le ombre", con due ritagli della Càla sul palco dei vitigni). Trovato e corretto:
+  1) dietro un vetro chiaro l'ombra (la sua o quella della vicina) si vedeva attraverso la bottiglia e sembrava davanti: ora la sagoma del vetro chiaro si scrive nello
+  stencil e l'ombra lì non si disegna (js/bottiglia-3d-kit.js: "sagoma" in creaBottiglia, stencilFunc in ombraContatto; three 0.160 ha lo stencil acceso di suo, da r163 va
+  chiesto al renderer con stencil: true). 2) Càla e Terra Malvasia Bianca avevano l'ombra nera: l'ombra leggera la decideva la lente o la pelle, ora bott.userData.chiara
+  (kit) per pop-palco3d, pop-prove e pop-vino. 3) Càla e Terra Malvasia Bianca avevano il vetro piatto (senza pelle di Blender): fatte le riprese e la pelle
+  (blender -b --factory-startup -P tools/bottiglia_blender.py -- assets/3d/<nome>.json tools/blender/<nome>.png --velo; poi python -I tools/velo_blender.py tools/blender/<nome>
+  assets/3d/<nome>): ora velo2d true, capsula gialla della Càla come in foto. Blender sta in Downloads/chicco-uva-3d/tools/blender-4.5.15-windows-x64 (11 s a ripresa).
+  4) capsule nere lette dalla foto (125 Primitivo, 125 Negroamaro, Terra Primitivo, Terra Negroamaro) uscivano grigie (#313131, in foto #232323): colore x 0.6 nel kit.
+  Non toccati, proposti a lui: stagnola di Philia, Terra Rosato e Terra Malvasia più chiara della foto (#d2d2d0 contro #6c6d68); la fascetta DOCG di Philia tolta su sua
+  richiesta il 19 nov; sul palco dei vitigni la bottiglia copre il nome lungo (Negroamaro, Malvasia Bianca); l'ombra della pagina del vino finisce al bordo dello schermo.
+  Provato: pop-azienda (palco vitigni, apertura), pop-b (apertura e piede), pop-vino organic-bianco e terra-negroamaro, bottiglie-3d.html, foto.html a 1600x1000 o 1400x800.
+- 20 nov (92b), Chi siamo: "togli fra i filari della vigna e i colori dell'header diventano bianchi quando passa la bottiglia, altrimenti non si legge nulla". Tolta la
+  didascalia dal Rullo (resta in Dentro la bottiglia e Lettere, che sono nel pannello Prove). Le voci dell'header diventano bianche una alla volta quando il taglio le ha
+  passate (classe pu-sufoto, js/pop-azienda.js apreRullo; css/pop-azienda.css) e tornano nere quando il palco esce da sotto l'header; in cima alla foto un velo scuro
+  leggero (.pu-apre.is-rullo .pu-foto::after) perché il bianco si legga anche sulla terra al sole. Animazioni ridotte: il taglio fermo passa dal 50% al 42% (a metà tagliava
+  in due il marchio) e sul telefono al 4% (a metà la foto copriva l'inizio della frase). Provato a 1600x1000, 390x844 touch, ridotte 1366x700 e 390x844.
+- 20 nov (93), Chi siamo, header sul taglio del Rullo: ha mandato il ritaglio con "Azienda" a cavallo del taglio ("Az" nero sulla foto) e "c'è questo da capire cosa
+  fare". Le voci cambiavano colore tutte intere a metà: a pagina ferma (o fermandosi a metà scorrimento) una voce restava mezza illeggibile. Ora la voce che il taglio
+  attraversa è di due colori, divisa proprio sul taglio come la scritta: classe pu-ataglio e --t (px dal bordo sinistro della voce) da js/pop-azienda.js, in
+  css/pop-azienda.css il testo col fondo ritagliato sulle lettere e lo stesso fondo su sottolineatura, marchio e bordo delle pillole (anello con mask-composite); le frecce
+  della pillola sono una voce a sé. Corretto anche: con menu o cantina aperti le voci bianche restavano bianche sul foglio crema (ora html:not(.nav-lock)). Alternativa non
+  fatta, detta a lui: spostare la bottiglia ferma perché il taglio cada fra due voci (cambia la composizione). Provato a 1920x1000 (taglio su Azienda, marchio, pillola,
+  cantina aperta) e 390x844 touch (pillola e Menu).
+- 20 nov (94), il cambio di mood: "il mood che oggi switchiamo con il pulsante nell'header, da lì lo toglierei: facciamo un angolo in basso a destra, effetto onda, che se
+  ci vado sopra si allarga per coprire tutto". Tolta la pillola .nav__mood da sections/header.html (e le sue regole in css/nav.css, css/pop-azienda.css, js/pop-azienda.js).
+  Al suo posto js/main.js crea .cmood: un quarto di cerchio d'inchiostro (in Botanica crema, sul verde scuro l'inchiostro non si vedeva) col bordo che ondeggia, scritta
+  "Mood"; col mouse sopra 120 ms (o tocco, o Invio) l'onda si allarga fino a coprire lo schermo, con le onde che si gonfiano mentre cresce, e dentro ci sono i mood a
+  lettere giganti (nel Pop in Londrina): ognuno porta alla stessa pagina in quel mood (home, o lo stesso vino: ruolo ora da [home, azienda, vino], così pop-vino porta a
+  vino-b.html?id=, prima alla home di Botanica) e la pagina nuova si apre dall'angolo (data-mood-da circle). Quello in cui si è dice "Resta qui" e chiude, come Chiudi
+  (dove stava Mood) ed Esc. Chiusa col mouse sull'angolo non si riapre finché il mouse non se ne va. Pagina sotto inert e ferma mentre è aperta. Non c'è su azienda.html
+  (pagina unica) né fuori dai mood. La pagina della scelta (index.html) resta la prima pagina, ma dalle pagine non ci porta più niente. Trappola trovata: [hidden] con
+  display: grid resta sopra la pagina e prende tutti i clic (.cmood__scelta[hidden] { display: none }). Provato: pop-b 1600x1000 e 1366x700 (anche ridotte), pop-vino,
+  botanica, pop-azienda 390x844 touch e da tastiera.
+- 20 nov (95), l'angolo porta diretto: "chiamalo Pop e da Botanica porta a quella del Pop, ma non deve essere una selezione: deve già trasportarmi sull'altro, mentre si
+  muove mostra già l'altra versione, che è Pop non più Fotografia". In js/main.js MOOD.f = 'Pop' e SITI.f = pop-b, pop-azienda, pop-vino (foto.html e vino-f.html restano ai
+  loro indirizzi, col loro logo che ora porta a pop-b). L'angolo è un link all'altro mood (con più mood: al successivo) e porta il suo nome scritto lungo l'arco ("Botanica"
+  dritto non ci stava). Col mouse sopra 150 ms, un tocco o Invio: l'onda si allarga e dentro c'è la stessa pagina dell'altro mood viva in un iframe (.cmood__vista, ritagliata
+  con lo stesso path); coperto lo schermo si va lì e la pagina vera sfuma sopra la finestra (fs-mood-da "inset(0)|inset(0)|0"). L'iframe si carica quando il mouse arriva a
+  360 px dall'angolo (o al fuoco del link, o al tocco), fuori schermo con le misure vere; nella finestra main.js non mette l'angolo e non scrive fs-mood. Esc durante l'onda
+  la fa tornare; dopo, col mouse fermo sull'angolo, non riparte. Tornando indietro (bfcache) l'angolo è di nuovo chiuso. Tolti la scelta a lista, Chiudi e Resta qui del (94).
+  Limite: Botanica cambia sala da sola, quindi la sala nella finestra può essere diversa da quella con cui si apre la pagina vera (per questo la sfumatura). Provato:
+  pop-b → botanica e botanica → pop-b a 1600x1000, pop-vino?id=cala → vino-b?id=cala su 390x844 touch.
+- 20 nov (96), apertura del Pop, luogo e bottone: "c'è altro che possiamo scrivere qui, o metterlo diversamente, e non so dove". Nel pannello Prove la voce Sotto
+  (?riga=, js/pop-prove.js; regole in css/pop-prove.css): Ora (com'era), Numeri ("33 vini" nel carattere dei titoli + "in 6 collezioni, da Leporano sul mar Ionio", contati
+  da FS.data), A sinistra (lo stesso blocco nel margine sinistro della fila), Niente (solo frase e bottiglie). In tutte, sul computer, il blocco sale di 24 px sopra l'angolo
+  del mood, che toccava il bottone. Consigliata Numeri. Provato a 1600x1000 tutte e Numeri su 390x844 touch.
+- 20 nov (97), Numeri scelto: "tieni Numeri, ma cambierei il testo: da Leporano sul mar Ionio non vuol dire nulla". Numeri è la home senza niente nell'indirizzo (le altre
+  restano nel pannello, Ora si chiama Luogo); sotto "33 vini" ora "in 6 collezioni: 20 rossi, 8 bianchi, 4 rosati e un dolce", contati per colore da FS.data, numero e
+  colore uniti (&nbsp;), riga larga 16,5rem per stare in due righe. Provato a 1600x1000, 1280x720, 390x844 touch.
+- 20 nov (97b), angolo del mood: "se ci resto sopra lo completa, ma se lo tolgo torna indietro". Partita col mouse, l'onda va avanti finché il mouse resta entro una volta e
+  mezza il quarto di cerchio e torna indietro se esce (anche dalla finestra); rientrando riparte da dov'era. Col clic, col dito o da tastiera si va e basta (tenuta in
+  js/main.js). Provato a 1600x1000: uscita a metà = torna e resta su pop-b; fermo sull'angolo = arriva su botanica.
+- 20 nov (98), angolo del mood: "si attiva come un doppio overflow". Nell'onda la pagina dell'altro mood aveva la sua barra di scorrimento accanto a quella della pagina:
+  all'arrivo dell'iframe main.js gli mette scrollbar-width: none sull'html (base.css ha scrollbar-gutter: stable), così è largo come la pagina vera (1585 a 1600). Chiesto
+  anche: "se hai alternative a questo sistema dimmeli, poiché aggiungeremo probabilmente anche una terza versione del mood": proposte (due angoli, angolo a ventaglio,
+  linguette sul bordo, ciclo), nessuna fatta; oggi con tre mood l'angolo porterebbe al successivo, a giro.
+- 20 nov (99), il cambio di mood, "proviamo 1 e 2" (i fogli e la parola, fra le alternative "più fighe"). Il codice esce da js/main.js (che ora dice solo dove porta e
+  quale forma: FS.cambio = meta, dopo, nome, porta) e va in js/cambio-mood.js (caricato da sections/_scripts.html). Tre forme, ?porta= che resta per la sessione (anche in
+  Botanica), voce Mood nel pannello della home Pop: angolo (com'era), fogli, parola. Fogli: l'angolo della pagina piegato (lembo color carta col nome dell'altro mood, sotto
+  l'iframe dell'altro mood ritagliato col pezzo di schermo oltre la piega, bordo della piega a onda, ombra del lembo); mouse sopra = si solleva, restandoci 650 ms si sfoglia
+  piano (uscendo torna); tirato col dito o col mouse segue da dove l'hai preso, lasciato con la punta oltre metà schermo va, prima torna; clic = va; un tocco senza tirare lo
+  solleva e basta. Parola: i fogli, e nella home Pop la parola "mood" di "set the mood." (anche dietro le bottiglie) col mouse sopra 180 ms o il dito premuto 250 ms fa
+  partire l'onda (cerchio) da lì; un rullo sopra l'onda gira da "mood" al nome dell'altro mood; uscendo o alzando il dito torna. Provato: pop-b fogli (sollevato, tirato a
+  metà = torna, tirato oltre = botanica), parola (dentro, fuori = torna, dentro di nuovo = botanica), angolo ancora uguale; pop-vino?id=cala fogli su 390x844 col dito
+  (tocco = solo sollevato, tirato = vino-b?id=cala). Non provato: movimento ridotto, Safari, telefono vero.
+- 20 nov (100), fogli e parola bocciati: "no non mi piacciono, torniamo a come era prima". Resta solo l'angolo con l'onda (js/cambio-mood.js riscritto con la sola forma
+  angolo, uguale al (97b)-(98)); tolti ?porta=, la voce Mood del pannello, la parola della home e le regole dei fogli e del rullo. Copie com'erano in
+  _archivio-prove/mood-fogli-parola-20nov (LEGGIMI.txt). Provato: pop-b a 1600x1000 (uscendo torna, restando arriva su botanica, anche con ?porta=fogli nell'indirizzo),
+  pop-vino?id=cala su 390x844 col tocco.
+- 20 nov (101), Botanica col layout del Pop: "Botanica va cambiata: dobbiamo provare lo stesso layout di Pop ma in stile Botanica, facciamo un test per la home della Botanica".
+  Nuova pagina botanica-pop.html (template generato da pop-b.template.html: stesse sezioni, bottiglie 3D e movimenti, js/pop-*.js) con css/botanica-pop.css: Montserrat e Alex
+  Brush, una sala piena per sezione (Luxury apertura, ogni collezione la sua nelle schede via js/pop-collezioni.js, Terra foto, Lounge azienda, Organic premi, Classica news e
+  piede), i colori di base ridefiniti dove sta la sala (--cream/--stone/--night = --c, testi chiari), piante vere intere tono su tono (apertura: ginepro; schede: la loro),
+  bottoni a pillola vuoti, header chiaro (hero--dark). In js/pop-prove.js con body.bp niente caratteri del Pop né le loro voci nel pannello. Nel mood Botanica il cambio di mood
+  porta a pop-b. Provato a 1600x1000, 1366x700, 390x844 touch, tutte le sezioni. Non collegata dal sito; se pop-b cambia va riallineata a mano.
+- 20 nov (102), Cosa c'è in tavola: "manca quella sezione figa che era cosa c'è in tavola, che metterei in Pop e in Botanica, prima delle news". In pop-b e botanica-pop
+  la sezione di sempre (sections/moderna-f-tavola.html, js/tavola.js con scheda.js e piatti-incisi.js) prima delle news. Nel Pop titolo nel carattere dei titoli, niente oro
+  (linee dei piatti in inchiostro, piatto scelto pieno di pietra: css/pop-prove.css); in botanica-pop la sala degli Internazionali e il piatto scelto pieno di carta.
+- 20 nov (103), "cambia la pagina di Botanica nello switch": SITI.b[0] = botanica-pop.html (js/main.js). Dal Pop l'angolo porta alla nuova Botanica e viceversa; anche il logo
+  delle pagine Botanica (vino-b, azienda) porta lì. botanica.html resta al suo indirizzo.
+- 20 nov (104), "il cambio del mood non deve far ristartare l'ingresso delle bottiglie": js/cambio-mood.js scrive fs-arrivo, js/main.js lo legge una volta (FS.arrivo, non
+  nell'iframe) e le aperture partono finite: bottiglie della home (js/pop-prove.js), corsa del vino (js/pop-vino.js), aperture di Chi siamo (js/pop-azienda.js), lettere
+  [data-subito] (js/moderna-kit.js). Provato pop-b -> botanica-pop e ritorno a 1600x1000: arrivo con le bottiglie già ferme.
+- 20 nov (105), terzo mood stile azienda: "ora mi serve una versione che sarebbe il terzo mood ma stile company, dove le bottiglie sono l'ultima cosa di cui parlare".
+  company.html (company.template.html, css/company.css, js/company.js): apertura con la masseria fra le vigne a tutto schermo, quattro numeri (4ª generazione, 4 vitigni,
+  Equalitas 2022, i riconoscimenti contati dai dati), la famiglia, il Salento (nastro di foto che scorre a palco fermo), la filosofia coi quattro vitigni, la sostenibilità col
+  bilancio 2025, i riconoscimenti per concorso, le news e per ultimi i vini come collezioni (aprono la cantina). Inter Tight, inchiostro su carta calda, oro del marchio come
+  solo accento. Testi e foto veri. Non è nel cambio di mood: con tre mood l'angolo porterebbe al successivo, da decidere con lui. Logo e ancore restano sulla pagina, "Come
+  nasce" nascosto. Provato a 1600x1000, 390x844 touch, ridotte a 1366x700.
+- 20 nov (106), Botanica: "su Botanica non voglio sto font, e farei anche un buon uso delle forme della Botanica". Tolto Alex Brush da botanica-pop (tutto Montserrat, la frase
+  dell'apertura WINES THAT / SET THE MOOD. scritta in maiuscolo per la lente del vino). La targa delle copertine (--sagoma) piena di --c2 con dentro la pianta intera in --c3:
+  dietro la frase dell'apertura e dietro la bottiglia di ogni scheda (js/pop-collezioni.js). È uno span: .fo-apre__st > div (css/foto.css) la metteva sopra la tela.
+- 20 nov (107), Botanica: "attenzione, non deve essere Botanica Pop: mantenere stesso schema ma mood Botanica, quindi anche va via ste cose nella Botanica, e comunque
+  Montserrat no, scegliamo altro" (screenshot della frase col giro a pennarello e il nome adesivo sulla foto). In botanica-pop niente pennarello: giro e nome tolti dalle foto
+  della frase (template), in Lettere (prova del pannello) il nome resta come testo semplice, le righe a pennarello di capitoli e news sono un filo dritto che si allunga
+  (css/botanica-pop.css). Carattere: di base Libre Caslon (Display nei titoli, Text nei testi, corsivo per la frase della copertina), nel pannello Prove la riga Carattere con
+  Instrument Serif, Young Serif e Poppins (il carattere del file Botanica del cliente); ?carattere=, body[data-carattere], js/pop-prove.js. Scritte in minuscolo (frase
+  dell'apertura e nomi delle collezioni non più in maiuscolo). --bk misura le scritte giganti per carattere, --tk e --tx i titoli delle sezioni sotto. Provato a 1600x1000 coi
+  quattro caratteri e a 390x844. Non toccati, da proporre: le foto storte del palco dell'azienda (girano nel movimento, js/pop-sotto.js), le bottiglie 3D sul logo nel piede.
+- 20 nov (108), Cosa c'è in tavola nello stile della pagina: "queste icone stile di dove si trovano ora, questi sono disegni lineari presi dai vecchi stili che abbiamo
+  accantonato". body data-piatti (js/tavola.js). Botanica: sagome a retino come le piante, fatte dagli stessi disegni (tools/piatti_botanica.py -> assets/botanica/piatti,
+  contorno pieno, linee interne in negativo, buchi piccoli vuoti), color carta; il piatto scelto sta nella targa delle copertine piena di carta e prende il colore della sala.
+  Pop: gli stessi disegni senza il piatto (FS.incisi(id, true)) tirati a pennarello d'inchiostro, tratto 2,2 px; il piatto scelto lo prende il giro di pennarello delle foto
+  (.pp-cerchio.tv-giro, disegnato da js/pop-frase.js). Le altre pagine con la sezione (moderna F, G, H, botanica, foto) restano come prima.
+- 20 nov (109), foto: "foto impostiamo lettere sia per botanica che per pop". Lettere è la sezione foto senza niente nell'indirizzo in pop-b e botanica-pop (js/pop-prove.js);
+  la Frase di prima resta nel pannello come ?foto=frase (senza data-foto, come prima). Provato a 1600x1000: Lettere visibile, Frase nascosta, ?foto=frase la rimette.
+- 20 nov (110), company, seconda forma: "per la company versione, scusa, vedi cosa abbiamo e rifallo" (con /critica-ui). La prima era una pagina aziendale a blocchi standard,
+  con la foto della masseria che lui aveva già fatto togliere dal Chi siamo e la frase "a Leporano sul mar Ionio" che aveva bocciato: _archivio-prove/company-v1-20nov.
+  Ora company.html è fatta con le parti del Chi siamo Pop (pop-azienda): apertura Lettere con "Feudi Salentini." e la foto della vigna, la famiglia coi nomi giganti e i
+  numeri, il Salento a palco, la sostenibilità a palco con obiettivi e bilancio; poi premi e news della home Pop (js/pop-sotto.js) e per ultimi i vitigni con le bottiglie 3D
+  e l'elenco dei vini (portano a pop-vino.html, data-pagine). css/company.css è solo il mood: Inter Tight (data-titoli e data-testi "inter", un peso, 600, -.04em), carta
+  #f6f3ee e pietra #ece6dc, notte per Salento e news, l'oro solo nel bottone pieno, niente segni del Pop (le righe a pennarello sono un filo dritto che si allunga, foto
+  dritte), tolta la didascalia "fra i filari della vigna". js/company.js: logo e ancore restano sulla pagina, Azienda porta alla famiglia, Come nasce nascosto.
+  Toccati per lei, senza cambiare le altre pagine: js/pop-azienda.js (body data-aperture tiene solo alcune aperture e una prova con una voce sola non va nel pannello;
+  data-parole sono le parole di Lettere; la pillola "I nostri vini" si nasconde con un tratto per parte, anche non attaccati) e js/pop-sotto.js (l'azienda della home solo se
+  c'è). Provato a 1600x1000, 390x844 touch e animazioni ridotte; pop-azienda e pop-b ancora senza errori.
+- 20 nov (111), Botanica, la lente del vino: "in botanico i testi dietro non si vede" (screenshot dell'apertura). La lente c'era, ma la pelle di Blender è fatta sul fondo
+  bianco: sul colore della sala schiariva tutto e la scritta crema dietro le bottiglie chiare si spegneva. js/lente-vino.js: quando la scritta è più chiara del fondo torna
+  sopra il velo del vetro per tre quarti (lo decide lo shader dai due colori; nel Pop, scuro su chiaro, niente cambia). Vale anche per i nomi delle collezioni di Botanica.
+  Provato pop-b e botanica-pop a 1600x1000.
+- 20 nov (112), company, terza forma: "praticamente hai rifatto la company uguale agli altri mood anche nella forma di ogni sezione, deve essere una cosa nuova" (con
+  /critica-ui). La seconda forma (le parti del Chi siamo Pop) è in _archivio-prove/company-v2-chi-siamo-20nov: "vedi cosa abbiamo" voleva dire i contenuti, non le forme.
+  Ora company.html si legge come una pubblicazione aziendale, con forme che non stanno negli altri mood: l'indice dei capitoli (sul computer) in copertina è grande a sinistra
+  e nei primi mezzi schermi si rimpicciolisce e resta lì come guida, col capitolo in cui si è e il filo d'oro della lettura (via sopra il piede); copertina col titolo su due
+  righe e la foto in bianco e nero dei filari a fascia; la sintesi in una frase coi numeri veri in oro scuro (ricontrollati sui dati); la famiglia come elenco di nomi accanto
+  alla foto della vendemmia ferma, poi la masseria; il Salento su una mappa vera (costa Natural Earth 1:10m, tools/mappa_salento.py -> js/company-mappa.js) che a palco fermo
+  passa dal sud Italia al Salento e si ferma su Leporano, le città che compaiono avvicinandosi, poi cinque luoghi in fila; i quattro vitigni a pannelli che si aprono (nome e
+  quanti vini sempre in vista, aperto la foto e i vini, col mouse si apre quello sotto; sul telefono tutti aperti); la sostenibilità a riquadri coi fatti del bilancio 2025 e il
+  bilancio da scaricare (PDF 2,9 MB, bottone d'oro); i riconoscimenti come medagliere per anno (le 65 medaglie vere impilate, il totale sopra, il dettaglio al passaggio e
+  tutte in una tabella apribile); le notizie, la più recente grande; per ultimi i vini, catalogo a righe per collezione col filtro per colore e la bottiglia della riga accanto.
+  Inter Tight a un peso (500), carta e pietra, oro solo per numeri, guida e bottone. css/company.css e js/company.js nuovi; js/pop-azienda.js e js/pop-sotto.js tengono le
+  aggiunte del (110), che non cambiano le altre pagine. Provato a 1600x1000, 1366x700, 390x844 touch e animazioni ridotte, senza errori.

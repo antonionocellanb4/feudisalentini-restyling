@@ -1,0 +1,119 @@
+/* LA SCELTA DEL MOOD (index.html, js/mood.js; 17 nov 2026). Il sito è uno, visto in più mood: qui si sceglie.
+   Colonne a tutto schermo, una per mood ("va bene la suddivisione in colonne che prendono tutto lo schermo, ma con effetti speciali"), e nient'altro:
+   il marchio in alto, in basso il nome nel carattere del mood e "Entra". Ogni colonna è il suo mood com'è nella sua home.
+   PROVA: due effetti (.onda, .cmb), uno alla volta, scelti dalla fascia scura .mood-prova. A scelta fatta si tolgono l'altro e la fascia.
+   Regole tenute: il testo sta sul ripiano pieno (Botanica) o sulla sfumatura scura delle foto (come in css/foto.css), mai sopra una pianta; un solo accento (oro) sui comandi. */
+
+/* ---------- la fascia della prova (temporanea) ---------- */
+.mood-prova { height: 44px; display: flex; align-items: center; gap: 6px; padding-inline: var(--pad-x); background: var(--ink); color: var(--paper); font-size: .9375rem; line-height: 1.2; white-space: nowrap; }
+.mood-prova span { margin-right: 8px; color: var(--paper-2); }
+.mood-prova a { padding: 7px 13px; border-radius: 999px; color: inherit; text-decoration: none; }
+.mood-prova a[aria-current] { background: var(--paper); color: var(--ink); }
+
+/* ---------- la pagina: uno schermo. --riga: dove comincia il ripiano di Botanica, su cui poggiano le piante e sta il testo ---------- */
+.page-porta { overflow: hidden; background: var(--night); }
+.mood { position: relative; height: calc(100svh - 44px); min-height: 440px; overflow: hidden; background: var(--night); color: var(--paper); font-family: var(--font); --riga: min(73%, 100% - 190px); } /* il ripiano non è mai più basso del testo che ci sta sopra. 44px: la fascia della prova */
+.mood [hidden] { display: none !important; }
+.mood__t { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } /* il titolo lo sente chi usa un lettore di schermo: a vista bastano i due nomi */
+.mood__logo { position: absolute; z-index: 4; left: 50%; top: calc((var(--header-h) - 124px * 164 / 396) / 2); width: 124px; margin: 0; translate: -50% 0; color: var(--gold); pointer-events: none; } /* dove sta nella barra del sito, nudo */
+.mood__x { position: absolute; z-index: 4; right: var(--pad-x); top: calc((var(--header-h) - 44px) / 2); display: inline-flex; align-items: center; color: var(--paper); text-decoration: none; } /* misure e bordo: quelli di Menu, css/nav.css */
+.mood__x:hover { background: var(--paper); color: var(--ink); }
+.onda, .cmb { position: absolute; inset: 0; }
+
+/* ---------- le due metà: ognuna è un link intero, col nome in basso verso il bordo dello schermo ---------- */
+.mood__z { position: absolute; z-index: 3; top: 0; bottom: 0; width: 50%; display: flex; align-items: flex-end; padding: 0 var(--pad-x) clamp(20px, 4.4svh, 36px); color: var(--paper); text-decoration: none; -webkit-tap-highlight-color: transparent; }
+.mood__z--b { left: 0; }
+.mood__z--f { right: 0; justify-content: flex-end; text-align: right; }
+.mood__z:focus-visible { outline-offset: -8px; }
+.mood__d { display: grid; justify-items: start; }
+.mood__z--f .mood__d { justify-items: end; }
+.mood__n { font-size: clamp(1.5rem, 2.4vw, 2.375rem); font-weight: 500; line-height: 1.08; text-transform: uppercase; } /* il nome di ogni mood nel suo carattere */
+.mood__n--b { font-family: 'Montserrat', system-ui, sans-serif; letter-spacing: .01em; }
+.mood__n--f { font-family: 'Marcellus', Georgia, serif; font-weight: 400; letter-spacing: .03em; }
+.mood__r { max-width: 46ch; margin-top: 6px; font-size: 1rem; line-height: 1.35; text-wrap: balance; }
+.mood__v { margin-top: 14px; }
+.mood__z:is(:hover, :focus-visible) .btn--gold { background: var(--paper); }
+.mood .is-qui { background: none; border: 1px solid currentColor; color: inherit; } /* arrivando da una pagina: il mood in cui si è resta un comando secondario */
+.mood__z:is(:hover, :focus-visible) .is-qui { background: var(--paper); border-color: var(--paper); color: var(--ink); }
+
+/* ---------- la sala di Botanica (la scrive js/mood.js da js/dati-bf.js): muro, ripiano e la pianta della collezione che poggia sul ripiano.
+   La pianta è quella vera del cliente e si vede INTERA ("non le metterei tagliate"): il suo riquadro è lo spazio libero fra il marchio e il ripiano, e la maschera ci sta dentro tutta ---------- */
+.sala { position: absolute; inset: 0; background: linear-gradient(var(--c) 0 var(--riga), var(--c2) 0); }
+.sala i { position: absolute; left: 8%; right: 8%; top: calc(var(--header-h) + 12px); bottom: calc(100% - var(--riga)); background: var(--c3); transform-origin: 50% 100%;
+  -webkit-mask-position: 50% 100%; mask-position: 50% 100%; -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; } /* la maschera (quale pianta) la mette js/mood.js */
+/* le foto: scure in alto sotto il marchio e in basso sotto il testo, come l'apertura di Fotografia (css/foto.css) */
+.onda__f::after, .cmb__c::after { content: ''; position: absolute; z-index: 1; inset: 0; pointer-events: none;
+  background: linear-gradient(to bottom, rgb(27 21 18 / .55), rgb(27 21 18 / 0) 26%), linear-gradient(to top, rgb(27 21 18 / .8), rgb(27 21 18 / 0) 55%); }
+
+/* ---------- PROVA 1, Onda: Fotografia sotto, Botanica sopra ritagliata fino al confine (clip-path, lo muove js/mood.js) ---------- */
+.onda__f, .onda__b { position: absolute; inset: 0; }
+.onda__b { z-index: 2; clip-path: inset(0 50% 0 0); }
+.onda__f1, .onda__f2 { position: absolute; top: 0; bottom: 0; overflow: hidden; }
+.onda__f1 { left: 38%; right: 0; } /* la foto di Fotografia: larga quanto la colonna quando si allarga, così allargandosi se ne vede di più e non si sposta */
+.onda__f2 { left: 0; width: calc(38% - 3px); } /* si vede solo quando Fotografia prende tutto lo schermo */
+.onda__f img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--ox, 50%) var(--oy, 50%); }
+.onda__f1 img { opacity: 0; scale: 1.06; transition: opacity 1.6s var(--ease), scale 7s linear; } /* cambiano come nell'apertura di Fotografia */
+.onda__f1 img.is-su { opacity: 1; scale: 1; }
+.onda__f1 { transition: scale 1.6s var(--ease); }
+.onda[data-lato="f"] .onda__f1 { scale: 1.04; } /* la colonna su cui si passa risponde: la foto si avvicina, la pianta cresce */
+.onda__b .sala { visibility: hidden; } /* una sala alla volta: quella nuova sale da sotto sopra quella di prima */
+.onda__b .sala.is-sotto { visibility: visible; z-index: 1; }
+.onda__b .sala.is-su { visibility: visible; z-index: 2; }
+.onda__b .sala i { top: 32px; } /* a sinistra il marchio non c'è: la pianta può salire */
+.onda__b .sala i:first-child { left: 4%; right: 62%; } /* mai oltre il 38%: quando Fotografia si allarga il confine arriva al 39% e la pianta resta intera */
+.onda__b .sala i:last-child { left: 62%; right: 4%; } /* la seconda pianta si vede quando Botanica prende tutto lo schermo */
+.onda__b .sala i { transition: transform 1.6s var(--ease); }
+.onda[data-lato="b"] .onda__b .sala i { transform: scaleY(1.05); }
+
+/* ---------- PROVA 2, Cambio: quattro colonne. Sotto la foto, sopra il foglio di Botanica; data-b dice se il foglio c'è (js/mood.js). --v: da che parte se ne va, --k: chi parte dopo ---------- */
+.cmb { --riga: min(70%, 100% - 204px); } /* qui la riga di testo va su due righe */
+.cmb .mood__d { max-width: calc(25vw - var(--pad-x) - 12px); } /* nome, riga e bottone restano dentro la colonna più esterna, senza passare sopra il confine */
+.cmb .mood__r { min-height: 2.7em; } /* due righe per tutti e due: i nomi restano alla stessa altezza anche se una riga è più corta */
+@media (max-width: 1180px) { .cmb .mood__r { display: none; } } /* colonne strette: restano nome e bottone */
+.cmb__cols { position: absolute; inset: 0; display: flex; gap: 3px; }
+.cmb__c { position: relative; flex: 1 1 0; min-width: 0; overflow: hidden; --v: -1; --k: 0; }
+.cmb__c:nth-child(even) { --v: 1; }
+.cmb__c:first-child, .cmb__c:last-child { --k: 1; }
+.cmb__c img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--ox, 50%) 50%; scale: 1.12; transition: scale 1.6s var(--ease); }
+.cmb__c[data-b="0"] img { scale: 1; }
+.cmb__c .sala { z-index: 2; transition: translate .7s cubic-bezier(.7, 0, .2, 1) calc(var(--k) * 90ms); }
+.cmb__c[data-b="0"] .sala { translate: 0 calc(var(--v) * 101%); }
+.cmb__c .sala i { transition: transform 1.1s var(--ease) calc(.15s + var(--k) * 90ms); }
+.cmb__c[data-b="0"] .sala i { transform: scaleY(.8); }
+
+/* ---------- ingresso: le colonne si scoprono una dopo l'altra, poi salgono nome, riga e bottone (arrivando dalla barra del sito la pagina scende già dall'alto, css/nav.css) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .mood__d > * { animation: mood-su .8s var(--ease) backwards; animation-delay: .55s; }
+  .mood__d > :nth-child(2) { animation-delay: .63s; }
+  .mood__d > :nth-child(3) { animation-delay: .71s; }
+  .mood__z--f .mood__d > * { animation-delay: .67s; }
+  .mood__z--f .mood__d > :nth-child(2) { animation-delay: .75s; }
+  .mood__z--f .mood__d > :nth-child(3) { animation-delay: .83s; }
+  html:not([data-ora]) .cmb__c { animation: cmb-giu 1s cubic-bezier(.7, 0, .2, 1) backwards; }
+  html:not([data-ora]) .cmb__c:nth-child(even) { animation-name: cmb-su; }
+  html:not([data-ora]) .cmb__c:nth-child(2) { animation-delay: .09s; }
+  html:not([data-ora]) .cmb__c:nth-child(3) { animation-delay: .18s; }
+  html:not([data-ora]) .cmb__c:nth-child(4) { animation-delay: .27s; }
+  .onda__b .sala.is-su { animation: sala-su 1.1s cubic-bezier(.7, 0, .2, 1); }
+  .onda__b .sala.is-su i { animation: pianta-su 1.5s var(--ease); }
+}
+@media (prefers-reduced-motion: reduce) { .cmb__c .sala, .cmb__c .sala i, .cmb__c img, .onda__f1, .onda__f1 img, .onda__b .sala i { transition: none; } }
+@keyframes mood-su { from { opacity: 0; translate: 0 18px; } }
+@keyframes cmb-giu { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes cmb-su { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes sala-su { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes pianta-su { from { transform: scaleY(.72); } }
+
+@media (max-height: 600px) { .mood__r { display: none; } } /* finestre basse: il ripiano è corto, restano nome e bottone */
+@media (max-width: 860px) {
+  .mood, .cmb { --riga: min(80%, 100% - 128px); }
+  .mood__logo { top: 14px; width: 96px; }
+  .mood__x { right: 16px; top: 12px; }
+  .mood__z { padding: 0 16px max(18px, env(safe-area-inset-bottom)); }
+  .mood__n { font-size: 1.25rem; }
+  .mood__r { display: none; } /* in mezza larghezza di telefono la riga andrebbe su quattro righe */
+  .mood__v.btn { height: 44px; margin-top: 10px; padding: 0 1.2rem; }
+  .sala i, .onda__b .sala i { top: 76px; }
+  .onda__b .sala i:first-child { left: 3%; right: 53%; }
+  .cmb__c:first-child, .cmb__c:last-child { display: none; } /* due colonne: una per mood */
+}

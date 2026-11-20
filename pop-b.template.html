@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="it">
+<head>
+<!-- @include sections/_head.html -->
+<!-- PROVA dell'apertura Pop (18 nov 2026), seconda forma: "le bottiglie devono essere grandi quanto lo schermo, devono stare insieme come se fossero appoggiate sul fondo della hero,
+     anche le foto le metterei in un'altra sezione" (la prova A e la B di prima sono in _archivio-prove/pop-a-18nov). Le quattro bottiglie 3D (Collezione 53, 125 Bianco Organic, Tre Cuori, Terra Negroamaro; fino al 19 nov Marpiccolo e Philia)
+     entrano rotolando da sinistra e restano in fila sul fondo con la loro ombra, alte quanto lo schermo, davanti alla frase gigante (nelle chiare la scritta passa dalla lente del vino);
+     si girano trascinandole. Scorrendo si passa subito alle collezioni ("la parte delle collezioni la passerei come seconda"): le altre tre rotolano via a destra, subito dietro di
+     loro entra da sinistra la scheda della Collezione 53 e la sua bottiglia resta, al centro; poi una scheda per collezione che si scopre di lato, il vino cambia dove passa la linea (js/pop-collezioni.js). Dopo le
+     collezioni le foto dello shooting, senza link ("alle foto non voglio i link"; l'ordine di prima in _archivio-prove/pop-foto-prima-delle-collezioni-18nov). Movimenti in
+     js/pop-prove.js, stile in css/foto.css e css/pop-prove.css. Pagina a sé, non collegata dal sito. -->
+<title>Feudi Salentini · Prova, le bottiglie sul fondo</title>
+<meta name="robots" content="noindex">
+<!-- i caratteri (19 nov): Londrina Solid nei titoli e DM Sans nei testi (data-titoli e data-testi sul body, regole in fondo a css/pop-prove.css). Gli altri sono le
+     alternative del pannello delle prove (?titoli=, ?testi=): il browser scarica solo quelli che la pagina usa -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=DM+Sans:opsz,wght@9..40,300..700&family=Figtree:wght@300..700&family=Londrina+Solid:wght@900&family=Nunito:wght@300..700&family=Outfit:wght@300..700&family=Unbounded:wght@900&display=swap">
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.min.js"}}</script>
+<link rel="stylesheet" href="css/moderna-kit.css">
+<link rel="stylesheet" href="css/fiaba.css">
+<link rel="stylesheet" href="css/home.css">
+<link rel="stylesheet" href="css/moderna-e-sotto.css">
+<link rel="stylesheet" href="css/moderna-f.css">
+<link rel="stylesheet" href="css/foto.css">
+<link rel="stylesheet" href="css/pop-prove.css">
+</head>
+<body class="page-moderna page-me page-fo" data-sito="f" data-piatti="pop" data-pagine="pop-b.html,pop-azienda.html,pop-vino.html" data-titoli="londrina" data-testi="dm">
+<!-- @include sections/header.html -->
+<main id="main">
+<section class="fo-apre pp-apre" id="hero" aria-labelledby="pp-t" data-nav-trasparente>
+  <div class="fo-apre__st">
+    <h1 class="pv-vh" id="pp-t" lang="en">Wines that set the mood.</h1>
+    <div class="pp-titolo" aria-hidden="true" data-subito>
+      <span lang="en" data-chars data-ritardo="0.2">Wines that</span>
+      <span lang="en" data-chars data-ritardo="0.35">set the mood.</span>
+    </div>
+    <div class="fo-apre__a pp-sopra">
+      <p class="fo-apre__s">Leporano, sul mar Ionio, a sud di Taranto</p>
+      <a class="btn fo-apre__btn" href="#collezioni">Vai alle collezioni</a>
+    </div>
+    <canvas class="fo-apre__tela pp-tela" role="img" aria-label="Le bottiglie di Collezione 53 Primitivo, 125 Bianco Organic, Tre Cuori e Terra Negroamaro in 3D: si girano trascinandole"></canvas>
+  </div>
+</section>
+<section class="pc" aria-labelledby="pc-t">
+  <span class="pc-ancora" id="collezioni" aria-hidden="true"></span>
+  <h2 class="pv-vh" id="pc-t">Le collezioni</h2>
+  <div class="pc-st">
+    <canvas class="pc-tela" role="img" aria-label="Il vino di ogni collezione in 3D, che gira e cambia passando alla collezione dopo"></canvas>
+  </div>
+</section>
+<section class="pf" id="vini" aria-labelledby="pf-t">
+  <div class="pf-st">
+    <h2 class="pv-vh" id="pf-t" lang="en">Born in Salento, experienced worldwide.</h2>
+    <div class="pf-rullo" lang="en">
+      <span class="pf-parola" aria-hidden="true">Born in</span>
+      <div class="pf-foto"><img src="assets/pop/pallone.webp" alt="Un ragazzo lancia un pallone a bordo piscina, una ragazza sul materassino; in primo piano una bottiglia di 125 Bianco Organic" width="880" height="1100" loading="lazy" decoding="async"><span class="pp-cerchio" lang="it" data-lato="dx" style="left:38%;top:46%;width:23%;height:46%"><b>125 Bianco<br>Organic</b></span></div>
+      <span class="pf-parola" aria-hidden="true">Salento,</span>
+      <span class="pf-parola" aria-hidden="true">experienced</span>
+      <div class="pf-foto"><img src="assets/pop/rosato.webp" alt="Due ragazze in costume a una tavola apparecchiata di bianco: una versa Terra Rosato, accanto pomodorini e un lime" width="880" height="1100" loading="lazy" decoding="async"><span class="pp-cerchio" lang="it" data-lato="su" style="left:46%;top:46%;width:27%;height:15%;--mx:-15cqw"><b>Terra<br>Rosato</b></span></div>
+      <div class="pf-foto"><img src="assets/pop/carte.webp" alt="Tre amici giocano a carte su un divano in giardino; sul tavolo una bottiglia di Terra Negroamaro" width="880" height="1100" loading="lazy" decoding="async"><span class="pp-cerchio" lang="it" data-lato="su" style="left:70%;top:60%;width:17%;height:38%"><b>Terra<br>Negroamaro</b></span></div>
+      <span class="pf-parola" aria-hidden="true">worldwide.</span>
+      <div class="pf-foto"><img src="assets/pop/notte.webp" alt="Amici che brindano in piscina di notte; sul bordo una bottiglia di 125 Negroamaro" width="880" height="1100" loading="lazy" decoding="async"><span class="pp-cerchio" lang="it" data-lato="giu" style="left:41%;top:37.5%;width:17%;height:33.5%"><b>125 Negroamaro</b></span></div>
+    </div>
+  </div>
+</section>
+<!-- prove della sezione foto (?foto=piena|sipario|lettere|tunnel|mosaico, js/pop-prove.js): si vede solo quella scelta -->
+<section class="pl" aria-labelledby="pl-t">
+  <h2 class="pv-vh" id="pl-t" lang="en">Born in Salento, experienced worldwide.</h2>
+  <p class="pl-parola" aria-hidden="true" lang="en">Born in Salento,</p>
+  <figure class="pl-foto"><picture><source media="(min-width: 861px)" srcset="assets/pop/philia-largo.webp"><img src="assets/pop/philia.webp" alt="Una bottiglia di Philia su una mensola di pietra, al sole" width="880" height="1100" loading="lazy" decoding="async"></picture><figcaption><b>Philia</b><span>Primitivo di Manduria Dolce Naturale DOCG</span></figcaption></figure>
+  <p class="pl-parola pl-parola--dx" aria-hidden="true" lang="en">experienced</p>
+  <figure class="pl-foto"><picture><source media="(min-width: 861px)" srcset="assets/pop/ciambella-largo.webp"><img src="assets/pop/ciambella.webp" alt="Una ragazza in costume con una bottiglia di Marpiccolo, vista attraverso una ciambella gonfiabile a bordo piscina" width="880" height="1100" loading="lazy" decoding="async"></picture><figcaption><b>Marpiccolo</b><span>Fiano Salento IGP</span></figcaption></figure>
+  <figure class="pl-foto"><picture><source media="(min-width: 861px)" srcset="assets/pop/tre-cuori-largo.webp"><img src="assets/pop/tre-cuori.webp" alt="Una bottiglia di Tre Cuori versata a tavola fra le pizze" width="880" height="1100" loading="lazy" decoding="async"></picture><figcaption><b>Tre Cuori</b><span>Rosa di Primitivo Puglia IGP</span></figcaption></figure>
+  <p class="pl-parola pl-parola--centro" aria-hidden="true" lang="en">worldwide.</p>
+  <figure class="pl-foto"><picture><source media="(min-width: 861px)" srcset="assets/pop/mappamondo-largo.webp"><img src="assets/pop/mappamondo.webp" alt="Una bottiglia di Collezione 53 Primitivo dentro un mappamondo bar" width="880" height="1100" loading="lazy" decoding="async"></picture><figcaption><b>Collezione 53 Primitivo</b><span>Primitivo di Manduria DOP</span></figcaption></figure>
+</section>
+<section class="pw" aria-labelledby="pw-t">
+  <div class="pw-st">
+    <h2 class="pv-vh" id="pw-t" lang="en">Born in Salento, experienced worldwide.</h2>
+    <figure class="pw-foto"><picture><source media="(min-width: 861px)" srcset="assets/pop/philia-largo.webp"><img src="assets/pop/philia.webp" alt="Una bottiglia di Philia su una mensola di pietra, al sole" width="880" height="1100" loading="lazy" decoding="async"></picture><figcaption class="pw-box"><span class="pw-frase" lang="en" aria-hidden="true">Born in Salento,</span><b>Philia</b><span>Primitivo di Manduria Dolce Naturale DOCG</span></figcaption></figure>
+    <figure class="pw-foto"><picture><source media="(min-width: 861px)" srcset="assets/pop/ciambella-largo.webp"><img src="assets/pop/ciambella.webp" alt="Una ragazza in costume con una bottiglia di Marpiccolo, vista attraverso una ciambella gonfiabile a bordo piscina" width="880" height="1100" loading="lazy" decoding="async"></picture><figcaption class="pw-box"><span class="pw-frase" lang="en" aria-hidden="true">experienced</span><b>Marpiccolo</b><span>Fiano Salento IGP</span></figcaption></figure>
+    <figure class="pw-foto"><picture><source media="(min-width: 861px)" srcset="assets/pop/tre-cuori-largo.webp"><img src="assets/pop/tre-cuori.webp" alt="Una bottiglia di Tre Cuori versata a tavola fra le pizze" width="880" height="1100" loading="lazy" decoding="async"></picture><figcaption class="pw-box"><span class="pw-frase" lang="en" aria-hidden="true">experienced</span><b>Tre Cuori</b><span>Rosa di Primitivo Puglia IGP</span></figcaption></figure>
+    <figure class="pw-foto"><picture><source media="(min-width: 861px)" srcset="assets/pop/mappamondo-largo.webp"><img src="assets/pop/mappamondo.webp" alt="Una bottiglia di Collezione 53 Primitivo dentro un mappamondo bar" width="880" height="1100" loading="lazy" decoding="async"></picture><figcaption class="pw-box"><span class="pw-frase" lang="en" aria-hidden="true">worldwide.</span><b>Collezione 53 Primitivo</b><span>Primitivo di Manduria DOP</span></figcaption></figure>
+  </div>
+</section>
+<!-- Lettere (?foto=lettere): le foto dentro le parole giganti; scorrendo si entra in una lettera fino alla foto intera, poi la parola dopo sale dal basso.
+     A foto intera un giro di pennarello attorno alla bottiglia e il nome accanto (19 nov: prima il fumetto, "io la voglio qui in foto lettere", poi dal campionario "scelgo al
+     momento cerchio pennarello ma lo farei anche sulle foto grandi"): data-p e data-pl dicono dove sta la bottiglia nel taglio 4:5 e in quello largo (x0, y0, x1, y1 in centesimi,
+     e da che parte va il nome), js/pop-frase.js lo mette. La didascalia resta per chi legge con lo schermo parlante e per le animazioni ridotte.
+     Sotto il nome, continuando a scorrere, escono una alla volta le altre cose del vino (19 nov: "far uscire anche altre info sul vino che possono interessare chi scrolla ...
+     mentre scrollo escono, vale per tutti"): data-vino dice quale, js/pop-frase.js le prende da js/data.js. Sul telefono il nome di Philia è passato sotto il giro: di lato
+     per le righe non c'era posto -->
+<section class="pk" aria-labelledby="pk-t">
+  <div class="pk-st">
+    <h2 class="pv-vh" id="pk-t" lang="en">Born in Salento, experienced worldwide.</h2>
+    <figure class="pk-passo" data-lettera="l"><picture><source media="(min-width: 861px)" srcset="assets/pop/philia-largo.webp"><img src="assets/pop/philia.webp" alt="Una bottiglia di Philia su una mensola di pietra, al sole" width="880" height="1100" loading="lazy" decoding="async"></picture><svg class="pk-velo" aria-hidden="true"><mask id="pk-m1"><rect width="100%" height="100%" fill="#fff"/><text><tspan x="50%">Born in</tspan><tspan x="50%">Salento,</tspan></text></mask><rect width="100%" height="100%" fill="#fff" mask="url(#pk-m1)"/></svg><span class="pp-cerchio" aria-hidden="true" data-vino="philia" data-p="41.4,26.4,60.4,71.8,giu" data-pl="41.6,8.3,60.1,93,dx"><b>Philia</b></span><figcaption class="pw-box"><b>Philia</b><span>Primitivo di Manduria Dolce Naturale DOCG</span></figcaption></figure>
+    <figure class="pk-passo" data-lettera="i"><picture><source media="(min-width: 861px)" srcset="assets/pop/ciambella-largo.webp"><img src="assets/pop/ciambella.webp" alt="Una ragazza in costume con una bottiglia di Marpiccolo, vista attraverso una ciambella gonfiabile a bordo piscina" width="880" height="1100" loading="lazy" decoding="async"></picture><svg class="pk-velo" aria-hidden="true"><mask id="pk-m2"><rect width="100%" height="100%" fill="#fff"/><text><tspan x="50%">experienced</tspan></text></mask><rect width="100%" height="100%" fill="#fff" mask="url(#pk-m2)"/></svg><span class="pp-cerchio" aria-hidden="true" data-vino="marpiccolo" data-p="41,26.5,55,64.5,giu" data-pl="41,11,55,82.8,sx"><b>Marpiccolo</b></span><figcaption class="pw-box"><b>Marpiccolo</b><span>Fiano Salento IGP</span></figcaption></figure>
+    <figure class="pk-passo" data-lettera="l"><picture><source media="(min-width: 861px)" srcset="assets/pop/mappamondo-largo.webp"><img src="assets/pop/mappamondo.webp" alt="Una bottiglia di Collezione 53 Primitivo dentro un mappamondo bar" width="880" height="1100" loading="lazy" decoding="async"></picture><svg class="pk-velo" aria-hidden="true"><mask id="pk-m3"><rect width="100%" height="100%" fill="#fff"/><text><tspan x="50%">worldwide.</tspan></text></mask><rect width="100%" height="100%" fill="#fff" mask="url(#pk-m3)"/></svg><span class="pp-cerchio" aria-hidden="true" data-vino="c53-primitivo" data-p="39,19.8,59.2,70,giu" data-pl="38.1,3.4,59.3,92.8,sx"><b>Collezione 53<br>Primitivo</b></span><figcaption class="pw-box"><b>Collezione 53 Primitivo</b><span>Primitivo di Manduria DOP</span></figcaption></figure>
+  </div>
+</section>
+<!-- Tunnel (?foto=tunnel): si attraversa la frase in profondità, le foto passano ai lati; in fondo il mappamondo diventa la schermata -->
+<section class="pn" aria-labelledby="pn-t">
+  <div class="pn-st">
+    <h2 class="pv-vh" id="pn-t" lang="en">Born in Salento, experienced worldwide.</h2>
+    <p class="pn-cosa pn-parola" aria-hidden="true" lang="en">Born in Salento,</p>
+    <div class="pn-cosa pn-foto"><img src="assets/pop/philia.webp" alt="Una bottiglia di Philia su una mensola di pietra, al sole" width="880" height="1100" loading="lazy" decoding="async"><span class="pf-nome"><b>Philia</b><span>Primitivo di Manduria Dolce Naturale DOCG</span></span></div>
+    <div class="pn-cosa pn-foto"><img src="assets/pop/ciambella.webp" alt="Una ragazza in costume con una bottiglia di Marpiccolo, vista attraverso una ciambella gonfiabile a bordo piscina" width="880" height="1100" loading="lazy" decoding="async"><span class="pf-nome"><b>Marpiccolo</b><span>Fiano Salento IGP</span></span></div>
+    <p class="pn-cosa pn-parola" aria-hidden="true" lang="en">experienced</p>
+    <div class="pn-cosa pn-foto"><img src="assets/pop/tre-cuori.webp" alt="Una bottiglia di Tre Cuori versata a tavola fra le pizze" width="880" height="1100" loading="lazy" decoding="async"><span class="pf-nome"><b>Tre Cuori</b><span>Rosa di Primitivo Puglia IGP</span></span></div>
+    <div class="pn-cosa pn-foto"><img src="assets/pop/pizza.webp" alt="Amici che ridono a tavola fra le pizze, con una bottiglia di Appassimento" width="880" height="1100" loading="lazy" decoding="async"><span class="pf-nome"><b>Appassimento</b><span>Rosso Puglia IGP</span></span></div>
+    <div class="pn-cosa pn-foto"><img src="assets/pop/materassino.webp" alt="Un ragazzo su un materassino rosso in piscina; sul bordo una bottiglia di 125 Bianco Organic" width="880" height="1100" loading="lazy" decoding="async"><span class="pf-nome"><b>125 Bianco Organic</b><span>Bianco Puglia IGP biologico</span></span></div>
+    <div class="pn-cosa pn-foto"><img src="assets/pop/chesterfield.webp" alt="Due ragazzi su un divano Chesterfield; sul tavolo una bottiglia di Gocce" width="880" height="1100" loading="lazy" decoding="async"><span class="pf-nome"><b>Gocce</b><span>Primitivo di Manduria DOP</span></span></div>
+    <p class="pn-cosa pn-parola" aria-hidden="true" lang="en">worldwide.</p>
+    <figure class="pn-cosa pn-fine"><picture><source media="(min-width: 861px)" srcset="assets/pop/mappamondo-largo.webp"><img src="assets/pop/mappamondo.webp" alt="Una bottiglia di Collezione 53 Primitivo dentro un mappamondo bar" width="880" height="1100" loading="lazy" decoding="async"></picture><figcaption class="pw-box"><b>Collezione 53 Primitivo</b><span>Primitivo di Manduria DOP</span></figcaption></figure>
+  </div>
+</section>
+<!-- Mosaico (?foto=mosaico): tutte le foto dello shooting e la frase in una griglia; scorrendo la griglia esplode e il mappamondo diventa la schermata -->
+<section class="pm" aria-labelledby="pm-t">
+  <div class="pm-st">
+    <h2 class="pv-vh" id="pm-t" lang="en">Born in Salento, experienced worldwide.</h2>
+    <div class="pm-griglia">
+      <div class="pm-pezzo pm-a"><img src="assets/pop/philia.webp" alt="Una bottiglia di Philia su una mensola di pietra, al sole" width="880" height="1100" loading="lazy" decoding="async"><span class="pm-nome">Philia</span></div>
+      <p class="pm-pezzo pm-parola pm-w1" aria-hidden="true" lang="en"><span>Born in<br>Salento,</span></p>
+      <div class="pm-pezzo pm-b"><img src="assets/pop/ciambella.webp" alt="Una ragazza in costume con una bottiglia di Marpiccolo, vista attraverso una ciambella gonfiabile a bordo piscina" width="880" height="1100" loading="lazy" decoding="async"><span class="pm-nome">Marpiccolo</span></div>
+      <div class="pm-pezzo pm-c"><img src="assets/pop/tre-cuori.webp" alt="Una bottiglia di Tre Cuori versata a tavola fra le pizze" width="880" height="1100" loading="lazy" decoding="async"><span class="pm-nome">Tre Cuori</span></div>
+      <div class="pm-pezzo pm-centro"><picture><source media="(min-width: 861px)" srcset="assets/pop/mappamondo-largo.webp"><img src="assets/pop/mappamondo.webp" alt="Una bottiglia di Collezione 53 Primitivo dentro un mappamondo bar" width="880" height="1100" loading="lazy" decoding="async"></picture><span class="pm-nome">Collezione 53 Primitivo</span></div>
+      <div class="pm-pezzo pm-d"><img src="assets/pop/pizza.webp" alt="Amici che ridono a tavola fra le pizze, con una bottiglia di Appassimento" width="880" height="1100" loading="lazy" decoding="async"><span class="pm-nome">Appassimento</span></div>
+      <div class="pm-pezzo pm-e"><img src="assets/pop/materassino.webp" alt="Un ragazzo su un materassino rosso in piscina; sul bordo una bottiglia di 125 Bianco Organic" width="880" height="1100" loading="lazy" decoding="async"><span class="pm-nome">125 Bianco Organic</span></div>
+      <p class="pm-pezzo pm-parola pm-w2" aria-hidden="true" lang="en"><span>experienced<br>worldwide.</span></p>
+      <div class="pm-pezzo pm-f"><img src="assets/pop/chesterfield.webp" alt="Due ragazzi su un divano Chesterfield; sul tavolo una bottiglia di Gocce" width="880" height="1100" loading="lazy" decoding="async"><span class="pm-nome">Gocce</span></div>
+    </div>
+    <p class="pw-box"><b>Collezione 53 Primitivo</b><span>Primitivo di Manduria DOP</span></p>
+  </div>
+</section>
+<!-- AZIENDA, PREMI, NEWS (19 nov 2026): "ora bisogna aggiungere le altre sezioni, quelle dell'azienda, i premi, le news, in stile pop, come stiamo andando".
+     Testi, foto e didascalie sono quelli della pagina dell'azienda e della home (niente di nuovo scritto qui); premi e news li scrive js/pop-sotto.js da js/data.js.
+     Il segno della pagina è il pennarello: una riga tirata a mano apre ogni capitolo e ogni notizia e si disegna quando entra. Fondi alternati: pietra, bianco, notte
+     (poi il piede, pietra). Stile in css/pop-prove.css, "le sezioni sotto" -->
+<section class="pa" id="azienda" aria-labelledby="pa-t">
+  <header class="pa-testa">
+    <h2 class="pa-t" id="pa-t" data-chars>La cantina della famiglia Varvaglione.</h2>
+    <div class="pa-dove"><figure class="pa-f"><img src="assets/photo/masseria-cortile.webp" alt="Il cortile della masseria di famiglia" width="1920" height="1081" loading="lazy" decoding="async"><figcaption>la masseria di famiglia</figcaption></figure><p class="pa-lead">Feudi Salentini è a Leporano, in provincia di Taranto, sul mar Ionio.</p></div>
+  </header>
+  <div class="pa-giro">
+  <ol class="pa-righe">
+    <li class="pa-riga">
+      <svg class="pp-riga" viewBox="0 0 1000 12" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M3 7 C120 2 260 11 400 6 S700 2 860 7 S960 9 997 5"/></svg>
+      <p class="pa-n"><b>01</b><span>Quarta generazione</span></p>
+      <div class="pa-c"><h3 class="pa-h">La famiglia Varvaglione.</h3><p>Cosimo, Maria Teresa, Marzia, Angelo e Francesca Varvaglione portano avanti l'azienda, giunta alla quarta generazione.</p></div>
+      <figure class="pa-f"><img src="assets/photo/catalogo-mani.webp" alt="Le mani che tagliano un grappolo alla vendemmia" width="797" height="797" loading="lazy" decoding="async"><figcaption>la vendemmia, a mano</figcaption></figure>
+    </li>
+    <li class="pa-riga">
+      <svg class="pp-riga" viewBox="0 0 1000 12" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M3 7 C120 2 260 11 400 6 S700 2 860 7 S960 9 997 5"/></svg>
+      <p class="pa-n"><b>02</b><span>Vitigni autoctoni</span></p>
+      <div class="pa-c"><h3 class="pa-h">La nostra filosofia.</h3><p>Feudi Salentini produce vini dai vitigni autoctoni pugliesi per eccellenza: Primitivo, Negroamaro, Verdeca e Malvasia Bianca, usando tecniche di vinificazione moderne, con un occhio all'ambiente per salvaguardare la terra.</p></div>
+      <figure class="pa-f"><img src="assets/photo/alberello.webp" alt="Una vite di Primitivo ad alberello" width="1920" height="1280" loading="lazy" decoding="async"><figcaption>Primitivo ad alberello</figcaption></figure>
+    </li>
+    <li class="pa-riga">
+      <svg class="pp-riga" viewBox="0 0 1000 12" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M3 7 C120 2 260 11 400 6 S700 2 860 7 S960 9 997 5"/></svg>
+      <p class="pa-n"><b>03</b><span>Il territorio</span></p>
+      <div class="pa-c"><h3 class="pa-h">Il Salento, una terra divina.</h3><p>Il Salento è ricco di castelli, di storia e di tradizioni. Feudi Salentini nasce qui, in una terra rinomata per il Primitivo di Manduria. I muretti a secco, gli uliveti secolari e il mare turchese fanno parte di uno scenario che dà vita a vino e olio.</p></div>
+      <figure class="pa-f"><img src="assets/photo/mare-salento.webp" alt="Il mare del Salento" width="1920" height="1080" loading="lazy" decoding="async"><figcaption>il mar Ionio, a due passi</figcaption></figure>
+    </li>
+    <li class="pa-riga">
+      <svg class="pp-riga" viewBox="0 0 1000 12" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M3 7 C120 2 260 11 400 6 S700 2 860 7 S960 9 997 5"/></svg>
+      <p class="pa-n"><b>04</b><span>Equalitas dal 2022</span></p>
+      <div class="pa-c"><h3 class="pa-h">Sostenibilità.</h3><p>Dal 2022 Feudi Salentini è certificata Equalitas, lo standard che valuta la sostenibilità ambientale, sociale ed economica delle aziende del vino.</p><a class="fo-link" href="https://feudisalentini.com/wp-content/uploads/2026/08/Feudi_bilancio-di-sostenibilita_2025.pdf" target="_blank" rel="noopener">Il bilancio 2025 (PDF)</a></div>
+      <figure class="pa-f"><img src="assets/photo/catalogo-vigna.webp" alt="I filari della vigna sotto un cielo di nuvole" width="1134" height="913" loading="lazy" decoding="async"><figcaption>i filari della vigna</figcaption></figure>
+    </li>
+  </ol>
+  <div class="pa-pila"></div><!-- la pila di stampe: js/pop-sotto.js ci sposta le foto dei capitoli (con le animazioni ridotte resta vuota e le foto stanno nelle righe) -->
+  </div>
+</section>
+<section class="pd" id="premi" aria-labelledby="pd-t">
+  <div class="pd-testa">
+    <h2 class="pd-t" id="pd-t"><b data-premi-n>65</b> <span data-chars>riconoscimenti.</span></h2>
+    <p class="pd-lead">Premiati dai concorsi internazionali del vino. Ogni scheda del vino mostra i suoi.</p>
+  </div>
+  <dl class="pd-conta"></dl>
+</section>
+<!-- 20 nov: "manca quella sezione figa che era cosa c'è in tavola, che metterei in Pop e in Botanica, prima delle news" (la stessa di Botanica e Fotografia: sections/moderna-f-tavola.html, js/tavola.js) -->
+<!-- @include sections/moderna-f-tavola.html -->
+<section class="pq" id="news" aria-labelledby="pq-t">
+  <h2 class="pq-t" id="pq-t" data-chars>Dalla cantina.</h2>
+  <ul class="pq-lista"></ul>
+</section>
+</main>
+<!-- @include sections/footer.html -->
+<!-- @include sections/_scripts.html -->
+<script src="js/moderna-kit.js"></script>
+<script src="js/scheda.js"></script>
+<script src="js/piatti-incisi.js"></script>
+<script src="js/tavola.js"></script>
+<script src="js/dati-bf.js"></script>
+<script type="module" src="js/pop-prove.js"></script>
+<script type="module" src="js/pop-frase.js"></script>
+<script type="module" src="js/pop-collezioni.js"></script>
+<script type="module" src="js/pop-sotto.js"></script>
+<script type="module" src="js/pop-piede.js"></script>
+</body>
+</html>

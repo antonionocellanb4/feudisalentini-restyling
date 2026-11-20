@@ -7,13 +7,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script>/* prova font: ?font=bricolage|funnel|archivo|newsreader, resta per la sessione */(function(){var F={klimt:"Fraunces:opsz,wght,SOFT,WONK@9..144,100..400,0..100,0..1&family=Instrument+Sans:wdth,wght@75..100,400..600",bricolage:"Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800",funnel:"Funnel+Display:wght@300..800&family=Funnel+Sans:wght@300..800",archivo:"Archivo:wdth,wght@62..125,100..900",newsreader:"Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800"};var f;try{f=new URLSearchParams(location.search).get("font")||sessionStorage.getItem("fs-font")}catch(e){}if(!F[f])f="klimt";try{sessionStorage.setItem("fs-font",f)}catch(e){}document.documentElement.dataset.font=f;document.write('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family='+F[f]+'&display=swap">')})()</script>
+<style>@media (prefers-reduced-motion: no-preference){@view-transition{navigation:auto}}</style>
+<script>/* cambio di mood (17 nov): la pagina nuova si apre da dove si è scelto (css/nav.css, mood-apre). Al clic si annota la forma di partenza, "da|a|opacità" (due clip-path, e se la pagina nuova parte trasparente): il riquadro del link, oppure quella scritta nel link (data-mood-da) o da js/mood.js. All'arrivo, prima del primo disegno, la si passa al css. Senza appunto il passaggio non parte: gli altri link cambiano pagina come sempre. A passaggio finito si avvisa la barra (un evento scroll): durante il passaggio js/nav.js non vede cosa c'è sotto e sbaglia il tono */addEventListener("click",function(e){var p=e.target.closest&&e.target.closest("a[data-mood],a[data-mood-da]");if(!p||e.defaultPrevented)return;var da=p.getAttribute("data-mood-da");if(!da){var r=p.getBoundingClientRect(),w=innerWidth,h=innerHeight;da="inset("+[r.top/h,1-r.right/w,1-r.bottom/h,r.left/w].map(function(n){return(Math.max(0,n)*100).toFixed(2)+"%"}).join(" ")+")"}try{sessionStorage.setItem("fs-mood-da",da)}catch(x){}});addEventListener("pagereveal",function(e){var da;try{da=sessionStorage.getItem("fs-mood-da");sessionStorage.removeItem("fs-mood-da")}catch(x){}if(!e.viewTransition)return;e.viewTransition.finished.then(function(){dispatchEvent(new Event("scroll"))},function(){});if(da){da=da.split("|");var s=document.documentElement.style;s.setProperty("--mood-da",da[0]);s.setProperty("--mood-a",da[1]||"inset(0% 0% 0% 0%)");s.setProperty("--mood-o",da[2]||"1")}else{e.viewTransition.ready.catch(function(){});e.viewTransition.skipTransition()}});</script>
 <link rel="stylesheet" href="css/base.css?v=3c076e8f">
-<link rel="stylesheet" href="css/nav.css?v=fe2ff5d5">
+<link rel="stylesheet" href="css/nav.css?v=5e36c683">
 <!-- HOME MODERNA, alternativa H "La galleria dei vini" (3 nov 2026): il cammino di moderna-f, ma le bottiglie sono il soggetto dei quadri, dipinte dentro, e ogni sala ha il suo stile. Le altre: moderna-f.html, moderna-g.html -->
 <title>Feudi Salentini · La galleria del feudo (moderna H)</title>
 <meta name="description" content="Feudi Salentini: Primitivo di Manduria, Negroamaro e i vini del Salento della famiglia Varvaglione, a Leporano (TA).">
 <link rel="stylesheet" href="css/moderna-kit.css?v=d9e8b4c9">
-<link rel="stylesheet" href="css/fiaba.css?v=bc12d618">
+<link rel="stylesheet" href="css/fiaba.css?v=5d09cd42">
 <link rel="stylesheet" href="css/home.css?v=d5c3b761">
 <link rel="stylesheet" href="css/moderna-e.css?v=35d9a9cb">
 <link rel="stylesheet" href="css/moderna-e-sotto.css?v=e0f153ab">
@@ -266,7 +268,8 @@ try { var fsPour = JSON.parse(sessionStorage.getItem('fs-pour') || 'null'); sess
       <div class="foot__col foot__contatti">
         <h2 class="foot__h">Contatti</h2>
         <a class="foot__tel" href="tel:+390995315370">+39 099 5315370</a>
-        <p>Fax +39 099 5315739</p>
+        <p class="foot__fax">Fax +39 099 5315739</p>
+        <p class="foot__telriga" hidden>Tel <a href="tel:+390995315370">+39 099 5315370</a></p><!-- solo nel piede Pop (css/pop-prove.css), dove il numero grande sta in cima e qui sotto restava il solo fax: "qui togli fax metti tel" (19 nov) -->
         <address>Feudi Salentini srl<br><a href="https://www.google.com/maps/search/?api=1&amp;query=Feudi+Salentini+Via+Esterna+Talsano+36+Leporano" target="_blank" rel="noopener">Via Esterna Talsano, 36, 74020 Leporano (TA)</a></address>
         <p class="foot__tbd"><span class="tbd">Indirizzo da confermare: il sito attuale riporta anche Via Amendola 36</span></p>
       </div>
@@ -283,13 +286,14 @@ try { var fsPour = JSON.parse(sessionStorage.getItem('fs-pour') || 'null'); sess
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 <script src="js/data.js?v=a0547593"></script>
-<script src="js/main.js?v=0a3531b8"></script>
+<script src="js/main.js?v=7c14ab57"></script>
+<script defer src="js/cambio-mood.js?v=c98fb4f4"></script>
 <script defer src="js/nav.js?v=fd4bc750"></script>
-<script src="js/moderna-kit.js?v=e5730034"></script>
+<script src="js/moderna-kit.js?v=1614b95a"></script>
 <script src="js/scheda.js?v=e374d8c2"></script>
 <script src="js/moderna-f.js?v=ffcdec96"></script>
 <script src="js/moderna-e-sotto.js?v=7e496b3d"></script>
-<script src="js/piatti-incisi.js?v=402b00f7"></script>
-<script src="js/tavola.js?v=c1cdcb69"></script>
+<script src="js/piatti-incisi.js?v=247fc1bc"></script>
+<script src="js/tavola.js?v=18c2c0cb"></script>
 </body>
 </html>

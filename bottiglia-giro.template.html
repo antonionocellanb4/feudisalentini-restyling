@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="it">
+<head>
+<!-- @include sections/_head.html -->
+<!-- PROVA (18 nov 2026): Tre Cuori di Blender che gira, "voglio vederla online che gira, quella di Blender è molto più realistica", poi "le dobbiamo usare sul sito, fargli fare
+     movimenti: vedi tu cosa consigli". A sinistra le 72 viste di Blender (tools/bottiglia_blender.py --giro 72 → tools/giro_web.py → assets/giro/tre-cuori), a destra la bottiglia 3D
+     della pagina con la pelle di Blender (--velo → tools/velo_blender.py → assets/3d/tre-cuori-velo.webp): girano insieme allo stesso angolo. Pagina a sé, non collegata dal sito. -->
+<title>Feudi Salentini · Tre Cuori in Blender (prova)</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&display=swap">
+<style>
+  .page-giro { background: #fff; }
+  .giro { position: relative; min-height: 100svh; overflow: hidden; background: #fff; color: #111; font-family: 'Bricolage Grotesque', sans-serif; }
+  .giro-t { position: absolute; left: var(--pad-x); top: 28px; margin: 0; font-family: inherit; font-size: clamp(1.75rem, 3vw, 2.75rem); font-weight: 700; font-stretch: 75%; line-height: 1; letter-spacing: -.01em; }
+  .giro-t small { display: block; margin-top: 8px; font-size: 1rem; font-weight: 400; font-stretch: 100%; letter-spacing: 0; color: #444; }
+  .giro-nota { position: absolute; right: var(--pad-x); top: 34px; margin: 0; font-size: 1rem; color: #444; }
+  .giro-coppia { display: flex; justify-content: center; align-items: flex-end; gap: clamp(32px, 8vw, 160px); height: 100svh; padding: 110px 16px 24px; box-sizing: border-box; }
+  .giro-col { display: grid; justify-items: center; gap: 14px; height: 100%; margin: 0; }
+  .giro-col canvas { height: calc(100% - 60px); touch-action: pan-y; cursor: grab; }
+  .giro-col canvas:active { cursor: grabbing; }
+  .giro-col canvas:focus-visible { outline: 2px solid #111; outline-offset: 4px; }
+  .giro-col figcaption { max-width: 22rem; font-size: 1rem; line-height: 1.35; text-align: center; color: #222; }
+  .giro-col figcaption small { display: block; font-size: .875rem; color: #555; }
+  @media (max-width: 860px) {
+    .giro-t { left: 16px; top: 20px; font-size: 1.5rem; }
+    .giro-t small { font-size: .9375rem; }
+    .giro-nota { display: none; }
+    .giro-coppia { gap: 16px; padding: 96px 12px 16px; height: 100svh; }
+    .giro-col canvas { height: calc(100% - 84px); }
+    .giro-col figcaption { font-size: .875rem; }
+    .giro-col figcaption small { font-size: .8125rem; }
+  }
+</style>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.min.js"}}</script>
+</head>
+<body class="page-giro">
+<main id="main" class="giro">
+  <h1 class="giro-t">Tre Cuori<small>Rosa di Primitivo Puglia IGP</small></h1>
+  <p class="giro-nota">Trascina le bottiglie per girarle.</p>
+  <div class="giro-coppia">
+    <figure class="giro-col">
+      <canvas class="giro-tela" role="img" aria-label="Tre Cuori in 72 immagini fatte con Blender, che gira. Si gira trascinandola o con le frecce." tabindex="0"></canvas>
+      <figcaption>Immagini da Blender<small>72 viste, 691 KB; solo il giro su sé stessa</small></figcaption>
+    </figure>
+    <figure class="giro-col">
+      <canvas class="giro-3d" role="img" aria-label="Tre Cuori in 3D con l'aspetto di Blender, che gira. Si gira trascinandola o con le frecce." tabindex="0"></canvas>
+      <figcaption>3D della pagina con la pelle di Blender<small>pelle 59 KB, etichetta 23 KB; si muove come vuoi</small></figcaption>
+    </figure>
+  </div>
+</main>
+<script type="module" src="js/bottiglia-giro.js"></script>
+</body>
+</html>

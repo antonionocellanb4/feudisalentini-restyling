@@ -2,23 +2,22 @@
    titoli in maiuscolo largo, bottiglie con l'ombra netta del sole. Il cammino è impaginato da css/moderna-e.css (ripiano, testi, bottiglie, pillola): qui c'è solo quello che cambia.
    Markup in sections/botanica.html, sale e movimenti in js/botanica.js. Per sala: --c muro, --c2 ripiano e pianta lontana, --c3 pianta vicina, --m la pianta (assets/botanica, da tools/botanica.py), --ar le sue proporzioni. */
 .page-bo { --font: 'Montserrat', system-ui, sans-serif; --font-display: var(--font); --title-weight: 500; --title-track: 0;
-  --night: #3e2719; --night-2: #482d1e; /* il fondo scuro delle sezioni sotto (cantina, news) è il marrone della Classica (il verde della 125, provato prima, no) */
-  --sagoma: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120' preserveAspectRatio='none'%3E%3Cpath d='M14 6C30 3 40 1 50 3C60 1 70 3 86 6C92 7 95 10 95 16C95 30 99 45 98 60C99 75 95 90 95 104C95 110 92 113 86 114C70 117 60 119 50 117C40 119 30 117 14 114C8 113 5 110 5 104C5 90 1 75 2 60C1 45 5 30 5 16C5 10 8 7 14 6Z'/%3E%3C/svg%3E"); }
+  --night: #3e2719; --night-2: #482d1e; /* il fondo scuro delle sezioni sotto (cantina, news) è il marrone della Classica (il verde della 125, provato prima, no) */ } /* --sagoma (la forma della targa) sta in css/nav.css: serve anche alla porta del mood */
 
 /* ---- le piante: una maschera colorata che cresce dal piede (--g), piega col vento (--vx) e scorre col suo piano (--d per --k). --sp -1 = specchiata ---- */
 .bo-pi, .bo-et__p { background: var(--c3); transform-origin: 50% 100%; -webkit-mask: var(--m) center bottom / contain no-repeat; mask: var(--m) center bottom / contain no-repeat; }
 .bo-pi { position: absolute; bottom: -1.5%; height: var(--h, 100%); aspect-ratio: var(--ar, .6);
   transform: translateX(calc(var(--d, 0) * var(--k, 0) * 1px)) rotate(calc(var(--rot, 0deg) + var(--vx, 0) * var(--v, 1deg))) scale(calc(var(--sp, 1) * var(--g, 1)), var(--g, 1)); }
 
-/* ---- la targa delle copertine: sagoma piena con dentro la pianta e la sua gemella specchiata, che si incrociano ---- */
+/* ---- la targa delle copertine: sagoma piena con dentro la pianta, intera. Dal 17 nov le piante sono quelle vere del cliente (tools/botanica_vere.py), già fatte di due rami specchiati che si incrociano:
+   la copia specchiata di prima (.bo-et__p--2, ::after) non serve più ---- */
 .bo-targa { position: absolute; left: 50%; top: calc(var(--header-h) + 30px); height: var(--th); aspect-ratio: 5 / 6; translate: -50% 0; overflow: hidden; background: var(--c2);
   -webkit-mask: var(--sagoma) center / 100% 100% no-repeat; mask: var(--sagoma) center / 100% 100% no-repeat; }
-.bo-et__p { position: absolute; inset: 5% 0 -3%; -webkit-mask-size: auto 100%; mask-size: auto 100%; -webkit-mask-position: -22% 100%; mask-position: -22% 100%; transform: scaleY(var(--g, 1)); rotate: -8deg; }
-.bo-et__p--2 { scale: -1 1; rotate: 8deg; }
-.bo-et__p:only-child { -webkit-mask-position: 50% 100%; mask-position: 50% 100%; rotate: none; }
+.bo-et__p { position: absolute; inset: 8% 8% 5%; -webkit-mask-size: contain; mask-size: contain; -webkit-mask-position: 50% 100%; mask-position: 50% 100%; transform: scaleY(var(--g, 1)); }
+.bo-et__p--2 { display: none; }
 
 /* ---- il cammino: sette tappe (apertura e sei sale) ---- */
-.page-bo .nav[data-tone="light"] { background-color: var(--cream); } /* con la scheda del vino aperta l'header torna scuro: gli serve la sua fascia crema, sotto c'è il colore della sala */
+.page-bo .nav[data-forza="light"]:not(.is-solid) { background-color: var(--cream); } /* con la scheda del vino aperta l'header torna scuro: senza il vetro (Botanica orizzontale, dove resta senza fondo) gli serve la sua fascia crema, sotto c'è il colore della sala */
 .page-bo .e-st { height: 780lvh; }
 .page-bo .e-d { font-size: 1.0625rem; }
 
@@ -30,7 +29,7 @@
 .bo-umore.is-su { visibility: visible; z-index: 1; }
 .bo-titolo { position: absolute; z-index: 2; left: 50%; top: calc(var(--header-h) + 30px + var(--th) / 2); width: calc(var(--th) * .7); translate: -50% -50%; display: grid; justify-items: center; gap: .12em;
   text-align: center; font-size: clamp(1.2rem, 2.1vw, 2.2rem); font-weight: 500; line-height: 1.12; letter-spacing: .03em; text-transform: uppercase; }
-.bo-titolo i { display: flex; align-items: center; gap: .4em; font-family: 'Pinyon Script', cursive; font-style: normal; font-weight: 400; font-size: 1.25em; line-height: 1.1; letter-spacing: 0; text-transform: none; white-space: nowrap; }
+.bo-titolo i { display: flex; align-items: center; gap: .4em; font-family: 'Alex Brush', cursive; font-style: normal; font-weight: 400; font-size: 1.25em; line-height: 1.1; letter-spacing: 0; text-transform: none; white-space: nowrap; }
 .bo-titolo i::before, .bo-titolo i::after { content: ''; width: .9em; height: 1px; background: currentColor; }
 .bo-titolo b { font-weight: inherit; text-wrap: balance; }
 .bo-via .e-testo { z-index: 2; top: var(--edge); bottom: 0; align-content: center; align-items: center; grid-template-columns: minmax(0, .85fr) minmax(0, 1.5fr) auto; } /* testo, nomi e bottone al centro del ripiano */
@@ -47,7 +46,7 @@
 .bo-pi--b { --h: 94%; right: -2%; --sp: -1; --k: .18; --v: 1.25deg; --rot: 5deg; }
 .bo-sala .e-n { color: #fff; }
 .bo-nome { display: flex; flex-direction: column; align-items: flex-start; font-size: clamp(1.3rem, 2vw, 2.1rem); line-height: 1.04; font-weight: 500; letter-spacing: .03em; text-transform: uppercase; }
-.bo-nome i { display: flex; align-items: center; gap: .4em; font-family: 'Pinyon Script', cursive; font-style: normal; font-weight: 400; font-size: .8em; line-height: 1.1; letter-spacing: 0; text-transform: none; }
+.bo-nome i { display: flex; align-items: center; gap: .4em; font-family: 'Alex Brush', cursive; font-style: normal; font-weight: 400; font-size: .8em; line-height: 1.1; letter-spacing: 0; text-transform: none; }
 .bo-nome i::after { content: ''; width: 1.6em; height: 1px; background: currentColor; }
 .bo-nome b { font-weight: inherit; }
 .bo-claim { display: block; margin-bottom: 6px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
@@ -114,11 +113,8 @@
 .page-bo .tv-macchia { left: 50%; top: auto; bottom: 7%; width: 88%; height: 86%; aspect-ratio: auto; translate: -50% 0; overflow: hidden; background: var(--wine); transform-origin: 50% 100%;
   -webkit-mask: var(--sagoma) center / 100% 100% no-repeat; mask: var(--sagoma) center / 100% 100% no-repeat; }
 .page-bo .bv-v .tv-macchia { rotate: none; scale: 1; }
-.page-bo .tv-macchia::before, .page-bo .tv-macchia::after { content: ''; position: absolute; inset: 5% 0 -3%; background: var(--c3); transform-origin: 50% 100%; rotate: -8deg;
-  -webkit-mask: var(--stain) -22% 100% / auto 100% no-repeat; mask: var(--stain) -22% 100% / auto 100% no-repeat; }
-.page-bo .tv-macchia::after { scale: -1 1; rotate: 8deg; }
-.page-bo .bo-una .tv-macchia::after { display: none; }
-.page-bo .bo-una .tv-macchia::before { -webkit-mask-position: 50% 100%; mask-position: 50% 100%; rotate: none; }
+.page-bo .tv-macchia::before { content: ''; position: absolute; inset: 8% 8% 5%; background: var(--c3); transform-origin: 50% 100%;
+  -webkit-mask: var(--stain) 50% 100% / contain no-repeat; mask: var(--stain) 50% 100% / contain no-repeat; }
 /* finestre basse e telefono: nella sala il ripiano tiene tutto (il nome lungo della 125 Uno Due Cinque usciva di pochi px) */
 @media (min-width: 861px) and (max-height: 700px) { .bo-nome { font-size: clamp(1.1rem, 1.6vw, 1.6rem); } .bo-sala .e-d { font-size: 1rem; line-height: 1.36; } }
 @media (max-width: 860px) { .bo-sala .e-d { font-size: .9375rem; line-height: 1.34; } }
@@ -128,6 +124,5 @@
   -webkit-mask: var(--sagoma) center / 100% 100% no-repeat; mask: var(--sagoma) center / 100% 100% no-repeat; transition: opacity .35s var(--ease), scale .7s var(--ease); }
 .page-bo .cantina__stain { width: 58px; }
 .page-bo .cstage__wine.is-on .cstage__stain, .page-bo .cantina__wine:hover .cantina__stain { scale: 1; }
-.page-bo :is(.cstage__stain, .cantina__stain)::before, .page-bo :is(.cstage__stain, .cantina__stain)::after { content: ''; position: absolute; inset: 5% 0 -3%; background: var(--c3); transform-origin: 50% 100%; rotate: -8deg;
-  -webkit-mask: var(--stain) -22% 100% / auto 100% no-repeat; mask: var(--stain) -22% 100% / auto 100% no-repeat; }
-.page-bo :is(.cstage__stain, .cantina__stain)::after { scale: -1 1; rotate: 8deg; }
+.page-bo :is(.cstage__stain, .cantina__stain)::before { content: ''; position: absolute; inset: 8% 8% 5%; background: var(--c3); transform-origin: 50% 100%;
+  -webkit-mask: var(--stain) 50% 100% / contain no-repeat; mask: var(--stain) 50% 100% / contain no-repeat; }
