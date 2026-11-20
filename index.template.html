@@ -2,50 +2,49 @@
 <html lang="it">
 <head>
 <!-- @include sections/_head.html -->
-<!-- INGRESSO (17 nov 2026): la scelta del mood. Il sito è uno e si guarda in più modi: Botanica (botanica.html) e Fotografia (foto.html, diventerà Pop).
-     Qui porta anche il comando "Mood" della barra di ogni pagina (js/main.js), che dice da dove si arriva: la scelta riporta alla stessa pagina nell'altro mood.
-     Colonne a tutto schermo, una per mood, e nient'altro: il marchio in alto, in basso il nome e "Entra". Ogni colonna mostra il suo mood com'è nella sua home
-     (Botanica: colore, ripiano e pianta della collezione, da js/dati-bf.js; Fotografia: le foto di Instagram con la sfumatura scura sotto il testo).
-     PROVA: due effetti sulla stessa impaginazione, nella fascia scura in alto (.mood-prova): Cambio e Onda. A scelta fatta: via la fascia, la sezione scartata e i suoi pezzi in css/mood.css e js/mood.js.
-     Le prove di prima (Sipario, Lente, Porte) sono in _archivio-prove/mood-17nov-sipario-lente-porte.
-     Da parte, non più collegate ma ancora ai loro indirizzi: acquerello.html (era questa pagina), moderna-e.html (Incisione), moderna-h.html (Pittura). -->
+<!-- INGRESSO, la scelta del mood (rifatta il 20 nov 2026: "questa dobbiamo ripensare in base ai nuovi aggiornamenti senza mettere company e aggiornare nomi e font").
+     È la prima pagina del sito; dalle pagine non ci porta più niente, il cambio di mood sta nell'angolo di ogni pagina (js/cambio-mood.js). I mood sono due, quelli dello switch
+     (js/main.js, MOOD): Botanica (botanica-pop.html) e Pop (pop-b.html). Company resta fuori.
+     Le due home ora aprono allo stesso modo, la frase "Wines that set the mood." dietro le stesse quattro bottiglie: qui c'è quell'apertura nei due mood insieme, divisa da un'onda.
+     A sinistra Botanica (il bordeaux della Collezione 53, la targa col ginepro, Libre Caslon), a destra Pop (bianco e inchiostro, Londrina Solid e DM Sans). Misure di frase e targa
+     come nelle home (css/pop-prove.css, css/botanica-pop.css). Le bottiglie sono le foto del catalogo, non il 3D: qui basta e sul telefono pesa meno.
+     Il mouse sposta l'onda verso l'altro mood, il clic la porta fino al bordo, frase e bottiglie escono e la home fa il suo ingresso. js/mood.js, css/mood.css.
+     La pagina di prima (prove Cambio e Onda, con le sale e le foto di Instagram) è in _archivio-prove/scelta-mood-cambio-onda-20nov. -->
 <title>Feudi Salentini · Vini del Salento</title>
 <meta name="description" content="Feudi Salentini: Primitivo di Manduria, Negroamaro e i vini del Salento della famiglia Varvaglione, a Leporano (TA).">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Montserrat:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&family=Libre+Caslon+Display&family=Libre+Caslon+Text&family=Londrina+Solid:wght@900&display=swap">
 <link rel="stylesheet" href="css/mood.css">
 </head>
 <body class="page-porta">
-<nav class="mood-prova" aria-label="Versioni di prova di questa pagina"><span>Prova</span><a href="?s=cambio" data-s="cambio">Cambio</a><a href="?s=onda" data-s="onda">Onda</a></nav>
 <main id="main" class="mood">
-  <h1 class="mood__t">Scegli il mood</h1>
-  <p class="mood__logo"><span class="logo" role="img" aria-label="Feudi Salentini"></span></p>
-  <a class="mood__x" href="botanica.html" hidden>Chiudi</a>
+  <h1 class="mood__t">Feudi Salentini: scegli il mood</h1>
 
-  <!-- PROVA 1, CAMBIO (quella che propongo: si apre con questa): quattro colonne, due per mood. Il mood su cui si passa si prende una colonna dell'altro (il foglio colorato scorre sulla foto, o se ne va); al clic se le prende tutte.
-       Sul telefono restano le due di mezzo. I fogli di Botanica li aggiunge js/mood.js -->
-  <section class="cmb" data-scena="cambio" aria-label="I mood">
-    <div class="cmb__cols" aria-hidden="true">
-      <div class="cmb__c"><img src="assets/foto-ig/piscina.webp" alt="" decoding="async" style="--ox:54%"></div>
-      <div class="cmb__c"><img src="assets/foto-ig/salotto.webp" alt="" decoding="async" style="--ox:52%"></div>
-      <div class="cmb__c"><img src="assets/foto-ig/tavola.webp" alt="" decoding="async" style="--ox:46%"></div>
-      <div class="cmb__c"><img src="assets/foto-ig/giardino.webp" alt="" decoding="async" style="--ox:60%"></div>
+  <!-- la stessa apertura due volte: Pop sotto, Botanica sopra, ritagliata fino all'onda (js/mood.js). --a, --b: dove sta il centro della bottiglia, --k: la sua altezza, --dx: quanto la bottiglia sta fuori centro nella foto (css/mood.css) -->
+  <div class="mood__s mood__s--f" aria-hidden="true">
+    <span class="logo mood__logo"></span>
+    <p class="mood__frase"><span>Wines that</span><span>set the mood.</span></p>
+    <div class="mood__bott">
+      <img src="assets/bottles/primitivo53.webp" alt="" style="--a:-0.3874;--b:-1.5;--k:.92;--dx:-2.07%">
+      <img src="assets/bottles/biook-2.webp" alt="" style="--a:-0.1413;--b:-.5;--k:.985;--dx:-.31%">
+      <img src="assets/bottles/3CUORI.webp" alt="" style="--a:0.1146;--b:.5;--k:.905">
+      <img src="assets/bottles/negroamaro.webp" alt="" style="--a:0.3764;--b:1.5;--k:1">
     </div>
-    <a class="mood__z mood__z--b" href="botanica.html" data-mood="b" data-qui="Resta qui"><span class="mood__d"><b class="mood__n mood__n--b">Botanica</b><span class="mood__r">Una sala colorata e una pianta per ogni collezione.</span><span class="mood__v btn btn--gold">Entra</span></span></a>
-    <a class="mood__z mood__z--f" href="foto.html" data-mood="f" data-qui="Resta qui"><span class="mood__d"><b class="mood__n mood__n--f">Fotografia</b><span class="mood__r">Le fotografie di Instagram, a tutto schermo.</span><span class="mood__v btn btn--gold">Entra</span></span></a>
-  </section>
+  </div>
+  <div class="mood__s mood__s--b" aria-hidden="true">
+    <span class="mood__targa"><i></i></span>
+    <span class="logo mood__logo"></span>
+    <p class="mood__frase"><span>Wines that</span><span>set the mood.</span></p>
+    <div class="mood__bott">
+      <img src="assets/bottles/primitivo53.webp" alt="" style="--a:-0.3874;--b:-1.5;--k:.92;--dx:-2.07%">
+      <img src="assets/bottles/biook-2.webp" alt="" style="--a:-0.1413;--b:-.5;--k:.985;--dx:-.31%">
+      <img src="assets/bottles/3CUORI.webp" alt="" style="--a:0.1146;--b:.5;--k:.905">
+      <img src="assets/bottles/negroamaro.webp" alt="" style="--a:0.3764;--b:1.5;--k:1">
+    </div>
+  </div>
 
-  <!-- PROVA 2, ONDA: due colonne. Il confine è elastico: la colonna su cui si passa si allarga e il confine si gonfia all'altezza del puntatore; al clic l'onda copre lo schermo -->
-  <section class="onda" data-scena="onda" aria-label="I mood" hidden>
-    <div class="onda__f" aria-hidden="true">
-      <span class="onda__f2"><img src="assets/foto-ig/piscina.webp" alt="" decoding="async" loading="lazy"></span>
-      <span class="onda__f1"><img src="assets/foto-ig/giardino.webp" alt="" decoding="async" style="--ox:44%;--oy:46%"><img src="assets/foto-ig/salotto.webp" alt="" decoding="async" loading="lazy" style="--ox:52%;--oy:88%"><img src="assets/foto-ig/tavola.webp" alt="" decoding="async" loading="lazy" style="--ox:46%;--oy:100%"></span>
-    </div>
-    <div class="onda__b" aria-hidden="true"></div>
-    <a class="mood__z mood__z--b" href="botanica.html" data-mood="b" data-qui="Resta qui"><span class="mood__d"><b class="mood__n mood__n--b">Botanica</b><span class="mood__r">Una sala colorata e una pianta per ogni collezione.</span><span class="mood__v btn btn--gold">Entra</span></span></a>
-    <a class="mood__z mood__z--f" href="foto.html" data-mood="f" data-qui="Resta qui"><span class="mood__d"><b class="mood__n mood__n--f">Fotografia</b><span class="mood__r">Le fotografie di Instagram, a tutto schermo.</span><span class="mood__v btn btn--gold">Entra</span></span></a>
-  </section>
+  <a class="mood__z mood__z--b" href="botanica-pop.html" data-mood="b"><b class="mood__n">Botanica</b><span class="mood__v btn">Entra</span></a>
+  <a class="mood__z mood__z--f" href="pop-b.html" data-mood="f"><b class="mood__n">Pop</b><span class="mood__v btn">Entra</span></a>
 </main>
-<script src="js/dati-bf.js"></script>
 <script src="js/mood.js"></script>
 </body>
 </html>

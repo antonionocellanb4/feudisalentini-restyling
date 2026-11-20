@@ -1177,3 +1177,20 @@ Scartati senza provarli: le bottiglie dipinte (scure sul blu notte, non si vedon
   tutte in una tabella apribile); le notizie, la più recente grande; per ultimi i vini, catalogo a righe per collezione col filtro per colore e la bottiglia della riga accanto.
   Inter Tight a un peso (500), carta e pietra, oro solo per numeri, guida e bottone. css/company.css e js/company.js nuovi; js/pop-azienda.js e js/pop-sotto.js tengono le
   aggiunte del (110), che non cambiano le altre pagine. Provato a 1600x1000, 1366x700, 390x844 touch e animazioni ridotte, senza errori.
+- 20 nov (113), la scelta del mood (index.html) rifatta: "questa dobbiamo ripensare in base ai nuovi aggiornamenti senza mettere company e aggiornare nomi e font".
+  I mood sono quelli dello switch, Botanica (botanica-pop.html) e Pop (pop-b.html); Company fuori. Le due home ora aprono uguali (la frase "Wines that set the mood." dietro le
+  quattro bottiglie), quindi la pagina è quell'apertura nei due mood insieme, divisa da un'onda: a sinistra Botanica (bordeaux della 53, targa col ginepro, Libre Caslon), a destra
+  Pop (bianco e inchiostro, Londrina Solid, DM Sans). Frase e targa con le misure delle home; bottiglie = foto del catalogo messe come la fila 3D (js/pop-prove.js, disponi).
+  Restano le regole del (34): uno schermo, marchio in alto al centro, in basso nome nel carattere del mood ed "Entra", ogni metà un link. Bottoni pieni tutti e due (quello a filo
+  di Botanica accanto al pieno del Pop sembrava secondario; passandoci sopra oro per Botanica, pietra per Pop). L'onda è quella della prova Onda: segue il mouse, al clic copre
+  lo schermo e la home si apre già composta (fs-arrivo, come il cambio di mood). Ferma non sta a metà: lì si leggeva "Wine that set the e mood"; js/mood.js cerca sulle lettere
+  vere (inchiostro, non casella) un taglio per riga in cui nessuna lettera è doppia o persa e piega l'onda fra le due righe, e in alto la fa passare dal centro del marchio.
+  Via la riga sotto i nomi (quella di Fotografia non valeva più) e la logica ?ora/Chiudi (dalle pagine non ci porta più niente). La pagina di prima (Cambio e Onda con sale e foto di
+  Instagram) è in _archivio-prove/scelta-mood-cambio-onda-20nov. Provato a 1440x900, 1100x700, 1920x1080, 390x844 e 360x640 al tocco, 844x390, animazioni ridotte, clic fino
+  alla home e ritorno indietro, senza errori. Non pubblicato.
+- 20 nov (114), scelta del mood, il passaggio alla home: "e ma l'animazione delle bottiglie che entrano la devo vedere quando clicco, altrimenti non so cosa ci sia scritto dietro
+  le bottiglie". La home si apriva già composta (fs-arrivo, preso dal cambio di mood): tolto. Ora al clic, mentre l'onda copre lo schermo, frase e nomi svaniscono e le bottiglie
+  escono a destra (prima quella di destra); resta il fondo del mood e la home ci sfuma sopra facendo tutto il suo ingresso: la frase lettera per lettera, poi le bottiglie che
+  entrano rotolando da sinistra. Si va alla home solo a bottiglie uscite (750 ms dal clic). Sul telefono svanisce anche il marchio (lì la home lo ha a sinistra, se ne vedevano due).
+  Il cambio di mood dall'angolo delle pagine resta com'è (lì la pagina nuova si vede viva nell'onda, ripartire sarebbe un salto). Provato a 1440x900 su Botanica, a 390x844 al tocco su Pop,
+  animazioni ridotte, senza errori.
