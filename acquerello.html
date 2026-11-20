@@ -47,7 +47,6 @@ try { var fsPour = JSON.parse(sessionStorage.getItem('fs-pour') || 'null'); sess
   <div class="nav__bar">
     <nav class="nav__links" aria-label="Principale">
       <button class="nav__link" type="button" data-cantina-toggle aria-expanded="false" aria-controls="cantina" data-nav-for="p-vini collezioni tavola vino">Vini</button>
-      <a class="nav__link" href="come-nasce.html" data-nav-for="p-nasce nasce">Come nasce</a>
       <a class="nav__link" href="azienda.html" data-nav-for="p-azienda azienda">Azienda</a>
       <a class="nav__link" href="index.html#premi" data-nav-for="p-premi premi">Premi</a>
     </nav>
@@ -65,7 +64,6 @@ try { var fsPour = JSON.parse(sessionStorage.getItem('fs-pour') || 'null'); sess
     <nav aria-label="Menu">
       <ul class="nav-menu__list">
         <li><button class="nav-menu__item" type="button" data-cantina-toggle aria-expanded="false" aria-controls="cantina">Vini <span class="nav-menu__count" data-cantina-total>28</span><svg class="nav-menu__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button></li>
-        <li><a class="nav-menu__item" href="come-nasce.html">Come nasce il vino</a></li>
         <li><a class="nav-menu__item" href="azienda.html">Azienda</a></li>
         <li><a class="nav-menu__item" href="index.html#premi">Premi</a></li>
         <li><a class="nav-menu__item" href="index.html#contatti">Contatti</a></li>
@@ -109,43 +107,43 @@ try { var fsPour = JSON.parse(sessionStorage.getItem('fs-pour') || 'null'); sess
     <div class="fb-track">
       <div class="fb-intro fb-testo" style="--x:70;--y:150">
         <h1 class="fb-title" id="fb-title" data-righe>Una giornata al&nbsp;feudo.</h1>
-        <p class="t-lead fb-lead">Leporano, sul mar Ionio, a sud di Taranto. Scorri e attraversa le terre dei Feudi Salentini: ogni tappa è una delle nostre collezioni.</p>
+        <p class="t-lead fb-lead">Dalla torre al tramonto, una giornata ideale nel Salento. Scorri: ogni tappa è una collezione dei Feudi Salentini.</p>
         <p class="fb-scorri"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Scorri</p>
       </div>
 
       <article class="fb-cap fb-testo" data-tappa="0" style="--x:1620;--y:150">
         <p class="fb-cap__n">01 · La torre</p>
         <h2 class="fb-cap__t">Collezione 53</h2>
-        <p class="fb-cap__d">La linea Luxury: Primitivo di Manduria da vecchie vigne e Negroamaro, da uve selezionate a mano.</p>
+        <p class="fb-cap__d">Dove tutto comincia: le radici e la storia di questa terra. La linea Luxury: Primitivo di Manduria da vecchie vigne e Negroamaro, da uve selezionate a mano.</p>
         <button class="btn btn--line fb-cap__go" type="button" data-col="luxury">Vedi i 3 vini</button>
       </article>
       <article class="fb-cap fb-testo" data-tappa="1" style="--x:2460;--y:150">
         <p class="fb-cap__n">02 · La terra rossa</p>
         <h2 class="fb-cap__t">Terra</h2>
-        <p class="fb-cap__d">Sette vini dalle uve del Salento: Primitivo di Manduria, Negroamaro, Malvasia bianca e nera, un rosato.</p>
+        <p class="fb-cap__d">Il rosso della terra e i filari: qui la natura è protagonista. Sette vini dalle uve del Salento: Primitivo di Manduria, Negroamaro, Malvasia bianca e nera, un rosato.</p>
         <button class="btn btn--line fb-cap__go" type="button" data-col="terra">Vedi i 7 vini</button>
       </article>
       <article class="fb-cap fb-testo" data-tappa="2" style="--x:4460;--y:150">
         <p class="fb-cap__n">03 · Il campo</p>
         <h2 class="fb-cap__t">125 Organic</h2>
-        <p class="fb-cap__d">Un bianco e un Primitivo da agricoltura biologica, Puglia IGP.</p>
+        <p class="fb-cap__d">Si coltiva in biologico, nel rispetto del territorio. Un bianco e un Primitivo da agricoltura biologica, Puglia IGP.</p>
         <button class="btn btn--line fb-cap__go" type="button" data-col="organic">Vedi i 2 vini</button>
       </article>
       <article class="fb-cap fb-testo" data-tappa="3" style="--x:6360;--y:150">
         <p class="fb-cap__n">04 · Il mare</p>
         <h2 class="fb-cap__t">Classica</h2>
-        <p class="fb-cap__d">La linea più ampia, tredici vini: dal Sassirossi delle vigne ad alberello al Susumaniello, dal bianco Càla al rosato Tre Cuori.</p>
+        <p class="fb-cap__d">Lo Ionio, che dà al Salento la sua luce. La linea più ampia, tredici vini: dal Sassirossi delle vigne ad alberello al Susumaniello, dal bianco Càla al rosato Tre Cuori.</p>
         <button class="btn btn--line fb-cap__go" type="button" data-col="classica">Vedi i 12 vini</button>
       </article>
       <article class="fb-cap fb-testo" data-tappa="4" style="--x:8360;--y:150">
         <p class="fb-cap__n">05 · Il tramonto</p>
         <h2 class="fb-cap__t">125 Uno Due Cinque</h2>
-        <p class="fb-cap__d">La linea Lounge Bar per l'aperitivo e i primi piatti: Pinot Grigio, Malvasia Bianca, un rosato leggermente mosso, Primitivo, Negroamaro e Malvasia Nera.</p>
+        <p class="fb-cap__d">La luce calda della sera e il piacere di dividere un calice. La linea Lounge Bar per l'aperitivo e i primi piatti: Pinot Grigio, Malvasia Bianca, un rosato leggermente mosso, Primitivo, Negroamaro e Malvasia Nera.</p>
         <button class="btn btn--line fb-cap__go" type="button" data-col="lounge">Vedi i 4 vini</button>
       </article>
 
       <div class="fb-fine fb-testo" style="--x:9850;--y:230">
-        <h2 class="fb-fine__t">Fine della giornata.</h2>
+        <h2 class="fb-fine__t">Fine della giornata. Resta un calice da condividere.</h2>
         <div class="fb-fine__cta">
           <button class="btn btn--gold" type="button" data-col="">Tutti i <span data-cantina-total>33</span> vini</button>
         </div>
@@ -295,7 +293,6 @@ try { var fsPour = JSON.parse(sessionStorage.getItem('fs-pour') || 'null'); sess
         <p class="foot__fax">Fax +39 099 5315739</p>
         <p class="foot__telriga" hidden>Tel <a href="tel:+390995315370">+39 099 5315370</a></p><!-- solo nel piede Pop (css/pop-prove.css), dove il numero grande sta in cima e qui sotto restava il solo fax: "qui togli fax metti tel" (19 nov) -->
         <address>Feudi Salentini srl<br><a href="https://www.google.com/maps/search/?api=1&amp;query=Feudi+Salentini+Via+Esterna+Talsano+36+Leporano" target="_blank" rel="noopener">Via Esterna Talsano, 36, 74020 Leporano (TA)</a></address>
-        <p class="foot__tbd"><span class="tbd">Indirizzo da confermare: il sito attuale riporta anche Via Amendola 36</span></p>
       </div>
     </div>
 
