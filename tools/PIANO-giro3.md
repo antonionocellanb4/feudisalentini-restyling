@@ -1194,3 +1194,32 @@ Scartati senza provarli: le bottiglie dipinte (scure sul blu notte, non si vedon
   entrano rotolando da sinistra. Si va alla home solo a bottiglie uscite (750 ms dal clic). Sul telefono svanisce anche il marchio (lì la home lo ha a sinistra, se ne vedevano due).
   Il cambio di mood dall'angolo delle pagine resta com'è (lì la pagina nuova si vede viva nell'onda, ripartire sarebbe un salto). Provato a 1440x900 su Botanica, a 390x844 al tocco su Pop,
   animazioni ridotte, senza errori.
+- 24 nov (115), pagina del vino di Botanica: "vino-b deve avere la struttura come pop-vino ma con stile botanico". vino-b.template.html ora è pop-vino.template.html
+  (stesso palco, bottiglia che fa da rullo, stessi capitoli e altri vini: js/pop-vino.js, css/pop-vino.css) con body.bp e css/botanica-pop.css, come la home: Libre Caslon,
+  colore di sala della collezione del vino (js/dati-bf.js, lo mette js/pop-vino.js), dietro i capitoli la targa delle copertine con la sua pianta intera (scelta mia, come
+  nell'apertura della home), fili dritti al posto del pennarello, gli altri vini sul tono della targa. Con le animazioni ridotte niente targa. L'indirizzo resta vino-b.html,
+  quindi menu, home e angolo del mood non cambiano. La pagina di prima (Palco e Pagina, js/pagine-bf.js, che resta per vino-f.html) è in
+  _archivio-prove/vino-b-palco-pagina-24nov. Se pop-vino cambia, vino-b va riallineata a mano (sono due template). Provato a 1440x900 (c53-primitivo, organic-bianco chiara con
+  la lente, gocce senza 3D), 1100x700 (tre-cuori), 390x844 al tocco, animazioni ridotte, pop-vino invariata, senza errori. Non pubblicato.
+- 24 nov (116), caratteri di Botanica, SCELTI: "per la Botanica font da usare Instrument Serif e per paragrafi e pulsanti sempre DM Sans". In css/botanica-pop.css
+  --font-display è Instrument Serif (--bk 1.08: è stretto, a parità di larghezza sta l'8% più grande) e --font è DM Sans; la frase delle copertine (.pc-frase) è il corsivo
+  dell'Instrument Serif (scelta mia: era il corsivo del Caslon). Tolta la prova dei caratteri (?carattere=, riga Carattere del pannello, regole data-carattere). Stessi caratteri
+  nella metà Botanica della scelta del mood (css/mood.css, js/mood.js, index.template.html) e nella pagina del vino (vino-b). Non pubblicato.
+- 24 nov (117), mega menu dei vini, ALTERNATIVE IN PROVA: "mi daresti delle alternative più funzionali e non troppo incasinate?". js/menu-prove.js + css/menu-prove.css,
+  caricati da sections/_head.html e _scripts.html; attivi solo su Pop e Botanica (body.page-fo) e da 1080 px in su (sul telefono resta l'elenco). A menu aperto, nella barra
+  fra le voci e il marchio, il selettore A B C D (resta per la sessione; anche ?menu=b|c|d). A = quello di adesso, non toccato. In B, C e D: una riga sola in alto con ricerca,
+  colori (ripremuti si tolgono) e Chiudi; ogni vino è un link diretto alla scheda; mai più di sei bottiglie, poi "Altri vini".
+    B Scaffale: le sei collezioni in una riga di schede, sotto le bottiglie grandi su un filo con nome e denominazione.
+    C Indice: tutti i 33 vini in vista, una colonna per collezione; a destra la bottiglia del vino sotto il mouse con "Apri la scheda" (in Botanica sulla targa con la pianta).
+       È un elenco di nomi (lui il 17 nov, sulle sezioni della home: "qui avrei voluto vedere le bottiglie"): glielo dico.
+    D Collezioni: sei fasce affiancate, quella aperta mostra le sue bottiglie, le altre il nome in piedi; in Botanica ogni fascia nel suo colore di sala e la targa nella aperta.
+  Ganci in js/nav.js segnati "prove del menu": FS.cantina, eventi fs:cantina-aperta e fs:cantina-cerca, cerche() contato ogni volta. I due Primaura (stesso nome e stessa
+  denominazione) si distinguono con le uve. Nelle fasce conta solo il mouse che si muove (pointermove): con pointerover una fascia che si chiudeva sotto il mouse fermo si riapriva.
+  A scelta fatta: tenere la forma scelta, togliere il resto e i ganci. Provato a 1440x900, 1100x700, 1366x650 su Pop e Botanica, ricerca, vuoto, Esc, Invio, Chiudi,
+  apertura dal piede su una collezione, telefono invariato, pagine fuori dai mood invariate, senza errori. Non pubblicato.
+- 24 nov (118), mega menu dei vini, SCELTO: "direi la versione C per pop e botanico". L'Indice è il menu dei vini di Pop e Botanica da 1080 px in su: js/menu-vini.js +
+  css/menu-vini.css (da sections/_head.html e _scripts.html; attivi solo con body.page-fo, il css solo se lo script è partito: html.cm-on). Tutti i 33 vini in sei colonne,
+  ogni nome porta alla scheda; a destra la bottiglia del vino sotto il mouse o col fuoco, con "Apri la scheda" (in Botanica sulla targa nel colore di sala con la pianta).
+  In alto ricerca, colori e Chiudi. Aperto su una collezione (piede, pagina del vino) la sua colonna è segnata e a destra c'è il suo primo vino. Il palco di js/nav.js (.cstage)
+  resta per gli altri siti; sul telefono resta l'elenco. Scaffale, Collezioni e il selettore sono in _archivio-prove/menu-vini-prove-24nov. In js/nav.js restano FS.cantina e
+  gli eventi fs:cantina-aperta / fs:cantina-cerca. Provato a 1440x900 (pop-b), 1366x650 (vino-b), 1100x700 (pop-azienda), telefono, moderna-e invariata, senza errori.

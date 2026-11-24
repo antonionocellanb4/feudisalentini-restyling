@@ -2,21 +2,47 @@
 <html lang="it">
 <head>
 <!-- @include sections/_head.html -->
-<!-- PAGINA DEL VINO della versione Botanica (vino-b.html?id=<id di js/data.js>), 13 nov 2026. Contenuto e movimenti in js/pagine-bf.js (la stessa pagina per Botanica e Fotografia), veste in css/pagine-bf.css sopra css/botanica.css -->
+<!-- PAGINA DEL VINO di Botanica (vino-b.html?id=<id di js/data.js>). Rifatta il 24 nov 2026: "deve avere la struttura come pop-vino ma con stile botanico".
+     È pop-vino.template.html (stesso palco, la bottiglia che fa da rullo, gli stessi capitoli e gli altri vini della collezione: js/pop-vino.js, css/pop-vino.css) con quello
+     che fa Botanica, come la sua home (botanica-pop.html, css/botanica-pop.css): Instrument Serif e DM Sans, il colore di sala della collezione del vino (js/dati-bf.js), dietro i capitoli la
+     targa delle copertine con la sua pianta intera, fili dritti al posto del pennarello. Se pop-vino cambia, questa pagina va riallineata a mano.
+     Quella di prima (modi Palco e Pagina, js/pagine-bf.js: resta per vino-f.html) è in _archivio-prove/vino-b-palco-pagina-24nov. -->
 <title>Il vino · Feudi Salentini</title>
 <meta name="description" content="La scheda del vino Feudi Salentini: descrizione, vista e profumi, abbinamenti, vigna e cantina, riconoscimenti.">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Alex+Brush&display=swap">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300..700&family=Instrument+Serif:ital@0;1&display=swap">
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.min.js"}}</script>
 <link rel="stylesheet" href="css/moderna-kit.css">
-<link rel="stylesheet" href="css/botanica.css">
-<link rel="stylesheet" href="css/pagine-bf.css">
+<link rel="stylesheet" href="css/foto.css">
+<link rel="stylesheet" href="css/pop-prove.css">
+<link rel="stylesheet" href="css/pop-vino.css">
+<link rel="stylesheet" href="css/botanica-pop.css">
 </head>
-<body class="page-moderna page-vino page-bo page-vb" data-sito="b">
+<body class="page-moderna page-fo page-sv page-bo bp" data-sito="b">
 <!-- @include sections/header.html -->
-<main id="main"></main>
+<main id="main">
+<section class="sv" id="vino" aria-labelledby="sv-t">
+  <div class="sv-st">
+    <div class="sv-dentro">
+      <canvas class="sv-tela" aria-hidden="true"></canvas>
+      <div class="sv-presa" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+<section class="sv-altri" aria-labelledby="sv-a" hidden>
+  <div class="sv-altri__t"><p class="sv-k">Gli altri vini della collezione</p><button class="fo-link sv-altri__b" type="button" hidden></button></div>
+  <div class="sv-banco">
+    <h2 class="sv-coll" id="sv-a"></h2>
+    <svg class="pp-riga sv-piano" viewBox="0 0 1000 12" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M3 7 C120 2 260 11 400 6 S700 2 860 7 S960 9 997 5"/></svg>
+    <div class="sv-fila"></div>
+  </div>
+</section>
+</main>
 <!-- @include sections/footer.html -->
 <!-- @include sections/_scripts.html -->
 <script src="js/moderna-kit.js"></script>
 <script src="js/dati-bf.js"></script>
-<script src="js/pagine-bf.js"></script>
+<script type="module" src="js/pop-vino.js"></script>
+<script type="module" src="js/pop-piede.js"></script>
 </body>
 </html>

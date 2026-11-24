@@ -11,15 +11,24 @@
 <script>/* cambio di mood (17 nov): la pagina nuova si apre da dove si è scelto (css/nav.css, mood-apre). Al clic si annota la forma di partenza, "da|a|opacità" (due clip-path, e se la pagina nuova parte trasparente): il riquadro del link, oppure quella scritta nel link (data-mood-da) o da js/mood.js. All'arrivo, prima del primo disegno, la si passa al css. Senza appunto il passaggio non parte: gli altri link cambiano pagina come sempre. A passaggio finito si avvisa la barra (un evento scroll): durante il passaggio js/nav.js non vede cosa c'è sotto e sbaglia il tono */addEventListener("click",function(e){var p=e.target.closest&&e.target.closest("a[data-mood],a[data-mood-da]");if(!p||e.defaultPrevented)return;var da=p.getAttribute("data-mood-da");if(!da){var r=p.getBoundingClientRect(),w=innerWidth,h=innerHeight;da="inset("+[r.top/h,1-r.right/w,1-r.bottom/h,r.left/w].map(function(n){return(Math.max(0,n)*100).toFixed(2)+"%"}).join(" ")+")"}try{sessionStorage.setItem("fs-mood-da",da)}catch(x){}});addEventListener("pagereveal",function(e){var da;try{da=sessionStorage.getItem("fs-mood-da");sessionStorage.removeItem("fs-mood-da")}catch(x){}if(!e.viewTransition)return;e.viewTransition.finished.then(function(){dispatchEvent(new Event("scroll"))},function(){});if(da){da=da.split("|");var s=document.documentElement.style;s.setProperty("--mood-da",da[0]);s.setProperty("--mood-a",da[1]||"inset(0% 0% 0% 0%)");s.setProperty("--mood-o",da[2]||"1")}else{e.viewTransition.ready.catch(function(){});e.viewTransition.skipTransition()}});</script>
 <link rel="stylesheet" href="css/base.css?v=3c076e8f">
 <link rel="stylesheet" href="css/nav.css?v=5e36c683">
-<!-- PAGINA DEL VINO della versione Botanica (vino-b.html?id=<id di js/data.js>), 13 nov 2026. Contenuto e movimenti in js/pagine-bf.js (la stessa pagina per Botanica e Fotografia), veste in css/pagine-bf.css sopra css/botanica.css -->
+<link rel="stylesheet" href="css/menu-vini.css?v=7412f2c1">
+<!-- PAGINA DEL VINO di Botanica (vino-b.html?id=<id di js/data.js>). Rifatta il 24 nov 2026: "deve avere la struttura come pop-vino ma con stile botanico".
+     È pop-vino.template.html (stesso palco, la bottiglia che fa da rullo, gli stessi capitoli e gli altri vini della collezione: js/pop-vino.js, css/pop-vino.css) con quello
+     che fa Botanica, come la sua home (botanica-pop.html, css/botanica-pop.css): Instrument Serif e DM Sans, il colore di sala della collezione del vino (js/dati-bf.js), dietro i capitoli la
+     targa delle copertine con la sua pianta intera, fili dritti al posto del pennarello. Se pop-vino cambia, questa pagina va riallineata a mano.
+     Quella di prima (modi Palco e Pagina, js/pagine-bf.js: resta per vino-f.html) è in _archivio-prove/vino-b-palco-pagina-24nov. -->
 <title>Il vino · Feudi Salentini</title>
 <meta name="description" content="La scheda del vino Feudi Salentini: descrizione, vista e profumi, abbinamenti, vigna e cantina, riconoscimenti.">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Alex+Brush&display=swap">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300..700&family=Instrument+Serif:ital@0;1&display=swap">
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.min.js"}}</script>
 <link rel="stylesheet" href="css/moderna-kit.css?v=d9e8b4c9">
-<link rel="stylesheet" href="css/botanica.css?v=d0aa9db4">
-<link rel="stylesheet" href="css/pagine-bf.css?v=3d72eaa8">
+<link rel="stylesheet" href="css/foto.css?v=dda4b864">
+<link rel="stylesheet" href="css/pop-prove.css?v=8ade0341">
+<link rel="stylesheet" href="css/pop-vino.css?v=9e621faf">
+<link rel="stylesheet" href="css/botanica-pop.css?v=5e1fb161">
 </head>
-<body class="page-moderna page-vino page-bo page-vb" data-sito="b">
+<body class="page-moderna page-fo page-sv page-bo bp" data-sito="b">
 <!-- NAVIGAZIONE: header fisso, menu telefono, cantina (mega menu dei vini), copertura della transizione versata.
      Script: js/nav.js · Stile: css/nav.css · Altri agenti aprono la cantina con
      document.dispatchEvent(new CustomEvent('fs:open-cantina', {detail:{tipo:'rosso'}})) -->
@@ -85,7 +94,24 @@ try { var fsPour = JSON.parse(sessionStorage.getItem('fs-pour') || 'null'); sess
 </div>
 
 <div class="pour" aria-hidden="true"><canvas></canvas></div>
-<main id="main"></main>
+<main id="main">
+<section class="sv" id="vino" aria-labelledby="sv-t">
+  <div class="sv-st">
+    <div class="sv-dentro">
+      <canvas class="sv-tela" aria-hidden="true"></canvas>
+      <div class="sv-presa" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+<section class="sv-altri" aria-labelledby="sv-a" hidden>
+  <div class="sv-altri__t"><p class="sv-k">Gli altri vini della collezione</p><button class="fo-link sv-altri__b" type="button" hidden></button></div>
+  <div class="sv-banco">
+    <h2 class="sv-coll" id="sv-a"></h2>
+    <svg class="pp-riga sv-piano" viewBox="0 0 1000 12" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M3 7 C120 2 260 11 400 6 S700 2 860 7 S960 9 997 5"/></svg>
+    <div class="sv-fila"></div>
+  </div>
+</section>
+</main>
 <!-- NAVIGAZIONE: footer (30 ott, come il footer di klimtwine): chiaro, alto uno schermo; logo in alto (newsletter tolta il 6 nov 2026, su sua richiesta), collezioni / cantina /
      contatti al centro, note legali in fondo. Il blocco scuro "Vieni a trovarci" è stato tolto. Dall'11 nov niente esperienze né degustazioni: non le fanno più.
      Stile: css/nav.css · Script: js/nav.js (collezioni che aprono il menu dei vini) -->
@@ -138,9 +164,11 @@ try { var fsPour = JSON.parse(sessionStorage.getItem('fs-pour') || 'null'); sess
 <script src="js/data.js?v=a0547593"></script>
 <script src="js/main.js?v=7c14ab57"></script>
 <script defer src="js/cambio-mood.js?v=c98fb4f4"></script>
-<script defer src="js/nav.js?v=fd4bc750"></script>
+<script defer src="js/nav.js?v=47ad55ba"></script>
+<script defer src="js/menu-vini.js?v=8fcb8d5a"></script>
 <script src="js/moderna-kit.js?v=1614b95a"></script>
 <script src="js/dati-bf.js?v=fea6b049"></script>
-<script src="js/pagine-bf.js?v=794589f2"></script>
+<script type="module" src="js/pop-vino.js?v=88906623"></script>
+<script type="module" src="js/pop-piede.js?v=3d96f34c"></script>
 </body>
 </html>

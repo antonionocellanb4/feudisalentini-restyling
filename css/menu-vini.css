@@ -1,0 +1,60 @@
+/* IL MENU DEI VINI di Pop e Botanica: l'Indice (24 nov 2026, js/menu-vini.js; scelto fra tre prove, "direi la versione C per pop e botanico": le altre in
+   _archivio-prove/menu-vini-prove-24nov). Solo da 1080 px in su e solo dove lo script è partito (html.cm-on): lì prende il posto del palco di css/nav.css (.cstage);
+   sotto resta l'elenco del telefono. Fondo, inchiostro e fili sono quelli del pannello (bianco, --ink); i titoli nel carattere dei titoli del mood (.cm-t: Londrina nel Pop,
+   Instrument Serif in Botanica). Campo e bottoni alti 44 px a pillola, come nel resto del menu. */
+.cm { display: none; }
+@media (min-width: 1080px) {
+  .cm-on .cstage { display: none; }
+  .cm-on .cm { display: grid; grid-template-rows: auto minmax(0, 1fr); height: 100%; padding: 14px 0 26px; color: var(--ink); }
+}
+
+/* i titoli: il carattere dei titoli del mood */
+.cm-t { margin: 0; font-family: var(--font-display); font-weight: var(--title-weight); letter-spacing: var(--title-track); line-height: 1; }
+body[data-titoli] .cm-t { font-family: var(--tf), sans-serif; font-weight: 900; font-stretch: 100%; letter-spacing: var(--tl); }
+.bp .cm-t { font-weight: var(--bw); letter-spacing: -.01em; }
+
+/* la riga in alto: ricerca, colori, Chiudi */
+.cm-bar { display: flex; align-items: center; gap: 8px; }
+.cm-bar .cantina__cerca { flex: 0 1 340px; }
+.cm-tipi { display: flex; gap: 8px; margin: 0 auto 0 8px; }
+.cm-tipi button, .cm-x { display: inline-flex; align-items: center; gap: .45em; height: 44px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px; font-size: 1rem; white-space: nowrap; transition: background-color .25s var(--ease), border-color .25s var(--ease), color .25s var(--ease); }
+.cm-tipi button:hover, .cm-x:hover { border-color: var(--ink); }
+.cm-tipi i { font-style: normal; font-variant-numeric: tabular-nums; color: var(--mute); }
+.cm-tipi button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.cm-tipi button[aria-pressed="true"] i { color: inherit; }
+
+/* sotto: a sinistra le sei colonne dei nomi, a destra la bottiglia */
+.cm-corpo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(250px, 23%); gap: clamp(28px, 3.4vw, 56px); min-height: 0; min-width: 0; margin-top: 20px; }
+.cm-vuoto { grid-column: 1 / -1; place-self: center; max-width: 34em; margin: 0; font-size: 1.25rem; line-height: 1.4; text-align: center; }
+.cm-indice { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0 clamp(14px, 1.7vw, 30px); align-content: start; min-height: 0; overflow: hidden auto; }
+.cm-colonna h3 { display: flex; align-items: flex-end; min-height: 2.1em; font-size: clamp(1.25rem, 1.65vw, 1.75rem); line-height: 1.05; text-wrap: balance; } /* due righe per tutte: gli elenchi partono alla stessa altezza */
+.cm-colonna > p { margin: 8px 0 8px; padding-bottom: 12px; border-bottom: 1px solid var(--ink); font-size: .9375rem; line-height: 1.2; color: var(--ink-2); }
+.cm-colonna.is-qui > p { box-shadow: inset 0 -4px 0 var(--ink); } /* la collezione chiesta da chi ha aperto il menu */
+.cm-colonna a { display: block; padding: clamp(3px, .75vh, 7px) 0; font-size: 1.0625rem; line-height: 1.25; color: var(--ink); text-decoration: none; }
+.cm-colonna a small { display: block; margin-top: 2px; font-size: .8125rem; line-height: 1.25; color: var(--ink-2); }
+.cm-colonna a:hover, .cm-colonna a.is-on { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 5px; }
+.cm-colonna.is-vuota { color: var(--mute); }
+
+/* la bottiglia: alta --bh dal tappo a dove finisce il vetro, in piedi sul filo; della foto si taglia solo il riflesso sotto il vetro */
+.cm-ante { --bh: min(48svh, calc(100svh - var(--header-h) - 372px)); display: grid; grid-template-columns: minmax(0, 1fr); align-content: end; justify-items: start; min-width: 0; }
+.cm-ante__b { position: relative; display: block; width: 100%; }
+.cm-vetro { position: relative; display: flex; justify-content: center; align-items: flex-end; width: 100%; height: var(--bh); border-bottom: 1px solid var(--ink); }
+.cm-vetro img { --ih: calc(var(--bh) / .91); flex: none; width: auto; max-width: none; height: var(--ih); margin-bottom: calc((var(--b, .91) - 1) * var(--ih)); clip-path: inset(0 0 calc((1 - var(--b, .91)) * 100%) 0); pointer-events: none; }
+@media (prefers-reduced-motion: no-preference) { .cm-vetro img { animation: cm-su .5s var(--ease) backwards; } }
+@keyframes cm-su { from { opacity: 0; transform: translateY(4%); } }
+.cm-ante__n { margin-top: 16px; font-size: clamp(1.6rem, 2.2vw, 2.4rem); line-height: 1.02; text-wrap: balance; }
+.cm-ante__d { margin: 8px 0 0; font-size: .9375rem; line-height: 1.3; color: var(--ink-2); }
+.cm-ante__v { margin: 6px 0 0; font-size: 1rem; line-height: 1.35; }
+.cm-ante__go.btn { margin-top: 18px; background: var(--ink); color: var(--paper); }
+.cm-ante__go.btn:hover { background: var(--stone); color: var(--ink); }
+/* Botanica: dietro la bottiglia la targa delle copertine nel colore di sala, con la pianta intera (--sagoma: css/nav.css; i colori li mette lo script) */
+.cm-targa { position: absolute; left: 50%; bottom: 0; width: min(100%, calc(var(--bh) * .78)); aspect-ratio: 5 / 6; translate: -50% 0; background: var(--c); pointer-events: none;
+  -webkit-mask: var(--sagoma) center / 100% 100% no-repeat; mask: var(--sagoma) center / 100% 100% no-repeat; }
+.cm-targa i { position: absolute; inset: 8% 8% 5%; background: var(--c3);
+  -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: 50% 100%; mask-position: 50% 100%; }
+
+/* schermi bassi (1366x650, 1100x700): l'elenco deve stare tutto in vista, la Classica ha tredici nomi */
+@media (min-width: 1080px) and (max-height: 760px) {
+  .cm-colonna a { padding-block: 2px; font-size: 1rem; line-height: 1.2; }
+  .cm-colonna > p { margin: 6px 0 4px; padding-bottom: 8px; }
+}

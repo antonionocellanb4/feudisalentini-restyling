@@ -204,11 +204,12 @@
   sRow.addEventListener('click', (e) => { if (!e.target.closest('.cstage__altri') || !curSet) return; da = da + SEI >= curSet.wines.length ? 0 : da + SEI; curWine = null; showSet(curSet.key, true, true); requestAnimationFrame(() => setTimeout(() => sRow.querySelector('.cstage__altri')?.focus({ preventScroll: true }), 300)); });
   /* mentre si cerca, passare col mouse su una collezione non cambia il palco; il clic sì, e svuota il campo */
   let prima = null;
-  const cerche = [...cantina.querySelectorAll('[data-cantina-cerca]')];
+  const cerche = () => [...cantina.querySelectorAll('[data-cantina-cerca]')]; /* contati ogni volta: il menu a indice di Pop e Botanica (js/menu-vini.js) ne aggiunge uno */
   const cerca = (v) => {
     frase = v.trim(); q = norm(frase).split(/\s+/).filter(Boolean);
-    cerche.forEach((i) => { if (i.value !== v) i.value = v; i.nextElementSibling.hidden = !v; });
+    cerche().forEach((i) => { if (i.value !== v) i.value = v; i.nextElementSibling.hidden = !v; });
     conta(); setTipo(tipo);
+    document.dispatchEvent(new CustomEvent('fs:cantina-cerca')); /* per il menu a indice di Pop e Botanica (js/menu-vini.js) */
     if (q.length) {
       const wines = data.wines.filter(trova), ids = wines.map((w) => w.id).join();
       if (curSet === cercaSet && ids === cercaSet.ids && ids) return; /* stessi vini: la fila resta com'è */
@@ -251,12 +252,13 @@
   const focusIn = (el) => requestAnimationFrame(() => el?.focus({ preventScroll: true }));
   const openCantina = (t, col) => {
     if (!isOpen(cantina)) opener = document.activeElement;
-    if (frase || cerche.some((i) => i.value)) cerca(''); /* si riapre sempre senza una ricerca in corso */
+    if (frase || cerche().some((i) => i.value)) cerca(''); /* si riapre sempre senza una ricerca in corso */
     setTipo(t || 'tutti', isOpen(cantina));
     stageOpen(t, col);
     cantina.scrollTop = 0;
     cantina.classList.add('is-open');
     sync();
+    document.dispatchEvent(new CustomEvent('fs:cantina-aperta', { detail: { tipo: t, col } })); /* per il menu a indice di Pop e Botanica (js/menu-vini.js) */
     focusIn(cantina.querySelector(compact.matches ? '.cantina__filter[aria-pressed="true"]' : '.cstage [data-cantina-cerca]')); /* su desktop si può scrivere subito; sul telefono no, la tastiera coprirebbe l'elenco */
   };
   const closeCantina = (refocus = true) => {
@@ -267,6 +269,7 @@
   };
   const openMenu = () => { menu.scrollTop = 0; menu.classList.add('is-open'); sync(); focusIn(menu.querySelector('.nav-menu__item')); };
   const closeAll = () => { closeCantina(false); menu.classList.remove('is-open'); sync(); };
+  FS.cantina = { sets, trova, short, cercaHTML, frase: () => frase, chiudi: () => closeCantina() }; /* quello che serve al menu a indice di Pop e Botanica (js/menu-vini.js) */
 
   toggles.forEach((b) => b.addEventListener('click', () => (isOpen(cantina) ? closeCantina() : openCantina())));
   cantina.querySelector('[data-cantina-close]').addEventListener('click', () => closeCantina());

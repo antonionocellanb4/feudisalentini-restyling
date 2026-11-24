@@ -34,17 +34,13 @@ document.body.dataset.apertura = modo; if (foto !== 'frase') document.body.datas
 const TITOLI = { londrina: 'Londrina Solid', unbounded: 'Unbounded', bricolage: 'Bricolage Grotesque' }, titoli = qs.get('titoli') in TITOLI ? qs.get('titoli') : 'londrina';
 const TESTI = { dm: 'DM Sans', outfit: 'Outfit', figtree: 'Figtree', nunito: 'Nunito', bricolage: 'Bricolage Grotesque' }, testi = qs.get('testi') in TESTI ? qs.get('testi') : 'dm';
 const bp = document.body.classList.contains('bp'); /* Botanica con questa impaginazione (botanica-pop.html, css/botanica-pop.css): i caratteri sono i suoi, niente prove dei caratteri del Pop */
-/* il carattere di Botanica (20 nov: "Montserrat no, scegliamo altro"): di base Libre Caslon, nel pannello gli altri (body[data-carattere], css/botanica-pop.css); i testi sono
-   in Libre Caslon Text tranne che con Poppins, il carattere del file Botanica del cliente */
-const CARATTERI = { caslon: 'Caslon', instrument: 'Instrument Serif', young: 'Young Serif', poppins: 'Poppins' }, carattere = qs.get('carattere') in CARATTERI ? qs.get('carattere') : 'caslon';
-const FONT_BP = { caslon: ["400 1em 'Libre Caslon Display'", "400 1em 'Libre Caslon Text'", "italic 400 1em 'Libre Caslon Text'"], instrument: ["400 1em 'Instrument Serif'", "400 1em 'Libre Caslon Text'", "italic 400 1em 'Libre Caslon Text'"],
-  young: ["400 1em 'Young Serif'", "400 1em 'Libre Caslon Text'", "italic 400 1em 'Libre Caslon Text'"], poppins: ["500 1em 'Poppins'", "400 1em 'Poppins'"] };
-if (bp) document.body.dataset.carattere = carattere;
+/* il carattere di Botanica, scelto il 24 nov dopo le prove ("per la Botanica font da usare Instrument Serif e per paragrafi e pulsanti sempre DM Sans"): sta in css/botanica-pop.css */
+const FONT_BP = ["400 1em 'Instrument Serif'", "italic 400 1em 'Instrument Serif'", "400 1em 'DM Sans'", "700 1em 'DM Sans'"];
 if (!bp) {
   if (titoli === 'bricolage') delete document.body.dataset.titoli; else document.body.dataset.titoli = titoli;
   if (testi === 'bricolage') delete document.body.dataset.testi; else document.body.dataset.testi = testi;
 }
-Promise.all((bp ? FONT_BP[carattere] : [`900 1em '${TITOLI[titoli]}'`, `400 1em '${TESTI[testi]}'`, `700 1em '${TESTI[testi]}'`]).map((c) => document.fonts.load(c).catch(() => {}))).then(() => { dispatchEvent(new Event('resize')); window.ScrollTrigger?.refresh(); });
+Promise.all((bp ? FONT_BP : [`900 1em '${TITOLI[titoli]}'`, `400 1em '${TESTI[testi]}'`, `700 1em '${TESTI[testi]}'`]).map((c) => document.fonts.load(c).catch(() => {}))).then(() => { dispatchEvent(new Event('resize')); window.ScrollTrigger?.refresh(); });
 /* 20 nov, il luogo e il bottone in basso a destra: "c'è altro che possiamo scrivere qui, o metterlo diversamente, e non so dove". Ora: com'era. Numeri: i vini e le collezioni
    (contati dai dati) al posto del luogo, che resta sotto in piccolo. A sinistra: lo stesso blocco dall'altra parte della fila, lontano dall'angolo del mood. Niente: solo frase e bottiglie */
 /* Scelta sua, 20 nov: "tieni Numeri, ma cambierei il testo: da Leporano sul mar Ionio non vuol dire nulla". Sotto il numero ora cosa sono, per colore (dai dati: 20 rossi, 8 bianchi,
@@ -60,7 +56,7 @@ const AZIENDA = { palco: 'Palco', pila: 'Pila', striscia: 'Striscia' }, azienda 
    _archivio-prove/pop-verde-acido-home-19nov; gli esempi restano in pop-stili.html#colore */
 const verso = (k, v) => { const p = new URLSearchParams(location.search); if (v) p.set(k, v); else p.delete(k); return `?${p}`; };
 const voci = (k, tutte, ora, base = '') => Object.entries(tutte).map(([v, n]) => `<a href="${verso(k, v === base ? '' : v)}"${v === ora ? ' aria-current="true"' : ''}>${n}</a>`).join(''); /* base: la voce che vale senza niente nell'indirizzo */
-document.body.insertAdjacentHTML('beforeend', `<details class="pp-varianti"><summary>Prove: ${MODI[modo]} · foto ${FOTO[foto]} · ${bp ? CARATTERI[carattere] : `${TITOLI[titoli]} e ${TESTI[testi]}`}</summary><nav aria-label="Varianti di prova"><p><span>Apertura</span>${voci('apertura', MODI, modo, 'fila')}</p><p><span>Foto</span>${voci('foto', FOTO, foto, 'lettere')}</p>${bp ? `<p><span>Carattere</span>${voci('carattere', CARATTERI, carattere, 'caslon')}</p>` : `<p><span>Titoli</span>${voci('titoli', TITOLI, titoli, 'londrina')}</p><p><span>Testi</span>${voci('testi', TESTI, testi, 'dm')}</p>`}<p><span>Azienda</span>${voci('azienda', AZIENDA, azienda, 'palco')}</p><p><span>Sotto</span>${voci('riga', RIGA, riga, 'numeri')}</p></nav></details>`); /* chiuso è una linguetta: non copre luogo e bottone */
+document.body.insertAdjacentHTML('beforeend', `<details class="pp-varianti"><summary>Prove: ${MODI[modo]} · foto ${FOTO[foto]} · ${bp ? 'Instrument Serif e DM Sans' : `${TITOLI[titoli]} e ${TESTI[testi]}`}</summary><nav aria-label="Varianti di prova"><p><span>Apertura</span>${voci('apertura', MODI, modo, 'fila')}</p><p><span>Foto</span>${voci('foto', FOTO, foto, 'lettere')}</p>${bp ? '' : `<p><span>Titoli</span>${voci('titoli', TITOLI, titoli, 'londrina')}</p><p><span>Testi</span>${voci('testi', TESTI, testi, 'dm')}</p>`}<p><span>Azienda</span>${voci('azienda', AZIENDA, azienda, 'palco')}</p><p><span>Sotto</span>${voci('riga', RIGA, riga, 'numeri')}</p></nav></details>`); /* chiuso è una linguetta: non copre luogo e bottone */
 
 FS.mk?.titoli?.(); /* le parole [data-chars] entrano lettera per lettera */
 const pillola = $('.m-pill'); pillola?.classList.add('in-storia'); /* la pillola "I nostri vini" non si vede dall'apertura alla fine delle foto, che vengono dopo le collezioni (un solo trigger: due si darebbero il cambio male) */

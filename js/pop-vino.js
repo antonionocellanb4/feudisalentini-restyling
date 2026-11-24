@@ -24,6 +24,10 @@ const RIGA = '<svg class="pp-riga" viewBox="0 0 1000 12" preserveAspectRatio="no
 
 /* ---- il contenuto ---- */
 const sez = $('.sv'), palco = $('.sv-st'), dentro = $('.sv-dentro'), tela = $('.sv-tela'), presa = $('.sv-presa');
+/* Botanica con questa impaginazione (vino-b.html, css/botanica-pop.css; 24 nov: "la struttura come pop-vino ma con stile botanico"): il colore di sala della collezione del vino
+   e, dietro i capitoli, la targa delle copertine con la sua pianta intera (come le schede di js/pop-collezioni.js) */
+const sala = document.body.classList.contains('bp') && window.FS_BF?.find((x) => x.id === w.collection);
+if (sala) { const m = `url(assets/botanica/${sala.pianta}.webp)`; for (const el of [sez, $('.sv-altri')]) el.style.cssText += `;--c:${sala.c};--c2:${sala.c2};--c3:${sala.c3}`; dentro.insertAdjacentHTML('afterbegin', `<span class="bp-targa" aria-hidden="true"><i class="bp-pianta" style="-webkit-mask-image:${m};mask-image:${m}"></i></span>`); }
 const premi = [...w.premi].sort((a, b) => b.anno - a.anno), aromi = w.aromi.join(', ').replace(/^./, (c) => c.toUpperCase());
 const dl = (c, v) => `<dl class="${c}">${v.filter(([, x]) => x).map(([k, x]) => `<div><dt>${k}</dt><dd>${x}</dd></div>`).join('')}</dl>`;
 const capitoli = [

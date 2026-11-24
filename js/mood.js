@@ -40,7 +40,7 @@
   const lato = (d) => { if (via) return; dove = d; T = T0 + (d === 'b' ? .08 : d === 'f' ? -.08 : 0); pancia = d === 'b' ? .03 : d === 'f' ? -.03 : 0; muovi(); }; /* l'onda resta fra il 40 e il 66%: i nomi stanno sul fondo del loro mood */
 
   /* DOVE STA L'ONDA FERMA. A metà schermo si leggeva "Wine that set the e mood": le due frasi hanno misure diverse e dove l'una e l'altra vengono tagliate cadono lettere diverse.
-     Per ogni lettera si somma quanto se ne vede in Caslon (a sinistra) e quanto in Londrina (a destra): il taglio buono è quello in cui nessuna va lontano da una, né doppia né persa.
+     Per ogni lettera si somma quanto se ne vede nel serif di Botanica (a sinistra) e quanto in Londrina (a destra): il taglio buono è quello in cui nessuna va lontano da una, né doppia né persa.
      Uno dritto per tutte e due le righe al meglio lascia un quinto di lettera in più o in meno; con un taglio per riga, a pochi pixel l'uno dall'altro (8 sul telefono, una ventina
      sul computer), le righe si leggono intere. Cercati sulle lettere vere fra il 38 e il 62% (oltre ci sono i nomi): conta la lettera peggio tagliata di ogni riga (sommate,
      così ognuna cerca il suo taglio e non si accontenta di quello dell'altra), poi quanto si piega l'onda, poi quanto si allontana da metà. Torna il centro fra i due tagli; R dice dove sono le righe e di quanto piegare.
@@ -76,6 +76,6 @@
      css/mood.css tiene ferme le animazioni finché c'è is-attesa */
   disegna(0);
   if (!reduce) el.classList.add('is-attesa');
-  const font = ["900 1em 'Londrina Solid'", "1em 'Libre Caslon Display'", "1em 'Libre Caslon Text'", "500 1em 'DM Sans'"].map((f) => document.fonts.load(f).catch(() => {}));
+  const font = ["900 1em 'Londrina Solid'", "1em 'Instrument Serif'", "500 1em 'DM Sans'"].map((f) => document.fonts.load(f).catch(() => {}));
   Promise.race([Promise.all(font), new Promise((ok) => setTimeout(ok, 1500))]).then(() => { el.classList.remove('is-attesa'); T0 = riposo(); setTimeout(() => lato(dove), reduce ? 0 : 120); });
 })();

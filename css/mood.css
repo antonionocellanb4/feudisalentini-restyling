@@ -16,7 +16,7 @@
 .mood__s--b .mood__logo { color: var(--gold); }
 .mood__frase { position: absolute; inset: calc(var(--header-h) + 2svh) 0 auto; display: grid; justify-items: center; margin: 0; padding-top: 5svh; letter-spacing: -.01em; white-space: nowrap; }
 .mood__s--f .mood__frase { font: 900 min(27svh, 13vw) / .9 'Londrina Solid', sans-serif; }
-.mood__s--b .mood__frase { font: 400 min(17.5svh, 9.4vw) / .95 'Libre Caslon Display', Georgia, serif; }
+.mood__s--b .mood__frase { font: 400 calc(min(17.5svh, 9.4vw) * 1.08) / .95 'Instrument Serif', Georgia, serif; } /* 1.08: --bk di css/botanica-pop.css */
 .mood__targa { position: absolute; left: 50%; top: calc(var(--header-h) + 2svh); height: min(calc(100% - var(--header-h) - 7svh), 106vw); aspect-ratio: 5 / 6; translate: -50% 0; background: #52001f;
   -webkit-mask: var(--sagoma) center / 100% 100% no-repeat; mask: var(--sagoma) center / 100% 100% no-repeat; } /* --sagoma: css/nav.css */
 .mood__targa i { position: absolute; inset: 8% 8% 5%; background: #3d0117;
@@ -31,10 +31,10 @@
 .mood__z { position: absolute; z-index: 2; top: 0; bottom: 0; width: 50%; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: 14px;
   padding: 0 var(--pad-x) clamp(20px, 4.4svh, 36px); text-decoration: none; -webkit-tap-highlight-color: transparent; }
 .mood__z:focus-visible { outline: 2px solid currentColor; outline-offset: -8px; }
-.mood__z--b { left: 0; color: var(--paper); font-family: 'Libre Caslon Text', Georgia, serif; }
+.mood__z--b { left: 0; color: var(--paper); font-family: 'DM Sans', system-ui, sans-serif; }
 .mood__z--f { right: 0; align-items: flex-end; color: var(--ink); font-family: 'DM Sans', system-ui, sans-serif; }
 .mood__n { font-size: clamp(1.75rem, 3vw, 3rem); font-weight: 400; line-height: 1; letter-spacing: -.01em; }
-.mood__z--b .mood__n { font-family: 'Libre Caslon Display', Georgia, serif; }
+.mood__z--b .mood__n { font-family: 'Instrument Serif', Georgia, serif; }
 .mood__z--f .mood__n { font-family: 'Londrina Solid', sans-serif; font-weight: 900; }
 .mood__z--b .mood__v { background: var(--paper); color: #3d0117; } /* pieni tutti e due: sono due scelte dello stesso peso (quello a filo della home di Botanica, accanto al pieno del Pop, sembrava secondario) */
 .mood__z--b:is(:hover, :focus-visible) .mood__v { background: var(--gold); color: #3d0117; } /* l'oro del marchio di Botanica */
@@ -69,7 +69,7 @@
   .mood__logo { top: 14px; width: 96px; }
   .mood__frase { padding-top: 6svh; }
   .mood__s--f .mood__frase { font-size: min(27svh, 16vw); }
-  .mood__s--b .mood__frase { font-size: 13vw; }
+  .mood__s--b .mood__frase { font-size: calc(13vw * 1.08); }
   .mood__bott { --h0: min(89vw, 88.5svh - var(--header-h) - 1.8 * min(27svh, 16vw) - 122px); } /* larga il 94% dello schermo, e sotto i nomi (122px: 24 sopra, 82 di nome e bottone, 16 sotto) */
   .mood__bott img { bottom: 3.5svh; }
   .mood__z { justify-content: flex-start; gap: 10px; padding: calc(var(--header-h) + 8svh + 1.8 * min(27svh, 16vw) + 24px) 16px 0; }

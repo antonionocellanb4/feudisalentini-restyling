@@ -1,16 +1,12 @@
 /* BOTANICA COL LAYOUT DEL POP (20 nov 2026, prova: botanica-pop.html). Sopra css/foto.css e css/pop-prove.css, che fanno l'impaginazione del Pop; qui quello che fa Botanica.
    20 nov: "attenzione, non deve essere Botanica Pop: mantenere stesso schema ma mood Botanica, quindi anche va via ste cose": niente pennarello (giro e nome sulle foto,
-   righe dei capitoli e delle news), i piatti di Cosa c'è in tavola a retino come le piante. Il carattere non è più Montserrat ("Montserrat no, scegliamo altro") né il corsivo
-   Alex Brush ("su Botanica non voglio sto font"): si sceglie nel pannello Prove (?carattere=, js/pop-prove.js); di base Libre Caslon, il serif delle tavole botaniche d'epoca
-   da cui vengono le piante. Un colore pieno di sala per sezione (js/dati-bf.js), la targa delle copertine con dentro la pianta vera del cliente, intera e tono su tono
+   righe dei capitoli e delle news), i piatti di Cosa c'è in tavola a retino come le piante. Il carattere l'ha scelto lui il 24 nov, dopo le prove (Montserrat, Alex Brush,
+   Libre Caslon, Young Serif, Poppins): "per la Botanica font da usare Instrument Serif e per paragrafi e pulsanti sempre DM Sans". Un colore pieno di sala per sezione (js/dati-bf.js), la targa delle copertine con dentro la pianta vera del cliente, intera e tono su tono
    ("farei anche un buon uso delle forme della Botanica"), testi chiari, bottoni a pillola vuoti. Le sezioni prendono i colori ridefinendo i colori di base dove sta la sala
    (--c muro, --c2 pianta, --c3 il più scuro): il Pop li usa quasi ovunque. Header, menu e cantina restano quelli di sempre (non stanno in main). */
-.bp { --font: 'Libre Caslon Text', Georgia, serif; --font-display: 'Libre Caslon Display', Georgia, serif; --bw: 400; --bk: 1; --tk: var(--bk); --tx: var(--bk); --title-weight: 400; --title-track: 0; background: #38221a; }
-/* i caratteri in prova: --bk quanto vengono le scritte giganti rispetto al Caslon (a parità di larghezza), --bw il peso dei titoli; --tk e --tx sono le stesse misure per i titoli
-   delle sezioni sotto (css/pop-prove.css) */
-.bp[data-carattere="instrument"] { --font-display: 'Instrument Serif', Georgia, serif; --bk: 1.08; }
-.bp[data-carattere="young"] { --font-display: 'Young Serif', Georgia, serif; --bk: .82; }
-.bp[data-carattere="poppins"] { --font: 'Poppins', system-ui, sans-serif; --font-display: var(--font); --bw: 500; --bk: .78; }
+.bp { --font: 'DM Sans', system-ui, sans-serif; --font-display: 'Instrument Serif', Georgia, serif; --bw: 400; --bk: 1.08; --tk: var(--bk); --tx: var(--bk); --title-weight: 400; --title-track: 0; background: #38221a; }
+/* --bk: quanto vengono le scritte giganti (l'Instrument Serif è stretto: a parità di larghezza sta l'8% più grande del Caslon con cui erano nate le misure), --bw il peso
+   dei titoli; --tk e --tx sono le stesse misure per i titoli delle sezioni sotto (css/pop-prove.css) */
 /* le sale: Luxury l'apertura, Terra le foto, Lounge l'azienda, Organic i premi, Internazionali la tavola, Classica news e piede; le schede delle collezioni la loro (js/pop-collezioni.js) */
 .bp .pp-apre { --c: #600028; --c2: #52001f; --c3: #3d0117; }
 .bp :is(.pf, .pl, .pw, .pk, .pn, .pm) { --c: #bf5138; --c2: #9e422d; --c3: #732e1e; }
@@ -18,7 +14,7 @@
 .bp .pd { --c: #717b57; --c2: #67704f; --c3: #4c5637; }
 .bp .tv { --c: #905e3b; --c2: #9a6a48; --c3: #7a4630; } /* cosa c'è in tavola: la sala degli Internazionali */
 .bp :is(.pq, .foot) { --c: #503323; --c2: #482d1e; --c3: #38221a; }
-.bp :is(.pp-apre, .pc-pan, .pf, .pl, .pw, .pk, .pn, .pm, .pa, .pd, .tv, .pq, .foot) {
+.bp :is(.pp-apre, .pc-pan, .pf, .pl, .pw, .pk, .pn, .pm, .pa, .pd, .tv, .pq, .foot, .sv, .sv-altri) {
   --cream: var(--c); --stone: var(--c); --night: var(--c); --night-2: var(--c2);
   --ink: #f3efea; --ink-2: rgb(243 239 234 / .86); --mute: rgb(243 239 234 / .72); --paper: #f3efea; --paper-2: rgb(243 239 234 / .82); --line: rgb(243 239 234 / .3); --gold-ink: #f3efea;
   background: var(--c); color: var(--ink); }
@@ -33,13 +29,21 @@
   -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: 50% 100%; mask-position: 50% 100%; }
 .pc-pan > .bp-targa { z-index: -1; }
 
+/* la pagina del vino (vino-b.html, 24 nov: "la struttura come pop-vino ma con stile botanico"; impaginazione in css/pop-vino.css, js/pop-vino.js): il palco ha il colore di
+   sala della collezione del vino (--c, --c2, --c3 li mette lo script) e dietro i capitoli la targa con la sua pianta; gli altri vini sul tono della targa.
+   Con la pagina ferma (animazioni ridotte, o senza 3D) niente targa: lì non c'è un palco in cui stare */
+.bp .sv-altri { background: var(--c2); }
+.bp .sv:not(.is-viva) .bp-targa { display: none; }
+.bp :is(.sv-nome, .sv-coll) { line-height: .95; } /* un serif ha ascendenti e accenti più alti del Londrina: a .86 le righe si toccavano */
+.bp .sv-h { line-height: 1; }
+.bp .sv-h b { font-weight: inherit; } /* un peso solo: l'Instrument Serif non ha il grassetto, il browser lo fingeva */
+
 /* i caratteri (> span: dentro ogni riga le lettere sono altri span, js/moderna-kit.js): scritte giganti e titoli nel carattere dei titoli, un peso solo, in minuscolo */
-.bp :is(.pp-titolo > span, .pc-nome, .pf-rullo, .pl-parola, .pn-parola, .pm-parola span, .pk-velo text, .pk-metro, .fo-pista__p, .pp-cerchio b, .pd-t, .pq-t, .pa-t, .pa-h, .pa-n b, .pd-conta dd, .pq-h, .tv__t, .pp-cifra) { font-family: var(--font-display); font-weight: var(--bw); font-stretch: 100%; letter-spacing: -.01em; text-transform: none; }
+.bp :is(.pp-titolo > span, .pc-nome, .pf-rullo, .pl-parola, .pn-parola, .pm-parola span, .pk-velo text, .pk-metro, .fo-pista__p, .pp-cerchio b, .pd-t, .pq-t, .pa-t, .pa-h, .pa-n b, .pd-conta dd, .pq-h, .tv__t, .pp-cifra, .sv-nome, .sv-h, .sv-fatti dd, .sv-medaglie b, .sv-k b, .sv-coll, .sv-altro b) { font-family: var(--font-display); font-weight: var(--bw); font-stretch: 100%; letter-spacing: -.01em; text-transform: none; }
 .bp .pp-titolo span { font-size: calc(min(17.5svh, 9.4vw) * var(--bk)); font-weight: var(--bw); font-stretch: 100%; line-height: .95; letter-spacing: -.01em; } /* tutte: il Pop dà misura, peso e spaziatura anche agli span delle lettere */
 .bp .pc-nome { font-size: calc(min(22svh, 11vw) * var(--bk)); }
 @media (max-width: 860px) { .bp .pp-titolo span { font-size: calc(13vw * var(--bk)); } } /* sul telefono la frase sta sopra le bottiglie: più grande, fino ai margini */
-.bp .pc-frase { font-family: var(--font); font-size: clamp(1.25rem, 1.7vw, 1.75rem); font-weight: 400; font-style: italic; line-height: 1.25; letter-spacing: 0; text-transform: none; } /* la frase della copertina, nel suo inglese: il corsivo del carattere, non un carattere corsivo */
-.bp[data-carattere="poppins"] .pc-frase { font-style: normal; }
+.bp .pc-frase { font-family: var(--font-display); font-size: clamp(1.4rem, 1.9vw, 2rem); font-weight: 400; font-style: italic; line-height: 1.2; letter-spacing: 0; text-transform: none; } /* la frase della copertina, nel suo inglese: il corsivo del carattere dei titoli, non un carattere corsivo */
 .bp :is(.pf-rullo, .pl-parola, .pn-parola) { font-size: calc(min(24svh, 12vw) * var(--bk)); }
 .bp .tv__t { max-width: 6em; font-size: clamp(2.4rem, 4.4vw, 5rem); line-height: .95; }
 

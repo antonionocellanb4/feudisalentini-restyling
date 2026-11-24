@@ -11,18 +11,19 @@
 <script>/* cambio di mood (17 nov): la pagina nuova si apre da dove si è scelto (css/nav.css, mood-apre). Al clic si annota la forma di partenza, "da|a|opacità" (due clip-path, e se la pagina nuova parte trasparente): il riquadro del link, oppure quella scritta nel link (data-mood-da) o da js/mood.js. All'arrivo, prima del primo disegno, la si passa al css. Senza appunto il passaggio non parte: gli altri link cambiano pagina come sempre. A passaggio finito si avvisa la barra (un evento scroll): durante il passaggio js/nav.js non vede cosa c'è sotto e sbaglia il tono */addEventListener("click",function(e){var p=e.target.closest&&e.target.closest("a[data-mood],a[data-mood-da]");if(!p||e.defaultPrevented)return;var da=p.getAttribute("data-mood-da");if(!da){var r=p.getBoundingClientRect(),w=innerWidth,h=innerHeight;da="inset("+[r.top/h,1-r.right/w,1-r.bottom/h,r.left/w].map(function(n){return(Math.max(0,n)*100).toFixed(2)+"%"}).join(" ")+")"}try{sessionStorage.setItem("fs-mood-da",da)}catch(x){}});addEventListener("pagereveal",function(e){var da;try{da=sessionStorage.getItem("fs-mood-da");sessionStorage.removeItem("fs-mood-da")}catch(x){}if(!e.viewTransition)return;e.viewTransition.finished.then(function(){dispatchEvent(new Event("scroll"))},function(){});if(da){da=da.split("|");var s=document.documentElement.style;s.setProperty("--mood-da",da[0]);s.setProperty("--mood-a",da[1]||"inset(0% 0% 0% 0%)");s.setProperty("--mood-o",da[2]||"1")}else{e.viewTransition.ready.catch(function(){});e.viewTransition.skipTransition()}});</script>
 <link rel="stylesheet" href="css/base.css?v=3c076e8f">
 <link rel="stylesheet" href="css/nav.css?v=5e36c683">
+<link rel="stylesheet" href="css/menu-vini.css?v=7412f2c1">
 <!-- INGRESSO, la scelta del mood (rifatta il 20 nov 2026: "questa dobbiamo ripensare in base ai nuovi aggiornamenti senza mettere company e aggiornare nomi e font").
      È la prima pagina del sito; dalle pagine non ci porta più niente, il cambio di mood sta nell'angolo di ogni pagina (js/cambio-mood.js). I mood sono due, quelli dello switch
      (js/main.js, MOOD): Botanica (botanica-pop.html) e Pop (pop-b.html). Company resta fuori.
      Le due home ora aprono allo stesso modo, la frase "Wines that set the mood." dietro le stesse quattro bottiglie: qui c'è quell'apertura nei due mood insieme, divisa da un'onda.
-     A sinistra Botanica (il bordeaux della Collezione 53, la targa col ginepro, Libre Caslon), a destra Pop (bianco e inchiostro, Londrina Solid e DM Sans). Misure di frase e targa
+     A sinistra Botanica (il bordeaux della Collezione 53, la targa col ginepro, Instrument Serif e DM Sans), a destra Pop (bianco e inchiostro, Londrina Solid e DM Sans). Misure di frase e targa
      come nelle home (css/pop-prove.css, css/botanica-pop.css). Le bottiglie sono le foto del catalogo, non il 3D: qui basta e sul telefono pesa meno.
      Il mouse sposta l'onda verso l'altro mood, il clic la porta fino al bordo, frase e bottiglie escono e la home fa il suo ingresso. js/mood.js, css/mood.css.
      La pagina di prima (prove Cambio e Onda, con le sale e le foto di Instagram) è in _archivio-prove/scelta-mood-cambio-onda-20nov. -->
 <title>Feudi Salentini · Vini del Salento</title>
 <meta name="description" content="Feudi Salentini: Primitivo di Manduria, Negroamaro e i vini del Salento della famiglia Varvaglione, a Leporano (TA).">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&family=Libre+Caslon+Display&family=Libre+Caslon+Text&family=Londrina+Solid:wght@900&display=swap">
-<link rel="stylesheet" href="css/mood.css?v=bc5d1a45">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&family=Instrument+Serif&family=Londrina+Solid:wght@900&display=swap">
+<link rel="stylesheet" href="css/mood.css?v=b71df36d">
 </head>
 <body class="page-porta">
 <main id="main" class="mood">
@@ -54,6 +55,6 @@
   <a class="mood__z mood__z--b" href="botanica-pop.html" data-mood="b"><b class="mood__n">Botanica</b><span class="mood__v btn">Entra</span></a>
   <a class="mood__z mood__z--f" href="pop-b.html" data-mood="f"><b class="mood__n">Pop</b><span class="mood__v btn">Entra</span></a>
 </main>
-<script src="js/mood.js?v=0124abe5"></script>
+<script src="js/mood.js?v=4eac4ba8"></script>
 </body>
 </html>
