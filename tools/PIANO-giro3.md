@@ -1223,3 +1223,15 @@ Scartati senza provarli: le bottiglie dipinte (scure sul blu notte, non si vedon
   In alto ricerca, colori e Chiudi. Aperto su una collezione (piede, pagina del vino) la sua colonna è segnata e a destra c'è il suo primo vino. Il palco di js/nav.js (.cstage)
   resta per gli altri siti; sul telefono resta l'elenco. Scaffale, Collezioni e il selettore sono in _archivio-prove/menu-vini-prove-24nov. In js/nav.js restano FS.cantina e
   gli eventi fs:cantina-aperta / fs:cantina-cerca. Provato a 1440x900 (pop-b), 1366x650 (vino-b), 1100x700 (pop-azienda), telefono, moderna-e invariata, senza errori.
+- 25 nov (119), peso sui computer lenti: "per alleggerire il progetto su computer non come il mio, dove lo scroll si blocca, cosa possiamo fare?", poi "al massimo separiamo...
+  facciamo pagine separate", "fallo in 10 minuti", "ma io le voglio le bottiglie sopra e sotto". Il suo computer è un i9-14900K con RTX 4080: lì tutto a 60 fotogrammi.
+  MISURATO (tools/cdp.mjs con CPU=4, nuovo; anche DPR=n): la pagina pesa 3,8 MB e le foto si caricano solo quando servono, i fotogrammi normali reggono anche col processore
+  sei volte più lento. I blocchi erano sei, da 80 a 210 ms, sempre negli stessi punti: il primo fotogramma in cui una bottiglia 3D compare (apertura → collezioni, ogni cambio
+  di collezione, il piede) e la preparazione del piede mentre ci si arriva. Separare le pagine non li toglie (il piede è su tutte): non fatto, detto a lui.
+  FATTO, senza togliere niente: js/bottiglia-3d-kit.js scalda() manda prima alla scheda video programmi e immagini di ogni bottiglia (a pagina ferma, in una pausa del browser,
+  disegnandola in un pixel) e leggera() abbassa i pixel della tela (2 → 1,5 → 1,25 → 1) solo se i fotogrammi vengono in media più lenti di 26 ms; gli studi di luce si
+  calcolano una volta per pagina e non per tela. Usati da js/pop-collezioni.js, js/pop-prove.js, js/pop-vino.js, js/pop-palco3d.js; js/pop-piede.js prepara le bottiglie del
+  piede cinque secondi dopo il caricamento, a pagina ferma (prima: a uno schermo e mezzo dal piede). Dopo: zero blocchi su pop-b a CPU=4 se la pagina resta ferma qualche
+  secondo prima di scorrere; chi scorre subito li trova come prima. Non misurabile qui: una scheda video debole (ce n'è una sola, la 4080). Se su un computer lento vero
+  scatta ancora, in ordine: antialias spento sulle tele, scorrimento fluido (Lenis) spento sui computer lenti, js/nav.js update() meno spesso (1 ms a fotogramma qui),
+  l'onda dell'angolo del mood che gira sempre (0,7 ms a fotogramma qui). In locale, non pubblicato.

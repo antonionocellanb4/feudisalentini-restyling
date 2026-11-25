@@ -6,7 +6,7 @@
 const fermo = FS.reduce, TAU = Math.PI * 2;
 let moduli;
 export async function palco3d(tela) {
-  const [THREE, { creaBottiglia, ombraContatto, posaOmbra }] = await (moduli ??= Promise.all([import('three'), import('./bottiglia-3d-kit.js')]));
+  const [THREE, { creaBottiglia, ombraContatto, posaOmbra, scalda, leggera }] = await (moduli ??= Promise.all([import('three'), import('./bottiglia-3d-kit.js')]));
   const renderer = new THREE.WebGLRenderer({ canvas: tela, antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.toneMapping = THREE.ACESFilmicToneMapping;
   const scena = new THREE.Scene(), D = 30, SU = THREE.MathUtils.degToRad(3), camera = new THREE.PerspectiveCamera(6, 1, 1, 100), m = { W: 1, H: 1, Vw: 1, Vh: 1 };
@@ -24,6 +24,7 @@ export async function palco3d(tela) {
     bott.position.y = -0.5; asse.add(bott); perno.add(asse); scena.add(perno); perno.rotation.order = 'XZY';
     const a = { perno, asse, r: new THREE.Box3().setFromObject(bott).max.x, collo: bott.userData.collo, k: 1, giro: 0, vel: 0, sosta: 0, px: 0, ombra: ombraContatto(bott.userData.chiara) };
     scena.add(a.ombra); perno.visible = a.ombra.visible = false;
+    scalda(renderer, scena, camera, perno, 600); /* pronta prima di entrare in scena: al primo fotogramma bloccava lo scorrimento */
     return a;
   };
   const metti = (a, { x, piede, hh, ry, tz = 0 }) => {
@@ -48,7 +49,7 @@ export async function palco3d(tela) {
     if (Math.abs(a.vel) < 0.002 && ora > a.sosta) a.giro += (Math.round(a.giro / TAU) * TAU + 0.18 * Math.sin(ora / 2600 + i * 1.9) - a.giro) * Math.min(1, dt * 0.9);
   };
   /* il giro di disegno: solo quando il palco è sullo schermo */
-  const gira = (palco, passo) => { let prima = performance.now(); const f = (ora) => { requestAnimationFrame(f); const r = palco.getBoundingClientRect(); if (r.bottom <= 0 || r.top >= innerHeight) { prima = ora; return; } occhio.x += (mira.x - occhio.x) * 0.06; occhio.y += (mira.y - occhio.y) * 0.06; passo(ora, Math.min(0.05, (ora - prima) / 1000)); prima = ora; renderer.render(scena, camera); }; requestAnimationFrame(f); };
+  const gira = (palco, passo) => { let prima = performance.now(); const ritmo = leggera(renderer), f = (ora) => { requestAnimationFrame(f); const r = palco.getBoundingClientRect(); if (r.bottom <= 0 || r.top >= innerHeight) { prima = ora; return; } ritmo(ora); occhio.x += (mira.x - occhio.x) * 0.06; occhio.y += (mira.y - occhio.y) * 0.06; passo(ora, Math.min(0.05, (ora - prima) / 1000)); prima = ora; renderer.render(scena, camera); }; requestAnimationFrame(f); };
   return { m, nuova, metti, trascina, quieta, gira };
 }
 export const altezze = (att) => { const rif = att[0].collo; att.forEach((a) => (a.k = rif / a.collo)); return Math.max(...att.map((a) => a.k)); }; /* il collo è largo uguale in tutte: dà le altezze vere quando stanno insieme */

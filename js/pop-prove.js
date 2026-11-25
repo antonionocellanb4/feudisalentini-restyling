@@ -7,7 +7,7 @@
    tre rotolano via a destra (girano quanto si spostano, come rulli), dietro di loro entra da sinistra la scheda della Collezione 53 e la sua bottiglia resta, al centro. Dopo le collezioni le foto (js/pop-frase.js). Palco fermo con GSAP, ScrollTrigger e Lenis (js/main.js). Con le animazioni ridotte stanno ferme in fila.
    shortcut: prova, non collegata dal sito; se il 3D non parte resta la frase. */
 import * as THREE from 'three';
-import { creaBottiglia, ombraContatto, posaOmbra } from './bottiglia-3d-kit.js';
+import { creaBottiglia, ombraContatto, posaOmbra, leggera } from './bottiglia-3d-kit.js';
 import { scritta, lenteVino, colore } from './lente-vino.js';
 
 const $ = (q, r = document) => r.querySelector(q), $$ = (q, r = document) => [...r.querySelectorAll(q)];
@@ -186,9 +186,11 @@ try {
   for (const ev of ['pointerup', 'pointercancel']) tela.addEventListener(ev, () => { if (presa) presa.sosta = performance.now() + 2000; presa = null; });
 
   let pronto = false, prima = performance.now();
+  const ritmo = leggera(renderer);
   const passo = (ora) => {
     requestAnimationFrame(passo);
     const r = palco.getBoundingClientRect(); if (pronto && (r.bottom <= 0 || r.top >= innerHeight)) return;
+    ritmo(ora);
     const dt = Math.min(0.05, (ora - prima) / 1000); prima = ora;
     occhio.x += (mira.x - occhio.x) * 0.06; occhio.y += (mira.y - occhio.y) * 0.06;
     disponi();

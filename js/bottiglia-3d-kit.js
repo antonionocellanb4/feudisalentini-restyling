@@ -13,13 +13,13 @@ import * as THREE from 'three';
 /* ---- lo studio: una mappa equirettangolare di numeri (1024 x 512), poi sfocata da three per i materiali. Ogni luce è una fascia: az dove sta (0 = dalla parte della macchina, positivo a destra
    di chi guarda), largo e sfuma in gradi, da che elevazione a quale, forza. Su un cilindro una luce all'azimut A si riflette all'angolo A/2. Si dipinge una volta per renderer: con più bottiglie si riusa.
    18 nov ("al minimo peso, senza che si blocchi la pagina"): 512 x 256 invece di 1024 x 512 (la sfocatura per i materiali le rende uguali) e ogni studio si dipinge solo quando serve a una bottiglia ---- */
-const studi = new WeakMap();
+const studi = new WeakMap(), dipinti = {}; /* dipinti: i numeri di ogni studio, uguali per tutte le tele della pagina (25 nov: ogni tela li ricalcolava, a pagina ferma) */
 function luci(renderer) {
   if (studi.has(renderer)) return studi.get(renderer);
   const pm = new THREE.PMREMGenerator(renderer), molle = (x) => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
-  const studio = (luci, fondo) => {
-    const W = 512, H = 256, d = new Float32Array(W * H * 4);
-    for (let j = 0; j < H; j++) {
+  const studio = (nome, luci, fondo) => {
+    const W = 512, H = 256, fatto = dipinti[nome], d = fatto || (dipinti[nome] = new Float32Array(W * H * 4));
+    for (let j = 0; j < H && !fatto; j++) {
       const el = ((j + 0.5) / H) * 180 - 90; /* la prima riga è sotto i piedi */
       for (let i = 0; i < W; i++) {
         let az = 90 - ((i + 0.5) / W - 0.5) * 360; if (az > 180) az -= 360;
@@ -36,9 +36,9 @@ function luci(renderer) {
      una fascia grigia da +15° a +45° (un pannello debole a destra), i due bordi accesi oltre i 72° (il fondale bianco dietro). Le forze danno gli stessi grigi della foto */
   const SET = [{ az: -78, largo: 44, sfuma: 4, giu: -35, su: 80, forza: 8 }, { az: 60, largo: 60, sfuma: 8, giu: -35, su: 80, forza: 0.7 }, { az: 180, largo: 76, sfuma: 12, giu: -35, su: 70, forza: 0.8 }];
   const ricette = {
-    vetro: () => studio(SET, 0.01),
-    carta: () => studio([...SET, { az: -15, largo: 170, sfuma: 60, giu: -20, su: 85, forza: 1.2 }, { az: 36, largo: 14, sfuma: 10, giu: -20, su: 70, forza: 2.5 }], 0.02), /* in più, per carta e capsula: la luce larga davanti e una stretta che accende il rame mentre gira */
-    bianca: () => studio([{ az: -35, largo: 150, sfuma: 80, giu: -30, su: 85, forza: 0.4 }], 0.68) /* la carta bianca (18 nov): col bank del vetro bruciava a sinistra; qui tanta luce diffusa e una larga davanti a sinistra, tarate sulla carta della foto */
+    vetro: () => studio('vetro', SET, 0.01),
+    carta: () => studio('carta', [...SET, { az: -15, largo: 170, sfuma: 60, giu: -20, su: 85, forza: 1.2 }, { az: 36, largo: 14, sfuma: 10, giu: -20, su: 70, forza: 2.5 }], 0.02), /* in più, per carta e capsula: la luce larga davanti e una stretta che accende il rame mentre gira */
+    bianca: () => studio('bianca', [{ az: -35, largo: 150, sfuma: 80, giu: -30, su: 85, forza: 0.4 }], 0.68) /* la carta bianca (18 nov): col bank del vetro bruciava a sinistra; qui tanta luce diffusa e una larga davanti a sinistra, tarate sulla carta della foto */
   };
   const fatti = {}, L = {};
   for (const k in ricette) Object.defineProperty(L, k, { get: () => (fatti[k] ??= ricette[k]()) });
@@ -84,6 +84,33 @@ export function ombraContatto(chiara) {
 export function posaOmbra(ombra, x, y, dia) {
   const { x0, x1, z0, z1, sch } = OMBRA;
   ombra.position.set(x + ((x0 + x1) / 2) * dia, y + ((z0 + z1) / 2) * sch * dia, -0.01); ombra.scale.set((x1 - x0) * dia, (z1 - z0) * sch * dia, 1);
+}
+
+/* 25 nov ("per alleggerire il progetto su computer non come il mio, dove lo scroll si blocca"). Misurato col processore quattro volte più lento: i blocchi (60-200 ms) erano
+   il primo fotogramma in cui una bottiglia compare, quando la scheda video riceve i suoi programmi e le sue immagini.
+   scalda(): glieli manda prima, a pagina ferma (mezzo secondo senza scorrere) e in una pausa del browser, disegnandola in un pixel solo della tela (il giro di disegno al fotogramma dopo ridisegna tutto).
+   leggera(): rende una funzione da chiamare a ogni fotogramma, prima di disegnare; se in media vengono più lenti di 26 ms la tela si disegna con meno pixel
+   (2 → 1,5 → 1,25 → 1). Sui computer veloci non scatta mai.
+   shortcut: non torna su se il computer si libera, e su uno schermo a densità 1 non ha niente da togliere; se serve, il passo dopo è spegnere l'antialias. */
+let mosso = 0; addEventListener('scroll', () => (mosso = performance.now()), { passive: true });
+const aRiposo = (f) => (performance.now() - mosso < 500 ? setTimeout(() => aRiposo(f), 250) : window.requestIdleCallback ? requestIdleCallback(f, { timeout: 2000 }) : setTimeout(f, 50)); /* Safari non ha requestIdleCallback */
+export function scalda(renderer, scena, camera, oggetto, attesa = 0) {
+  setTimeout(() => aRiposo(() => {
+    const era = oggetto.visible; oggetto.visible = true; oggetto.traverse((o) => (o.frustumCulled = false)); /* anche fuori dall'inquadratura: deve arrivare alla scheda video */
+    renderer.setScissor(0, 0, 1, 1); renderer.setScissorTest(true);
+    try { renderer.render(scena, camera); } catch (e) {} /* se non riesce si prepara al primo fotogramma, come prima */
+    renderer.setScissorTest(false); oggetto.visible = era; oggetto.traverse((o) => (o.frustumCulled = true));
+  }), attesa);
+}
+export function leggera(renderer) {
+  let prima = 0, n = 0, somma = 0;
+  return (ora) => {
+    const dt = ora - prima; prima = ora;
+    if (dt <= 0 || dt > 200) return; /* un blocco, o il ritorno sullo schermo, non fanno media */
+    somma += dt; if (++n < 50) return;
+    const lenta = somma / n > 26, r = renderer.getPixelRatio(); n = somma = 0;
+    if (lenta && r > 1) renderer.setPixelRatio(r > 1.5 ? 1.5 : r > 1.25 ? 1.25 : 1);
+  };
 }
 
 export async function creaBottiglia(renderer, base = 'assets/3d/primitivo53') {

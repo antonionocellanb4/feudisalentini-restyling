@@ -10,7 +10,7 @@
    riflesso sotto il vetro (w.fondo). Con le animazioni ridotte, o se il 3D non parte, niente palco: la foto e i capitoli uno sotto l'altro (css/pop-vino.css).
    Dipende da: three (importmap nella pagina), gsap, ScrollTrigger, FS (js/main.js), FS.mk (js/moderna-kit.js). */
 import * as THREE from 'three';
-import { creaBottiglia, ombraContatto, posaOmbra } from './bottiglia-3d-kit.js';
+import { creaBottiglia, ombraContatto, posaOmbra, leggera } from './bottiglia-3d-kit.js';
 import { scritta, lenteVino, colore } from './lente-vino.js';
 
 const $ = (q, r = document) => r.querySelector(q), $$ = (q, r = document) => [...r.querySelectorAll(q)];
@@ -218,9 +218,11 @@ async function viva() {
   const NIENTE = 'inset(0 100% 0 0)', taglio = scene.map(() => '');
   const taglia = (j, c) => { if (taglio[j] === c) return; taglio[j] = c; scene[j].style.clipPath = c; scene[j].style.visibility = c === NIENTE ? 'hidden' : 'visible'; };
   let pronto = false, prima = performance.now();
+  const ritmo = leggera(renderer);
   const passo = (ora) => {
     requestAnimationFrame(passo);
     const q = palco.getBoundingClientRect(); if (pronto && (q.bottom <= 0 || q.top >= innerHeight)) return;
+    ritmo(ora);
     const dt = Math.min(0.05, (ora - prima) / 1000); prima = ora;
     occhio.x += (mira.x - occhio.x) * 0.06; occhio.y += (mira.y - occhio.y) * 0.06;
     disponi();

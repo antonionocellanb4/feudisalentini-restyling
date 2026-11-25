@@ -1,4 +1,4 @@
-// uso: node tools/cdp.mjs <url> <out-prefix> <w> <h> <steps.json>  steps: [{js:"..."}|{jsfile:"path"}|{move:[x,y]}|{hover:"css"}|{wheel:deltaY,n:ripetizioni,gap:ms}|{click:[x,y]}|{drag:[[x,y],...],gap:ms}|{wait:ms}|{shot:"nome"}] -> <out-prefix>-<nome>.jpg ; env TOUCH=1 = telefono touch, SCROLLBARS=1 = barre di scorrimento visibili (come Chrome su Windows), LOADWAIT=ms attesa iniziale, REDUCE=1 = prefers-reduced-motion
+// uso: node tools/cdp.mjs <url> <out-prefix> <w> <h> <steps.json>  steps: [{js:"..."}|{jsfile:"path"}|{move:[x,y]}|{hover:"css"}|{wheel:deltaY,n:ripetizioni,gap:ms}|{click:[x,y]}|{drag:[[x,y],...],gap:ms}|{wait:ms}|{shot:"nome"}] -> <out-prefix>-<nome>.jpg ; env TOUCH=1 = telefono touch, SCROLLBARS=1 = barre di scorrimento visibili (come Chrome su Windows), LOADWAIT=ms attesa iniziale, REDUCE=1 = prefers-reduced-motion, CPU=n = processore n volte più lento, DPR=n = densità dello schermo
 import { spawn } from "node:child_process";
 import { writeFileSync, readFileSync, existsSync, mkdtempSync } from "node:fs";
 const [url, out, w, h, stepsFile] = process.argv.slice(2);
@@ -17,13 +17,14 @@ let id = 0; const pend = {}; const logs = [];
 ws.addEventListener("message", (m) => { const d = JSON.parse(m.data); if (d.id && pend[d.id]) { pend[d.id](d); delete pend[d.id]; } if (d.method === "Runtime.exceptionThrown") logs.push(d.params.exceptionDetails.exception?.description); if (d.method === "Runtime.consoleAPICalled" && d.params.type === "error") logs.push(JSON.stringify(d.params.args.map(a=>a.value))); });
 const send = (method, params = {}) => Promise.race([new Promise((r) => { pend[++id] = r; ws.send(JSON.stringify({ id, method, params })); }), sleep(8000).then(() => ({}))]); // 8 s e si va avanti: una cattura chiesta proprio mentre la pagina cambia non torna mai
 await send("Runtime.enable");
-await send("Emulation.setDeviceMetricsOverride", { width: +w, height: +h, deviceScaleFactor: 1, mobile: +w < 600 });
+await send("Emulation.setDeviceMetricsOverride", { width: +w, height: +h, deviceScaleFactor: +(process.env.DPR ?? 1), mobile: +w < 600 });
 if (process.env.TOUCH) {
   await send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
   await send("Emulation.setUserAgentOverride", { userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1", platform: "iPhone" });
 }
 const media = [...(process.env.TOUCH ? [{ name: "hover", value: "none" }, { name: "pointer", value: "coarse" }] : []), ...(process.env.REDUCE ? [{ name: "prefers-reduced-motion", value: "reduce" }] : [])];
 if (media.length) await send("Emulation.setEmulatedMedia", { features: media });
+if (process.env.CPU) await send("Emulation.setCPUThrottlingRate", { rate: +process.env.CPU }); // CPU=4: processore quattro volte più lento (un portatile da ufficio visto da un fisso veloce)
 await send("Page.navigate", { url }); await sleep(+(process.env.LOADWAIT ?? 2500));
 for (const s of steps) {
   if (s.jsfile) s.js = readFileSync(s.jsfile, "utf8");

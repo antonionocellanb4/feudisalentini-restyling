@@ -8,7 +8,7 @@
    Bottiglie: Collezione 53 Primitivo, 125 Primitivo, Tre Cuori per la Classica, Terra Primitivo (assets/3d). Con le animazioni ridotte si salta da una collezione all'altra.
    shortcut: Organic e Internazionali non ci sono perché le loro bottiglie non sono ancora in 3D. */
 import * as THREE from 'three';
-import { creaBottiglia } from './bottiglia-3d-kit.js';
+import { creaBottiglia, scalda, leggera } from './bottiglia-3d-kit.js';
 import { scritta, lenteVino, colore } from './lente-vino.js';
 
 const $ = (q, r = document) => r.querySelector(q), $$ = (q, r = document) => [...r.querySelectorAll(q)];
@@ -82,6 +82,8 @@ try {
   const perno = new THREE.Group(), asse = new THREE.Group(); scena.add(perno); perno.add(asse); perno.rotation.order = 'XZY';
   const bott = await Promise.all(lista.map((t) => creaBottiglia(renderer, 'assets/3d/' + t.file)));
   bott.forEach((b) => { b.position.y = -0.5; b.visible = false; asse.add(b); }); /* tutte alte uguale ("la bottiglia stessa altezza") */
+  bott.forEach((b, i) => scalda(renderer, scena, camera, b, 3000 + i * 250)); /* pronte prima che arrivino, dopo l'entrata dell'apertura: comparendo bloccavano lo scorrimento */
+  const ritmo = leggera(renderer);
   const arrivo = () => (W > 860 ? { cy: 0.54, h: 0.66 } : { cy: 0.41, h: 0.29 }); /* il centro e l'altezza della bottiglia, in frazioni della tela */
   passaggio.arrivo = arrivo; /* da qui l'apertura sa dove portare la Collezione 53, e che questa tela è pronta a disegnarla */
   /* "ricordati che qui dentro c'è liquido": nella bottiglia chiara (Tre Cuori) il nome gigante della sua scheda si vede attraverso il vino, rovesciato e ingrandita (js/lente-vino.js);
@@ -105,6 +107,7 @@ try {
   const passo = (ora) => {
     requestAnimationFrame(passo);
     const r = palco.getBoundingClientRect(); if (r.bottom <= 0 || r.top >= innerHeight) return;
+    ritmo(ora);
     occhio.x += (mira.x - occhio.x) * 0.06; occhio.y += (mira.y - occhio.y) * 0.06;
     if (fermo) st.p = Math.round(corsa.progress * (N - 1)); /* senza movimento la scheda dallo scorrimento di adesso (con onUpdate a volte restava l'ultima) */
     const k = Math.min(N - 2, Math.floor(st.p)), f = st.p - k; /* passaggio dalla k alla k+1, e quanto è avanti */

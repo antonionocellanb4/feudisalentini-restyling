@@ -46,6 +46,13 @@ async function bottiglie() {
   } catch (e) { console.warn('piede: il 3D non parte, resta il logo', e); tela.remove(); }
 }
 if (!FS.reduce) {
-  const vede = new IntersectionObserver((voci) => { if (voci.some((v) => v.isIntersecting)) { vede.disconnect(); bottiglie(); } }, { rootMargin: '150% 0px' }); /* si caricano quando il piede è a uno schermo e mezzo */
+  let partite = false, mosso = performance.now();
+  const parti = () => { if (partite) return; partite = true; vede.disconnect(); bottiglie(); };
+  const vede = new IntersectionObserver((voci) => { if (voci.some((v) => v.isIntersecting)) parti(); }, { rootMargin: '150% 0px' }); /* al più tardi quando il piede è a uno schermo e mezzo */
   vede.observe(foot);
+  /* 25 nov ("alleggerire... dove lo scroll si blocca"): prepararle mentre si arrivava al piede bloccava lo scorrimento lì. Ora si preparano prima, cinque secondi dopo il
+     caricamento e a pagina ferma; chi scorre senza mai fermarsi le trova come prima */
+  addEventListener('scroll', () => (mosso = performance.now()), { passive: true });
+  const aspetta = () => { if (!partite) performance.now() - mosso > 600 ? parti() : setTimeout(aspetta, 300); };
+  addEventListener('load', () => setTimeout(aspetta, 5000));
 }
